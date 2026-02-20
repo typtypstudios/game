@@ -6,8 +6,8 @@ public class ManaSystem : MonoBehaviour
 
     // Variables
     private float manaUnit = 0.1f;
-    private float multiplier;
-    private float maxMana = 10;
+    private float multiplier = 1.0f;
+    private float maxMana = 10f;
 
     private UIManager uiManager;
 
@@ -15,11 +15,6 @@ public class ManaSystem : MonoBehaviour
     {
         FindFirstObjectByType<RitualManager>().OnCorrectChar += AddMana;
         uiManager = FindFirstObjectByType<UIManager>();
-    }
-
-    private void Start()
-    {
-        multiplier = 1.0f;
     }
 
     public void AddMana()

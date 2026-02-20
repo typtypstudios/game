@@ -18,7 +18,7 @@ public class RitualManager : AInputListener
 
     // Score variables
     private float ritualScoreUnit = 0.1f;
-    private float multiplier;
+    private float multiplier = 1.0f;
     private float maxRitualScore = 10f;
     private UIManager uiManager;
 
@@ -30,7 +30,6 @@ public class RitualManager : AInputListener
         OnCorrectChar += AddRitualScore;
         uiManager = FindFirstObjectByType<UIManager>();
     }
-
 
     readonly string colorTag = "<color #FF0000>";
     protected override void ProcessInput(char c)
@@ -72,6 +71,7 @@ public class RitualManager : AInputListener
             Debug.LogError("Win condition not implemented");
             CurrentRitualScore = maxRitualScore;
         }
+
         uiManager.SetRitualProgress(CurrentRitualScore / maxRitualScore);
     }
 

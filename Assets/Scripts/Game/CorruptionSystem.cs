@@ -5,9 +5,9 @@ public class CorruptionSystem : MonoBehaviour
     public float CurrentCorruption { get; private set; }
 
     // Variables
-    private float corruptionUnit = 1;
-    private float multiplier;
-    private float maxCorruption = 5;
+    private float corruptionUnit = 1.0f;
+    private float multiplier = 1.0f;
+    private float maxCorruption = 5.0f;
 
     private UIManager uiManager;
 
@@ -15,11 +15,6 @@ public class CorruptionSystem : MonoBehaviour
     {
         FindFirstObjectByType<RitualManager>().OnErrorChar += AddCorruption;
         uiManager = FindFirstObjectByType<UIManager>();
-    }
-
-    private void Start()
-    {
-        multiplier = 1.0f;
     }
 
     public void AddCorruption()
