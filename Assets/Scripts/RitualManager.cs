@@ -20,7 +20,7 @@ public class RitualManager : AInputListener
     private float ritualScoreUnit = 0.1f;
     private float multiplier = 1.0f;
     private float maxRitualScore = 10f;
-    private UIManager uiManager;
+    //private UIManager uiManager;
 
     void Awake()
     {
@@ -28,7 +28,7 @@ public class RitualManager : AInputListener
         if(dottedSpaces) ritualText.text = ritualText.text.Replace(" ", "·");
 
         OnCorrectChar += AddRitualScore;
-        uiManager = FindFirstObjectByType<UIManager>();
+        //uiManager = FindFirstObjectByType<UIManager>();
     }
 
     readonly string colorTag = "<color #FF0000>";
@@ -72,7 +72,7 @@ public class RitualManager : AInputListener
             CurrentRitualScore = maxRitualScore;
         }
 
-        uiManager.SetRitualProgress(CurrentRitualScore / maxRitualScore);
+        //uiManager.SetRitualProgress(CurrentRitualScore / maxRitualScore);
     }
 
 

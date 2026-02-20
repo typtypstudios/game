@@ -19,5 +19,6 @@ public class Player : NetworkBehaviour
         this.tag = playerIdx == 0 ? GlobalVariables.P1_tag : GlobalVariables.P2_tag;
         enemy = FindObjectsByType<Player>(FindObjectsSortMode.None).First(p => p != this);
         FindFirstObjectByType<PlayerPositioner>().PositionPlayer(this, playerIdx, IsOwner);
+        GetComponentInChildren<RitualManager>().enabled = IsOwner;
     }
 }
