@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using System;
+using TypTyp.TextSystem;
+using UnityEngine.Assertions;
 
 public class RitualManager : AInputListener
 {
@@ -8,14 +10,16 @@ public class RitualManager : AInputListener
 
     [SerializeField] private TMP_Text filledText;
     [SerializeField] private bool dottedSpaces;
-    private TMP_Text ritualText;
-    private int idx = 0;
-    bool isErrorDisplayed = false;
 
     // Events. VFX, SFX and ritual bars may subscribe to these events
     public event Action OnCorrectChar;
     public event Action OnErrorChar;
 
+
+    private TMP_Text ritualText;
+    private ITextProvider textProvider;
+    private int idx = 0;
+    bool isErrorDisplayed = false;
     // Score variables
     private float ritualScoreUnit = 0.1f;
     private float multiplier = 1.0f;
@@ -25,17 +29,32 @@ public class RitualManager : AInputListener
     void Awake()
     {
         ritualText = GetComponent<TMP_Text>();
-        if(dottedSpaces) ritualText.text = ritualText.text.Replace(" ", "·");
+        textProvider = GetComponent<ITextProvider>();
+        // Assert.IsNotNull(ritualText, "RitualManager requires a TMP_Text component.");
+        if(dottedSpaces) ritualText.text = ritualText.text.Replace(" ", "-");
 
         OnCorrectChar += AddRitualScore;
         //uiManager = FindFirstObjectByType<UIManager>();
+    }
+
+    void Start()
+    {
+        if(textProvider != null)
+        {
+            ritualText.text = textProvider.GetNextText();
+            if (dottedSpaces) ritualText.text = ritualText.text.Replace(" ", "-");
+        }
+        else
+        {
+            Debug.LogError("No ITextProvider found on RitualManager GameObject.");
+        }
     }
 
     readonly string colorTag = "<color #FF0000>";
     protected override void ProcessInput(char c)
     {
         if (idx == ritualText.text.Length) return;
-        if (dottedSpaces && c == ' ') c = '·'; 
+        if (dottedSpaces && c == ' ') c = '-'; 
         if (c == ritualText.text[idx])
         {
             filledText.text += c;
