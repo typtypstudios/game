@@ -1,19 +1,36 @@
 using UnityEngine;
 using TMPro;
+using System;
 
-public class RitualController : AInputListener
+public class RitualManager : AInputListener
 {
+    public float CurrentRitualScore { get; private set; }
+
     [SerializeField] private TMP_Text filledText;
     [SerializeField] private bool dottedSpaces;
     private TMP_Text ritualText;
     private int idx = 0;
     bool isErrorDisplayed = false;
 
+    // Events. VFX, SFX and ritual bars may subscribe to these events
+    public event Action OnCorrectChar;
+    public event Action OnErrorChar;
+
+    // Score variables
+    private float ritualScoreUnit = 0.1f;
+    private float multiplier;
+    private float maxRitualScore = 10f;
+    private UIManager uiManager;
+
     void Awake()
     {
         ritualText = GetComponent<TMP_Text>();
         if(dottedSpaces) ritualText.text = ritualText.text.Replace(" ", "·");
+
+        OnCorrectChar += AddRitualScore;
+        uiManager = FindFirstObjectByType<UIManager>();
     }
+
 
     readonly string colorTag = "<color #FF0000>";
     protected override void ProcessInput(char c)
@@ -30,6 +47,9 @@ public class RitualController : AInputListener
                 idx -= colorTag.Length;
                 isErrorDisplayed = false;
             }
+
+            // Invoke the event
+            OnCorrectChar?.Invoke();
         }
         else if(!isErrorDisplayed)
         {
@@ -38,6 +58,22 @@ public class RitualController : AInputListener
                 original[idx] + "</color>" + original[(idx + 1)..];
             idx += colorTag.Length;
             isErrorDisplayed = true;
+
+            // Invoke the event
+            OnErrorChar?.Invoke();
         }
     }
+
+    public void AddRitualScore()
+    {
+        CurrentRitualScore += ritualScoreUnit * multiplier;
+        if (CurrentRitualScore >= maxRitualScore)
+        {
+            Debug.LogError("Win condition not implemented");
+            CurrentRitualScore = maxRitualScore;
+        }
+        uiManager.SetRitualProgress(CurrentRitualScore / maxRitualScore);
+    }
+
+
 }
