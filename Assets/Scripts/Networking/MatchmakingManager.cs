@@ -27,6 +27,7 @@ public class MatchmakingManager : MonoBehaviour
 
         // Inicia sesión anónima para poder usar los servicios online
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        QuickPlay();
     }
 
     // Método público para hacer "Quick Play"

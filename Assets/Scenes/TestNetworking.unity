@@ -581,7 +581,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2012039482}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: NetworkBootstrap, Assembly-CSharp
         m_MethodName: StartServer
         m_Mode: 1
@@ -1088,7 +1088,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2012039482}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: NetworkBootstrap, Assembly-CSharp
         m_MethodName: StartHost
         m_Mode: 1
@@ -1427,50 +1427,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &1525942415
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1525942417}
-  - component: {fileID: 1525942416}
-  m_Layer: 0
-  m_Name: MatchmakingManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1525942416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525942415}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ab88fd5c35a8c24d93b36c1dde1eaa8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MatchmakingManager
---- !u!4 &1525942417
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525942415}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1272.9005, y: -0.00002, z: 4111.4014}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1857161680
 GameObject:
   m_ObjectHideFlags: 0
@@ -2155,10 +2111,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2012039478}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec1d62abb3bca594498c3cc103fb869a, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ab88fd5c35a8c24d93b36c1dde1eaa8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NetworkBootstrap
-  codeText: {fileID: 209107759}
+  m_EditorClassIdentifier: Assembly-CSharp::MatchmakingManager
 --- !u!1 &2063923522
 GameObject:
   m_ObjectHideFlags: 0
@@ -2242,10 +2197,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1525942416}
+      - m_Target: {fileID: 2012039482}
         m_TargetAssemblyTypeName: MatchmakingManager, Assembly-CSharp
         m_MethodName: QuickPlay
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2063923522}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2375,7 +2342,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2012039482}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: NetworkBootstrap, Assembly-CSharp
         m_MethodName: StartClient
         m_Mode: 1
@@ -2613,4 +2580,3 @@ SceneRoots:
   - {fileID: 1093483858}
   - {fileID: 1878653727}
   - {fileID: 924859097}
-  - {fileID: 1525942417}
