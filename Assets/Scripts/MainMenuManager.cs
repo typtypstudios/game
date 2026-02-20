@@ -7,4 +7,12 @@ public class MainMenuManager : MonoBehaviour
     {
         SceneManager.LoadScene("MatchScene");
     }
+
+    public void Exit()
+    {
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
 }
