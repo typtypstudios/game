@@ -1,19 +1,16 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Player))]
 public class ManaGainManager : MonoBehaviour
 {
-    [Tooltip("Cuánto maná gana en relación con el progreso del ritual " +
-        "(multiplica el progreso realizado")]
-    [SerializeField] private float manaGain = 5; 
-    [SerializeField] private float maxMana = 1;
     private Player player;
     public event Action<float> OnManaGain;
     public float GainMultiplier { get; set; } = 1;
 
     private void Start()
     {
-        player = GetComponentInParent<Player>();
+        player = GetComponent<Player>();
         player.RitualProgress.OnValueChanged += AddMana;
     }
 
@@ -25,8 +22,8 @@ public class ManaGainManager : MonoBehaviour
     public void AddMana(float oldValue, float newValue)
     {
         float currentMana = player.CurrentMana.Value;
-        currentMana += (newValue - oldValue) * manaGain * GainMultiplier;
-        currentMana = Mathf.Clamp(currentMana, 0, maxMana);
+        currentMana += (newValue - oldValue) * GlobalVariables.MaxMana * GlobalVariables.ManaGain * GainMultiplier;
+        currentMana = Mathf.Clamp(currentMana, 0, GlobalVariables.MaxMana);
         OnManaGain?.Invoke(currentMana);
     }
 

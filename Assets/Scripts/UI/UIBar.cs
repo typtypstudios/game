@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class UIBar : MonoBehaviour
 {
+    public float MaxValue { get; set; } = 1f;
     private Image bar;
 
     private void Awake()
@@ -12,6 +13,6 @@ public class UIBar : MonoBehaviour
 
     public void UpdateValue(float oldValue, float newValue)
     {
-        bar.fillAmount = newValue;
+        bar.fillAmount = newValue / MaxValue;
     }
 }

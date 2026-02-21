@@ -128,6 +128,7 @@ GameObject:
   - component: {fileID: 5709838731756123613}
   - component: {fileID: -9175446667122461204}
   - component: {fileID: 4241976903169617823}
+  - component: {fileID: 3901681785396851027}
   m_Layer: 0
   m_Name: Dummy
   m_TagString: Untagged
@@ -282,6 +283,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ManaManager
   manaGain: 5
   maxMana: 1
+--- !u!114 &3901681785396851027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527992307803624597}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cf0bc4685857149a1a74fd61fb84aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CorruptionGainManager
+  mistakePercentageGain: 0.02
+  maxCorruption: 100
 --- !u!1 &4080371784524847049
 GameObject:
   m_ObjectHideFlags: 0

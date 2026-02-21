@@ -7,7 +7,6 @@ public class RitualManager : AInputListener
 {
     [SerializeField] private Color wrongColor = Color.red;
     [SerializeField] private bool dottedSpaces; //Muestra los espacios con · o similar
-    [SerializeField] private int maxTextsProvided = 10;
     private TMP_Text ritualText;
     private string originalText; //Texto original a completar, no tiene por qué ser igual que el del TMPro
     private ITextProvider textProvider;
@@ -68,14 +67,11 @@ public class RitualManager : AInputListener
         charIdx = 0;
     }
 
-    float prevProgress;
     private void UpdateProgress()
     {
-        float globalProgress = (float)numTextsCompleted / maxTextsProvided;
-        float localProgress = (float)charIdx / (originalText.Length * maxTextsProvided);
+        float globalProgress = (float)numTextsCompleted / GlobalVariables.MaxTextsProvided;
+        float localProgress = (float)charIdx / (originalText.Length * GlobalVariables.MaxTextsProvided);
         float progress = globalProgress + localProgress;
-        if (progress == prevProgress) return;
-        prevProgress = progress;
         OnProgressUpdated?.Invoke(progress);
     }
 }
