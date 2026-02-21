@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 5626514368089512529}
   - component: {fileID: 5709838731756123613}
   - component: {fileID: -9175446667122461204}
+  - component: {fileID: 4241976903169617823}
   m_Layer: 0
   m_Name: Dummy
   m_TagString: Untagged
@@ -267,6 +268,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &4241976903169617823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527992307803624597}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5f3e1c45a2774f4fa081fa5d25fa034, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ManaManager
+  manaGain: 5
+  maxMana: 1
 --- !u!1 &4080371784524847049
 GameObject:
   m_ObjectHideFlags: 0
