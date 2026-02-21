@@ -53,7 +53,12 @@ public class RitualManager : AInputListener
     readonly string colorTag = "<color #FF0000>";
     protected override void ProcessInput(char c)
     {
-        if (idx == ritualText.text.Length) return;
+        if (idx == ritualText.text.Length)
+        {
+            filledText.text = string.Empty;
+            ritualText.text = textProvider.GetNextText();
+            idx = 0;
+        }
         if (dottedSpaces && c == ' ') c = '-'; 
         if (c == ritualText.text[idx])
         {

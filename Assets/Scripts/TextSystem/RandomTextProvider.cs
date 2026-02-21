@@ -12,7 +12,7 @@ namespace TypTyp.TextSystem
         [SerializeField] GenerationMode generationMode = GenerationMode.Cycle;
         [SerializeField, Min(1)] int repetitionsPerCycle = 1;
 
-        string[] phrases;
+        [SerializeField]string[] phrases;
         System.Random random;
 
         //Just for cycle mode
