@@ -2,51 +2,36 @@ using UnityEngine;
 using TMPro;
 using System;
 using TypTyp.TextSystem;
-using UnityEngine.Assertions;
 
 public class RitualManager : AInputListener
 {
-    public float CurrentRitualScore { get; private set; }
     [SerializeField] private Color wrongColor = Color.red;
-    private string wrongColorTag;
-    private string originalText;
     [SerializeField] private bool dottedSpaces;
+    [SerializeField] private int maxTextsProvided = 10;
+    private Player player;
+    private TMP_Text ritualText;
+    private string originalText;
+    private ITextProvider textProvider;
+    private string wrongColorTag;
+    private int idx = 0;
+    private int numTextsCompleted = 0;
+    bool isErrorDisplayed = false;
 
-    // Events. VFX, SFX and ritual bars may subscribe to these events
     public event Action OnCorrectChar;
     public event Action OnWrongChar;
 
-    private TMP_Text ritualText;
-    private ITextProvider textProvider;
-    private int idx = 0;
-    bool isErrorDisplayed = false;
-    // Score variables
-    private float ritualScoreUnit = 0.1f;
-    private float multiplier = 1.0f;
-    private float maxRitualScore = 10f;
-    //private UIManager uiManager;
-
     void Awake()
     {
+        player = GetComponentInParent<Player>();
         wrongColorTag = $"<color #{ColorUtility.ToHtmlStringRGB(wrongColor)}>";
         ritualText = GetComponent<TMP_Text>();
         textProvider = GetComponent<ITextProvider>();
-        // Assert.IsNotNull(ritualText, "RitualManager requires a TMP_Text component.");
-
-        OnCorrectChar += AddRitualScore;
-        //uiManager = FindFirstObjectByType<UIManager>();
     }
 
     void Start()
     {
-        if(textProvider != null)
-        {
-            GetNextText();
-        }
-        else
-        {
-            Debug.LogError("No ITextProvider found on RitualManager GameObject.");
-        }
+        if(textProvider != null) GetNextText();
+        else Debug.LogError("No ITextProvider found on RitualManager GameObject.");
     }
 
     protected override void ProcessInput(char c)
@@ -68,7 +53,12 @@ public class RitualManager : AInputListener
                 wrongColorTag + originalText[idx] + "</color>" + originalText[(idx + 1)..];
             OnWrongChar?.Invoke();
         }
-        if (idx >= originalText.Length) GetNextText();
+        if (idx >= originalText.Length)
+        {
+            numTextsCompleted++;
+            GetNextText();
+        }
+        UpdateProgress();
     }
 
     private void GetNextText()
@@ -79,15 +69,14 @@ public class RitualManager : AInputListener
         idx = 0;
     }
 
-    public void AddRitualScore()
+    float prevProgress;
+    private void UpdateProgress()
     {
-        CurrentRitualScore += ritualScoreUnit * multiplier;
-        if (CurrentRitualScore >= maxRitualScore)
-        {
-            Debug.LogError("Win condition not implemented");
-            CurrentRitualScore = maxRitualScore;
-        }
-
-        //uiManager.SetRitualProgress(CurrentRitualScore / maxRitualScore);
+        float globalProgress = (float)numTextsCompleted / maxTextsProvided;
+        float localProgress = (float)idx / (originalText.Length * maxTextsProvided);
+        float progress = globalProgress + localProgress;
+        if (progress == prevProgress) return;
+        prevProgress = progress;
+        player.UpdateRitualProgress(progress);
     }
 }

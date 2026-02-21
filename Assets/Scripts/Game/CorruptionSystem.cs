@@ -9,12 +9,12 @@ public class CorruptionSystem : MonoBehaviour
     private float multiplier = 1.0f;
     private float maxCorruption = 5.0f;
 
-    private UIManager uiManager;
+    private GameUIConfigurator uiManager;
 
     private void Awake()
     {
         FindFirstObjectByType<RitualManager>().OnWrongChar += AddCorruption;
-        uiManager = FindFirstObjectByType<UIManager>();
+        uiManager = FindFirstObjectByType<GameUIConfigurator>();
     }
 
     public void AddCorruption()
@@ -25,6 +25,6 @@ public class CorruptionSystem : MonoBehaviour
             Debug.LogError("Loss condition not implemented");
             CurrentCorruption = maxCorruption;
         }
-        uiManager.SetCorruptionProgress(CurrentCorruption / maxCorruption);
+        //uiManager.SetCorruptionProgress(CurrentCorruption / maxCorruption);
     }
 }

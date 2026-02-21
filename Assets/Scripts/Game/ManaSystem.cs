@@ -9,12 +9,12 @@ public class ManaSystem : MonoBehaviour
     private float multiplier = 1.0f;
     private float maxMana = 10f;
 
-    private UIManager uiManager;
+    private GameUIConfigurator uiManager;
 
     private void Awake()
     {
         FindFirstObjectByType<RitualManager>().OnCorrectChar += AddMana;
-        uiManager = FindFirstObjectByType<UIManager>();
+        uiManager = FindFirstObjectByType<GameUIConfigurator>();
     }
 
     public void AddMana()
@@ -22,7 +22,7 @@ public class ManaSystem : MonoBehaviour
         CurrentMana += manaUnit * multiplier;
         if(CurrentMana > maxMana) CurrentMana = maxMana;
 
-        uiManager.SetManaProgress(CurrentMana / maxMana);
+        //uiManager.SetManaProgress(CurrentMana / maxMana);
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public class ManaSystem : MonoBehaviour
         if (CurrentMana < amount) return false;
 
         CurrentMana -= amount;
-        uiManager.SetManaProgress(CurrentMana / maxMana);
+        //uiManager.SetManaProgress(CurrentMana / maxMana);
         return true;
     }
 }

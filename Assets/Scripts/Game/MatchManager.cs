@@ -26,6 +26,10 @@ public class MatchManager : NetworkBehaviour
             {
                 players[i].ConfigurePlayerRpc(i);
             }
+            ConfigureUIRpc();
         }
     }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void ConfigureUIRpc() => FindFirstObjectByType<GameUIConfigurator>().ConfigureUI();
 }
