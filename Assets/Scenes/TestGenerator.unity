@@ -1385,9 +1385,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.RandomTextProvider
   textSource: {fileID: 4900000, guid: de0b6fc46e0d7ee4da24c821a6c5eab4, type: 3}
-  seed: 0
+  seed: 5
   generationMode: 1
   repetitionsPerCycle: 1
+  phrases: []
 --- !u!1 &1938683463
 GameObject:
   m_ObjectHideFlags: 0
@@ -1558,6 +1559,7 @@ MonoBehaviour:
   seed: 0
   generationMode: 1
   repetitionsPerCycle: 1
+  phrases: []
 --- !u!4 &1945479637
 Transform:
   m_ObjectHideFlags: 0
