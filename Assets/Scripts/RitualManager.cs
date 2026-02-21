@@ -7,14 +7,14 @@ using UnityEngine.Assertions;
 public class RitualManager : AInputListener
 {
     public float CurrentRitualScore { get; private set; }
-
-    [SerializeField] private TMP_Text filledText;
+    [SerializeField] private Color wrongColor = Color.red;
+    private string wrongColorTag;
+    private string originalText;
     [SerializeField] private bool dottedSpaces;
 
     // Events. VFX, SFX and ritual bars may subscribe to these events
     public event Action OnCorrectChar;
-    public event Action OnErrorChar;
-
+    public event Action OnWrongChar;
 
     private TMP_Text ritualText;
     private ITextProvider textProvider;
@@ -28,10 +28,10 @@ public class RitualManager : AInputListener
 
     void Awake()
     {
+        wrongColorTag = $"<color #{ColorUtility.ToHtmlStringRGB(wrongColor)}>";
         ritualText = GetComponent<TMP_Text>();
         textProvider = GetComponent<ITextProvider>();
         // Assert.IsNotNull(ritualText, "RitualManager requires a TMP_Text component.");
-        if(dottedSpaces) ritualText.text = ritualText.text.Replace(" ", "-");
 
         OnCorrectChar += AddRitualScore;
         //uiManager = FindFirstObjectByType<UIManager>();
@@ -41,8 +41,7 @@ public class RitualManager : AInputListener
     {
         if(textProvider != null)
         {
-            ritualText.text = textProvider.GetNextText();
-            if (dottedSpaces) ritualText.text = ritualText.text.Replace(" ", "-");
+            GetNextText();
         }
         else
         {
@@ -50,41 +49,34 @@ public class RitualManager : AInputListener
         }
     }
 
-    readonly string colorTag = "<color #FF0000>";
     protected override void ProcessInput(char c)
     {
-        if (idx == ritualText.text.Length)
-        {
-            filledText.text = string.Empty;
-            ritualText.text = textProvider.GetNextText();
-            idx = 0;
-        }
         if (dottedSpaces && c == ' ') c = '-'; 
-        if (c == ritualText.text[idx])
+        if (c == originalText[idx])
         {
-            filledText.text += c;
             idx++;
-            if (isErrorDisplayed)
-            {
-                ritualText.text = ritualText.text.Replace("</color>", "").Replace(colorTag, "");
-                idx -= colorTag.Length;
-                isErrorDisplayed = false;
-            }
-
-            // Invoke the event
+            isErrorDisplayed = false;
+            ritualText.text = fillColorTag + originalText[..idx] + 
+                "</color>" + originalText[idx..];
             OnCorrectChar?.Invoke();
         }
         else if(!isErrorDisplayed)
         {
-            string original = ritualText.text;
-            ritualText.text = original[..idx] + colorTag + 
-                original[idx] + "</color>" + original[(idx + 1)..];
-            idx += colorTag.Length;
             isErrorDisplayed = true;
-
-            // Invoke the event
-            OnErrorChar?.Invoke();
+            string original = ritualText.text;
+            ritualText.text = fillColorTag + originalText[..idx] + "</color>" + 
+                wrongColorTag + originalText[idx] + "</color>" + originalText[(idx + 1)..];
+            OnWrongChar?.Invoke();
         }
+        if (idx >= originalText.Length) GetNextText();
+    }
+
+    private void GetNextText()
+    {
+        originalText = textProvider.GetNextText();
+        if (dottedSpaces) originalText = originalText.Replace(" ", "-");
+        ritualText.text = originalText;
+        idx = 0;
     }
 
     public void AddRitualScore()
@@ -98,6 +90,4 @@ public class RitualManager : AInputListener
 
         //uiManager.SetRitualProgress(CurrentRitualScore / maxRitualScore);
     }
-
-
 }

@@ -13,7 +13,7 @@ public class CorruptionSystem : MonoBehaviour
 
     private void Awake()
     {
-        FindFirstObjectByType<RitualManager>().OnErrorChar += AddCorruption;
+        FindFirstObjectByType<RitualManager>().OnWrongChar += AddCorruption;
         uiManager = FindFirstObjectByType<UIManager>();
     }
 

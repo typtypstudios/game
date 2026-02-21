@@ -2,8 +2,12 @@ using UnityEngine;
 
 public abstract class AInputListener : MonoBehaviour
 {
+    [SerializeField] private Color fillColor = Color.white;
+    protected string fillColorTag;
+
     protected virtual void OnEnable()
     {
+        fillColorTag = $"<color #{ColorUtility.ToHtmlStringRGB(fillColor)}>";
         InputHandler.Instance.AddListener(ProcessInput);
     }
 
