@@ -9,6 +9,8 @@ public class MatchManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (!IsServer) return;
+        //El servidor es el que instancia el prefab del Player
+        //para garantizar que su OnNetworkSpawn se haga antes:
         NetworkManager.Singleton.OnClientConnectedCallback += (clientId) =>
         {
             var player = Instantiate(playerPrefab);

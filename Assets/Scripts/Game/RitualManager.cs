@@ -6,23 +6,22 @@ using TypTyp.TextSystem;
 public class RitualManager : AInputListener
 {
     [SerializeField] private Color wrongColor = Color.red;
-    [SerializeField] private bool dottedSpaces;
+    [SerializeField] private bool dottedSpaces; //Muestra los espacios con · o similar
     [SerializeField] private int maxTextsProvided = 10;
-    private Player player;
     private TMP_Text ritualText;
-    private string originalText;
+    private string originalText; //Texto original a completar, no tiene por qué ser igual que el del TMPro
     private ITextProvider textProvider;
     private string wrongColorTag;
-    private int idx = 0;
+    private int charIdx = 0;
     private int numTextsCompleted = 0;
     bool isErrorDisplayed = false;
 
     public event Action OnCorrectChar;
     public event Action OnWrongChar;
+    public event Action<float> OnProgressUpdated;
 
     void Awake()
     {
-        player = GetComponentInParent<Player>();
         wrongColorTag = $"<color #{ColorUtility.ToHtmlStringRGB(wrongColor)}>";
         ritualText = GetComponent<TMP_Text>();
         textProvider = GetComponent<ITextProvider>();
@@ -37,23 +36,23 @@ public class RitualManager : AInputListener
     protected override void ProcessInput(char c)
     {
         if (dottedSpaces && c == ' ') c = '-'; 
-        if (c == originalText[idx])
+        if (c == originalText[charIdx])
         {
-            idx++;
+            charIdx++;
             isErrorDisplayed = false;
-            ritualText.text = fillColorTag + originalText[..idx] + 
-                "</color>" + originalText[idx..];
+            ritualText.text = fillColorTag + originalText[..charIdx] + 
+                "</color>" + originalText[charIdx..];
             OnCorrectChar?.Invoke();
         }
         else if(!isErrorDisplayed)
         {
             isErrorDisplayed = true;
             string original = ritualText.text;
-            ritualText.text = fillColorTag + originalText[..idx] + "</color>" + 
-                wrongColorTag + originalText[idx] + "</color>" + originalText[(idx + 1)..];
+            ritualText.text = fillColorTag + originalText[..charIdx] + "</color>" + 
+                wrongColorTag + originalText[charIdx] + "</color>" + originalText[(charIdx + 1)..];
             OnWrongChar?.Invoke();
         }
-        if (idx >= originalText.Length)
+        if (charIdx >= originalText.Length)
         {
             numTextsCompleted++;
             GetNextText();
@@ -66,17 +65,17 @@ public class RitualManager : AInputListener
         originalText = textProvider.GetNextText();
         if (dottedSpaces) originalText = originalText.Replace(" ", "-");
         ritualText.text = originalText;
-        idx = 0;
+        charIdx = 0;
     }
 
     float prevProgress;
     private void UpdateProgress()
     {
         float globalProgress = (float)numTextsCompleted / maxTextsProvided;
-        float localProgress = (float)idx / (originalText.Length * maxTextsProvided);
+        float localProgress = (float)charIdx / (originalText.Length * maxTextsProvided);
         float progress = globalProgress + localProgress;
         if (progress == prevProgress) return;
         prevProgress = progress;
-        player.UpdateRitualProgress(progress);
+        OnProgressUpdated?.Invoke(progress);
     }
 }

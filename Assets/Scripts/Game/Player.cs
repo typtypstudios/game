@@ -1,23 +1,30 @@
 using Unity.Netcode;
 using System.Linq;
 using UnityEngine;
-using System;
 
 public class Player : NetworkBehaviour
 {
-    private MatchManager matchManager; 
-    public static Player User { get; private set; }
-    public static Player Enemy { get; private set; }
-    public RitualManager RitualManager => GetComponentInChildren<RitualManager>();
+    private MatchManager matchManager;
+    private RitualManager ritualManager;
+    public static Player User { get; private set; } //Acceso global al Player del jugador
+    public static Player Enemy { get; private set; } //Acceso global al Player del enemigo
 
+    //Las NetworkVariables de los jugadores están todas en el script Player, para su acceso 
+    //intuitivo y NetworkBehaviour centralizado
     public NetworkVariable<float> RitualProgress { get; private set; } = new(
         readPerm: NetworkVariableReadPermission.Everyone,
         writePerm: NetworkVariableWritePermission.Owner
     );
 
+    private void Awake()
+    {
+        ritualManager = GetComponentInChildren<RitualManager>();
+        ritualManager.OnProgressUpdated += (p) => RitualProgress.Value = p;
+        matchManager = FindFirstObjectByType<MatchManager>();
+    }
+
     public override void OnNetworkSpawn()
     {
-        matchManager = FindFirstObjectByType<MatchManager>();
         if (IsOwner) matchManager.OnPlayerReadyRpc();
     }
 
@@ -31,8 +38,6 @@ public class Player : NetworkBehaviour
             User = this;
         }
         FindFirstObjectByType<PlayerPositioner>().PositionPlayer(this, playerIdx, IsOwner);
-        RitualManager.enabled = IsOwner;
+        ritualManager.enabled = IsOwner;
     }
-
-    public void UpdateRitualProgress(float progress) => RitualProgress.Value = progress;
 }
