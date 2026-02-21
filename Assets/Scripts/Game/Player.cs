@@ -13,13 +13,13 @@ public class Player : NetworkBehaviour
     //intuitivo y NetworkBehaviour centralizado
     public NetworkVariable<float> RitualProgress { get; private set; } = new(
         readPerm: NetworkVariableReadPermission.Everyone,
-        writePerm: NetworkVariableWritePermission.Owner
+        writePerm: NetworkVariableWritePermission.Server
     );
 
     private void Awake()
     {
         ritualManager = GetComponentInChildren<RitualManager>();
-        ritualManager.OnProgressUpdated += (p) => RitualProgress.Value = p;
+        ritualManager.OnProgressUpdated += (p) => UpdateRitualProgressRpc(p);
         matchManager = FindFirstObjectByType<MatchManager>();
     }
 
@@ -39,5 +39,12 @@ public class Player : NetworkBehaviour
         }
         FindFirstObjectByType<PlayerPositioner>().PositionPlayer(this, playerIdx, IsOwner);
         ritualManager.enabled = IsOwner;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void UpdateRitualProgressRpc(float value)
+    {
+        RitualProgress.Value = value;
+        if (value >= 1.0) Debug.Log("Falta condición de finalización de partida.");
     }
 }
