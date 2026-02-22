@@ -28,26 +28,26 @@ public class RitualManager : AInputListener
 
     void Start()
     {
-        if(textProvider != null) GetNextText();
+        if (textProvider != null) GetNextText();
         else Debug.LogError("No ITextProvider found on RitualManager GameObject.");
     }
 
     protected override void ProcessInput(char c)
     {
-        if (dottedSpaces && c == ' ') c = '-'; 
+        if (dottedSpaces && c == ' ') c = '-';
         if (c == originalText[charIdx])
         {
             charIdx++;
             isErrorDisplayed = false;
-            ritualText.text = fillColorTag + originalText[..charIdx] + 
+            ritualText.text = fillColorTag + originalText[..charIdx] +
                 "</color>" + originalText[charIdx..];
             OnCorrectChar?.Invoke();
         }
-        else if(!isErrorDisplayed)
+        else if (!isErrorDisplayed)
         {
             isErrorDisplayed = true;
             string original = ritualText.text;
-            ritualText.text = fillColorTag + originalText[..charIdx] + "</color>" + 
+            ritualText.text = fillColorTag + originalText[..charIdx] + "</color>" +
                 wrongColorTag + originalText[charIdx] + "</color>" + originalText[(charIdx + 1)..];
             OnWrongChar?.Invoke();
         }
@@ -69,8 +69,8 @@ public class RitualManager : AInputListener
 
     private void UpdateProgress()
     {
-        float globalProgress = (float)numTextsCompleted / Settings.MaxTextsProvided;
-        float localProgress = (float)charIdx / (originalText.Length * Settings.MaxTextsProvided);
+        float globalProgress = (float)numTextsCompleted / TypTyp.Settings.Instance.MaxTextsProvided;
+        float localProgress = (float)charIdx / (originalText.Length * TypTyp.Settings.Instance.MaxTextsProvided);
         float progress = globalProgress + localProgress;
         OnProgressUpdated?.Invoke(progress);
     }

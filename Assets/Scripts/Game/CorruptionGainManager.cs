@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using TypTyp;
 
 [RequireComponent(typeof(Player))]
 public class CorruptionGainManager : MonoBehaviour
@@ -15,13 +16,13 @@ public class CorruptionGainManager : MonoBehaviour
 
     public void ProcessMistake()
     {
-        AddCorruption(Settings.MistakePenalizationPercentage / 100 * Settings.MaxCorruption);
+        AddCorruption(Settings.Instance.MistakePenalizationPercentage / 100 * Settings.Instance.MaxCorruption);
     }
 
     private void AddCorruption(float corruptionToAdd)
     {
         float currentCorruption = player.CurrentCorruption.Value;
-        currentCorruption = Mathf.Clamp(currentCorruption + corruptionToAdd, 0, Settings.MaxCorruption);
+        currentCorruption = Mathf.Clamp(currentCorruption + corruptionToAdd, 0, Settings.Instance.MaxCorruption);
         OnCorruptionGain?.Invoke(currentCorruption);
     }
 }

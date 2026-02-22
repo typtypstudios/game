@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using System.Linq;
 using UnityEngine;
+using TypTyp;
 
 public class Player : NetworkBehaviour
 {
@@ -44,7 +45,7 @@ public class Player : NetworkBehaviour
     public void ConfigurePlayerRpc(int playerIdx)
     {
         PlayerID = playerIdx == 0 ? TypTyp.Settings.Instance.P1_ID : TypTyp.Settings.Instance.P2_ID;
-        this.tag = playerIdx == 0 ? GlobalVariables.P1_tag : GlobalVariables.P2_tag;
+        this.tag = playerIdx == 0 ? Settings.Instance.P1_tag : Settings.Instance.P2_tag;
         if (IsOwner)
         {
             Enemy = FindObjectsByType<Player>(FindObjectsSortMode.None).First(p => p != this);
@@ -75,6 +76,6 @@ public class Player : NetworkBehaviour
     private void UpdateCurrentCorruption(float value)
     {
         CurrentCorruption.Value = value;
-        if (value == GlobalVariables.MaxCorruption) Debug.Log("Falta condici�n de derrota.");
+        if (value == Settings.Instance.MaxCorruption) Debug.Log("Falta condici�n de derrota.");
     }
 }

@@ -15,9 +15,9 @@ public class GameUIConfigurator : MonoBehaviour
         Player.Enemy.RitualProgress.OnValueChanged += ritualBars[1].UpdateValue;
         Player.User.CurrentMana.OnValueChanged += manaBars[0].UpdateValue;
         Player.Enemy.CurrentMana.OnValueChanged += manaBars[1].UpdateValue;
-        foreach (UIBar bar in manaBars) bar.MaxValue = Settings.MaxMana;
+        foreach (UIBar bar in manaBars) bar.MaxValue = TypTyp.Settings.Instance.MaxMana;
         Player.User.CurrentCorruption.OnValueChanged += corruptionBars[0].UpdateValue;
         Player.Enemy.CurrentCorruption.OnValueChanged += corruptionBars[1].UpdateValue;
-        foreach (UIBar bar in corruptionBars) bar.MaxValue = Settings.MaxCorruption;
+        foreach (UIBar bar in corruptionBars) bar.MaxValue = TypTyp.Settings.Instance.MaxCorruption;
     }
 }

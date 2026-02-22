@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-
+using TypTyp;
 [RequireComponent(typeof(Player))]
 public class ManaGainManager : MonoBehaviour
 {
@@ -22,8 +22,8 @@ public class ManaGainManager : MonoBehaviour
     public void AddMana(float oldValue, float newValue)
     {
         float currentMana = player.CurrentMana.Value;
-        currentMana += (newValue - oldValue) * Settings.MaxMana * Settings.ManaGain * GainMultiplier;
-        currentMana = Mathf.Clamp(currentMana, 0, Settings.MaxMana);
+        currentMana += (newValue - oldValue) * Settings.Instance.MaxMana * Settings.Instance.ManaGain * GainMultiplier;
+        currentMana = Mathf.Clamp(currentMana, 0, Settings.Instance.MaxMana);
         OnManaGain?.Invoke(currentMana);
     }
 
