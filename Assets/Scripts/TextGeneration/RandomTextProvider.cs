@@ -43,7 +43,7 @@ namespace TypTyp.TextSystem
 
             if(generationMode == GenerationMode.Cycle)
             {
-                indexer = RangeProvider.FillRepeatedRange(0, phrases.Length, repetitionsPerCycle);
+                indexer = RangeProvider.FillRepeatedRange(0, phrases.Length - 1, repetitionsPerCycle);
                 indexer.Shuffle(random);
             }
         }
