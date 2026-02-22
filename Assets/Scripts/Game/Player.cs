@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour
 {
+    int PlayerID;
     private MatchManager matchManager;
     private RitualManager ritualManager;
     private ManaGainManager manaManager;
@@ -11,7 +12,7 @@ public class Player : NetworkBehaviour
     public static Player User { get; private set; } //Acceso global al Player del jugador
     public static Player Enemy { get; private set; } //Acceso global al Player del enemigo
 
-    //Las NetworkVariables de los jugadores están todas en el script Player, para su acceso 
+    //Las NetworkVariables de los jugadores estï¿½n todas en el script Player, para su acceso 
     //intuitivo y NetworkBehaviour centralizado
     public NetworkVariable<float> RitualProgress { get; private set; } = new();
     public NetworkVariable<float> CurrentMana { get; private set; } = new();
@@ -42,6 +43,7 @@ public class Player : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void ConfigurePlayerRpc(int playerIdx)
     {
+        PlayerID = playerIdx == 0 ? TypTyp.Settings.Instance.P1_ID : TypTyp.Settings.Instance.P2_ID;
         this.tag = playerIdx == 0 ? GlobalVariables.P1_tag : GlobalVariables.P2_tag;
         if (IsOwner)
         {
@@ -50,8 +52,8 @@ public class Player : NetworkBehaviour
         }
         FindFirstObjectByType<PlayerPositioner>().PositionPlayer(this, playerIdx, IsOwner);
         ritualManager.enabled = IsOwner; //El ritual lo controla el cliente, evita mala UX por lag
-        manaManager.enabled = IsServer; //La ganancia de maná la controla el server exclusivamente
-        corruptionManager.enabled = IsServer; //La corrupción igual que el maná
+        manaManager.enabled = IsServer; //La ganancia de manï¿½ la controla el server exclusivamente
+        corruptionManager.enabled = IsServer; //La corrupciï¿½n igual que el manï¿½
     }
 
     [Rpc(SendTo.Server)]
@@ -62,10 +64,10 @@ public class Player : NetworkBehaviour
             corruptionManager.ProcessMistake();
             return;
         }
-        //Como el ritual lo gestiona el cliente, en este método se debería agregar
-        //prevención de trampas antes de validar el progreso proporcionado
+        //Como el ritual lo gestiona el cliente, en este mï¿½todo se deberï¿½a agregar
+        //prevenciï¿½n de trampas antes de validar el progreso proporcionado
         RitualProgress.Value = progress;
-        if (progress >= 1.0) Debug.Log("Falta condición de finalización de partida.");
+        if (progress >= 1.0) Debug.Log("Falta condiciï¿½n de finalizaciï¿½n de partida.");
     }
 
     private void UpdateCurrentMana(float value) => CurrentMana.Value = value;
@@ -73,6 +75,6 @@ public class Player : NetworkBehaviour
     private void UpdateCurrentCorruption(float value)
     {
         CurrentCorruption.Value = value;
-        if (value == GlobalVariables.MaxCorruption) Debug.Log("Falta condición de derrota.");
+        if (value == GlobalVariables.MaxCorruption) Debug.Log("Falta condiciï¿½n de derrota.");
     }
 }

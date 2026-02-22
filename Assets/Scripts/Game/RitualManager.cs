@@ -6,9 +6,9 @@ using TypTyp.TextSystem;
 public class RitualManager : AInputListener
 {
     [SerializeField] private Color wrongColor = Color.red;
-    [SerializeField] private bool dottedSpaces; //Muestra los espacios con · o similar
+    [SerializeField] private bool dottedSpaces; //Muestra los espacios con ï¿½ o similar
     private TMP_Text ritualText;
-    private string originalText; //Texto original a completar, no tiene por qué ser igual que el del TMPro
+    private string originalText; //Texto original a completar, no tiene por quï¿½ ser igual que el del TMPro
     private ITextProvider textProvider;
     private string wrongColorTag;
     private int charIdx = 0;
@@ -69,8 +69,8 @@ public class RitualManager : AInputListener
 
     private void UpdateProgress()
     {
-        float globalProgress = (float)numTextsCompleted / GlobalVariables.MaxTextsProvided;
-        float localProgress = (float)charIdx / (originalText.Length * GlobalVariables.MaxTextsProvided);
+        float globalProgress = (float)numTextsCompleted / Settings.MaxTextsProvided;
+        float localProgress = (float)charIdx / (originalText.Length * Settings.MaxTextsProvided);
         float progress = globalProgress + localProgress;
         OnProgressUpdated?.Invoke(progress);
     }

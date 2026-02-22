@@ -22,8 +22,8 @@ public class ManaGainManager : MonoBehaviour
     public void AddMana(float oldValue, float newValue)
     {
         float currentMana = player.CurrentMana.Value;
-        currentMana += (newValue - oldValue) * GlobalVariables.MaxMana * GlobalVariables.ManaGain * GainMultiplier;
-        currentMana = Mathf.Clamp(currentMana, 0, GlobalVariables.MaxMana);
+        currentMana += (newValue - oldValue) * Settings.MaxMana * Settings.ManaGain * GainMultiplier;
+        currentMana = Mathf.Clamp(currentMana, 0, Settings.MaxMana);
         OnManaGain?.Invoke(currentMana);
     }
 
@@ -34,7 +34,7 @@ public class ManaGainManager : MonoBehaviour
     /// <returns>True if there's enough mana, otherwise false</returns>
     //public bool ConsumeMana(int amount)
     //{
-    //    //Debug.LogWarning("Esto debería ser un rpc");
+    //    //Debug.LogWarning("Esto deberï¿½a ser un rpc");
     //    //if (CurrentMana < amount) return false;
 
     //    //CurrentMana -= amount;

@@ -15,13 +15,13 @@ public class CorruptionGainManager : MonoBehaviour
 
     public void ProcessMistake()
     {
-        AddCorruption(GlobalVariables.MistakePenalizationPercentage / 100 * GlobalVariables.MaxCorruption);
+        AddCorruption(Settings.MistakePenalizationPercentage / 100 * Settings.MaxCorruption);
     }
 
     private void AddCorruption(float corruptionToAdd)
     {
         float currentCorruption = player.CurrentCorruption.Value;
-        currentCorruption = Mathf.Clamp(currentCorruption + corruptionToAdd, 0, GlobalVariables.MaxCorruption);
+        currentCorruption = Mathf.Clamp(currentCorruption + corruptionToAdd, 0, Settings.MaxCorruption);
         OnCorruptionGain?.Invoke(currentCorruption);
     }
 }

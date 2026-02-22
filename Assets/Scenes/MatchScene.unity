@@ -885,6 +885,90 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 581099687}
   m_CullTransparentMesh: 1
+--- !u!1 &779730823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 779730825}
+  - component: {fileID: 779730824}
+  m_Layer: 0
+  m_Name: NetworkSimulator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &779730824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779730823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98d9db9626104da59357651088226725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Multiplayer.Tools.NetworkSimulator.Runtime::Unity.Multiplayer.Tools.NetworkSimulator.Runtime.NetworkSimulator
+  m_PresetAsset: {fileID: 0}
+  m_PresetReference:
+    rid: 5300399720746451352
+  m_Scenario:
+    rid: 5300399720746451136
+  m_IsScenarioSettingsFolded: 1
+  AutoRunScenario: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 5300399720746451131
+      type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
+      data:
+        <Name>k__BackingField: Home Broadband with Congested Network
+        <Description>k__BackingField: Desktop and console platforms trough congested
+          networks (multiple downloads or streaming already using the network's maximum
+          capacity). Medium ping, bad jitter and little packet loss.
+        <PacketDelayMs>k__BackingField: 50
+        <PacketJitterMs>k__BackingField: 50
+        <PacketLossInterval>k__BackingField: 0
+        <PacketLossPercent>k__BackingField: 1
+    - rid: 5300399720746451136
+      type: {class: RandomConnectionsSwap, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime.BuiltInScenarios, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
+      data:
+        ChangeIntervalMilliseconds: 5000
+        m_Configurations:
+        - m_ClassPreset:
+            rid: 5300399720746451131
+          m_ScriptableObjectPreset: {fileID: 0}
+    - rid: 5300399720746451352
+      type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
+      data:
+        <Name>k__BackingField: Home Broadband with Congested Network
+        <Description>k__BackingField: Desktop and console platforms trough congested
+          networks (multiple downloads or streaming already using the network's maximum
+          capacity). Medium ping, bad jitter and little packet loss.
+        <PacketDelayMs>k__BackingField: 50
+        <PacketJitterMs>k__BackingField: 50
+        <PacketLossInterval>k__BackingField: 0
+        <PacketLossPercent>k__BackingField: 1
+--- !u!4 &779730825
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779730823}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &897169364
 GameObject:
   m_ObjectHideFlags: 0
@@ -2293,10 +2377,11 @@ RectTransform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 779730825}
+  - {fileID: 2012039481}
   - {fileID: 1940371007}
   - {fileID: 1189739967}
   - {fileID: 1475102198}
-  - {fileID: 2012039481}
   - {fileID: 924859097}
   - {fileID: 1665024581}
   - {fileID: 1571688551}
