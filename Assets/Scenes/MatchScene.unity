@@ -756,7 +756,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -60, y: -60}
+  m_AnchoredPosition: {x: -40, y: -41}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &563475533
@@ -909,14 +909,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 779730823}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98d9db9626104da59357651088226725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Multiplayer.Tools.NetworkSimulator.Runtime::Unity.Multiplayer.Tools.NetworkSimulator.Runtime.NetworkSimulator
   m_PresetAsset: {fileID: 0}
   m_PresetReference:
-    rid: 5300399720746451352
+    rid: 8613746135447896178
   m_Scenario:
     rid: 5300399720746451136
   m_IsScenarioSettingsFolded: 1
@@ -943,17 +943,15 @@ MonoBehaviour:
         - m_ClassPreset:
             rid: 5300399720746451131
           m_ScriptableObjectPreset: {fileID: 0}
-    - rid: 5300399720746451352
+    - rid: 8613746135447896178
       type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
       data:
-        <Name>k__BackingField: Home Broadband with Congested Network
-        <Description>k__BackingField: Desktop and console platforms trough congested
-          networks (multiple downloads or streaming already using the network's maximum
-          capacity). Medium ping, bad jitter and little packet loss.
-        <PacketDelayMs>k__BackingField: 50
-        <PacketJitterMs>k__BackingField: 50
+        <Name>k__BackingField: None
+        <Description>k__BackingField: 
+        <PacketDelayMs>k__BackingField: 0
+        <PacketJitterMs>k__BackingField: 0
         <PacketLossInterval>k__BackingField: 0
-        <PacketLossPercent>k__BackingField: 1
+        <PacketLossPercent>k__BackingField: 0
 --- !u!4 &779730825
 Transform:
   m_ObjectHideFlags: 0
@@ -1416,7 +1414,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 60, y: -60}
+  m_AnchoredPosition: {x: 40, y: -41}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1146915623
@@ -1747,6 +1745,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 897169365}
+  - {fileID: 1665024581}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1591841753
@@ -1821,13 +1820,13 @@ Transform:
   m_GameObject: {fileID: 1665024579}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.68541, y: -1.46, z: -2.30381}
+  m_LocalPosition: {x: -0.68541, y: 0.5, z: -2.30381}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1591841754}
   - {fileID: 284409286}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1571688551}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1699749787
 GameObject:
@@ -2200,7 +2199,7 @@ MonoBehaviour:
   m_ProtocolType: 1
   m_UseWebSockets: 0
   m_UseEncryption: 0
-  m_MaxPacketQueueSize: 128
+  m_MaxPacketQueueSize: 256
   m_MaxPayloadSize: 6144
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
@@ -2383,7 +2382,6 @@ SceneRoots:
   - {fileID: 1189739967}
   - {fileID: 1475102198}
   - {fileID: 924859097}
-  - {fileID: 1665024581}
   - {fileID: 1571688551}
   - {fileID: 377042277}
   - {fileID: 1813752702}

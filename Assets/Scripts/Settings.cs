@@ -25,5 +25,7 @@ namespace TypTyp
 
         //Textos a completar para el ritual
         [field: SerializeField] public int MaxTextsProvided { get; private set; } = 10;
+
+        [field: SerializeField] public bool DottedText { get; private set; } = true;
     }
 }
