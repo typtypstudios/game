@@ -19,6 +19,7 @@ namespace TypTyp
 
         //M�xima cantidad de man� 
         [field: SerializeField] public float MaxMana { get; private set; } = 100;
+        [field: SerializeField] public int NumManaBars { get; private set; } = 5;
 
         //Ratio obtenci�n man� - progreso. Cuanto m�s alto, m�s man� se gana recitando el ritual
         [field: SerializeField] public float ManaGain { get; private set; } = 5;
