@@ -37,7 +37,9 @@ public class UIManaBar : MonoBehaviour
         {
             RectTransform bar = Instantiate(manaBarPrefab, transform).GetComponent<RectTransform>();
             bar.sizeDelta = new Vector2(barWidth, bar.sizeDelta.y);
-            bars.Add(bar.GetComponent<UIBar>());
+            UIBar uiBar = bar.GetComponent<UIBar>();
+            if (i != 0) uiBar.PrevBar = bars[i - 1];
+            bars.Add(uiBar);
         }
     }
 }

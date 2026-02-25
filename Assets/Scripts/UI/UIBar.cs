@@ -4,9 +4,13 @@ using System.Collections;
 
 public class UIBar : MonoBehaviour
 {
+    [SerializeField] private Image filler;
     [SerializeField] private float updateSpeed = 3f;
-    public float MaxValue { get; set; } = 1f;
     private Image bar;
+    public UIBar PrevBar { get; set; }
+    public float FillAmount => filler.fillAmount;
+    public float MaxValue { get; set; } = 1f;
+
 
     private void Awake()
     {
@@ -21,9 +25,12 @@ public class UIBar : MonoBehaviour
 
     IEnumerator UpdateBarCorroutine(float target)
     {
-        while(bar.fillAmount != target)
+        bar.fillAmount = target;
+        if(PrevBar != null) 
+            while (PrevBar.FillAmount != 1) yield return null;
+        while(filler.fillAmount != target)
         {
-            bar.fillAmount = Mathf.MoveTowards(bar.fillAmount, target, updateSpeed * Time.deltaTime);
+            filler.fillAmount = Mathf.MoveTowards(filler.fillAmount, target, updateSpeed * Time.deltaTime);
             yield return null;
         }
     }
