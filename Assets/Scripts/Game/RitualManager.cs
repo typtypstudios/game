@@ -21,7 +21,7 @@ public class RitualManager : AInputListener
 
     void Awake()
     {
-        wrongColorTag = $"<color #{ColorUtility.ToHtmlStringRGB(wrongColor)}>";
+        wrongColorTag = Utils.ColorToTag(wrongColor);
         ritualText = GetComponent<TMP_Text>();
         textProvider = GetComponentInParent<ITextProvider>();
     }

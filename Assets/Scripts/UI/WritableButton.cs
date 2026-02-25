@@ -5,8 +5,10 @@ using TMPro;
 [RequireComponent(typeof(Button))]
 public class WritableButton : AInputListener
 {
+    [SerializeField] private bool resetIfFailed = true;
     private Button button;
     private TextMeshProUGUI buttonText;
+    private string originalText;
     private int textLength;
     private int idx;
 
@@ -15,21 +17,27 @@ public class WritableButton : AInputListener
         button = GetComponent<Button>();
         buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
         textLength = buttonText.text.Length;
+        originalText = buttonText.text;
+    }
+
+    private void ResetButton()
+    {
+        buttonText.text = originalText;
+        idx = 0;
     }
 
     protected override void ProcessInput(char c)
     {
-        buttonText.text = buttonText.text.Replace(fillColorTag, "").Replace("</color>", "");
-        if (buttonText.text[idx] == c)
+        if (originalText[idx] == c)
         {
-            string original = buttonText.text;
-            buttonText.text = fillColorTag + original[..(idx + 1)] + "</color>" + original[(idx + 1)..];
+            buttonText.text = buttonText.text.Replace(fillColorTag, "").Replace("</color>", "");
+            buttonText.text = fillColorTag + originalText[..(idx + 1)] + "</color>" + originalText[(idx + 1)..];
             if (++idx == textLength)
             {
                 button.onClick?.Invoke();
-                idx = 0;
+                ResetButton();
             }
         }
-        else idx = 0;
+        else if(resetIfFailed) ResetButton();
     }
 }
