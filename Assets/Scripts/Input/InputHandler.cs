@@ -8,7 +8,10 @@ public class InputHandler : Singleton<InputHandler>
     protected override void Awake()
     {
         base.Awake();
-        Keyboard.current.onTextInput += (c) => OnCharTyped?.Invoke(c);
+        Keyboard.current.onTextInput += (c) =>
+        {
+            if(c != '\t') OnCharTyped?.Invoke(c);
+        };
     }
 
     public void AddListener(Action<char> func) => OnCharTyped += func;
