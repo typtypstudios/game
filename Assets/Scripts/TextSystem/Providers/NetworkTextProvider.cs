@@ -24,8 +24,11 @@ namespace TypTyp.TextSystem
 
         public override void OnNetworkSpawn()
         {
-            if (IsServer) LoadSource();
-            if (IsOwner) for (int i = 0; i < texts.Length; i++) RequestNextTextRpc(textIdx++);
+            // La clase MatchManager es quien inicia la partida y el texto.
+            // Desde el MatchManager se llama a "InitializeTexts" para obtener los textos de inicio
+
+            //if (IsServer) LoadSource();
+            //if (IsOwner) for (int i = 0; i < texts.Length; i++) RequestNextTextRpc(textIdx++);
         }
 
         private void LoadSource()
@@ -42,6 +45,14 @@ namespace TypTyp.TextSystem
             }
         }
 
+        public void PrepareTexts()
+        {
+            if (!IsServer) return;
+
+            LoadSource();
+            textIdx = 0;
+        }
+
         public string GetNextText()
         {
             for (int i = 0; i < texts.Length - 1; i++) texts[i].text = texts[i + 1].text;
@@ -54,7 +65,8 @@ namespace TypTyp.TextSystem
         private void RequestNextTextRpc(int numCompleted)
         {
             var text = numCompleted >= phrases.Count ? string.Empty : phrases[numCompleted];
-            text = textPipeline.ProcessText(text);
+            if(textPipeline != null)
+                text = textPipeline.ProcessText(text);
             ReceiveTextRpc(text);
         }
 
@@ -71,6 +83,15 @@ namespace TypTyp.TextSystem
                     break;
                 }
             }
+        }
+
+        // Desde el MatchManager se llama a "InitializeTexts" para obtener los textos de inicio
+        public void InitializeTexts()
+        {
+            textIdx = 0;
+
+            for (int i = 0; i < texts.Length; i++)
+                RequestNextTextRpc(textIdx++);
         }
     }
 }

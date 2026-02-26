@@ -55,6 +55,11 @@ public class Player : NetworkBehaviour
         RitualManager.enabled = IsOwner; //El ritual lo controla el cliente, evita mala UX por lag
         ManaManager.enabled = IsServer; //La ganancia de man� la controla el server exclusivamente
         CorruptionManager.enabled = IsServer; //La corrupci�n igual que el man�
+
+        if (IsOwner)
+        {
+            FindFirstObjectByType<MatchManager>().NotifyPlayerConfiguredServerRpc();
+        }
     }
 
     [Rpc(SendTo.Server)]
