@@ -5,11 +5,11 @@ using TypTyp;
 
 public class Player : NetworkBehaviour
 {
-    int PlayerID;
-    private MatchManager matchManager;
-    private RitualManager ritualManager;
-    private ManaGainManager manaManager;
-    private CorruptionGainManager corruptionManager;
+    public int PlayerID;
+    public MatchManager MatchManager { get; private set; }
+    public RitualManager RitualManager { get; private set; }
+    public ManaGainManager ManaManager { get; private set; }
+    public CorruptionGainManager CorruptionManager { get; private set; }
     public static Player User { get; private set; } //Acceso global al Player del jugador
     public static Player Enemy { get; private set; } //Acceso global al Player del enemigo
 
@@ -21,23 +21,23 @@ public class Player : NetworkBehaviour
 
     private void Awake()
     {
-        ritualManager = GetComponentInChildren<RitualManager>();
-        manaManager = GetComponent<ManaGainManager>();
-        corruptionManager = GetComponent<CorruptionGainManager>();
-        matchManager = FindFirstObjectByType<MatchManager>();
+        RitualManager = GetComponentInChildren<RitualManager>();
+        ManaManager = GetComponent<ManaGainManager>();
+        CorruptionManager = GetComponent<CorruptionGainManager>();
+        MatchManager = FindFirstObjectByType<MatchManager>();
     }
 
     public override void OnNetworkSpawn()
     {
         if (IsOwner)
         {
-            matchManager.OnPlayerReadyRpc();
-            ritualManager.OnProgressUpdated += (p) => UpdateRitualProgressRpc(p);
+            MatchManager.OnPlayerReadyRpc();
+            RitualManager.OnProgressUpdated += (p) => UpdateRitualProgressRpc(p);
         }
         if (IsServer)
         {
-            manaManager.OnManaGain += (m) => UpdateCurrentMana(m);
-            corruptionManager.OnCorruptionGain += (c) => UpdateCurrentCorruption(c);
+            ManaManager.OnManaGain += (m) => UpdateCurrentMana(m);
+            CorruptionManager.OnCorruptionGain += (c) => UpdateCurrentCorruption(c);
         }
     }
 
@@ -52,9 +52,9 @@ public class Player : NetworkBehaviour
             User = this;
         }
         FindFirstObjectByType<PlayerPositioner>().PositionPlayer(this, playerIdx, IsOwner);
-        ritualManager.enabled = IsOwner; //El ritual lo controla el cliente, evita mala UX por lag
-        manaManager.enabled = IsServer; //La ganancia de man� la controla el server exclusivamente
-        corruptionManager.enabled = IsServer; //La corrupci�n igual que el man�
+        RitualManager.enabled = IsOwner; //El ritual lo controla el cliente, evita mala UX por lag
+        ManaManager.enabled = IsServer; //La ganancia de man� la controla el server exclusivamente
+        CorruptionManager.enabled = IsServer; //La corrupci�n igual que el man�
     }
 
     [Rpc(SendTo.Server)]
@@ -62,7 +62,7 @@ public class Player : NetworkBehaviour
     {
         if (RitualProgress.Value == progress)
         {
-            corruptionManager.ProcessMistake();
+            CorruptionManager.ProcessMistake();
             return;
         }
         //Como el ritual lo gestiona el cliente, en este m�todo se deber�a agregar

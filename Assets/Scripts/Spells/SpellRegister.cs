@@ -1,16 +1,12 @@
 using UnityEngine;
 
+[NoAutoCreate]
 [CreateAssetMenu(fileName = "SpellRegister", menuName = "TypTyp/Spells/SpellRegister", order = 1)]
 public class SpellRegister : ScriptableSingleton<SpellRegister>
 {
-    [SerializeField] private SpellData[] spells;
+    [SerializeField] private SpellDefinition[] spells;
 
-    void OEnable()
-    {
-        
-    }
-
-    public SpellData GetSpellById(int id)
+    public SpellDefinition GetSpellById(int id)
     {
         if (id < 0 || id >= spells.Length)
         {
@@ -21,7 +17,7 @@ public class SpellRegister : ScriptableSingleton<SpellRegister>
     }
 
     //En principio no debería ser necesario, pero por si acaso
-    public SpellData GetSpellByName(string name)
+    public SpellDefinition GetSpellByName(string name)
     {
         foreach (var spell in spells)
         {
@@ -32,7 +28,7 @@ public class SpellRegister : ScriptableSingleton<SpellRegister>
         return null;
     }
 
-    public int GetSpellId(SpellData spell)
+    public int GetSpellId(SpellDefinition spell)
     {
         for (int i = 0; i < spells.Length; i++)
         {
@@ -43,3 +39,12 @@ public class SpellRegister : ScriptableSingleton<SpellRegister>
         return -1;
     }
 }
+/*
+https://docs.unity3d.com/6000.3/Documentation/ScriptReference/ScriptableObject.html
+Awake	    Called when an instance of ScriptableObject is created.
+OnDestroy	This function is called when the scriptable object will be destroyed.
+OnDisable	This function is called when the scriptable object goes out of scope.
+OnEnable	This function is called when the object is loaded.
+OnValidate	Editor-only function that Unity calls when the script is loaded or a value changes in the Inspector.
+Reset	    Reset to default values.
+*/

@@ -1,12 +1,10 @@
 using UnityEngine;
 
 //Componente supuestamente en algun objeto de la escena que representa un hechizo activo, con su data y demas
+//Mientras no lo vea necesario, se utilizara solo SpellCaster y SpellDefinition
 public class Spell : MonoBehaviour
 {
-    public SpellData Data { get; private set; }
-    public SpellCaster SpellCaster { get; private set; }
-    public Player[] Targets { get; private set; }
-    //cosas de duracion
 
-    public int GetSpellId() => SpellRegister.Instance.GetSpellId(Data);
+    //SpellCastInfo
+    //cosas de duracion
 }

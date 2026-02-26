@@ -32,12 +32,12 @@ public class ManaGainManager : MonoBehaviour
     /// </summary>
     /// <param name="amount">Quantity of mana to spend</param>
     /// <returns>True if there's enough mana, otherwise false</returns>
-    //public bool ConsumeMana(int amount)
-    //{
-    //    //Debug.LogWarning("Esto deber�a ser un rpc");
-    //    //if (CurrentMana < amount) return false;
-
-    //    //CurrentMana -= amount;
-    //    return true;
-    //}
+    public bool ConsumeMana(int amount)
+    {
+        float currentMana = player.CurrentMana.Value;
+        currentMana -= amount;
+        currentMana = Mathf.Clamp(currentMana, 0, Settings.Instance.MaxMana);
+        OnManaGain?.Invoke(currentMana);
+        return true;
+    }
 }

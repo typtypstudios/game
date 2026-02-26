@@ -1,10 +1,18 @@
 using UnityEngine;
 using Unity.Netcode;
+using System.Collections.Generic;
 
 public class MatchManager : NetworkBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
     int numPlayersReady = 0;
+
+    //De momento una lista de playerIds server side
+    Dictionary<int, Player> playersById;
+    public Player GetPlayerById(int id) => playersById.GetValueOrDefault(id);
+
+    //Cambiar esto mas adelante para mas jugadores
+    int MaxPlayers => 2;
 
     public override void OnNetworkSpawn()
     {
@@ -16,16 +24,19 @@ public class MatchManager : NetworkBehaviour
             var player = Instantiate(playerPrefab);
             player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
         };
+
+        playersById = new();
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void OnPlayerReadyRpc()
     {
-        if(++numPlayersReady == 2)
+        if (++numPlayersReady == MaxPlayers)
         {
             Player[] players = FindObjectsByType<Player>(FindObjectsSortMode.None);
-            for(int i = 0; i < players.Length; i++)
+            for (int i = 0; i < players.Length; i++)
             {
+                playersById.Add(i, players[i]);
                 players[i].ConfigurePlayerRpc(i);
             }
             ConfigureUIRpc();

@@ -18,6 +18,7 @@ public class RitualManager : AInputListener
     public event Action OnCorrectChar;
     public event Action OnWrongChar;
     public event Action<float> OnProgressUpdated;
+    public event Action<int> LineCompleted;
 
     void Awake()
     {
@@ -59,6 +60,8 @@ public class RitualManager : AInputListener
         OriginalText = textProvider.GetNextText();
         ritualText.text = OriginalText;
         charIdx = 0;
+        //Esto solo ocurre en cliente
+        LineCompleted?.Invoke(numTextsCompleted);
     }
 
     private void UpdateProgress()
