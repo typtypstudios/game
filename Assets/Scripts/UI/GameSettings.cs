@@ -1,0 +1,47 @@
+using TypTyp;
+using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.UI;
+
+public class GameSettings : MonoBehaviour
+{
+    [SerializeField] private Toggle showSpacesToggle;
+    [SerializeField] private Toggle capLocksWarningToggle;
+    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private AudioMixer mixer;
+
+    private void Start()
+    {
+        showSpacesToggle.isOn = PlayerPrefs.GetInt("ShowSpaces", 1) == 1;
+        capLocksWarningToggle.isOn = PlayerPrefs.GetInt("CapLocksWarnigng", 0) == 1;
+        volumeSlider.value = PlayerPrefs.GetFloat("Volume", 0.75f);
+        gameObject.SetActive(false);
+        GetComponent<CanvasGroup>().alpha = 1;
+    }
+
+    private void OnDisable()
+    {
+        PlayerPrefs.SetInt("ShowSpaces", showSpacesToggle.isOn ? 1 : 0);
+        PlayerPrefs.SetInt("CapLocksWarnigng", capLocksWarningToggle.isOn ? 1 : 0);
+        PlayerPrefs.SetFloat("Volume", volumeSlider.value);
+    }
+
+    public void ToggleShowSpaces() => showSpacesToggle.isOn = !showSpacesToggle.isOn;
+
+    public void SetShowSpaces(bool value) => Settings.Instance.ShowSpaces = value;
+
+    public void ToggleCapsWarning() => capLocksWarningToggle.isOn = !capLocksWarningToggle.isOn;
+
+    public void SetCapsWarning(bool value) => Settings.Instance.CapsLockWarning = value;
+
+    public void AddVolume(float volumeToAdd) => volumeSlider.value += volumeToAdd;
+
+    public void SetVolume(float value)
+    {
+        value = Mathf.Clamp01(value);
+        float minDB = -80f;
+        float maxDB = 20f;
+        float logValue = Mathf.Log10(1f + value * 9f) / Mathf.Log10(10f);
+        mixer.SetFloat("MasterVolume", Mathf.Lerp(minDB, maxDB, logValue));
+    }
+}

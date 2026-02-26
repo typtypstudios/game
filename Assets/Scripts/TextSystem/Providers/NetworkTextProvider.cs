@@ -73,7 +73,7 @@ namespace TypTyp.TextSystem
         [Rpc(SendTo.ClientsAndHost)]
         private void ReceiveTextRpc(string text)
         {
-            if (Settings.Instance.DottedText) text = text.Replace(" ", "-");
+            if (Settings.Instance.ShowSpaces) text = text.Replace(" ", "-");
             for (int i = 0; i < texts.Length; i++)
             {
                 if (texts[i].text.Equals(string.Empty))

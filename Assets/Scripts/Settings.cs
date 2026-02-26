@@ -30,6 +30,7 @@ namespace TypTyp
         [Header("RITUAL RELATED")]
         //Textos a completar para el ritual
         [field: SerializeField] public int MaxTextsProvided { get; private set; } = 10;
-        [field: SerializeField] public bool DottedText { get; private set; } = true;
+        [field: SerializeField] public bool ShowSpaces { get; set; } = true;
+        [field: SerializeField] public bool CapsLockWarning { get; set; } = true;
     }
 }

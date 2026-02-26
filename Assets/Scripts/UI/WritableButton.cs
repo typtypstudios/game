@@ -30,8 +30,8 @@ public class WritableButton : AInputListener
     {
         if (originalText[idx] == c)
         {
-            buttonText.text = buttonText.text.Replace(fillColorTag, "").Replace("</color>", "");
-            buttonText.text = fillColorTag + originalText[..(idx + 1)] + "</color>" + originalText[(idx + 1)..];
+            buttonText.text = fillColorTag + originalText[..(idx + 1)] + "</color>" + 
+                originalText[(idx + 1)..];
             if (++idx == textLength)
             {
                 button.onClick?.Invoke();

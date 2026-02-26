@@ -30,7 +30,7 @@ public class RitualManager : AInputListener
     protected override void ProcessInput(char c)
     {
         if (OriginalText.Equals(string.Empty)) return;
-        if (Settings.Instance.DottedText && c == ' ') c = '-';
+        if (Settings.Instance.ShowSpaces && c == ' ') c = '-';
         if (c == OriginalText[charIdx])
         {
             charIdx++;
