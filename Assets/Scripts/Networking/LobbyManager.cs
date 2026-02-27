@@ -344,7 +344,7 @@ public class LobbyManager : MonoBehaviour
     }
 
 
-    async Task CloseLobyAndShutdown()
+    public async Task CloseLobyAndShutdown()
     {
         CancelInvoke(nameof(SendHeartbeatWrapper));
 

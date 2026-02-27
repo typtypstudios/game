@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using TypTyp.TextSystem;
 using Unity.Netcode;
@@ -31,6 +32,7 @@ public class MatchManager : NetworkBehaviour
 
     private Dictionary<ulong, ClientSetupState> setupStates = new();
     private HashSet<ulong> fullyConfiguredClients = new();
+    private HashSet<ulong> endMatchConfirmedClients = new();
 
     private double matchStartTime;
     private MatchState matchState;
@@ -47,12 +49,15 @@ public class MatchManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (!IsServer) return;
+        if (NetworkManager.Singleton == null) return;
 
-        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
 
-        playersById = new();
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            playersById = new();
+        }
     }
 
     /// <summary>
@@ -239,8 +244,6 @@ public class MatchManager : NetworkBehaviour
         textProvider.InitializeTexts();
     }
 
-
-
     /// <summary>
     /// System to end the game
     /// </summary>
@@ -253,22 +256,64 @@ public class MatchManager : NetworkBehaviour
         matchState = MatchState.Finished;
 
         EndMatchClientRpc(winner.OwnerClientId);
-
-        // NOTE: disconect both players from the networkManager, delete lobby, show
-        // exit button and panel
     }
 
     [Rpc(SendTo.ClientsAndHost)]
     private void EndMatchClientRpc(ulong winnerClientId)
     {
+        // Muestra el mensaje de victoria. El botón todavía no se habilita.
+        // El botón de salida se habilita automáticamente al detectar que se ha desconectado del NetworkManager.
+        // La verdad he hecho esto porque me ha dado la gana XD. Así me aseguro con los handshakes y eso
+        // probablemente haya una mejor manera pero estoy cansado.
+
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
 
         DisableGameplay();
 
-        var panel = FindFirstObjectByType<EndGamePanel>();
-        panel.Show(isWinner);
+        FindFirstObjectByType<EndGamePanel>().Show(isWinner);
         OnMatchEnded?.Invoke();
+
+        NotifyEndHandledServerRpc();
     }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void NotifyEndHandledServerRpc(RpcParams rpcParams = default)
+    {
+        if (!IsServer) return;
+
+        ulong clientId = rpcParams.Receive.SenderClientId;
+
+        if (endMatchConfirmedClients.Contains(clientId))
+            return;
+
+        endMatchConfirmedClients.Add(clientId);
+
+        if (endMatchConfirmedClients.Count == MaxPlayers)
+        {
+            _ = ShutdownMatchServer();
+        }
+    }
+
+    private async Task ShutdownMatchServer()
+    {
+        if (!IsServer) return;
+
+        var lobbyManager = FindFirstObjectByType<LobbyManager>();
+        if (lobbyManager != null)
+        {
+            await lobbyManager.CloseLobyAndShutdown();
+        }
+
+        if (IsHost)
+        {
+            var panel = FindFirstObjectByType<EndGamePanel>();
+            if (panel != null)
+            {
+                panel.OnNetworkClosed();
+            }
+        }
+    }
+
 
     private void DisableGameplay()
     {
@@ -283,9 +328,26 @@ public class MatchManager : NetworkBehaviour
         Debug.LogWarning("Spell deactivation not implemented");
     }
 
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
     private void OnClientDisconnected(ulong clientId)
     {
-        //throw new NotImplementedException();
+        if (!NetworkManager.Singleton.IsListening)
+            return;
+
+        if (clientId != NetworkManager.Singleton.LocalClientId)
+            return;
+
+        var panel = FindFirstObjectByType<EndGamePanel>();
+        if (panel != null)
+        {
+            panel.OnNetworkClosed();
+        }
+
+        NetworkManager.Singleton.Shutdown();
     }
 
     public override void OnDestroy()
@@ -293,7 +355,7 @@ public class MatchManager : NetworkBehaviour
         if (NetworkManager.Singleton != null)
         {
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
-            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
         }
 
         base.OnDestroy();

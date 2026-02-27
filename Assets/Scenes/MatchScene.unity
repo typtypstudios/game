@@ -3132,6 +3132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndGamePanel
   panel: {fileID: 92138022}
   resultText: {fileID: 592455688}
+  exitButton: {fileID: 1858240188}
 --- !u!225 &1813752704
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3175,7 +3176,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1858240189
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3242,7 +3243,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 377042276}
         m_TargetAssemblyTypeName: MatchManager, Assembly-CSharp
-        m_MethodName: ReturnToMenu
+        m_MethodName: ReturnToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3620,8 +3621,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab88fd5c35a8c24d93b36c1dde1eaa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MatchmakingManager
-  maxReconnectTime: 10
-  reconnectInterval: 2
   heartbeatInterval: 15
 --- !u!1 &2110101310
 GameObject:

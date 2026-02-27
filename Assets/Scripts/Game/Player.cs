@@ -82,6 +82,11 @@ public class Player : NetworkBehaviour
     private void UpdateCurrentCorruption(float value)
     {
         CurrentCorruption.Value = value;
-        if (value == Settings.Instance.MaxCorruption) Debug.Log("Falta condici�n de derrota.");
+        if (value == Settings.Instance.MaxCorruption)
+        {
+            Player winner = MatchManager.GetPlayerById(MatchManager.GetPlayerId(this) == 0 ? 1 : 0);
+
+            MatchManager.HandlePlayerVictory(winner);
+        }
     }
 }
