@@ -65,15 +65,21 @@ namespace TypTyp.TextSystem
         [Rpc(SendTo.Server)]
         private void RequestNextTextRpc(int numCompleted)
         {
+            Debug.Log("Received request for next text. Num completed: " + numCompleted);
             var text = numCompleted >= phrases.Count ? string.Empty : phrases[numCompleted];
             if(textPipeline != null)
+            {
+                Debug.Log("Processing text through pipeline...");
                 text = textPipeline.ProcessText(text);
+            }
+            Debug.Log("Providing text: " + text);
             ReceiveTextRpc(text);
         }
 
         [Rpc(SendTo.ClientsAndHost)]
         private void ReceiveTextRpc(string text)
         {
+            Debug.Log("Received text: " + text);
             if (Settings.Instance.ShowSpaces) text = text.Replace(" ", "-");
             for (int i = 0; i < texts.Length; i++)
             {
@@ -89,6 +95,7 @@ namespace TypTyp.TextSystem
         // Desde el MatchManager se llama a "InitializeTexts" para obtener los textos de inicio
         public void InitializeTexts()
         {
+            Debug.Log("Initializing texts...");
             textIdx = 0;
 
             for (int i = 0; i < texts.Length; i++)
