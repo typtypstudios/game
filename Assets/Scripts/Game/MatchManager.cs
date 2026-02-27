@@ -162,17 +162,9 @@ public class MatchManager : NetworkBehaviour
 
             if (fullyConfiguredClients.Count == MaxPlayers)
             {
-                PrepareMatchState();    // El server prepara el texto
                 StartSynchronizedMatch();
             }
         }
-    }
-
-    private void PrepareMatchState()
-    {
-        // Iniciar la preparaci�n de texto
-        var textProvider = FindFirstObjectByType<NetworkTextProvider>();
-        textProvider.PrepareTexts();
     }
 
     private void StartSynchronizedMatch()
@@ -239,9 +231,8 @@ public class MatchManager : NetworkBehaviour
             $"Drift:{drift * 1000:F2} ms"
         );
 
-        var player = NetworkManager.Singleton.LocalClient.PlayerObject;
-        var textProvider = player.GetComponentInChildren<NetworkTextProvider>();
-        textProvider.InitializeTexts();
+        NetworkTextProvider networkText = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<NetworkTextProvider>();
+        if( networkText != null ) networkText.SetTextsActive(true);
     }
 
     /// <summary>

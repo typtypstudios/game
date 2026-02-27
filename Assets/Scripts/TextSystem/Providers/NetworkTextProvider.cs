@@ -16,10 +16,24 @@ namespace TypTyp.TextSystem
         private RitualManager ritualManager; //Referencia circular
         private ITextPipeline textPipeline;
 
+        public override void OnNetworkSpawn()
+        {
+            if (IsServer) LoadSource();
+            if (IsOwner) for (int i = 0; i < texts.Length; i++) RequestNextTextRpc(textIdx++);
+        }
+
+
         private void Awake()
         {
             ritualManager = GetComponentInChildren<RitualManager>();
             textPipeline = GetComponentInChildren<ITextPipeline>();
+
+            foreach (var t in texts) t.gameObject.SetActive(false);
+        }
+
+        public void SetTextsActive(bool value)
+        {
+            foreach (var t in texts) t.gameObject.SetActive(value);
         }
 
         private void LoadSource()
@@ -34,15 +48,6 @@ namespace TypTyp.TextSystem
                 allPhrases.Remove(phrase);
                 phrases.Add(phrase.Trim());
             }
-        }
-
-        public void PrepareTexts()
-        {
-            if (IsOwner) for (int i = 0; i < texts.Length; i++) RequestNextTextRpc(textIdx++);
-            if (!IsServer) return;
-
-            LoadSource();
-            textIdx = 0;
         }
 
         public string GetNextText()
@@ -77,15 +82,6 @@ namespace TypTyp.TextSystem
                     break;
                 }
             }
-        }
-
-        // Desde el MatchManager se llama a "InitializeTexts" para obtener los textos de inicio
-        public void InitializeTexts()
-        {
-            textIdx = 0;
-
-            for (int i = 0; i < texts.Length; i++)
-                RequestNextTextRpc(textIdx++);
         }
     }
 }
