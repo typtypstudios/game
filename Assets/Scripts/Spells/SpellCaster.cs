@@ -8,13 +8,11 @@ public struct SpellCastRequest
 {
     public SpellDefinition SpellDef { get; private set; }
     public Player Caster { get; private set; }
-    public Player[] Targets { get; private set; }
 
-    public SpellCastRequest(SpellDefinition spellDef, Player caster, Player[] targets)
+    public SpellCastRequest(SpellDefinition spellDef, Player caster)
     {
         SpellDef = spellDef;
         Caster = caster;
-        Targets = targets;
     }
 }
 
@@ -22,12 +20,18 @@ public struct SpellCastRequest
 public class SpellCaster : NetworkBehaviour
 {
     Player player;
+
     MatchManager matchManager;
 
     public void Awake()
     {
         player = GetComponent<Player>();
         matchManager = FindAnyObjectByType<MatchManager>();
+    }
+
+    public bool TryCastSpellClientSide(SpellDefinition spellDef)
+    {
+        return TryCastSpellClientSide(player, new SpellCastRequest(spellDef, player));
     }
 
     /// <summary>
@@ -43,7 +47,7 @@ public class SpellCaster : NetworkBehaviour
         //Animacion de casteo previa a confirmacion de servidor
 
         var spellID = SpellRegister.Instance.GetSpellId(castRequest.SpellDef);
-        CastSpellRpc(spellID, castRequest.Caster.PlayerID, castRequest.Targets.Select(t => t.PlayerID).ToArray());
+        CastSpellRpc(spellID, castRequest.Caster.PlayerID);
 
         return true;
     }
@@ -55,10 +59,10 @@ public class SpellCaster : NetworkBehaviour
     /// Also note that the validation in this method is minimal, it only checks if the caster has enough mana. More complex validation (like checking if the targets are valid) should be done in ApplySpellRpc, which is called after this method and is responsible for applying the spell effects.
     /// </summary>
     [Rpc(SendTo.Server)]
-    public void CastSpellRpc(int spellId, int casterId, params int[] targetsId)
+    public void CastSpellRpc(int spellId, int casterId)
     {
         // if (!IsOwner) return; // Solo el dueño del objeto puede lanzar hechizos
-        var castRequest = new SpellCastRequest(SpellRegister.Instance.GetSpellById(spellId), matchManager.GetPlayerById(casterId), targetsId.Select(id => matchManager.GetPlayerById(id)).ToArray());
+        var castRequest = new SpellCastRequest(SpellRegister.Instance.GetSpellById(spellId), matchManager.GetPlayerById(casterId));
         //Si usase los client ids de ngo
         //var caster = NetworkManager.Singleton.ConnectedClients[(ulong)casterId].PlayerObject.GetComponent<Player>();
         if (castRequest.Caster == null)
@@ -80,13 +84,13 @@ public class SpellCaster : NetworkBehaviour
         }
 
         ApplySpell(castRequest);
-        ApplySpellRpc(spellId, casterId, targetsId);
+        ApplySpellRpc(spellId, casterId);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    public void ApplySpellRpc(int spellId, int casterId, params int[] targetsId)
+    public void ApplySpellRpc(int spellId, int casterId)
     {
-        var castRequest = new SpellCastRequest(SpellRegister.Instance.GetSpellById(spellId), matchManager.GetPlayerById(casterId), targetsId.Select(id => matchManager.GetPlayerById(id)).ToArray());
+        var castRequest = new SpellCastRequest(SpellRegister.Instance.GetSpellById(spellId), matchManager.GetPlayerById(casterId));
         ApplySpell(castRequest);
     }
 
@@ -102,14 +106,20 @@ public class SpellCaster : NetworkBehaviour
     // De esta forma, cada efecto puede decidir si se ejecuta solo en cliente, solo en servidor, o en ambos.
     void ApplySpell(SpellCastRequest castRequest)
     {
-        foreach (var target in castRequest.Targets)
+        Player caster = castRequest.Caster;
+        var enemyID = matchManager.GetPlayerId(caster) == 0 ? 1 : 0;
+        Player enemy = matchManager.GetPlayerById(enemyID);
+        ApplyEffectsToTarget(caster, castRequest.SpellDef.OnSelfEffects);
+        ApplyEffectsToTarget(enemy, castRequest.SpellDef.OnEnemyEffects);
+    }
+
+    void ApplyEffectsToTarget(Player target, StatusEffectDefinition[] effects)
+    {
+        if (target.TryGetComponent<StatusEffectController>(out var statusEffectController))
         {
-            if (target.TryGetComponent<StatusEffectController>(out var statusEffectController))
+            foreach (var effectDef in effects)
             {
-                foreach (var effectDef in castRequest.SpellDef.StatusEffects)
-                {
-                    statusEffectController.AddEffect(effectDef);
-                }
+                statusEffectController.AddEffect(effectDef);
             }
         }
     }

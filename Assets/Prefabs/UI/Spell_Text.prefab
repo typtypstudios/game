@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6048327966586108549}
   - component: {fileID: 4208581750236697601}
   - component: {fileID: 1162055742630959806}
+  - component: {fileID: 706073966904559815}
   m_Layer: 0
   m_Name: Spell_Text
   m_TagString: Untagged
@@ -137,3 +138,15 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &706073966904559815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2280059109270174325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d27d93f5c5f3864cb160f9efb3d5bda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardUI

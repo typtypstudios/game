@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TypTyp.TextSystem;
 using Unity.Netcode;
 using UnityEngine;
@@ -25,6 +26,7 @@ public class MatchManager : NetworkBehaviour
     //De momento una lista de playerIds server side
     Dictionary<int, Player> playersById;
     public Player GetPlayerById(int id) => playersById.GetValueOrDefault(id);
+    public int GetPlayerId(Player player) => playersById.FirstOrDefault(kvp => kvp.Value == player).Key;
 
     //Cambiar esto mas adelante para mas jugadores
     int MaxPlayers => 2;
@@ -63,7 +65,7 @@ public class MatchManager : NetworkBehaviour
         }
     }
 
-    // Se ejecuta todavía en el server
+    // Se ejecuta todavï¿½a en el server
     private void SetupPlayers()
     {
         playersById.Clear();
@@ -139,7 +141,7 @@ public class MatchManager : NetworkBehaviour
 
     private void PrepareMatchState()
     {
-        // Iniciar la preparación de texto
+        // Iniciar la preparaciï¿½n de texto
         var textProvider = FindFirstObjectByType<NetworkTextProvider>();
         textProvider.PrepareTexts();
     }

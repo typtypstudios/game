@@ -47,6 +47,7 @@ namespace TypTyp.TextSystem
 
         public void PrepareTexts()
         {
+            if (IsOwner) for (int i = 0; i < texts.Length; i++) RequestNextTextRpc(textIdx++);
             if (!IsServer) return;
 
             LoadSource();
