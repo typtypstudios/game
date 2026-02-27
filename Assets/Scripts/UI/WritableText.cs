@@ -28,7 +28,7 @@ public class WritableText : AInputListener
 
     protected override void ProcessInput(char c)
     {
-        if(c == originalText[idx])
+        if (originalText[idx].ToString().ToLower().Equals(c.ToString().ToLower()))
         {
             text.text = fillColorTag + originalText[..(idx + 1)] + "</color>" + originalText[(idx + 1)..];
             if (++idx == originalText.Length) OnStringTyped();

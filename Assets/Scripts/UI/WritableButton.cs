@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 [RequireComponent(typeof(Button))]
 public class WritableButton : AInputListener
@@ -11,6 +12,8 @@ public class WritableButton : AInputListener
     private string originalText;
     private int textLength;
     private int idx;
+    private readonly WaitForSeconds resetTimer = new(0.5f);
+    private Coroutine resetCoroutine;
 
     private void Awake()
     {
@@ -20,24 +23,44 @@ public class WritableButton : AInputListener
         originalText = buttonText.text;
     }
 
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        StopAllCoroutines();
+        ResetButton();
+    }
+
     private void ResetButton()
     {
         buttonText.text = originalText;
         idx = 0;
+        resetCoroutine = null;
     }
 
     protected override void ProcessInput(char c)
     {
-        if (originalText[idx] == c)
+        if (originalText[idx].ToString().ToLower().Equals(c.ToString().ToLower()))
         {
+            if(resetCoroutine != null)
+            {
+                StopCoroutine(resetCoroutine);
+                ResetButton();
+            }
             buttonText.text = fillColorTag + originalText[..(idx + 1)] + "</color>" + 
                 originalText[(idx + 1)..];
             if (++idx == textLength)
             {
+                resetCoroutine = StartCoroutine(ResetButtonCoroutine());
                 button.onClick?.Invoke();
-                ResetButton();
             }
         }
         else if(resetIfFailed) ResetButton();
+    }
+
+    IEnumerator ResetButtonCoroutine()
+    {
+        idx = 0;
+        yield return resetTimer;
+        ResetButton();
     }
 }
