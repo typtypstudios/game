@@ -9,7 +9,7 @@ namespace TypTyp.TextSystem
 {
     public class NetworkTextProvider : NetworkBehaviour, ITextProvider
     {
-        [SerializeField] private TextMeshPro[] texts;
+        [SerializeField] private TMP_Text[] texts;
         [SerializeField] TextAsset textSource;
         private static List<string> phrases = new();
         private int textIdx = 0;

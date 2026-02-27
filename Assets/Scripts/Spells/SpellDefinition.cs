@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SpellDefinition", menuName = "TypTyp/Spells/SpellDefinition")]
-public abstract class SpellDefinition : ScriptableObject
+public class SpellDefinition : ScriptableObject
 {
     [field: SerializeField] public string SpellName { get; private set; }
     [field: SerializeField] public int ManaCost { get; private set; } = 1;

@@ -30,12 +30,12 @@ public class ManaGainManager : MonoBehaviour
     /// <summary>
     /// Consumes mana
     /// </summary>
-    /// <param name="amount">Quantity of mana to spend</param>
+    /// <param name="barAmount">Quantity of mana to spend</param>
     /// <returns>True if there's enough mana, otherwise false</returns>
-    public bool ConsumeMana(int amount)
+    public bool ConsumeMana(int barAmount)
     {
         float currentMana = player.CurrentMana.Value;
-        currentMana -= amount;
+        currentMana -= barAmount;
         currentMana = Mathf.Clamp(currentMana, 0, Settings.Instance.MaxMana);
         OnManaGain?.Invoke(currentMana);
         return true;

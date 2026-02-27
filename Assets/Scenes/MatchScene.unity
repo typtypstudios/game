@@ -2475,6 +2475,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab88fd5c35a8c24d93b36c1dde1eaa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MatchmakingManager
+  maxReconnectTime: 10
+  reconnectInterval: 2
+  heartbeatInterval: 15
 --- !u!1 &2110101310
 GameObject:
   m_ObjectHideFlags: 0
