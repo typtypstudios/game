@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6048327966586108549}
   - component: {fileID: 4208581750236697601}
   - component: {fileID: 1162055742630959806}
-  - component: {fileID: 3858382023207049177}
   m_Layer: 0
   m_Name: Spell_Text
   m_TagString: Untagged
@@ -138,17 +137,3 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &3858382023207049177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2280059109270174325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edf3a0fdc489a0945a9e7cfeff62a874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RitualManager
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  wrongColor: {r: 1, g: 0, b: 0, a: 1}
