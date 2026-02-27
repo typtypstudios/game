@@ -10,8 +10,15 @@ public class LoadingScreen : MonoBehaviour
     {
         canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.alpha = 1.0f;
-        GameUIConfigurator.OnUIConfigurated += () => StartCoroutine(FadeCoroutine());
+        GameUIConfigurator.OnUIConfigurated += StartFade;
     }
+
+    private void OnDestroy()
+    {
+        GameUIConfigurator.OnUIConfigurated -= StartFade;
+    }
+
+    private void StartFade() => StartCoroutine(FadeCoroutine());
 
     IEnumerator FadeCoroutine()
     {
