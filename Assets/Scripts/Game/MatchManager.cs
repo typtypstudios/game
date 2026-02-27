@@ -6,7 +6,6 @@ using TMPro;
 using TypTyp.TextSystem;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 
 public class MatchManager : NetworkBehaviour
@@ -27,6 +26,7 @@ public class MatchManager : NetworkBehaviour
 
     private double matchStartTime;
     private bool matchStarting = false;
+    public static event Action OnMatchEnded;
 
 
     //De momento una lista de playerIds server side
@@ -259,6 +259,7 @@ public class MatchManager : NetworkBehaviour
 
         var panel = FindFirstObjectByType<EndGamePanel>();
         panel.Show(isWinner);
+        OnMatchEnded?.Invoke();
     }
 
     private void DisableGameplay()
