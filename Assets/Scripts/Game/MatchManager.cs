@@ -8,6 +8,14 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum MatchState
+{
+    WaitingPlayers,
+    ConfiguringPlayers,
+    InGame,
+    Finished
+}
+
 public class MatchManager : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI countdownText;
@@ -25,7 +33,7 @@ public class MatchManager : NetworkBehaviour
     private HashSet<ulong> fullyConfiguredClients = new();
 
     private double matchStartTime;
-    private bool matchStarting = false;
+    private MatchState matchState;
     public static event Action OnMatchEnded;
 
 
@@ -37,15 +45,26 @@ public class MatchManager : NetworkBehaviour
     //Cambiar esto mas adelante para mas jugadores
     int MaxPlayers => 2;
 
-    private bool matchEnded;
-
     public override void OnNetworkSpawn()
     {
         if (!IsServer) return;
 
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
 
         playersById = new();
+    }
+
+    /// <summary>
+    /// Instantiate the prefab
+    /// </summary>
+    /// <param name="clientId"></param>
+    private void OnClientConnected(ulong clientId)
+    {
+        if (!IsServer) return;
+
+        var player = Instantiate(playerPrefab);
+        player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -60,9 +79,10 @@ public class MatchManager : NetworkBehaviour
 
         sceneReadyClients.Add(clientId);
 
-        if (sceneReadyClients.Count == MaxPlayers && !matchStarting)
+        if (sceneReadyClients.Count == MaxPlayers && matchState == MatchState.WaitingPlayers)
         {
-            matchStarting = true;
+            _ = FindFirstObjectByType<LobbyManager>().UpdateLobbyState("starting");
+            matchState = MatchState.ConfiguringPlayers;
 
             setupStates.Clear();
             fullyConfiguredClients.Clear();
@@ -98,7 +118,7 @@ public class MatchManager : NetworkBehaviour
 
         setupStates[clientId].playerConfigured = true;
 
-        TryFinalizeClient(clientId);
+        CheckEverythingReady(clientId);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -113,7 +133,7 @@ public class MatchManager : NetworkBehaviour
 
         setupStates[clientId].uiConfigured = true;
 
-        TryFinalizeClient(clientId);
+        CheckEverythingReady(clientId);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -124,9 +144,7 @@ public class MatchManager : NetworkBehaviour
         NotifyUIConfiguredServerRpc();
     }
 
-
-
-    private void TryFinalizeClient(ulong clientId)
+    private void CheckEverythingReady(ulong clientId)
     {
         var state = setupStates[clientId];
 
@@ -154,6 +172,7 @@ public class MatchManager : NetworkBehaviour
 
     private void StartSynchronizedMatch()
     {
+        matchState = MatchState.InGame;
         Debug.Log("SERVER: StartSynchronizedMatch()");
         matchStartTime = NetworkManager.Singleton.ServerTime.Time + 3.0;
         StartMatchClientRpc(matchStartTime);
@@ -194,13 +213,13 @@ public class MatchManager : NetworkBehaviour
 
         countdownText.gameObject.SetActive(false);
 
-        BeginMatch();
+        BeginMatchClient();
     }
 
     /// <summary>
     /// Comienza la partida
     /// </summary>
-    private void BeginMatch()
+    private void BeginMatchClient()
     {
         double localTime = NetworkManager.Singleton.LocalTime.Time;
         double serverTime = NetworkManager.Singleton.ServerTime.Time;
@@ -220,34 +239,23 @@ public class MatchManager : NetworkBehaviour
         textProvider.InitializeTexts();
     }
 
-    private void OnClientConnected(ulong clientId)
-    {
-        if (!IsServer) return;
 
-        Debug.Log($"SERVER: Client connected -> {clientId}");
 
-        var player = Instantiate(playerPrefab);
-        player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
-
-        Debug.Log($"SERVER: Player spawned for -> {clientId}");
-    }
-
-    public override void OnDestroy()
-    {
-        if (NetworkManager.Singleton != null)
-            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
-
-        base.OnDestroy();
-    }
-
+    /// <summary>
+    /// System to end the game
+    /// </summary>
+    /// <param name="winner"></param>
     public void HandlePlayerVictory(Player winner)
     {
-        if (!IsServer || matchEnded)
+        if (!IsServer || matchState == MatchState.Finished)
             return;
 
-        matchEnded = true;
+        matchState = MatchState.Finished;
 
         EndMatchClientRpc(winner.OwnerClientId);
+
+        // NOTE: disconect both players from the networkManager, delete lobby, show
+        // exit button and panel
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -272,18 +280,23 @@ public class MatchManager : NetworkBehaviour
             ritual.SetActive(false);
 
         // NOTA: desactivar también la escritura de hechizos
+        Debug.LogWarning("Spell deactivation not implemented");
     }
 
-    public void ReturnToMenu()
+    private void OnClientDisconnected(ulong clientId)
     {
-        Time.timeScale = 1f;
+        //throw new NotImplementedException();
+    }
 
-        if (NetworkManager.Singleton != null &&
-            NetworkManager.Singleton.IsListening)
+    public override void OnDestroy()
+    {
+        if (NetworkManager.Singleton != null)
         {
-            NetworkManager.Singleton.Shutdown();
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
         }
 
-        SceneManager.LoadScene("MainMenu");
+        base.OnDestroy();
     }
+
 }
