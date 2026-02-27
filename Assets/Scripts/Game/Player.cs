@@ -46,11 +46,7 @@ public class Player : NetworkBehaviour
     {
         PlayerID = playerIdx == 0 ? TypTyp.Settings.Instance.P1_ID : TypTyp.Settings.Instance.P2_ID;
         this.tag = playerIdx == 0 ? Settings.Instance.P1_tag : Settings.Instance.P2_tag;
-        if (IsOwner)
-        {
-            Enemy = FindObjectsByType<Player>(FindObjectsSortMode.None).First(p => p != this);
-            User = this;
-        }
+
         FindFirstObjectByType<PlayerPositioner>().PositionPlayer(this, playerIdx, IsOwner);
         RitualManager.enabled = IsOwner; //El ritual lo controla el cliente, evita mala UX por lag
         ManaManager.enabled = IsServer; //La ganancia de man� la controla el server exclusivamente
@@ -58,6 +54,9 @@ public class Player : NetworkBehaviour
 
         if (IsOwner)
         {
+            Enemy = FindObjectsByType<Player>(FindObjectsSortMode.None).First(p => p != this);
+            User = this;
+
             FindFirstObjectByType<MatchManager>().NotifyPlayerConfiguredServerRpc();
         }
     }
@@ -70,8 +69,8 @@ public class Player : NetworkBehaviour
             CorruptionManager.ProcessMistake();
             return;
         }
-        //Como el ritual lo gestiona el cliente, en este m�todo se deber�a agregar
-        //prevenci�n de trampas antes de validar el progreso proporcionado
+        //Como el ritual lo gestiona el cliente, en este método se debería agregar
+        //prevención de trampas antes de validar el progreso proporcionado
         RitualProgress.Value = progress;
         if (progress >= 1.0) Debug.Log("Falta condici�n de finalizaci�n de partida.");
     }
