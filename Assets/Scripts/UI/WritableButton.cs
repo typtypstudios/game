@@ -19,8 +19,8 @@ public class WritableButton : AInputListener
     {
         button = GetComponent<Button>();
         buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
-        textLength = buttonText.text.Length;
-        originalText = buttonText.text;
+        originalText = buttonText.text.Trim();
+        textLength = originalText.Length;
     }
 
     protected override void OnDisable()

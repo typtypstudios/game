@@ -32,7 +32,7 @@ namespace TypTyp.TextSystem
             {
                 string phrase = allPhrases[UnityEngine.Random.Range(0, allPhrases.Count)];
                 allPhrases.Remove(phrase);
-                phrases.Add(phrase);
+                phrases.Add(phrase.Trim());
             }
         }
 

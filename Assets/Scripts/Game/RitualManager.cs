@@ -8,7 +8,7 @@ public class RitualManager : AInputListener
 {
     [SerializeField] private Color wrongColor = Color.red;
     private TMP_Text ritualText;
-    public string OriginalText { get; set; }
+    public string OriginalText { get; set; } = "";
     private ITextProvider textProvider;
     private string wrongColorTag;
     private int charIdx = 0;

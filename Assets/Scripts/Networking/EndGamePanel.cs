@@ -16,6 +16,9 @@ public class EndGamePanel : MonoBehaviour
     public void Show(bool isWinner)
     {
         panel.SetActive(true);
-        resultText.text = isWinner ? "VICTORIA" : "DERROTA";
+        resultText.text = isWinner ? "VICTORY" : "DEFEAT";
+        WritableText wt = resultText.GetComponent<WritableText>();
+        wt.FillColor = isWinner ? Color.cyan : Color.red;
+        wt.ResetText();
     }
 }

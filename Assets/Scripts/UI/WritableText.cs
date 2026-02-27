@@ -5,6 +5,7 @@ using TMPro;
 public class WritableText : AInputListener
 {
     [Range(0, 1)][SerializeField] private float minColor;
+    [SerializeField] private bool startRandomized = true;
     private TextMeshProUGUI text;
     private string originalText;
     private int idx; 
@@ -12,17 +13,16 @@ public class WritableText : AInputListener
     private void Awake()
     {
         text = GetComponent<TextMeshProUGUI>();
-        originalText = text.text;
-        OnStringTyped(true);
+        originalText = text.text.Trim();
+        if(startRandomized) OnStringTyped(true);
     }
 
+    public void ResetText() => originalText = text.text.Trim();
+        
     private void OnStringTyped(bool onlyRandomize = false)
     {
         if(!onlyRandomize) text.color = FillColor;
-        float r = Random.Range(minColor, 1);
-        float g = Random.Range(minColor, 1);
-        float b = Random.Range(minColor, 1);
-        FillColor = new Color(r, g, b);
+        FillColor = Utils.GetDifferentColor(FillColor);
         idx = 0;
     }
 

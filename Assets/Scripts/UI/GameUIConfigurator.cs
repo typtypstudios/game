@@ -1,13 +1,22 @@
+using System;
 using UnityEngine;
 
 public class GameUIConfigurator : MonoBehaviour
 {
+    private CanvasGroup canvasGroup;
     [Tooltip("Barras de progreso del ritual. La primera ha de ser la del cliente.")]
     [SerializeField] private UIBar[] ritualBars; 
     [Tooltip("Barras de man�. La primera ha de ser la del cliente.")]
     [SerializeField] private UIManaBar[] manaBars;
     [Tooltip("Barras de corrupci�n. La primera ha de ser la del cliente.")]
     [SerializeField] private UIBar[] corruptionBars;
+    public static event Action OnUIConfigurated;
+
+    private void Awake()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0.0f;
+    }
 
     public void ConfigureUI()
     {
@@ -19,5 +28,7 @@ public class GameUIConfigurator : MonoBehaviour
         Player.User.CurrentCorruption.OnValueChanged += corruptionBars[0].UpdateValue;
         Player.Enemy.CurrentCorruption.OnValueChanged += corruptionBars[1].UpdateValue;
         foreach (UIBar bar in corruptionBars) bar.MaxValue = TypTyp.Settings.Instance.MaxCorruption;
+        canvasGroup.alpha = 1.0f;
+        OnUIConfigurated?.Invoke();
     }
 }
