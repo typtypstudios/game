@@ -326,9 +326,14 @@ public class LobbyManager : MonoBehaviour
 
     void GoToMainMenu()
     {
-        NetworkManager.Singleton.Shutdown();
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+
         SceneManager.LoadScene("MainMenu");
     }
+
 
     async void OnApplicationQuit()
     {

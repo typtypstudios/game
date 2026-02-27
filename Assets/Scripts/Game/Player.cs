@@ -72,7 +72,9 @@ public class Player : NetworkBehaviour
         //Como el ritual lo gestiona el cliente, en este método se debería agregar
         //prevención de trampas antes de validar el progreso proporcionado
         RitualProgress.Value = progress;
-        if (progress >= 1.0) Debug.Log("Falta condici�n de finalizaci�n de partida.");
+
+        // Servidor comprueba si alguien ha llegado al final
+        if (RitualProgress.Value >= 1f) MatchManager.HandlePlayerVictory(this);
     }
 
     private void UpdateCurrentMana(float value) => CurrentMana.Value = value;

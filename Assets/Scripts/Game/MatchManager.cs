@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using TypTyp.TextSystem;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.SceneManagement;
 
 public class MatchManager : NetworkBehaviour
 {
@@ -35,23 +37,10 @@ public class MatchManager : NetworkBehaviour
     //Cambiar esto mas adelante para mas jugadores
     int MaxPlayers => 2;
 
-    private InputSystemUIInputModule uiModule;
-
-
-    private void Awake()
-    {
-        if (!IsClient) return;
-
-        // Evita errores de raycast (NaN) del InputSystem durante el spawn inicial.
-        uiModule = FindFirstObjectByType<InputSystemUIInputModule>();
-        if (uiModule != null)
-            uiModule.enabled = false;
-    }
+    private bool matchEnded;
 
     public override void OnNetworkSpawn()
     {
-        Debug.Log($"MatchManager Spawned | IsServer:{IsServer} | LocalClientId:{NetworkManager.Singleton.LocalClientId}");
-
         if (!IsServer) return;
 
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
@@ -226,10 +215,6 @@ public class MatchManager : NetworkBehaviour
             $"Drift:{drift * 1000:F2} ms"
         );
 
-        // Comenzar el gameplay
-        if (IsClient && uiModule != null)
-            uiModule.enabled = true;
-
         var player = NetworkManager.Singleton.LocalClient.PlayerObject;
         var textProvider = player.GetComponentInChildren<NetworkTextProvider>();
         textProvider.InitializeTexts();
@@ -255,4 +240,49 @@ public class MatchManager : NetworkBehaviour
         base.OnDestroy();
     }
 
+    public void HandlePlayerVictory(Player winner)
+    {
+        if (!IsServer || matchEnded)
+            return;
+
+        matchEnded = true;
+
+        EndMatchClientRpc(winner.OwnerClientId);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void EndMatchClientRpc(ulong winnerClientId)
+    {
+        bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
+
+        DisableGameplay();
+
+        var panel = FindFirstObjectByType<EndGamePanel>();
+        panel.Show(isWinner);
+    }
+
+    private void DisableGameplay()
+    {
+        var playerObject = NetworkManager.Singleton.LocalClient.PlayerObject;
+        if (playerObject == null) return;
+
+        var ritual = playerObject.GetComponentInChildren<RitualManager>();
+        if (ritual != null)
+            ritual.SetActive(false);
+
+        // NOTA: desactivar también la escritura de hechizos
+    }
+
+    public void ReturnToMenu()
+    {
+        Time.timeScale = 1f;
+
+        if (NetworkManager.Singleton != null &&
+            NetworkManager.Singleton.IsListening)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+
+        SceneManager.LoadScene("MainMenu");
+    }
 }

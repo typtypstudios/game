@@ -20,6 +20,8 @@ public class RitualManager : AInputListener
     public event Action<float> OnProgressUpdated;
     public event Action<int> LineCompleted;
 
+    private bool ritualActive = true;
+
     void Awake()
     {
         wrongColorTag = Utils.ColorToTag(wrongColor);
@@ -29,6 +31,8 @@ public class RitualManager : AInputListener
 
     protected override void ProcessInput(char c)
     {
+        if (!ritualActive) return;
+
         if (OriginalText.Equals(string.Empty)) return;
         if (Settings.Instance.ShowSpaces && c == ' ') c = '-';
         if (c == OriginalText[charIdx])
@@ -71,5 +75,10 @@ public class RitualManager : AInputListener
             (float)charIdx / (OriginalText.Length * TypTyp.Settings.Instance.MaxTextsProvided);
         float progress = globalProgress + localProgress;
         OnProgressUpdated?.Invoke(progress);
+    }
+
+    public void SetActive(bool value)
+    {
+        ritualActive = value;
     }
 }
