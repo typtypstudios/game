@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using TypTyp.TextSystem;
 using UnityEngine;
+using Unity.Netcode;
+using Unity.Netcode.Runtime;
 
-public class DeckController : MonoBehaviour
+public class DeckController : NetworkBehaviour
 {
     [field: SerializeField] public CardDefinition[] Cards { get; private set; }
     [field: SerializeField] public CardUI[] CardUIs { get; private set; }
@@ -48,14 +50,32 @@ public class DeckController : MonoBehaviour
         return card;
     }
 
+    private void DrawInitialCards()
+    {
+
+    }
+
     void UpdateQueue()
     {
         Cards = cardQueue.ToArray();
     }
 
+
+    //CLIENT SIDE METHODS. Client will receive the cards to play from the server,
+    // but the client will handle the actual playing of the cards and the spell casting.
+    // This is to ensure responsiveness and a better player experience. The server will
+    // validate the actions taken by the client and will have the final say on whether a card play is successful or not.
     void OnSpellWritten(string spellText)
     {
         CardDefinition cardDef = Cards.FirstOrDefault(c => c.CardName == spellText);
         PlayCard(cardDef);
+
+        RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp);
+    }
+
+    [Rpc(SendTo.Owner)]
+    void ReceiveCardRpc(int a)
+    {
+        
     }
 }

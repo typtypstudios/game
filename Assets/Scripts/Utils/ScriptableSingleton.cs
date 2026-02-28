@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
 using UnityEngine;
 
-public abstract class ScriptableSingleton<T> : ScriptableObject where T : ScriptableObject
+public abstract class ScriptableSingleton<T> : ScriptableObject
+    where T : ScriptableObject
 {
     private static T _instance;
 

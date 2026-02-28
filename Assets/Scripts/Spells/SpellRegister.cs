@@ -2,7 +2,7 @@ using UnityEngine;
 
 [NoAutoCreate]
 [CreateAssetMenu(fileName = "SpellRegister", menuName = "TypTyp/Spells/SpellRegister", order = 1)]
-public class SpellRegister : ScriptableSingleton<SpellRegister>
+public class SpellRegister : ScriptableRegister<SpellDefinition, SpellRegister>
 {
     [SerializeField] private SpellDefinition[] spells;
 

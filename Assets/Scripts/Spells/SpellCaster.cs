@@ -46,7 +46,7 @@ public class SpellCaster : NetworkBehaviour
 
         //Animacion de casteo previa a confirmacion de servidor
 
-        var spellID = SpellRegister.Instance.GetSpellId(castRequest.SpellDef);
+        var spellID = SpellRegister.Instance.GetId(castRequest.SpellDef);
         CastSpellRpc(spellID, castRequest.Caster.PlayerID);
 
         return true;
@@ -62,7 +62,7 @@ public class SpellCaster : NetworkBehaviour
     public void CastSpellRpc(int spellId, int casterId)
     {
         // if (!IsOwner) return; // Solo el dueño del objeto puede lanzar hechizos
-        var castRequest = new SpellCastRequest(SpellRegister.Instance.GetSpellById(spellId), matchManager.GetPlayerById(casterId));
+        var castRequest = new SpellCastRequest(SpellRegister.Instance.GetById(spellId), matchManager.GetPlayerById(casterId));
         //Si usase los client ids de ngo
         //var caster = NetworkManager.Singleton.ConnectedClients[(ulong)casterId].PlayerObject.GetComponent<Player>();
         if (castRequest.Caster == null)
@@ -90,7 +90,7 @@ public class SpellCaster : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void ApplySpellRpc(int spellId, int casterId)
     {
-        var castRequest = new SpellCastRequest(SpellRegister.Instance.GetSpellById(spellId), matchManager.GetPlayerById(casterId));
+        var castRequest = new SpellCastRequest(SpellRegister.Instance.GetById(spellId), matchManager.GetPlayerById(casterId));
         ApplySpell(castRequest);
     }
 
