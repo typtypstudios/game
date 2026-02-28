@@ -32,5 +32,9 @@ namespace TypTyp
         [field: SerializeField] public int MaxTextsProvided { get; private set; } = 10;
         [field: SerializeField] public bool ShowSpaces { get; set; } = true;
         [field: SerializeField] public bool CapsLockWarning { get; set; } = true;
+
+        [Header("DECK RELATED")]
+        //Textos a completar para el ritual
+        [field: SerializeField] public int DeckSize { get; private set; } = 6;
     }
 }
