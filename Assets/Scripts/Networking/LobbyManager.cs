@@ -123,7 +123,7 @@ public class LobbyManager : MonoBehaviour
     {
         try
         {
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(MaxPlayers - 1);
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(MaxPlayers - 1, "europe-west4");
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
             var playerData = new Dictionary<string, PlayerDataObject>
