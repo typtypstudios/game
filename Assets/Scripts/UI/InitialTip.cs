@@ -2,24 +2,23 @@ using UnityEngine;
 
 public class InitialTip : MonoBehaviour
 {
-    [SerializeField] private GameObject mainMenu;
-    private CanvasGroup canvasGroup;
+    [SerializeField] private Canvas mainMenuCanvas;
+    private Canvas selfCanvas;
 
     private void Awake()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
+        selfCanvas = GetComponent<Canvas>();
         if (PlayerPrefs.GetInt("Understood", 0) != 1)
         {
-            canvasGroup.alpha = 1;
-            mainMenu.SetActive(false);
+            selfCanvas.enabled = true;
+            mainMenuCanvas.enabled = false;
         }
     }
 
     public void Understood()
     {
         PlayerPrefs.SetInt("Understood", 1);
-        canvasGroup.alpha = 0;
-        mainMenu.SetActive(true);
-        canvasGroup.blocksRaycasts = false;
+        selfCanvas.enabled = false;
+        mainMenuCanvas.enabled = true;
     }
 }

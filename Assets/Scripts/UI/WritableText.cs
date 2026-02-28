@@ -8,13 +8,15 @@ public class WritableText : AInputListener
     [SerializeField] private bool startRandomized = true;
     private TextMeshProUGUI text;
     private string originalText;
-    private int idx; 
+    private int idx;
+    private Canvas canvas;
 
     private void Awake()
     {
         text = GetComponent<TextMeshProUGUI>();
         originalText = text.text.Trim();
         if(startRandomized) OnStringTyped(true);
+        canvas = GetComponentInParent<Canvas>();
     }
 
     public void ResetText() => originalText = text.text.Trim();
@@ -28,6 +30,7 @@ public class WritableText : AInputListener
 
     protected override void ProcessInput(char c)
     {
+        if (!canvas.enabled) return;
         if (originalText[idx].ToString().ToLower().Equals(c.ToString().ToLower()))
         {
             text.text = fillColorTag + originalText[..(idx + 1)] + "</color>" + originalText[(idx + 1)..];

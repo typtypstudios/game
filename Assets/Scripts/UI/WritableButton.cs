@@ -14,6 +14,7 @@ public class WritableButton : AInputListener
     private int idx;
     private readonly WaitForSeconds resetTimer = new(0.5f);
     private Coroutine resetCoroutine;
+    private Canvas canvas;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class WritableButton : AInputListener
         buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
         originalText = buttonText.text.Trim();
         textLength = originalText.Length;
+        canvas = GetComponentInParent<Canvas>();
     }
 
     protected override void OnDisable()
@@ -39,6 +41,7 @@ public class WritableButton : AInputListener
 
     protected override void ProcessInput(char c)
     {
+        if(!canvas.enabled) return;
         if (originalText[idx].ToString().ToLower().Equals(c.ToString().ToLower()))
         {
             if(resetCoroutine != null)

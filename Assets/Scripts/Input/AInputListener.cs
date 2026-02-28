@@ -22,7 +22,13 @@ public abstract class AInputListener : MonoBehaviour
 
     protected virtual void OnDisable()
     {
-        InputHandler.Instance.RemoveListener(ProcessInput);
+        if(InputHandler.Instance != null) InputHandler.Instance.RemoveListener(ProcessInput);
+    }
+
+    public void ToggleListener(bool activate)
+    {
+        if(activate) InputHandler.Instance.AddListener(ProcessInput);
+        else InputHandler.Instance.RemoveListener(ProcessInput);
     }
 
     protected abstract void ProcessInput(char c);
