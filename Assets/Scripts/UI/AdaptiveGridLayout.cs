@@ -11,7 +11,7 @@ public class AdaptiveGridLayout : MonoBehaviour
     [Header("Cell related")]
     [Min(1)][SerializeField] private int numColumns = 2;
     [SerializeField] private float cellRatio = 1.3333333f;
-    [SerializeField] private bool centerLonelyChildren = true;
+    [SerializeField] private bool centerIncompleteRows = true;
     [Header("Excluded objects")]
     [SerializeField] private Transform[] excludedObjects;
     private RectTransform rectTransform;
@@ -32,6 +32,7 @@ public class AdaptiveGridLayout : MonoBehaviour
 
     private void LateUpdate()
     {
+        //Cálculo de espacio disponible para las cartas:
         int numRows = (int)Mathf.Ceil((float)children.Count / numColumns);
         float horizontalPadding = rectTransform.rect.width * horizontalPaddingPercentaje;
         float verticalPadding = rectTransform.rect.height * verticalPaddingPercentaje;
@@ -41,20 +42,22 @@ public class AdaptiveGridLayout : MonoBehaviour
             (numRows - 1) * verticalSpacing;
         float availableHorSpace = rectTransform.rect.width - 2 * horizontalPadding -
             (numColumns - 1) * horizontalSpacing;
-
+        //Cálculo tamaño de las cartas:
         float targetHeight = availableVertSpace / numRows;
         float targetWidth = availableHorSpace / numColumns;
         float targetRatio = targetHeight / targetWidth;
+        //Conservación del aspect ratio:
         if (targetRatio > cellRatio) targetHeight = cellRatio * targetWidth;
         else targetWidth = targetHeight / cellRatio;
-
+        //Centrado de las cartas una vez se ha conservado el aspect ratio:
         horizontalPadding = (rectTransform.rect.width - (targetWidth * numColumns + 
             (numColumns - 1) * horizontalSpacing)) / 2;
         verticalPadding = (rectTransform.rect.height - (targetHeight * numRows + (numRows - 1) * 
             verticalSpacing)) / 2;
-
+        //Colocación de las cartas:
         float startXPos = horizontalPadding + targetWidth / 2;
         float startYPos = - (verticalPadding + targetHeight / 2);
+        int incompletedCount = 0; //Número de cartas de una fila incompleta
         for (int i = 0; i < numRows; i++)
         {
             for(int j = 0; j < numColumns; j++)
@@ -62,12 +65,25 @@ public class AdaptiveGridLayout : MonoBehaviour
                 float offsetX = startXPos + (horizontalSpacing + targetWidth) * j;
                 float offsetY = startYPos - (verticalSpacing + targetHeight) * i;
                 int idx = i * numColumns + j;
-                if (idx >= children.Count) continue;
+                if (idx >= children.Count)
+                {
+                    incompletedCount = idx % numColumns;
+                    break;
+                }
                 children[idx].anchoredPosition = new Vector2(offsetX, offsetY);
                 children[idx].sizeDelta = new Vector2(targetWidth, targetHeight);
             }
         }
-        if (centerLonelyChildren && children.Count % numColumns == 1)
-            children[^1].anchoredPosition = new(rectTransform.rect.width / 2, children[^1].anchoredPosition.y);
+        //Centrado de filas incompletas:
+        if (!centerIncompleteRows || incompletedCount == 0) return;
+        horizontalPadding = (rectTransform.rect.width - (targetWidth * incompletedCount +
+            (incompletedCount - 1) * horizontalSpacing)) / 2;
+        startXPos = horizontalPadding + targetWidth / 2;
+        for (int i = 0; i < incompletedCount; i++)
+        {
+            float offsetX = startXPos + (horizontalSpacing + targetWidth) * i;
+            int idx = incompletedCount - i;
+            children[^idx].anchoredPosition = new Vector2(offsetX, children[^idx].anchoredPosition.y);
+        }
     }
 }

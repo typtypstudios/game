@@ -19,7 +19,8 @@ public class DeckBuilder : MonoBehaviour
     {
         LoadEquippedCards();
         LoadUnequippedCards();
-        foreach (GameObject panel in highlightPanels) panel.transform.SetAsLastSibling();
+        foreach (GameObject panel in highlightPanels) 
+            panel.transform.SetAsLastSibling(); //Para estar por encima de las cartas creadas
         CardUI_Builder.OnCardChosen += ProcessCardChosen;
     }
 
@@ -27,7 +28,8 @@ public class DeckBuilder : MonoBehaviour
 
     public void SaveEquippedCards()
     {
-        string eCardsString = string.Join(",", equippedCards.Select(c => CardRegister.Instance.GetId(c.Card)));
+        List<int> indexes = equippedCards.Select(c => CardRegister.Instance.GetId(c.Card)).ToList();
+        string eCardsString = string.Join(",", indexes);
         PlayerPrefs.SetString("EquippedCards", eCardsString);
     }
 
@@ -48,14 +50,30 @@ public class DeckBuilder : MonoBehaviour
             CardUI_Builder c = Instantiate(cardPrefab, equippedLayout).GetComponent<CardUI_Builder>();
             equippedCards.Add(c);
         }
-        //Carga de cartas guardadas
-        string eCardsString = PlayerPrefs.GetString("EquippedCards", string.Empty);
+        //Carga de cartas guardadas:
         equippedIndexes = Enumerable.Range(0, Settings.Instance.DeckSize).ToList();
-        if(!eCardsString.Equals(string.Empty))
+        string eCardsString = PlayerPrefs.GetString("EquippedCards", string.Empty);
+        if (!eCardsString.Equals(string.Empty))
             equippedIndexes = eCardsString.Split(',').Select(int.Parse).ToList();
+        //Manejo de disminución de deck size:
+        if (Settings.Instance.DeckSize < equippedIndexes.Count)
+            equippedIndexes.RemoveRange(Settings.Instance.DeckSize - 1,
+                equippedIndexes.Count - Settings.Instance.DeckSize);
         //Configuración de cartas:
-        for (int i = 0; i < equippedCards.Count; i++)
-            equippedCards[i].SetCard(CardRegister.Instance.GetById(equippedIndexes[i]));
+        for (int i = 0; i < equippedIndexes.Count; i++)
+                equippedCards[i].SetCard(CardRegister.Instance.GetById(equippedIndexes[i]));
+        //Manejo de aumento de deck size:
+        if(equippedIndexes.Count < equippedCards.Count)
+        {
+            int count = equippedCards.Count - equippedIndexes.Count;
+            for(int i = 0; i < count; i++)
+            {
+                List<CardDefinition> currentCards = equippedCards.Select(c => c.Card).ToList();
+                (CardDefinition c, int idx) = CardRegister.Instance.GetUncontainedItem(currentCards);
+                equippedCards[equippedIndexes.Count + i].SetCard(c);
+                equippedIndexes.Add(idx);
+            }
+        }
     }
 
     private void LoadUnequippedCards()
@@ -78,16 +96,17 @@ public class DeckBuilder : MonoBehaviour
         }
         if(card.transform.parent == equippedLayout)
         {
-            if (selectedEquipped) selectedEquipped.SetHover(false);
+            selectedEquipped?.SetHover(false);
             selectedEquipped = card;
         }
         else
         {
-            if(selectedUnequipped) selectedUnequipped.SetHover(false);
+            selectedUnequipped?.SetHover(false);
             selectedUnequipped = card;
         }
         card.SetHover(true); //Lo pone como último hijo, delante de highlight panel
         CheckCardChange();
+        //Si algún objeto está en hover (será último hijo) el panel se activa
         foreach (GameObject panel in highlightPanels) 
             panel.SetActive(panel.transform.GetSiblingIndex() != panel.transform.parent.childCount - 1);
     }

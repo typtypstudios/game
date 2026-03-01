@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [NoAutoCreate]
@@ -83,5 +84,11 @@ public abstract class ScriptableRegister<TItem, TSelf> : ScriptableSingleton<TSe
             throw new ArgumentException("Item not found in register", nameof(item));
 
         return id;
+    }
+
+    public (TItem, int) GetUncontainedItem(List<TItem> list)
+    {
+        TItem item = registeredItems.Where(i => !list.Contains(i)).FirstOrDefault();
+        return (item, GetId(item));
     }
 }

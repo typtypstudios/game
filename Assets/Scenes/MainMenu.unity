@@ -2525,9 +2525,9 @@ MonoBehaviour:
   horizontalPaddingPercentaje: 0.1
   verticalPaddingPercentaje: 0.05
   spacingPercentaje: 0.02
-  numColumns: 3
+  numColumns: 4
   cellRatio: 1.3333334
-  centerLonelyChildren: 1
+  centerIncompleteRows: 1
   excludedObjects:
   - {fileID: 716025701}
 --- !u!114 &979094113
@@ -3491,7 +3491,7 @@ MonoBehaviour:
   spacingPercentaje: 0.02
   numColumns: 2
   cellRatio: 1.3333334
-  centerLonelyChildren: 1
+  centerIncompleteRows: 1
   excludedObjects:
   - {fileID: 1305314417}
 --- !u!1 &1259210055
