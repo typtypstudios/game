@@ -305,7 +305,6 @@ GameObject:
   - component: {fileID: 7544946913238032809}
   - component: {fileID: 6384239637751282489}
   - component: {fileID: 2644428950823274379}
-  - component: {fileID: 3894243002065543458}
   m_Layer: 0
   m_Name: Panel_Card
   m_TagString: Untagged
@@ -411,21 +410,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d27d93f5c5f3864cb160f9efb3d5bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardUI
-  <CardImage>k__BackingField: {fileID: 6905356337233834659}
-  <CardName>k__BackingField: {fileID: 5583102903411735483}
-  <CardCost>k__BackingField: {fileID: 5015430467145389132}
---- !u!114 &3894243002065543458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5221048593667433649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a0ed0b8315ae08409456edc1e28bb66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Card
+  <CardDefinition>k__BackingField: {fileID: 0}
+  cardImage: {fileID: 7544946913238032809}
+  cardName: {fileID: 5583102903411735483}
+  cardCost: {fileID: 5015430467145389132}
+  OnCardWritten:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6457666924906113449
 GameObject:
   m_ObjectHideFlags: 0

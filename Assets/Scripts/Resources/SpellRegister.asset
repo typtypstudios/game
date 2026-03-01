@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f147a646b56462143ad7c678d4445e9d, type: 3}
   m_Name: SpellRegister
   m_EditorClassIdentifier: Assembly-CSharp::SpellRegister
+  registeredItems:
+  - {fileID: 11400000, guid: b7abff93c83eee04187c880e64140340, type: 2}
   spells:
-  - {fileID: 11400000, guid: fab18a072791a8f49a57a7a38191e090, type: 2}
+  - {fileID: 11400000, guid: b7abff93c83eee04187c880e64140340, type: 2}

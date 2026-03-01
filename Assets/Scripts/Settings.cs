@@ -36,5 +36,9 @@ namespace TypTyp
         [Header("DECK RELATED")]
         //Textos a completar para el ritual
         [field: SerializeField] public int DeckSize { get; private set; } = 6;
+
+        [Header("SPELL RELATED")]
+        //Textos a completar para el ritual
+        [field: SerializeField] public int HandSize { get; private set; } = 3;
     }
 }

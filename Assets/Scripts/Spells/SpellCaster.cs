@@ -29,18 +29,20 @@ public class SpellCaster : NetworkBehaviour
         matchManager = FindAnyObjectByType<MatchManager>();
     }
 
-    public bool TryCastSpellClientSide(SpellDefinition spellDef)
+    public bool TryCastSpell(SpellDefinition spellDef)
     {
-        return TryCastSpellClientSide(player, new SpellCastRequest(spellDef, player));
+        return TryCastSpell(player, new SpellCastRequest(spellDef, player));
     }
 
     /// <summary>
     /// Client side spell casting. Checks if the player can cast the spell and sends a request to the server to cast it. The server will then validate the spell and apply its effects if valid.
     /// Returned value returns only vlient validation, not server validation, so it can be used to trigger client side casting animations and such.
     /// </summary>
-    public bool TryCastSpellClientSide(Player caster, SpellCastRequest castRequest)
+    public bool TryCastSpell(Player caster, SpellCastRequest castRequest)
     {
-        if (!caster.IsOwner) return false;
+        Debug.Log($"Player {caster.PlayerID} is trying to cast spell {castRequest.SpellDef.SpellName}");
+        Debug.Log(IsOwner);
+        if (!IsOwner) return false;
 
         if (!CanCastSpell(castRequest)) return false; //Tb se podria animacion de error por mana
 

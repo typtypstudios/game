@@ -1,81 +1,160 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TypTyp.TextSystem;
 using UnityEngine;
 using Unity.Netcode;
-using Unity.Netcode.Runtime;
+using UnityEngine.Events;
+using TypTyp;
+
+public enum PlayCardRequestResult
+{
+    Success,
+    NotOwner,
+    NotEnoughMana,
+    SpellOnCooldown,
+    NotInHand
+}
 
 public class DeckController : NetworkBehaviour
 {
+    [field: ContextMenuItem("Update Cards View", nameof(UpdateQueueListView))]
     [field: SerializeField] public CardDefinition[] Cards { get; private set; }
-    [field: SerializeField] public CardUI[] CardUIs { get; private set; }
-    Dictionary<CardDefinition, CardUI> cardUIDict = new();
-    private Queue<CardDefinition> cardQueue;
+    private Queue<int> cardQueue;
+    private HashSet<int> currentHand;
     private SpellCaster spellCaster;
 
-    public void Awake()
+    public UnityEvent<CardDefinition> OnCardPlayed = new();
+    public UnityEvent<CardDefinition> OnCardDrawn = new();
+
+    public event Action<int> OnCardPlayedEvent;
+    public event Action<int> OnCardDrawnEvent;
+
+    void Awake()
     {
         spellCaster = GetComponentInParent<SpellCaster>();
+        UnityEngine.Assertions.Assert.IsNotNull(
+            spellCaster,
+            "DeckController requires a SpellCaster component in its parents");
     }
 
-    public void Start()
+    public override void OnNetworkSpawn()
     {
-        Cards.Shuffle(0);
-        cardQueue = new(Cards);
-        foreach (var cardUI in CardUIs)
+        if (IsServer)
         {
-            var cardDef = DrawCard();
-            cardUI.SetCardInfo(cardDef);
-            cardUI.WrittableSpell.OnSpellComplete.AddListener(OnSpellWritten);
+            Cards.Shuffle(0);
+            cardQueue = new(Cards.Select(c => CardRegister.Instance.GetId(c)));
+            currentHand = new(Settings.Instance.HandSize);
+            DrawInitialCards();
+        }
+        else if (!IsOwner)
+        {
+            enabled = false;
         }
     }
 
-    public void PlayCard(CardDefinition card)
+    [Rpc(SendTo.Server)]
+    void PlayCardRpc(int card, RpcParams rpcParams = default)
     {
-        if (spellCaster.TryCastSpellClientSide(card.Spell))
+        //Voy a debugear todo el estado relevante a la validacion
+        Debug.Log($"PlayCardRpc received for card {CardRegister.Instance.GetById(card)} from client {rpcParams.Receive.SenderClientId}");
+        //Estado del jugador
+        Debug.Log($"Current hand: {string.Join(", ", currentHand.Select(id => CardRegister.Instance.GetById(id)))}");
+        Debug.Log($"Current mana: {GetComponent<Player>().CurrentMana.Value}");
+
+        //Validar propietario
+        if (rpcParams.Receive.SenderClientId != OwnerClientId)
+            return;
+
+        if (!currentHand.Contains(card))
         {
-            var cardUI = cardUIDict[card];
-            var newCard = DrawCard();
-            //Animation de carta jugada y entrada de nueva carta
-            cardUI.SetCardInfo(newCard);
-            cardUIDict[card] = cardUI;
+            PlayCardResultRpc(PlayCardRequestResult.NotInHand, card);
+            return;
         }
+
+        var cardDef = CardRegister.Instance.GetById(card);
+        if (!spellCaster.TryCastSpell(cardDef.Spell))
+        {
+            PlayCardResultRpc(PlayCardRequestResult.NotEnoughMana, card);
+            return;
+        }
+
+        ReturnCardToDeck(card);
+        int newCard = DrawCard();
+        PlayCardResultRpc(PlayCardRequestResult.Success, card);
+        ReceiveCardDrawnRpc(newCard);
     }
 
-    public CardDefinition DrawCard()
+    private int DrawCard()
     {
+        if (cardQueue.Count == 0)
+        {
+            Debug.LogError("Deck empty");
+            return -1;
+        }
         var card = cardQueue.Dequeue();
-        cardQueue.Enqueue(card);
-        UpdateQueue();
+        currentHand.Add(card);
+        //UpdateQueueListView();
         return card;
+    }
+
+    private void ReturnCardToDeck(int card)
+    {
+        currentHand.Remove(card);
+        cardQueue.Enqueue(card);
+        //UpdateQueueListView();
     }
 
     private void DrawInitialCards()
     {
-
+        var handSize = TypTyp.Settings.Instance.HandSize;
+        int[] initialCardIds = new int[handSize];
+        for (int i = 0; i < TypTyp.Settings.Instance.HandSize && cardQueue.Count > 0; i++)
+        {
+            initialCardIds[i] = DrawCard();
+        }
+        ReceiveCardDrawnRpc(initialCardIds);
     }
 
-    void UpdateQueue()
+    void UpdateQueueListView()
     {
-        Cards = cardQueue.ToArray();
+        Cards = cardQueue.Select(id => CardRegister.Instance.GetById(id)).ToArray();
     }
-
 
     //CLIENT SIDE METHODS. Client will receive the cards to play from the server,
     // but the client will handle the actual playing of the cards and the spell casting.
     // This is to ensure responsiveness and a better player experience. The server will
     // validate the actions taken by the client and will have the final say on whether a card play is successful or not.
-    void OnSpellWritten(string spellText)
-    {
-        CardDefinition cardDef = Cards.FirstOrDefault(c => c.CardName == spellText);
-        PlayCard(cardDef);
 
-        RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp);
+    public void RequestPlayCard(int cardId)
+    {
+        if (IsOwner)
+            PlayCardRpc(cardId);
     }
 
     [Rpc(SendTo.Owner)]
-    void ReceiveCardRpc(int a)
+    void PlayCardResultRpc(PlayCardRequestResult result, int cardId)
     {
-        
+        if (result == PlayCardRequestResult.Success)
+        {
+            OnCardPlayedEvent?.Invoke(cardId);
+            OnCardPlayed.Invoke(CardRegister.Instance.GetById(cardId));
+        }
+        else
+        {
+            //Animacion de error al jugar carta
+            Debug.LogWarning($"Failed to play card {CardRegister.Instance.GetById(cardId)}: {result}");
+        }
+    }
+
+    [Rpc(SendTo.Owner)]
+    void ReceiveCardDrawnRpc(params int[] cardIds)
+    {
+        foreach (var card in cardIds)
+        {
+            var cardDef = CardRegister.Instance.GetById(card);
+            OnCardDrawnEvent?.Invoke(card);
+            OnCardDrawn.Invoke(cardDef);
+        }
     }
 }
