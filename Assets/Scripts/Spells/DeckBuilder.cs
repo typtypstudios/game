@@ -30,7 +30,7 @@ public class DeckBuilder : MonoBehaviour
     {
         List<int> indexes = equippedCards.Select(c => CardRegister.Instance.GetId(c.Card)).ToList();
         string eCardsString = string.Join(",", indexes);
-        PlayerPrefs.SetString("EquippedCards", eCardsString);
+        PlayerPrefsEncoder.SetString("EquippedCards", eCardsString);
     }
 
     public void ResetSelection()
@@ -52,7 +52,7 @@ public class DeckBuilder : MonoBehaviour
         }
         //Carga de cartas guardadas:
         equippedIndexes = Enumerable.Range(0, Settings.Instance.DeckSize).ToList();
-        string eCardsString = PlayerPrefs.GetString("EquippedCards", string.Empty);
+        string eCardsString = PlayerPrefsEncoder.GetString("EquippedCards", string.Empty);
         if (!eCardsString.Equals(string.Empty))
             equippedIndexes = eCardsString.Split(',').Select(int.Parse).ToList();
         //Manejo de disminución de deck size:
@@ -70,7 +70,7 @@ public class DeckBuilder : MonoBehaviour
             {
                 List<CardDefinition> currentCards = equippedCards.Select(c => c.Card).ToList();
                 (CardDefinition c, int idx) = CardRegister.Instance.GetUncontainedItem(currentCards);
-                equippedCards[equippedIndexes.Count + i].SetCard(c);
+                equippedCards[equippedIndexes.Count].SetCard(c);
                 equippedIndexes.Add(idx);
             }
         }
