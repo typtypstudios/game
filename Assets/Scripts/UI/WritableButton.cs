@@ -7,12 +7,13 @@ using System.Collections;
 public class WritableButton : AInputListener
 {
     [SerializeField] private bool resetIfFailed = true;
+    [SerializeField] private float resetTime = 0.5f;
     private Button button;
     private TextMeshProUGUI buttonText;
     private string originalText;
     private int textLength;
     private int idx;
-    private readonly WaitForSeconds resetTimer = new(0.5f);
+    private WaitForSeconds resetTimer;
     private Coroutine resetCoroutine;
     private Canvas canvas;
 
@@ -23,6 +24,7 @@ public class WritableButton : AInputListener
         originalText = buttonText.text.Trim();
         textLength = originalText.Length;
         canvas = GetComponentInParent<Canvas>();
+        resetTimer = new(resetTime);
     }
 
     protected override void OnDisable()
@@ -39,7 +41,7 @@ public class WritableButton : AInputListener
         ResetButton();
     }
 
-    private void ResetButton()
+    public void ResetButton()
     {
         buttonText.text = originalText;
         idx = 0;

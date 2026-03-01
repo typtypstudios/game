@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TypTyp;
@@ -35,8 +36,8 @@ public class DeckBuilder : MonoBehaviour
 
     public void ResetSelection()
     {
-        if (selectedEquipped) selectedEquipped.SetHover(false);
-        if (selectedUnequipped) selectedUnequipped.SetHover(false);
+        if (selectedEquipped) selectedEquipped.Highlight(false);
+        if (selectedUnequipped) selectedUnequipped.Highlight(false);
         selectedEquipped = null;
         selectedUnequipped = null;
         foreach (GameObject panel in highlightPanels) panel.SetActive(false);
@@ -89,22 +90,24 @@ public class DeckBuilder : MonoBehaviour
 
     private void ProcessCardChosen(CardUI_Builder card)
     {
-        if(card == selectedEquipped || card == selectedUnequipped)
+        //Se resetean los botones para resetear su escritura
+        StartCoroutine(ResetButtonsCoroutine());
+        if (card == selectedEquipped || card == selectedUnequipped)
         {
             ResetSelection();
             return;
         }
         if(card.transform.parent == equippedLayout)
         {
-            selectedEquipped?.SetHover(false);
+            selectedEquipped?.Highlight(false);
             selectedEquipped = card;
         }
         else
         {
-            selectedUnequipped?.SetHover(false);
+            selectedUnequipped?.Highlight(false);
             selectedUnequipped = card;
         }
-        card.SetHover(true); //Lo pone como último hijo, delante de highlight panel
+        card.Highlight(true); //Lo pone como último hijo, delante de highlight panel
         CheckCardChange();
         //Si algún objeto está en hover (será último hijo) el panel se activa
         foreach (GameObject panel in highlightPanels) 
@@ -120,5 +123,11 @@ public class DeckBuilder : MonoBehaviour
             selectedEquipped.SetCard(c);
             ResetSelection();
         }
+    }
+
+    IEnumerator ResetButtonsCoroutine()
+    {
+        yield return null;
+        foreach (var b in GetComponentsInChildren<WritableButton>()) b.ResetButton();
     }
 }
