@@ -9,10 +9,14 @@ public class InputHandler : Singleton<InputHandler>
     {
         base.Awake();
         OnCharTyped = null;
-        Keyboard.current.onTextInput += (c) =>
-        {
-            if(c != '\t') OnCharTyped?.Invoke(c);
-        };
+        Keyboard.current.onTextInput += CommunicateChartTyped;
+    }
+
+    private void OnDisable() => Keyboard.current.onTextInput -= CommunicateChartTyped;
+
+    private void CommunicateChartTyped(char c) 
+    {
+        if (c != '\t') OnCharTyped?.Invoke(c);
     }
 
     public void AddListener(Action<char> func) => OnCharTyped += func;
