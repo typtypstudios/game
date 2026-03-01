@@ -32,6 +32,13 @@ public class WritableButton : AInputListener
         ResetButton();
     }
 
+    public void OverrideText(string text)
+    {
+        originalText = text;
+        textLength = text.Length;
+        ResetButton();
+    }
+
     private void ResetButton()
     {
         buttonText.text = originalText;

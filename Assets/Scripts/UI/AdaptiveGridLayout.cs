@@ -1,30 +1,38 @@
 using UnityEngine;
+using System.Collections.Generic;
 using System.Linq;
 
 public class AdaptiveGridLayout : MonoBehaviour
 {
+    [Header("Padding & spacing")]
     [Range(0, 0.4f)][SerializeField] private float horizontalPaddingPercentaje = 0.1f;
     [Range(0, 0.4f)][SerializeField] private float verticalPaddingPercentaje = 0.1f;
     [Range(0, 1)][SerializeField] private float spacingPercentaje = 0.02f;
+    [Header("Cell related")]
     [Min(1)][SerializeField] private int numColumns = 2;
-    [SerializeField] private float cellRatio = 1.34f;
+    [SerializeField] private float cellRatio = 1.3333333f;
+    [SerializeField] private bool centerLonelyChildren = true;
+    [Header("Excluded objects")]
+    [SerializeField] private Transform[] excludedObjects;
     private RectTransform rectTransform;
-    private RectTransform[] children;
+    private readonly List<RectTransform> children = new();
 
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
-        children = GetComponentsInChildren<RectTransform>().Where(t => t != rectTransform).ToArray();
-        foreach(var rt in children)
+        for (int i = 0; i < transform.childCount; i++)
         {
+            if (excludedObjects.Contains(transform.GetChild(i))) continue;
+            RectTransform rt = transform.GetChild(i).GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(0f, 1f);
             rt.anchorMax = new Vector2(0f, 1f);
+            children.Add(rt);
         }
     }
 
     private void LateUpdate()
     {
-        int numRows = (int)Mathf.Ceil((float)children.Length / numColumns);
+        int numRows = (int)Mathf.Ceil((float)children.Count / numColumns);
         float horizontalPadding = rectTransform.rect.width * horizontalPaddingPercentaje;
         float verticalPadding = rectTransform.rect.height * verticalPaddingPercentaje;
         float horizontalSpacing = spacingPercentaje * rectTransform.rect.width;
@@ -54,10 +62,12 @@ public class AdaptiveGridLayout : MonoBehaviour
                 float offsetX = startXPos + (horizontalSpacing + targetWidth) * j;
                 float offsetY = startYPos - (verticalSpacing + targetHeight) * i;
                 int idx = i * numColumns + j;
-                if (idx >= children.Length) return;
+                if (idx >= children.Count) continue;
                 children[idx].anchoredPosition = new Vector2(offsetX, offsetY);
                 children[idx].sizeDelta = new Vector2(targetWidth, targetHeight);
             }
         }
+        if (centerLonelyChildren && children.Count % numColumns == 1)
+            children[^1].anchoredPosition = new(rectTransform.rect.width / 2, children[^1].anchoredPosition.y);
     }
 }

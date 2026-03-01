@@ -8,6 +8,7 @@ public class InputHandler : Singleton<InputHandler>
     protected override void Awake()
     {
         base.Awake();
+        OnCharTyped = null;
         Keyboard.current.onTextInput += (c) =>
         {
             if(c != '\t') OnCharTyped?.Invoke(c);
