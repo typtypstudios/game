@@ -40,6 +40,7 @@ public class DeckController : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        if (IsOwner) Cards = DeckBuilder.CardsInDeck;
         if (IsServer)
         {
             Cards.Shuffle(0);

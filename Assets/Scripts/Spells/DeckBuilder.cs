@@ -15,10 +15,12 @@ public class DeckBuilder : MonoBehaviour
     private List<int> equippedIndexes = new();
     private CardUI_Builder selectedEquipped;
     private CardUI_Builder selectedUnequipped;
+    public static CardDefinition[] CardsInDeck { get; private set; }
 
     private void Awake()
     {
         LoadEquippedCards();
+        CardsInDeck = equippedCards.Select(c => c.Card).ToArray();
         LoadUnequippedCards();
         foreach (GameObject panel in highlightPanels) 
             panel.transform.SetAsLastSibling(); //Para estar por encima de las cartas creadas
@@ -32,6 +34,7 @@ public class DeckBuilder : MonoBehaviour
         List<int> indexes = equippedCards.Select(c => CardRegister.Instance.GetId(c.Card)).ToList();
         string eCardsString = string.Join(",", indexes);
         PlayerPrefsEncoder.SetString("EquippedCards", eCardsString);
+        CardsInDeck = equippedCards.Select(c => c.Card).ToArray();
     }
 
     public void ResetSelection()
@@ -90,8 +93,7 @@ public class DeckBuilder : MonoBehaviour
 
     private void ProcessCardChosen(CardUI_Builder card)
     {
-        //Se resetean los botones para resetear su escritura
-        StartCoroutine(ResetButtonsCoroutine());
+        StartCoroutine(ResetButtonsCoroutine()); //Se resetean los botones para resetear su escritura
         if (card == selectedEquipped || card == selectedUnequipped)
         {
             ResetSelection();
