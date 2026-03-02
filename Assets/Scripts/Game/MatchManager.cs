@@ -311,9 +311,9 @@ public class MatchManager : NetworkBehaviour
         var playerObject = NetworkManager.Singleton.LocalClient.PlayerObject;
         if (playerObject == null) return;
 
+        // Desactivar la escritura del ritual del InputHandler
         var ritual = playerObject.GetComponentInChildren<RitualManager>();
-        if (ritual != null)
-            ritual.SetActive(false);
+        ritual.ToggleListener(false);
 
         // NOTA: desactivar también la escritura de hechizos
         Debug.LogWarning("Spell deactivation not implemented");
