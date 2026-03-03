@@ -33,7 +33,7 @@ public class FontDropdown : MonoBehaviour
         Settings.Instance.DefaultFont = font;
         labelText = font.name;
         ToggleSelection();
-        foreach (var config in FindObjectsByType<DefaultFontConfigurator>(FindObjectsSortMode.None))
+        foreach (var config in FindObjectsByType<DefaultFontConfigurator>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             config.ResetFont();
     }
 }
