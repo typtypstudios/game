@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3042400614358868706}
   - component: {fileID: 720045239891875907}
   - component: {fileID: 5015430467145389132}
+  - component: {fileID: 2635192550375942246}
   m_Layer: 0
   m_Name: TMP_CardCost
   m_TagString: Untagged
@@ -137,6 +138,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2635192550375942246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5021787222228325717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb11719237efce4294072235cdf0c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
 --- !u!1 &5164358522766560074
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,6 +162,7 @@ GameObject:
   - component: {fileID: 2200488429628876113}
   - component: {fileID: 5583102903411735483}
   - component: {fileID: 4309479216336844420}
+  - component: {fileID: 3477840973650000571}
   m_Layer: 0
   m_Name: TMP_CardName
   m_TagString: Untagged
@@ -292,6 +306,18 @@ MonoBehaviour:
   OnSpellComplete:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3477840973650000571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5164358522766560074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb11719237efce4294072235cdf0c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
 --- !u!1 &5221048593667433649
 GameObject:
   m_ObjectHideFlags: 0

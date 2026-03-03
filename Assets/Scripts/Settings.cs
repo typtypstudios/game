@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace TypTyp
@@ -40,5 +41,8 @@ namespace TypTyp
         [Header("SPELL RELATED")]
         //Textos a completar para el ritual
         [field: SerializeField] public int HandSize { get; private set; } = 3;
+
+        [Header("Settings")]
+        [field: SerializeField] public TMP_FontAsset DefaultFont { get; set; }
     }
 }

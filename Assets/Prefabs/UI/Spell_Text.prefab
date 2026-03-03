@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4208581750236697601}
   - component: {fileID: 1162055742630959806}
   - component: {fileID: 706073966904559815}
+  - component: {fileID: -4316949768641065941}
   m_Layer: 0
   m_Name: Spell_Text
   m_TagString: Untagged
@@ -150,3 +151,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d27d93f5c5f3864cb160f9efb3d5bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardUI
+  <CardDefinition>k__BackingField: {fileID: 0}
+  cardImage: {fileID: 0}
+  cardName: {fileID: 0}
+  cardCost: {fileID: 0}
+  OnCardWritten:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &-4316949768641065941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2280059109270174325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb11719237efce4294072235cdf0c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
