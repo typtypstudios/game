@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TypTyp.TextSystem;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.Events;
@@ -16,6 +15,12 @@ public enum PlayCardRequestResult
     NotInHand
 }
 
+public enum RequestValidationType
+{
+    Client,
+    Server
+}
+
 public class DeckController : NetworkBehaviour
 {
     [field: ContextMenuItem("Update Cards View", nameof(UpdateQueueListView))]
@@ -26,9 +31,10 @@ public class DeckController : NetworkBehaviour
 
     public UnityEvent<CardDefinition> OnCardPlayed = new();
     public UnityEvent<CardDefinition> OnCardDrawn = new();
-
     public event Action<int> OnCardPlayedEvent;
     public event Action<int> OnCardDrawnEvent;
+    public event Action<int> OnCardPlayRequestSuccess;
+    public event Action<int> OnCardPlayRequestFailed;
 
     void Awake()
     {
@@ -54,8 +60,10 @@ public class DeckController : NetworkBehaviour
         }
     }
 
+    #region Server side
+
     [Rpc(SendTo.Server)]
-    void PlayCardRpc(int card, RpcParams rpcParams = default)
+    void PlayCardRequestRpc(int card, RpcParams rpcParams = default)
     {
         //Voy a debugear todo el estado relevante a la validacion
         Debug.Log($"PlayCardRpc received for card {CardRegister.Instance.GetById(card)} from client {rpcParams.Receive.SenderClientId}");
@@ -63,27 +71,26 @@ public class DeckController : NetworkBehaviour
         Debug.Log($"Current hand: {string.Join(", ", currentHand.Select(id => CardRegister.Instance.GetById(id)))}");
         Debug.Log($"Current mana: {GetComponent<Player>().CurrentMana.Value}");
 
-        //Validar propietario
-        if (rpcParams.Receive.SenderClientId != OwnerClientId)
-            return;
+        var validation = ValidatePlayCardRequest(RequestValidationType.Server, card);
 
-        if (!currentHand.Contains(card))
+        if (validation == PlayCardRequestResult.Success)
         {
-            PlayCardResultRpc(PlayCardRequestResult.NotInHand, card);
-            return;
+            ReturnCardToDeck(card);
+            int newCard = DrawCard();
+            PlayCardResultRpc(validation, card, newCard);
         }
-
-        var cardDef = CardRegister.Instance.GetById(card);
-        if (!spellCaster.TryCastSpell(cardDef.Spell))
+        else
         {
-            PlayCardResultRpc(PlayCardRequestResult.NotEnoughMana, card);
-            return;
+            PlayCardResultRpc(validation, card);
         }
+    }
 
-        ReturnCardToDeck(card);
-        int newCard = DrawCard();
-        PlayCardResultRpc(PlayCardRequestResult.Success, card);
-        ReceiveCardDrawnRpc(newCard);
+    void PlayCard(int card)
+    {
+        var cardDef = GetCardDefinitionById(card);
+        var spellDef = cardDef.Spell;
+
+        spellCaster.CastSpell(spellDef);
     }
 
     private int DrawCard()
@@ -98,6 +105,8 @@ public class DeckController : NetworkBehaviour
         //UpdateQueueListView();
         return card;
     }
+
+    #endregion
 
     private void ReturnCardToDeck(int card)
     {
@@ -114,43 +123,63 @@ public class DeckController : NetworkBehaviour
         {
             initialCardIds[i] = DrawCard();
         }
-        ReceiveCardDrawnRpc(initialCardIds);
+        ReceiveCardsDrawnRpc(initialCardIds);
     }
 
-    void UpdateQueueListView()
-    {
-        Cards = cardQueue.Select(id => CardRegister.Instance.GetById(id)).ToArray();
-    }
+    #region Client Side
 
-    //CLIENT SIDE METHODS. Client will receive the cards to play from the server,
-    // but the client will handle the actual playing of the cards and the spell casting.
-    // This is to ensure responsiveness and a better player experience. The server will
-    // validate the actions taken by the client and will have the final say on whether a card play is successful or not.
-
-    public void RequestPlayCard(int cardId)
+    //Client entry point
+    public void RequestPlayCard(int card)
     {
-        if (IsOwner)
-            PlayCardRpc(cardId);
-    }
+        if (!IsOwner) return;
 
-    [Rpc(SendTo.Owner)]
-    void PlayCardResultRpc(PlayCardRequestResult result, int cardId)
-    {
-        if (result == PlayCardRequestResult.Success)
+        //First, validate on client
+        var validation = ValidatePlayCardRequest(RequestValidationType.Client, card);
+        Debug.LogFormat("Play card request.\n Card: {0}\n Client validation = {1}", card, validation);
+
+        if (validation == PlayCardRequestResult.Success)
         {
-            OnCardPlayedEvent?.Invoke(cardId);
-            OnCardPlayed.Invoke(CardRegister.Instance.GetById(cardId));
+            //Activate local pre-animations
+            //Send request to server 
+            PlayCardRequestRpc(card);
         }
         else
         {
-            //Animacion de error al jugar carta
-            Debug.LogWarning($"Failed to play card {CardRegister.Instance.GetById(cardId)}: {result}");
+            //Handle cast fail
         }
     }
 
+    //Server response to play card request
     [Rpc(SendTo.Owner)]
-    void ReceiveCardDrawnRpc(params int[] cardIds)
+    void PlayCardResultRpc(PlayCardRequestResult result, int playedCard, params int[] receivedCards)
     {
+        if (result == PlayCardRequestResult.Success)
+        {
+            OnCardPlayedEvent?.Invoke(playedCard);
+            OnCardPlayed.Invoke(CardRegister.Instance.GetById(playedCard));
+        }
+        else
+        {
+            //Client said card can be played, but server said it cannot -> Conciliate
+            Debug.LogWarning($"Failed to play card {CardRegister.Instance.GetById(playedCard)}: {result}");
+        }
+
+        if (receivedCards.Length > 0)
+            ReceiveCardsDrawn(receivedCards);
+    }
+
+    [Rpc(SendTo.Owner)]
+    void ReceiveCardsDrawnRpc(params int[] cardIds)
+    {
+        ReceiveCardsDrawn(cardIds);
+    }
+
+    void ReceiveCardsDrawn(params int[] cardIds)
+    {
+        if (!IsOwner)
+        {
+            Debug.LogError("Cards received by other than owner.", this);
+        }
         foreach (var card in cardIds)
         {
             var cardDef = CardRegister.Instance.GetById(card);
@@ -158,4 +187,42 @@ public class DeckController : NetworkBehaviour
             OnCardDrawn.Invoke(cardDef);
         }
     }
+
+    #endregion
+
+    #region Validation
+
+    //De momento la validacion sigue el mismo flujo en server y en cliente
+    PlayCardRequestResult ValidatePlayCardRequest(RequestValidationType validationType, int card)
+    {
+        if (validationType == RequestValidationType.Server)
+        {
+            if (!currentHand.Contains(card))
+            {
+                return PlayCardRequestResult.NotInHand;
+            }
+        }
+
+        var spellDef = GetCardDefinitionById(card).Spell;
+        var spellCastRequestValidation = spellCaster.ValidateSpellCastRequest(validationType, spellDef);
+        if (spellCastRequestValidation != PlayCardRequestResult.Success)
+        {
+            return spellCastRequestValidation;
+        }
+
+        return PlayCardRequestResult.Success;
+    }
+
+    #endregion
+
+    #region Helper Methods
+
+    CardDefinition GetCardDefinitionById(int id) => CardRegister.Instance.GetById(id);
+
+    void UpdateQueueListView()
+    {
+        Cards = cardQueue.Select(id => CardRegister.Instance.GetById(id)).ToArray();
+    }
+
+    #endregion
 }

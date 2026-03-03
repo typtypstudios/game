@@ -1,26 +1,12 @@
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
-
-//Es necesario tener una estructura que agrupe el data del hechizo con su caster y targets, para poder aplicar los efectos correctamente. Tambien se podria usar para manejar duracion de hechizos, etc
-[System.Serializable]
-public struct SpellCastRequest
-{
-    public SpellDefinition SpellDef { get; private set; }
-    public Player Caster { get; private set; }
-
-    public SpellCastRequest(SpellDefinition spellDef, Player caster)
-    {
-        SpellDef = spellDef;
-        Caster = caster;
-    }
-}
 
 [RequireComponent(typeof(Player))]
 public class SpellCaster : NetworkBehaviour
 {
     Player player;
-
     MatchManager matchManager;
 
     public void Awake()
@@ -29,95 +15,47 @@ public class SpellCaster : NetworkBehaviour
         matchManager = FindAnyObjectByType<MatchManager>();
     }
 
-    public bool TryCastSpell(SpellDefinition spellDef)
+    #region Server side
+
+    public void CastSpell(SpellDefinition spellDef)
     {
-        return TryCastSpell(player, new SpellCastRequest(spellDef, player));
+        if (!IsServer) return;
+        ulong casterId = OwnerClientId;
+        int spellId = GetSpellId(spellDef);
+        ulong targetId = 0;
+        ApplySpell(OwnerClientId, spellId, targetId);
+        ApplySpellRpc(OwnerClientId, spellId, targetId);
     }
 
-    /// <summary>
-    /// Client side spell casting. Checks if the player can cast the spell and sends a request to the server to cast it. The server will then validate the spell and apply its effects if valid.
-    /// Returned value returns only vlient validation, not server validation, so it can be used to trigger client side casting animations and such.
-    /// </summary>
-    public bool TryCastSpell(Player caster, SpellCastRequest castRequest)
-    {
-        Debug.Log($"Player {caster.PlayerID} is trying to cast spell {castRequest.SpellDef.SpellName}");
-        Debug.Log(IsOwner);
-        if (!IsOwner) return false;
+    #endregion
 
-        if (!CanCastSpell(castRequest)) return false; //Tb se podria animacion de error por mana
-
-        //Animacion de casteo previa a confirmacion de servidor
-
-        var spellID = SpellRegister.Instance.GetId(castRequest.SpellDef);
-        CastSpellRpc(spellID, castRequest.Caster.PlayerID);
-
-        return true;
-    }
-
-    /// <summary>
-    /// Server side spell casting. Validates the spell and applies its effects if valid. This is the only method that should actually apply the spell effects, to avoid desyncs and cheating.
-    /// The server will then send an RPC to all clients to trigger the spell effects and animations.
-    /// Note that this method is called by the client through an RPC, so it should not be called directly by other server side code. If you want to cast a spell from server side code, you should call ApplySpellRpc directly with a properly constructed SpellCastQuery.
-    /// Also note that the validation in this method is minimal, it only checks if the caster has enough mana. More complex validation (like checking if the targets are valid) should be done in ApplySpellRpc, which is called after this method and is responsible for applying the spell effects.
-    /// </summary>
-    [Rpc(SendTo.Server)]
-    public void CastSpellRpc(int spellId, int casterId)
-    {
-        // if (!IsOwner) return; // Solo el dueño del objeto puede lanzar hechizos
-        var castRequest = new SpellCastRequest(SpellRegister.Instance.GetById(spellId), matchManager.GetPlayerById(casterId));
-        //Si usase los client ids de ngo
-        //var caster = NetworkManager.Singleton.ConnectedClients[(ulong)casterId].PlayerObject.GetComponent<Player>();
-        if (castRequest.Caster == null)
-        {
-            Debug.LogError($"Player with id {casterId} not found", gameObject);
-            return;
-        }
-
-        if (!CanCastSpell(castRequest))
-        {
-            Debug.Log($"Player {casterId} tried to cast spell {spellId} but didn't have enough mana", gameObject);
-            return;
-        }
-
-        if (!castRequest.Caster.ManaManager.ConsumeMana(castRequest.SpellDef.ManaCost))
-        {
-            Debug.Log($"Player {casterId} failed to consume mana for spell {spellId}", gameObject);
-            return;
-        }
-
-        ApplySpell(castRequest);
-        ApplySpellRpc(spellId, casterId);
-    }
+    #region Client Side
 
     [Rpc(SendTo.ClientsAndHost)]
-    public void ApplySpellRpc(int spellId, int casterId)
+    public void ApplySpellRpc(ulong caster, int spell, params ulong[] targets)
     {
-        var castRequest = new SpellCastRequest(SpellRegister.Instance.GetById(spellId), matchManager.GetPlayerById(casterId));
-        ApplySpell(castRequest);
+        ApplySpell(caster, spell, targets);
     }
 
-    bool CanCastSpell(SpellCastRequest castRequest)
+    #endregion
+
+    void ApplySpell(ulong caster, int spell, params ulong[] targets)
     {
-        return castRequest.Caster.CurrentMana.Value >= castRequest.SpellDef.ManaCost;
+        Player casterPlayer = GetPlayerById(caster);
+        SpellDefinition spellDef = GetSpellById(spell);
+
+        ApplyEffectsToPlayer(casterPlayer, spellDef.OnSelfEffects);
+
+        foreach (var target in targets)
+        {
+            var targetPlayer = GetPlayerById(target);
+            ApplyEffectsToPlayer(targetPlayer, spellDef.OnEnemyEffects);
+        }
     }
 
-    //Esto se ejecuta tanto en cliente como en servidor. Dara problemas? Lo descubriremos.
-    //En principio, como no hay criterios sólidos de qué se ejecuta dónde,
-    //Voy a dejar que sean los propios efectos de los hechizos los que decidan qué hacer en cada lado,
-    //y este método simplemente se encargará de llamar a los efectos del hechizo.
-    // De esta forma, cada efecto puede decidir si se ejecuta solo en cliente, solo en servidor, o en ambos.
-    void ApplySpell(SpellCastRequest castRequest)
+    void ApplyEffectsToPlayer(Player player, IEnumerable<StatusEffectDefinition> effects)
     {
-        Player caster = castRequest.Caster;
-        var enemyID = matchManager.GetPlayerId(caster) == 0 ? 1 : 0;
-        Player enemy = matchManager.GetPlayerById(enemyID);
-        ApplyEffectsToTarget(caster, castRequest.SpellDef.OnSelfEffects);
-        ApplyEffectsToTarget(enemy, castRequest.SpellDef.OnEnemyEffects);
-    }
-
-    void ApplyEffectsToTarget(Player target, StatusEffectDefinition[] effects)
-    {
-        if (target.TryGetComponent<StatusEffectController>(out var statusEffectController))
+        if (player.TryGetComponent<StatusEffectController>(out var statusEffectController))
         {
             foreach (var effectDef in effects)
             {
@@ -125,4 +63,27 @@ public class SpellCaster : NetworkBehaviour
             }
         }
     }
+
+    #region Validation
+
+    //De momento la validacion es la misma en server y en cliente
+    public PlayCardRequestResult ValidateSpellCastRequest(RequestValidationType validationType, SpellDefinition spellDef)
+    {
+        Debug.LogFormat("Client ValidateSpellCastRequest\n PlayerMana: {0}\n SpellCost: {1}", player.CurrentMana.Value, spellDef.ManaCost);
+        bool canCast = player.CurrentMana.Value >= spellDef.ManaCost;
+        return canCast ? PlayCardRequestResult.Success : PlayCardRequestResult.NotEnoughMana;
+    }
+
+    #endregion
+
+    #region Helper Methods
+
+    Player GetPlayerById(ulong clientId) =>
+        NetworkManager.ConnectedClients[clientId].PlayerObject.GetComponent<Player>();
+
+    SpellDefinition GetSpellById(int id) => SpellRegister.Instance.GetById(id);
+
+    int GetSpellId(SpellDefinition spellDefinition) => SpellRegister.Instance.GetId(spellDefinition);
+
+    #endregion
 }
