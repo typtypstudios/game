@@ -1378,7 +1378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce20d7f3eb4ffe944bc1d1c432d53727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FontDropdownOption
-  transitionTime: 0.5
+  transitionTime: 0.2
 --- !u!1 &523603481
 GameObject:
   m_ObjectHideFlags: 0
@@ -4441,7 +4441,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -104.19998}
-  m_SizeDelta: {x: 400, y: 120.400024}
+  m_SizeDelta: {x: 597.6, y: 120.400024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1309264529
 MonoBehaviour:
@@ -4463,7 +4463,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: GAME NAME
+  m_text: MECHANOCCULT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -4490,13 +4490,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 65.5
+  m_fontSize: 65.35
   m_fontSizeBase: 88.07
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 0
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 3
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -7027,7 +7027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce20d7f3eb4ffe944bc1d1c432d53727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FontDropdownOption
-  transitionTime: 0.5
+  transitionTime: 0.2
 --- !u!1 &1964625232
 GameObject:
   m_ObjectHideFlags: 0
@@ -7549,7 +7549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce20d7f3eb4ffe944bc1d1c432d53727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FontDropdownOption
-  transitionTime: 0.5
+  transitionTime: 0.2
 --- !u!114 &2072745702
 MonoBehaviour:
   m_ObjectHideFlags: 0

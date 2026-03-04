@@ -15,8 +15,11 @@ public class GameSettings : MonoBehaviour
     {
         fontDropdown = GetComponentInChildren<FontDropdown>();
         showSpacesToggle.isOn = PlayerPrefs.GetInt("ShowSpaces", 1) == 1;
+        SetShowSpaces(showSpacesToggle.isOn);
         capLocksWarningToggle.isOn = PlayerPrefs.GetInt("CapLocksWarnigng", 0) == 1;
+        SetCapsWarning(capLocksWarningToggle.isOn);
         volumeSlider.value = PlayerPrefs.GetFloat("Volume", 0.75f);
+        SetVolume(volumeSlider.value);
         fontDropdown.SetFont(PlayerPrefs.GetInt("Font", 0));
     }
 

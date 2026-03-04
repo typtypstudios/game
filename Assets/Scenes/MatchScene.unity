@@ -491,8 +491,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 163894802}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07224154, y: -0.016844818, z: 0.0012202583, w: 0.9972442}
-  m_LocalPosition: {x: 0.8210369, y: 0.46000004, z: -0.2199955}
+  m_LocalRotation: {x: 0.11987265, y: 0, z: 0, w: 0.9927893}
+  m_LocalPosition: {x: -0.5714939, y: -0.41999996, z: 3.7827177}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -866,6 +866,7 @@ GameObject:
   - component: {fileID: 283060887}
   - component: {fileID: 283060889}
   - component: {fileID: 283060888}
+  - component: {fileID: 283060890}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -994,6 +995,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 283060886}
   m_CullTransparentMesh: 1
+--- !u!114 &283060890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 283060886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb11719237efce4294072235cdf0c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
 --- !u!1 &284409285
 GameObject:
   m_ObjectHideFlags: 0
@@ -1018,13 +1031,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284409285}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.9914449, z: -0, w: 0.13052654}
-  m_LocalPosition: {x: 5.036008, y: 0.97, z: 3.28}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0.6794022, y: 0.97, z: 5.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1665024581}
-  m_LocalEulerAnglesHint: {x: 0, y: -165, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &320504510
 GameObject:
   m_ObjectHideFlags: 0
@@ -1516,6 +1529,7 @@ GameObject:
   - component: {fileID: 592455689}
   - component: {fileID: 592455688}
   - component: {fileID: 592455691}
+  - component: {fileID: 592455692}
   m_Layer: 5
   m_Name: ResultText
   m_TagString: Untagged
@@ -1640,7 +1654,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 350, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &592455691
 MonoBehaviour:
@@ -1657,6 +1671,18 @@ MonoBehaviour:
   fillColor: {r: 1, g: 1, b: 1, a: 1}
   minColor: 0.1
   startRandomized: 0
+--- !u!114 &592455692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 592455687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb11719237efce4294072235cdf0c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
 --- !u!1 &779730823
 GameObject:
   m_ObjectHideFlags: 0
@@ -2018,7 +2044,7 @@ GameObject:
   - component: {fileID: 1130154102}
   - component: {fileID: 1130154103}
   - component: {fileID: 1130154105}
-  - component: {fileID: 1130154104}
+  - component: {fileID: 1130154106}
   m_Layer: 0
   m_Name: GameCamera
   m_TagString: Untagged
@@ -2034,8 +2060,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1130154101}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07224154, y: -0.016844818, z: 0.0012202583, w: 0.9972442}
-  m_LocalPosition: {x: 0.8210369, y: 0.46000004, z: -0.2199955}
+  m_LocalRotation: {x: 0.11987265, y: 0, z: 0, w: 0.9927893}
+  m_LocalPosition: {x: -0.5714939, y: -0.41999996, z: 3.7827177}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2084,7 +2110,33 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
---- !u!114 &1130154104
+--- !u!114 &1130154105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130154101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625c14eee3ad46c99df7c7c891ef668a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineThirdPersonFollow
+  Damping: {x: 0, y: 0, z: 0}
+  ShoulderOffset: {x: 0, y: 0.62, z: 0.12}
+  VerticalArmLength: 0
+  CameraSide: 1
+  CameraDistance: 0
+  AvoidObstacles:
+    Enabled: 0
+    CollisionFilter:
+      serializedVersion: 2
+      m_Bits: 1
+    IgnoreTag: 
+    CameraRadius: 0.2
+    DampingIntoCollision: 0
+    DampingFromCollision: 0.5
+--- !u!114 &1130154106
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2106,39 +2158,13 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 1.47, y: 1.06, z: -0.5}
-  Damping: {x: 0.5, y: 0.5}
+  TargetOffset: {x: 0, y: 0, z: 2.65}
+  Damping: {x: 0, y: 0}
   Lookahead:
     Enabled: 0
     Time: 0
     Smoothing: 0
     IgnoreY: 0
---- !u!114 &1130154105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1130154101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 625c14eee3ad46c99df7c7c891ef668a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineThirdPersonFollow
-  Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: 2.35, y: 1.1, z: -1.39}
-  VerticalArmLength: 0.4
-  CameraSide: 1
-  CameraDistance: 2
-  AvoidObstacles:
-    Enabled: 0
-    CollisionFilter:
-      serializedVersion: 2
-      m_Bits: 1
-    IgnoreTag: 
-    CameraRadius: 0.2
-    DampingIntoCollision: 0
-    DampingFromCollision: 0.5
 --- !u!1 &1146915621
 GameObject:
   m_ObjectHideFlags: 0
@@ -2598,13 +2624,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591841753}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.13052596, z: -0, w: 0.99144495}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.67940223, y: 0.97, z: -6.4292088}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1665024581}
-  m_LocalEulerAnglesHint: {x: 0, y: 15, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1665024579
 GameObject:
   m_ObjectHideFlags: 0
@@ -2857,6 +2883,7 @@ GameObject:
   - component: {fileID: 1736977037}
   - component: {fileID: 1736977039}
   - component: {fileID: 1736977038}
+  - component: {fileID: 1736977040}
   m_Layer: 5
   m_Name: CountdownText
   m_TagString: Untagged
@@ -2983,6 +3010,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1736977036}
   m_CullTransparentMesh: 1
+--- !u!114 &1736977040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736977036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb11719237efce4294072235cdf0c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
 --- !u!1 &1813752697
 GameObject:
   m_ObjectHideFlags: 0
@@ -3305,6 +3344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   fillColor: {r: 1, g: 0, b: 0.58155537, a: 1}
   resetIfFailed: 1
+  resetTime: 0.5
 --- !u!1 &1919890736
 GameObject:
   m_ObjectHideFlags: 0
@@ -3317,6 +3357,7 @@ GameObject:
   - component: {fileID: 1919890739}
   - component: {fileID: 1919890738}
   - component: {fileID: 1919890740}
+  - component: {fileID: 1919890741}
   m_Layer: 5
   m_Name: LoadingText
   m_TagString: Untagged
@@ -3458,6 +3499,18 @@ MonoBehaviour:
   fillColor: {r: 1, g: 1, b: 1, a: 1}
   minColor: 0
   startRandomized: 1
+--- !u!114 &1919890741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919890736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb11719237efce4294072235cdf0c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
 --- !u!1 &1940371005
 GameObject:
   m_ObjectHideFlags: 0

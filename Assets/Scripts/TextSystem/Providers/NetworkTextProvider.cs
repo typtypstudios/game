@@ -27,8 +27,11 @@ namespace TypTyp.TextSystem
         {
             ritualManager = GetComponentInChildren<RitualManager>();
             textPipeline = GetComponentInChildren<ITextPipeline>();
-
-            foreach (var t in texts) t.gameObject.SetActive(false);
+            foreach (var t in texts)
+            {
+                t.text = string.Empty;
+                t.gameObject.SetActive(false);
+            }
         }
 
         public void SetTextsActive(bool value)
