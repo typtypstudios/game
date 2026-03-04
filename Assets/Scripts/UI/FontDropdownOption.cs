@@ -4,43 +4,52 @@ using System.Collections;
 
 public class FontDropdownOption : MonoBehaviour
 {
-    [SerializeField] private float transitionSpeed = 20f;
+    [SerializeField] private float transitionTime = 0.5f;
+    private float transitionSpeed;
     private RectTransform rt;
     private Vector2 initPos = Vector3.zero;
     private FontDropdown dropdown;
     private WritableButton writableButton;
     private int fontIdx;
-    private bool clicked = false;
+    private bool activated = false;
 
-    private void OnEnable()
+    private void Awake()
     {
-        if (!rt) return; //Significa que todavía nos e hizo el Initialize
-        StartCoroutine(TransitionCoroutine(initPos));
-        writableButton.Block = false;
+        rt = GetComponent<RectTransform>();
+        dropdown = GetComponentInParent<FontDropdown>();
+        writableButton = GetComponent<WritableButton>();
+        initPos = rt.anchoredPosition;
+        rt.anchoredPosition = Vector2.zero;
+        transitionSpeed = initPos.magnitude / transitionTime;
     }
 
     public void Initialize(TMP_FontAsset font, int idx)
     {
-        rt = GetComponent<RectTransform>();
-        initPos = rt.anchoredPosition;
-        rt.anchoredPosition = Vector2.zero;
-        dropdown = GetComponentInParent<FontDropdown>();
-        writableButton = GetComponent<WritableButton>();
         writableButton.OverrideText(font.name);
         GetComponentInChildren<TextMeshProUGUI>().font = font;
         fontIdx = idx;
     }
 
-    public void OnButtonClick()
+    public void ToggleActivation()
     {
-        dropdown.SetFont(fontIdx);
-        clicked = true;
-        foreach (var option in dropdown.Options)
-            option.StartCoroutine(option.TransitionCoroutine(Vector2.zero, true));
-        transform.SetAsLastSibling();
+        StopAllCoroutines();
+        if (!activated)
+        {
+            gameObject.SetActive(true);
+            StartCoroutine(TransitionCoroutine(initPos));
+        }
+        else StartCoroutine(TransitionCoroutine(Vector2.zero, true));
+        activated = !activated;
     }
 
-    IEnumerator TransitionCoroutine(Vector2 targetPos, bool disableAfter = false)
+    public void OnButtonClick() 
+    {
+        dropdown.SetFont(fontIdx);
+        transform.SetAsLastSibling();
+        dropdown.ToggleSelection();
+    }
+
+    IEnumerator TransitionCoroutine(Vector2 targetPos, bool hiding = false)
     {
         writableButton.Block = true;
         while (targetPos != rt.anchoredPosition)
@@ -48,11 +57,11 @@ public class FontDropdownOption : MonoBehaviour
             rt.anchoredPosition = Vector2.MoveTowards(rt.anchoredPosition, targetPos, transitionSpeed * Time.deltaTime);
             yield return null;
         }
-        if (clicked)
+        if (hiding)
         {
-            clicked = false;
-            dropdown.ToggleSelection();
+            gameObject.SetActive(false);
+            if (dropdown.ChosenOption == this) dropdown.DisplayFontInfo();
         }
-        if (disableAfter) gameObject.SetActive(false);
+        writableButton.Block = false;
     }
 }
