@@ -9,12 +9,15 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private Toggle capLocksWarningToggle;
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private AudioMixer mixer;
+    private FontDropdown fontDropdown;
 
     private void Start()
     {
+        fontDropdown = GetComponentInChildren<FontDropdown>();
         showSpacesToggle.isOn = PlayerPrefs.GetInt("ShowSpaces", 1) == 1;
         capLocksWarningToggle.isOn = PlayerPrefs.GetInt("CapLocksWarnigng", 0) == 1;
         volumeSlider.value = PlayerPrefs.GetFloat("Volume", 0.75f);
+        fontDropdown.SetFont(PlayerPrefs.GetInt("Font", 0), false);
     }
 
     public void Save()
@@ -22,6 +25,7 @@ public class GameSettings : MonoBehaviour
         PlayerPrefs.SetInt("ShowSpaces", showSpacesToggle.isOn ? 1 : 0);
         PlayerPrefs.SetInt("CapLocksWarnigng", capLocksWarningToggle.isOn ? 1 : 0);
         PlayerPrefs.SetFloat("Volume", volumeSlider.value);
+        PlayerPrefs.SetInt("Font", fontDropdown.CurrentFontIdx);
     }
 
     public void ToggleShowSpaces() => showSpacesToggle.isOn = !showSpacesToggle.isOn;

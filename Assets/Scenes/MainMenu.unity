@@ -277,7 +277,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 183026547}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -1060,7 +1060,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LiberationSans
+  m_text: Font 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -1087,7 +1087,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.9
+  m_fontSize: 26.3
   m_fontSizeBase: 32.4
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1305,7 +1305,7 @@ GameObject:
   - component: {fileID: 474553195}
   - component: {fileID: 474553194}
   m_Layer: 5
-  m_Name: LibeartionSans
+  m_Name: Font2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1326,9 +1326,9 @@ RectTransform:
   - {fileID: 402710451}
   m_Father: {fileID: 732800784}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 13, y: -53.6}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 63, y: -53.6}
   m_SizeDelta: {x: 167.9, y: 39.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &474553194
@@ -1497,12 +1497,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'RobotoMono
-
-'
+  m_text: Font 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6a39ba496dd72064f839bc3dc2f9089f, type: 2}
-  m_sharedMaterial: {fileID: 6177329281694028946, guid: 6a39ba496dd72064f839bc3dc2f9089f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1526,7 +1524,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22.25
+  m_fontSize: 26.3
   m_fontSizeBase: 32.4
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5586,7 +5584,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bb30e319547c6949927e8a0dcdd3b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FontDropdown
-  options: {fileID: 732800783}
+  fonts:
+  - {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  - {fileID: 11400000, guid: 6a39ba496dd72064f839bc3dc2f9089f, type: 2}
+  optionsParent: {fileID: 732800783}
 --- !u!114 &1677178645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6633,7 +6634,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902940366}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -7000,7 +7001,7 @@ GameObject:
   - component: {fileID: 1963190001}
   - component: {fileID: 1963190000}
   m_Layer: 5
-  m_Name: RobotoMono
+  m_Name: Font1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7021,9 +7022,9 @@ RectTransform:
   - {fileID: 523603482}
   m_Father: {fileID: 732800784}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 12.999962, y: 53.6}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 62.99996, y: 53.6}
   m_SizeDelta: {x: 167.9, y: 39.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1963190000

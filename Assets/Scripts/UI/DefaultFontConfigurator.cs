@@ -7,7 +7,7 @@ public class DefaultFontConfigurator : MonoBehaviour
 {
     private TMP_Text textMesh;
 
-    private void Start()
+    private void Awake()
     {
         textMesh = GetComponent<TMP_Text>();
         ResetFont();
