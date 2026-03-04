@@ -33,6 +33,7 @@ public class MatchManager : NetworkBehaviour
     private Dictionary<ulong, ClientSetupState> setupStates = new();
     private HashSet<ulong> fullyConfiguredClients = new();
     private HashSet<ulong> endMatchConfirmedClients = new();
+    private Dictionary<ulong, PlayerData> playersData = new();
 
     private double matchStartTime;
     private MatchState matchState;
@@ -73,9 +74,10 @@ public class MatchManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void OnPlayerReadyRpc(RpcParams rpcParams = default)
+    public void OnPlayerReadyRpc(PlayerData playerData, RpcParams rpcParams = default)
     {
         if (!IsServer) return;
+        Debug.Log($"[MatchManager][Server] Player ready:\n{playerData}");
 
         ulong clientId = rpcParams.Receive.SenderClientId;
 
@@ -83,6 +85,7 @@ public class MatchManager : NetworkBehaviour
             return;
 
         sceneReadyClients.Add(clientId);
+        playersData.TryAdd(clientId, playerData);
 
         if (sceneReadyClients.Count == MaxPlayers && matchState == MatchState.WaitingPlayers)
         {
@@ -96,7 +99,7 @@ public class MatchManager : NetworkBehaviour
         }
     }
 
-    // Se ejecuta todav�a en el server
+    // Se ejecuta todavia en el server
     private void SetupPlayers()
     {
         playersById.Clear();
@@ -105,6 +108,7 @@ public class MatchManager : NetworkBehaviour
         for (int i = 0; i < players.Length; i++)
         {
             playersById.Add(i, players[i]);
+            players[i].ConfigureServerPlayer(playersData[players[i].OwnerClientId]);
             players[i].ConfigurePlayerRpc(i);
         }
 
@@ -232,7 +236,7 @@ public class MatchManager : NetworkBehaviour
         );
 
         NetworkTextProvider networkText = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<NetworkTextProvider>();
-        if( networkText != null ) networkText.SetTextsActive(true);
+        if (networkText != null) networkText.SetTextsActive(true);
     }
 
     /// <summary>

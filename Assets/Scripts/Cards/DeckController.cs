@@ -38,45 +38,37 @@ public class DeckController : NetworkBehaviour
 
     void Awake()
     {
+        Cards = Array.Empty<CardDefinition>();
         spellCaster = GetComponentInParent<SpellCaster>();
-        UnityEngine.Assertions.Assert.IsNotNull(
-            spellCaster,
+        UnityEngine.Assertions.Assert.IsNotNull(spellCaster,
             "DeckController requires a SpellCaster component in its parents");
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        if (IsOwner) Cards = DeckBuilder.CardsInDeck;
-        if (IsServer)
-        {
-            Cards.Shuffle(0);
-            cardQueue = new(Cards.Select(c => CardRegister.Instance.GetId(c)));
-            currentHand = new(Settings.Instance.HandSize);
-            DrawInitialCards();
-        }
-        else if (!IsOwner)
-        {
-            enabled = false;
-        }
     }
 
     #region Server side
 
+    public void ConfigureServerDeckController(int[] deck)
+    {
+        if (!IsServer) return;
+
+        deck.Shuffle(0);
+        //just for editor view purposes
+        Cards = deck.Select(c => GetCardDefinitionById(c)).ToArray();
+        cardQueue = new(deck);
+        currentHand = new(Settings.Instance.HandSize);
+
+        DrawInitialCards();
+    }
+
     [Rpc(SendTo.Server)]
     void PlayCardRequestRpc(int card, RpcParams rpcParams = default)
     {
-        //Voy a debugear todo el estado relevante a la validacion
-        Debug.Log($"PlayCardRpc received for card {CardRegister.Instance.GetById(card)} from client {rpcParams.Receive.SenderClientId}");
-        //Estado del jugador
-        Debug.Log($"Current hand: {string.Join(", ", currentHand.Select(id => CardRegister.Instance.GetById(id)))}");
-        Debug.Log($"Current mana: {GetComponent<Player>().CurrentMana.Value}");
-
         var validation = ValidatePlayCardRequest(RequestValidationType.Server, card);
 
         if (validation == PlayCardRequestResult.Success)
         {
             ReturnCardToDeck(card);
             int newCard = DrawCard();
+            PlayCard(card);
             PlayCardResultRpc(validation, card, newCard);
         }
         else
@@ -89,6 +81,8 @@ public class DeckController : NetworkBehaviour
     {
         var cardDef = GetCardDefinitionById(card);
         var spellDef = cardDef.Spell;
+
+        Debug.Log($"[Deck][Server][PlayCard] cid={OwnerClientId} card={card} spell={SpellRegister.Instance.GetId(spellDef)}");
 
         spellCaster.CastSpell(spellDef);
     }
@@ -106,25 +100,31 @@ public class DeckController : NetworkBehaviour
         return card;
     }
 
-    #endregion
-
     private void ReturnCardToDeck(int card)
     {
         currentHand.Remove(card);
         cardQueue.Enqueue(card);
-        //UpdateQueueListView();
+
+        // Debug.Log($"[Deck][Server][ReturnCard] cid={OwnerClientId} card={card} handSize={currentHand.Count} queue={cardQueue.Count}");
     }
 
     private void DrawInitialCards()
     {
         var handSize = TypTyp.Settings.Instance.HandSize;
+
+        // Debug.Log($"[Deck][Server][InitialDraw] cid={OwnerClientId} size={handSize}");
+
         int[] initialCardIds = new int[handSize];
-        for (int i = 0; i < TypTyp.Settings.Instance.HandSize && cardQueue.Count > 0; i++)
-        {
+
+        for (int i = 0; i < handSize && cardQueue.Count > 0; i++)
             initialCardIds[i] = DrawCard();
-        }
+
+        // Debug.Log($"[Deck][Server][InitialDrawSend] cid={OwnerClientId} cards={string.Join(",", initialCardIds)}");
+
         ReceiveCardsDrawnRpc(initialCardIds);
     }
+
+    #endregion
 
     #region Client Side
 
@@ -133,19 +133,20 @@ public class DeckController : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        //First, validate on client
+        // Debug.Log($"[Deck][Client][PlayRequest] cid={OwnerClientId} card={card}");
+
         var validation = ValidatePlayCardRequest(RequestValidationType.Client, card);
-        Debug.LogFormat("Play card request.\n Card: {0}\n Client validation = {1}", card, validation);
+
+        Debug.Log($"[Deck][Client][Validation] cid={OwnerClientId} card={card} res={validation}");
 
         if (validation == PlayCardRequestResult.Success)
         {
-            //Activate local pre-animations
-            //Send request to server 
+            // Debug.Log($"[Deck][Client][SendRPC] cid={OwnerClientId} card={card}");
             PlayCardRequestRpc(card);
         }
         else
         {
-            //Handle cast fail
+            // Debug.Log($"[Deck][Client][RejectLocal] cid={OwnerClientId} card={card} res={validation}");
         }
     }
 
@@ -153,6 +154,8 @@ public class DeckController : NetworkBehaviour
     [Rpc(SendTo.Owner)]
     void PlayCardResultRpc(PlayCardRequestResult result, int playedCard, params int[] receivedCards)
     {
+        Debug.Log($"[Deck][Client][PlayResult] cid={OwnerClientId} card={playedCard} res={result} newCards={string.Join(",", receivedCards)}");
+
         if (result == PlayCardRequestResult.Success)
         {
             OnCardPlayedEvent?.Invoke(playedCard);
@@ -160,8 +163,7 @@ public class DeckController : NetworkBehaviour
         }
         else
         {
-            //Client said card can be played, but server said it cannot -> Conciliate
-            Debug.LogWarning($"Failed to play card {CardRegister.Instance.GetById(playedCard)}: {result}");
+            // Debug.LogWarning($"[Deck][Client][PlayFailed] card={playedCard} res={result}");
         }
 
         if (receivedCards.Length > 0)
@@ -171,6 +173,7 @@ public class DeckController : NetworkBehaviour
     [Rpc(SendTo.Owner)]
     void ReceiveCardsDrawnRpc(params int[] cardIds)
     {
+        Debug.Log($"[Deck][Client][ReceiveCardsRpc] cid={OwnerClientId} cards={string.Join(",", cardIds)}");
         ReceiveCardsDrawn(cardIds);
     }
 
@@ -178,10 +181,13 @@ public class DeckController : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            Debug.LogError("Cards received by other than owner.", this);
+            // Debug.LogError("[Deck][Client][ReceiveCards] nonOwner");
+            return;
         }
+
         foreach (var card in cardIds)
         {
+            // Debug.Log($"[Deck][Client][CardDrawn] cid={OwnerClientId} card={card}");
             var cardDef = CardRegister.Instance.GetById(card);
             OnCardDrawnEvent?.Invoke(card);
             OnCardDrawn.Invoke(cardDef);
@@ -218,6 +224,7 @@ public class DeckController : NetworkBehaviour
     #region Helper Methods
 
     CardDefinition GetCardDefinitionById(int id) => CardRegister.Instance.GetById(id);
+    int GetCardId(CardDefinition cardDef) => CardRegister.Instance.GetId(cardDef);
 
     void UpdateQueueListView()
     {

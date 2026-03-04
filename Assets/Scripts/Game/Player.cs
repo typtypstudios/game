@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using System.Linq;
 using UnityEngine;
+using Unity.Collections;
 using TypTyp;
 
 public class Player : NetworkBehaviour
@@ -10,6 +11,9 @@ public class Player : NetworkBehaviour
     public RitualManager RitualManager { get; private set; }
     public ManaGainManager ManaManager { get; private set; }
     public CorruptionGainManager CorruptionManager { get; private set; }
+    public DeckController DeckController { get; private set; }
+    public SpellCaster SpellCaster { get; private set; }
+    public StatusEffectController StatusEffectController { get; private set; }
     public static Player User { get; private set; } //Acceso global al Player del jugador
     public static Player Enemy { get; private set; } //Acceso global al Player del enemigo
 
@@ -21,17 +25,26 @@ public class Player : NetworkBehaviour
 
     private void Awake()
     {
-        RitualManager = GetComponentInChildren<RitualManager>();
-        ManaManager = GetComponent<ManaGainManager>();
-        CorruptionManager = GetComponent<CorruptionGainManager>();
+        //Componentes del player
+        GetComponents();
+
+        //Componentes de escena
         MatchManager = FindFirstObjectByType<MatchManager>();
     }
 
     public override void OnNetworkSpawn()
     {
+        RitualManager.enabled = IsOwner; //El ritual lo controla el cliente, evita mala UX por lag
+        ManaManager.enabled = IsServer; //La ganancia de man� la controla el server exclusivamente
+        CorruptionManager.enabled = IsServer; //La corrupci�n igual que el man�
+
         if (IsOwner)
         {
-            MatchManager.OnPlayerReadyRpc();
+            FixedString32Bytes PlayerName = $"Player_{OwnerClientId}";
+            int[] deck = CardRegister.Instance.GetIds(DeckBuilder.CardsInDeck);
+            PlayerData playerData = new(OwnerClientId, PlayerName, deck);
+
+            MatchManager.OnPlayerReadyRpc(playerData);
             RitualManager.OnProgressUpdated += (p) => UpdateRitualProgressRpc(p);
         }
         if (IsServer)
@@ -41,6 +54,15 @@ public class Player : NetworkBehaviour
         }
     }
 
+    public void ConfigureServerPlayer(PlayerData playerData)
+    {
+        if (!IsServer) return;
+        DeckController.ConfigureServerDeckController(playerData.Deck);
+    }
+
+    //Esto no llega al server en caso de un servidor dedicado
+    //el enabled de los componentes daria error
+    //solo funciona porque nuestro juego se supone para server hosts
     [Rpc(SendTo.ClientsAndHost)]
     public void ConfigurePlayerRpc(int playerIdx)
     {
@@ -48,9 +70,9 @@ public class Player : NetworkBehaviour
         this.tag = playerIdx == 0 ? Settings.Instance.P1_tag : Settings.Instance.P2_tag;
 
         FindFirstObjectByType<PlayerPositioner>().PositionPlayer(this, playerIdx, IsOwner);
-        RitualManager.enabled = IsOwner; //El ritual lo controla el cliente, evita mala UX por lag
-        ManaManager.enabled = IsServer; //La ganancia de man� la controla el server exclusivamente
-        CorruptionManager.enabled = IsServer; //La corrupci�n igual que el man�
+        // RitualManager.enabled = IsOwner; //El ritual lo controla el cliente, evita mala UX por lag
+        // ManaManager.enabled = IsServer; //La ganancia de man� la controla el server exclusivamente
+        // CorruptionManager.enabled = IsServer; //La corrupci�n igual que el man�
 
         if (IsOwner)
         {
@@ -89,4 +111,24 @@ public class Player : NetworkBehaviour
             MatchManager.HandlePlayerVictory(winner);
         }
     }
+
+    #region Helper Methods
+
+    void GetComponents()
+    {
+        RitualManager = GetComponentInChildren<RitualManager>();
+        ManaManager = GetComponent<ManaGainManager>();
+        CorruptionManager = GetComponent<CorruptionGainManager>();
+        DeckController = GetComponent<DeckController>();
+        SpellCaster = GetComponent<SpellCaster>();
+        StatusEffectController = GetComponent<StatusEffectController>();
+
+        UnityEngine.Assertions.Assert.IsNotNull(RitualManager);
+        UnityEngine.Assertions.Assert.IsNotNull(ManaManager);
+        UnityEngine.Assertions.Assert.IsNotNull(CorruptionManager);
+        UnityEngine.Assertions.Assert.IsNotNull(DeckController);
+        UnityEngine.Assertions.Assert.IsNotNull(SpellCaster);
+        UnityEngine.Assertions.Assert.IsNotNull(StatusEffectController);
+    }
+    #endregion
 }

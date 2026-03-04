@@ -91,4 +91,15 @@ public abstract class ScriptableRegister<TItem, TSelf> : ScriptableSingleton<TSe
         TItem item = registeredItems.Where(i => !list.Contains(i)).FirstOrDefault();
         return (item, GetId(item));
     }
+
+    public int[] GetIds(IEnumerable<TItem> items)
+    {
+        int[] ids = new int[items.Count()];
+        int idx = 0;
+        foreach (var item in items)
+        {
+            TryGetId(item, out ids[idx++]);
+        }
+        return ids;
+    }
 }

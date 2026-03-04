@@ -7,12 +7,15 @@ using UnityEngine;
 public class SpellCaster : NetworkBehaviour
 {
     Player player;
-    MatchManager matchManager;
+    ManaGainManager manaManager;
 
     public void Awake()
     {
         player = GetComponent<Player>();
-        matchManager = FindAnyObjectByType<MatchManager>();
+        manaManager = GetComponent<ManaGainManager>();
+
+        UnityEngine.Assertions.Assert.IsNotNull(player);
+        UnityEngine.Assertions.Assert.IsNotNull(manaManager);
     }
 
     #region Server side
@@ -20,47 +23,66 @@ public class SpellCaster : NetworkBehaviour
     public void CastSpell(SpellDefinition spellDef)
     {
         if (!IsServer) return;
+
         ulong casterId = OwnerClientId;
         int spellId = GetSpellId(spellDef);
         ulong targetId = 0;
-        ApplySpell(OwnerClientId, spellId, targetId);
-        ApplySpellRpc(OwnerClientId, spellId, targetId);
+
+        // Debug.Log($"[Spell][Server][Cast] caster={casterId} spell={spellId} manaBefore={player.CurrentMana.Value}");
+
+        manaManager.ConsumeMana(spellDef.ManaCost);
+
+        // Debug.Log($"[Spell][Server][ManaConsumed] caster={casterId} cost={spellDef.ManaCost} manaAfter={player.CurrentMana.Value}");
+
+        //Dejo que se ejecute en todas las instancias, los efectos deciden que aplicar en server y en cliente
+        // ApplySpell(casterId, spellId, targetId);
+
+        // Debug.Log($"[Spell][Server][SendRPC] caster={casterId} spell={spellId} target={targetId}");
+
+        ApplySpellRpc(casterId, spellId, targetId);
     }
 
     #endregion
 
-    #region Client Side
-
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.Everyone)]
     public void ApplySpellRpc(ulong caster, int spell, params ulong[] targets)
     {
+        // Debug.Log($"[Spell][RPC][Receive] localClient={NetworkManager.LocalClientId} caster={caster} spell={spell} targets={string.Join(",", targets)}");
+
         ApplySpell(caster, spell, targets);
     }
 
-    #endregion
-
     void ApplySpell(ulong caster, int spell, params ulong[] targets)
     {
+        // Debug.Log($"[Spell][Apply] caster={caster} spell={spell} targets={string.Join(",", targets)}");
+
         Player casterPlayer = GetPlayerById(caster);
         SpellDefinition spellDef = GetSpellById(spell);
 
-        ApplyEffectsToPlayer(casterPlayer, spellDef.OnSelfEffects);
-
-        foreach (var target in targets)
+        if (spellDef.OnSelfEffects.Any())
         {
-            var targetPlayer = GetPlayerById(target);
-            ApplyEffectsToPlayer(targetPlayer, spellDef.OnEnemyEffects);
+            Debug.Log($"[Spell][ApplySelf] caster={caster} effects={spellDef.OnSelfEffects.Count()}");
+            ApplyEffectsToPlayer(casterPlayer, spellDef.OnSelfEffects);
+        }
+
+        if (spellDef.OnEnemyEffects.Any())
+        {
+            foreach (var target in targets)
+            {
+                Debug.Log($"[Spell][ApplyTarget] caster={caster} target={target}");
+
+                var targetPlayer = GetPlayerById(target);
+                ApplyEffectsToPlayer(targetPlayer, spellDef.OnEnemyEffects);
+            }
         }
     }
 
     void ApplyEffectsToPlayer(Player player, IEnumerable<StatusEffectDefinition> effects)
     {
-        if (player.TryGetComponent<StatusEffectController>(out var statusEffectController))
+        foreach (var effectDef in effects)
         {
-            foreach (var effectDef in effects)
-            {
-                statusEffectController.AddEffect(effectDef);
-            }
+            // Debug.Log($"[Spell][EffectApply] target={player.OwnerClientId} effect={effectDef.name}");
+            player.StatusEffectController.AddEffect(effectDef);
         }
     }
 
@@ -69,9 +91,15 @@ public class SpellCaster : NetworkBehaviour
     //De momento la validacion es la misma en server y en cliente
     public PlayCardRequestResult ValidateSpellCastRequest(RequestValidationType validationType, SpellDefinition spellDef)
     {
-        Debug.LogFormat("Client ValidateSpellCastRequest\n PlayerMana: {0}\n SpellCost: {1}", player.CurrentMana.Value, spellDef.ManaCost);
+        // Debug.Log($"[Spell][Validate] type={validationType} cid={OwnerClientId} mana={player.CurrentMana.Value} cost={spellDef.ManaCost}");
+
         bool canCast = player.CurrentMana.Value >= spellDef.ManaCost;
-        return canCast ? PlayCardRequestResult.Success : PlayCardRequestResult.NotEnoughMana;
+
+        var res = canCast ? PlayCardRequestResult.Success : PlayCardRequestResult.NotEnoughMana;
+
+        // Debug.Log($"[Spell][ValidateResult] type={validationType} cid={OwnerClientId} res={res}");
+
+        return res;
     }
 
     #endregion
