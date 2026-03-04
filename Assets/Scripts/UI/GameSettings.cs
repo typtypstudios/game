@@ -17,7 +17,7 @@ public class GameSettings : MonoBehaviour
         showSpacesToggle.isOn = PlayerPrefs.GetInt("ShowSpaces", 1) == 1;
         capLocksWarningToggle.isOn = PlayerPrefs.GetInt("CapLocksWarnigng", 0) == 1;
         volumeSlider.value = PlayerPrefs.GetFloat("Volume", 0.75f);
-        fontDropdown.SetFont(PlayerPrefs.GetInt("Font", 0), false);
+        fontDropdown.SetFont(PlayerPrefs.GetInt("Font", 0));
     }
 
     public void Save()

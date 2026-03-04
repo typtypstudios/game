@@ -16,6 +16,7 @@ public class WritableButton : AInputListener
     private WaitForSeconds resetTimer;
     private Coroutine resetCoroutine;
     private Canvas canvas;
+    public bool Block { get; set; } = false;
 
     private void Awake()
     {
@@ -50,7 +51,7 @@ public class WritableButton : AInputListener
 
     protected override void ProcessInput(char c)
     {
-        if(!canvas.enabled) return;
+        if(!canvas.enabled || Block) return;
         if (originalText[idx].ToString().ToLower().Equals(c.ToString().ToLower()))
         {
             if(resetCoroutine != null)

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CursorDisabled : MonoBehaviour
+public class CursorDisabler : MonoBehaviour
 {
     private void Start()
     {
