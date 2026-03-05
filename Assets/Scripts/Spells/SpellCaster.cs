@@ -26,7 +26,8 @@ public class SpellCaster : NetworkBehaviour
 
         ulong casterId = OwnerClientId;
         int spellId = GetSpellId(spellDef);
-        ulong targetId = 0;
+        //De momento, si solo hay dos jugadores, elijo al otro
+        ulong targetId = NetworkManager.Singleton.ConnectedClientsIds.First(id => id != casterId);
 
         // Debug.Log($"[Spell][Server][Cast] caster={casterId} spell={spellId} manaBefore={player.CurrentMana.Value}");
 
