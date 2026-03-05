@@ -27,9 +27,8 @@ public class CardUI_Builder : MonoBehaviour
     {
         Card = card;
         image.sprite = card.CardImage;
-        cardName.text = card.CardName;
         description.text = card.Description;
-        writableButton.OverrideText(card.name);
+        writableButton.OverrideText(card.CardName);
     }
 
     public void Highlight(bool highlight)

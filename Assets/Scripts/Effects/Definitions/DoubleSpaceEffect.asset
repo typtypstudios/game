@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ff6ef768b5469d4f8e81a1e3e36d8c4, type: 3}
-  m_Name: AlternatingCapsEffect
-  m_EditorClassIdentifier: Assembly-CSharp::AlternatingCapsEffect
-  <EffectName>k__BackingField: AlternatingCapsEffect
-  <DurationType>k__BackingField: 0
+  m_Name: DoubleSpaceEffect
+  m_EditorClassIdentifier: Assembly-CSharp::TextProcessorEffect
+  <EffectName>k__BackingField: SpacingEffect
+  <DurationType>k__BackingField: 2
   <EffectPolarityType>k__BackingField: 1
   <DurationValue>k__BackingField: 2
-  <Description>k__BackingField: DeScRipCioN
-  processor: {fileID: 11400000, guid: 76055860b31543b4eaab115e0d1be341, type: 2}
+  <Description>k__BackingField: Duplica  el  espacio  entre  palabras
+  processor: {fileID: 11400000, guid: 0f6dccc3b1bbfe647a38346ad00a3cd7, type: 2}

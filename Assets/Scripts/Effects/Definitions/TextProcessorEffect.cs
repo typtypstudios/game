@@ -1,10 +1,10 @@
 using TypTyp.TextSystem;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AlternatingCapsEffect", menuName = "TypTyp/Effects/AlternatingCapsEffect")]
-public class AlternatingCapsEffect : StatusEffectDefinition
+[CreateAssetMenu(fileName = "TextProcessorEffect", menuName = "TypTyp/Effects/TextProcessorEffect")]
+public class TextProcessorEffect : StatusEffectDefinition
 {
-    [SerializeField] AlternatingCapsProcessor processor;
+    [SerializeField] ScriptableTextProcessor processor;
 
     public override void OnActivate(Player target)
     {
