@@ -246,7 +246,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 230.00003, y: -43.95999}
+  m_AnchoredPosition: {x: 195, y: -43.95999}
   m_SizeDelta: {x: 200, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &56580863
@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39607844}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1714,7 +1714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Multiplayer.Tools.NetworkSimulator.Runtime::Unity.Multiplayer.Tools.NetworkSimulator.Runtime.NetworkSimulator
   m_PresetAsset: {fileID: 0}
   m_PresetReference:
-    rid: 8613746242064744668
+    rid: 1069426897647304705
   m_Scenario:
     rid: 5300399720746451136
   m_IsScenarioSettingsFolded: 1
@@ -1722,6 +1722,17 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 1069426897647304705
+      type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
+      data:
+        <Name>k__BackingField: Home Broadband with Congested Network
+        <Description>k__BackingField: Desktop and console platforms trough congested
+          networks (multiple downloads or streaming already using the network's maximum
+          capacity). Medium ping, bad jitter and little packet loss.
+        <PacketDelayMs>k__BackingField: 50
+        <PacketJitterMs>k__BackingField: 50
+        <PacketLossInterval>k__BackingField: 0
+        <PacketLossPercent>k__BackingField: 1
     - rid: 5300399720746451131
       type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
       data:
@@ -1741,17 +1752,6 @@ MonoBehaviour:
         - m_ClassPreset:
             rid: 5300399720746451131
           m_ScriptableObjectPreset: {fileID: 0}
-    - rid: 8613746242064744668
-      type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
-      data:
-        <Name>k__BackingField: Home Broadband with Congested Network
-        <Description>k__BackingField: Desktop and console platforms trough congested
-          networks (multiple downloads or streaming already using the network's maximum
-          capacity). Medium ping, bad jitter and little packet loss.
-        <PacketDelayMs>k__BackingField: 50
-        <PacketJitterMs>k__BackingField: 50
-        <PacketLossInterval>k__BackingField: 0
-        <PacketLossPercent>k__BackingField: 1
 --- !u!4 &779730825
 Transform:
   m_ObjectHideFlags: 0
@@ -2716,7 +2716,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -230, y: -43.95999}
+  m_AnchoredPosition: {x: -195, y: -43.95999}
   m_SizeDelta: {x: 200, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1699749789
@@ -2732,7 +2732,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39607844}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3180,7 +3180,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1813752697}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

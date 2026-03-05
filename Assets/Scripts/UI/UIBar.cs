@@ -23,6 +23,12 @@ public class UIBar : MonoBehaviour
         StartCoroutine(UpdateBarCorroutine(newValue / MaxValue));
     }
 
+    public void SetValueWithoutTransition(float value)
+    {
+        bar.fillAmount = value;
+        filler.fillAmount = value;
+    }
+
     IEnumerator UpdateBarCorroutine(float target)
     {
         bar.fillAmount = target;

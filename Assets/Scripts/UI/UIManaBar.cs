@@ -23,8 +23,9 @@ public class UIManaBar : MonoBehaviour
         foreach(UIBar bar in bars)
         {
             float barValue = normalizedValue >= perBarPercentage ? 1.0f : normalizedValue / perBarPercentage;
-            bar.UpdateValue(0, barValue);
-            normalizedValue = Mathf.Clamp01(normalizedValue - perBarPercentage);
+            if (newValue > oldValue) bar.UpdateValue(0, barValue);
+            else bar.SetValueWithoutTransition(barValue);
+                normalizedValue = Mathf.Clamp01(normalizedValue - perBarPercentage);
         }
     }
 
@@ -40,7 +41,7 @@ public class UIManaBar : MonoBehaviour
             bar.sizeDelta = new Vector2(barWidth, bar.sizeDelta.y);
             bar.anchoredPosition = new Vector2(currentPos, 0);
             currentPos += barWidth + barSeparation * totalWidth;
-            UIBar uiBar = bar.GetComponent<UIBar>();
+            UIBar uiBar = bar.GetComponentInChildren<UIBar>();
             if (i != 0) uiBar.PrevBar = bars[i - 1];
             bars.Add(uiBar);
         }
