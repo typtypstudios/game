@@ -15,6 +15,7 @@ namespace TypTyp.TextSystem
         private int textIdx = 0;
         private RitualManager ritualManager; //Referencia circular
         private ITextPipeline textPipeline;
+        public event Action OnLineRequested;
 
         public override void OnNetworkSpawn()
         {
@@ -69,6 +70,7 @@ namespace TypTyp.TextSystem
             {
                 text = textPipeline.ProcessText(text);
             }
+            OnLineRequested?.Invoke();
             ReceiveTextRpc(text);
         }
 

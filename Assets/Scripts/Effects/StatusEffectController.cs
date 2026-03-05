@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TypTyp.TextSystem;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,14 +17,19 @@ public class StatusEffectController : MonoBehaviour
     public UnityEvent<StatusEffect> OnEffectRefreshed;
 
     Player player;
+    NetworkTextProvider textProvider;
     List<StatusEffect> toRemove;
 
     public void Awake()
     {
         player = GetComponent<Player>();
+        textProvider = GetComponent<NetworkTextProvider>();
+        textProvider.OnLineRequested += OnRitualLineRequested;
         activeEffects = new();
         toRemove = new();
     }
+
+    private void OnDestroy() => textProvider.OnLineRequested -= OnRitualLineRequested;
 
     void Update()
     {
@@ -76,8 +82,7 @@ public class StatusEffectController : MonoBehaviour
         return new StatusEffect(definition, player);
     }
 
-    //Sin ligar al ritual manager, no me queda claro como relacionarme con esa clase.
-    void OnRitualLineCompleted(int numLinesCompleted)
+    void OnRitualLineRequested()
     {
         toRemove.Clear();
 
