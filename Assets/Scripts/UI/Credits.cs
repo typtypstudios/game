@@ -22,7 +22,6 @@ public class Credits : MonoBehaviour
             buttons[i].GetComponent<Button>().interactable = false;
             buttons[i].GetComponent<Button>().onClick.AddListener(OnButtonWritten);
         }
-        buttons[0].Block = false;
     }
 
     public void PlayCredits() => StartCoroutine(PlayCreditsCoroutine());
@@ -35,7 +34,6 @@ public class Credits : MonoBehaviour
             b.ResetButton(true);
             b.Block = true;
         }
-        buttons[0].Block = false;
         currentButtonIdx = 0;
     }
 
@@ -48,6 +46,7 @@ public class Credits : MonoBehaviour
 
     IEnumerator PlayCreditsCoroutine()
     {
+        buttons[0].Block = false;
         rt.anchoredPosition = initPos;
         float creditsSpeed = (finalYPos - initPos.y) / creditsTime;
         while (rt.anchoredPosition.y < finalYPos)
