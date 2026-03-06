@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using TMPro;
 using TypTyp.TextSystem;
@@ -51,6 +52,7 @@ public class MatchManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (NetworkManager.Singleton == null) return;
+
 
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
 
@@ -182,6 +184,7 @@ public class MatchManager : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     private void StartMatchClientRpc(double startTime)
     {
+        matchState = MatchState.InGame;
         matchStartTime = startTime;
 
         Debug.Log($"CLIENT {NetworkManager.Singleton.LocalClientId}: Received StartMatchClientRpc");
@@ -256,18 +259,18 @@ public class MatchManager : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     private void EndMatchClientRpc(ulong winnerClientId)
     {
-        // Muestra el mensaje de victoria. El botón todavía no se habilita.
-        // El botón de salida se habilita automáticamente al detectar que se ha desconectado del NetworkManager.
-        // La verdad he hecho esto porque me ha dado la gana XD. Así me aseguro con los handshakes y eso
-        // probablemente haya una mejor manera pero estoy cansado.
+        // Muestra el mensaje de victoria.
 
-        bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
+        matchState = MatchState.Finished;
 
         DisableGameplay();
 
-        FindFirstObjectByType<EndGamePanel>().Show(isWinner);
+        bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
+        FindFirstObjectByType<EndGamePanel>().ShowEndMatch(isWinner);
+
         OnMatchEnded?.Invoke();
 
+        // Handshake de finalización
         NotifyEndHandledServerRpc();
     }
 
@@ -291,24 +294,12 @@ public class MatchManager : NetworkBehaviour
 
     private async Task ShutdownMatchServer()
     {
-        if (!IsServer) return;
-
-        var lobbyManager = FindFirstObjectByType<LobbyManager>();
+        LobbyManager lobbyManager = FindFirstObjectByType<LobbyManager>();
         if (lobbyManager != null)
         {
             await lobbyManager.CloseLobyAndShutdown();
         }
-
-        if (IsHost)
-        {
-            var panel = FindFirstObjectByType<EndGamePanel>();
-            if (panel != null)
-            {
-                panel.OnNetworkClosed();
-            }
-        }
     }
-
 
     private void DisableGameplay()
     {
@@ -317,12 +308,14 @@ public class MatchManager : NetworkBehaviour
 
         // Desactivar la escritura del ritual del InputHandler
         var ritual = playerObject.GetComponentInChildren<RitualManager>();
-        ritual.ToggleListener(false);
+        if(ritual != null)
+            ritual.ToggleListener(false);
 
         // NOTA: desactivar también la escritura de hechizos
         Debug.LogWarning("Spell deactivation not implemented");
     }
 
+    // Llamado desde el botón
     public void ReturnToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
@@ -330,20 +323,54 @@ public class MatchManager : NetworkBehaviour
 
     private void OnClientDisconnected(ulong clientId)
     {
-        if (!NetworkManager.Singleton.IsListening)
-            return;
+        Debug.Log("Otro cliente se ha desconectado");
 
-        if (clientId != NetworkManager.Singleton.LocalClientId)
-            return;
-
-        var panel = FindFirstObjectByType<EndGamePanel>();
-        if (panel != null)
+        if (!IsServer && (clientId == NetworkManager.ServerClientId || clientId == NetworkManager.Singleton.LocalClientId))
         {
-            panel.OnNetworkClosed();
+            if (matchState == MatchState.ConfiguringPlayers || matchState == MatchState.WaitingPlayers)
+            {
+                // Salir de la partida
+                NetworkManager.Singleton.Shutdown();
+                SceneManager.LoadScene("MainMenu");
+            }
+            else if (matchState == MatchState.InGame)
+            {
+                // Terminar la partida
+                matchState = MatchState.Finished;
+                DisableGameplay();
+                OnMatchEnded?.Invoke();
+                NetworkManager.Singleton.Shutdown();
+
+                FindFirstObjectByType<EndGamePanel>().ShowEndMatch(true);
+            }
         }
 
-        NetworkManager.Singleton.Shutdown();
+        // Caso del host sigue vivo
+        if (clientId != NetworkManager.ServerClientId)
+        {
+            if (matchState == MatchState.ConfiguringPlayers || matchState == MatchState.WaitingPlayers)
+            {
+                // Salir de la partida
+                _ = ShutdownMatchServer();
+                NetworkManager.Singleton.Shutdown();
+                SceneManager.LoadScene("MainMenu");
+            }
+            else if (matchState == MatchState.InGame)
+            {
+                // Terminar la partida
+                matchState = MatchState.Finished;
+                DisableGameplay();
+                OnMatchEnded?.Invoke();
+
+                _ = ShutdownMatchServer();
+                NetworkManager.Singleton.Shutdown();
+
+                FindFirstObjectByType<EndGamePanel>().ShowEndMatch(true);
+            }
+        }
     }
+
+
 
     public override void OnDestroy()
     {

@@ -13,7 +13,7 @@ public class EndGamePanel : MonoBehaviour
         exitButton.SetActive(false);
     }
 
-    public void Show(bool isWinner)
+    public void ShowEndMatch(bool isWinner)
     {
         panel.SetActive(true);
         exitButton.SetActive(false);
@@ -23,13 +23,7 @@ public class EndGamePanel : MonoBehaviour
         WritableText wt = resultText.GetComponent<WritableText>();
         wt.FillColor = isWinner ? Color.cyan : Color.red;
         wt.ResetText();
-    }
 
-    /// <summary>
-    /// Llamado en el onclientdisconnected propio del matchmaker
-    /// </summary>
-    public void OnNetworkClosed()
-    {
         exitButton.SetActive(true);
     }
 }

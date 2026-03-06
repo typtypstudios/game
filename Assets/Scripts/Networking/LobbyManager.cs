@@ -97,7 +97,7 @@ public class LobbyManager : MonoBehaviour
                 }
                 catch (LobbyServiceException e) when (e.Reason == LobbyExceptionReason.RateLimited)
                 {
-                    Debug.LogWarning("Rate limited. Waiting before retry...");
+                    Debug.Log("Rate limited. Waiting before retry...");
                     await Task.Delay(1000);
                 }
                 catch (Exception e)
@@ -107,7 +107,7 @@ public class LobbyManager : MonoBehaviour
                 }
             }// End for
 
-            Debug.LogError("Matchmaking exhausted. Returning to main menu.");
+            Debug.LogWarning("Matchmaking exhausted. Returning to main menu.");
             await CloseLobyAndShutdown();
             SceneManager.LoadScene("MainMenu");
         }
@@ -144,7 +144,7 @@ public class LobbyManager : MonoBehaviour
                     { "state", new DataObject(
                         DataObject.VisibilityOptions.Public,
                         "waiting",
-                        DataObject.IndexOptions.S1) 
+                        DataObject.IndexOptions.S1)
                     }
                 }
             };
@@ -154,7 +154,7 @@ public class LobbyManager : MonoBehaviour
 
             if (!NetworkManager.Singleton.StartHost())
             {
-                Debug.LogError("Failed to start host");
+                Debug.LogWarning("Failed to start host");
                 await CloseLobyAndShutdown();
                 return false;
             }
@@ -173,7 +173,7 @@ public class LobbyManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError("CreateLobby failed: " + e);
+            Debug.LogWarning("CreateLobby failed: " + e);
             await CloseLobyAndShutdown();
             return false;
         }
@@ -258,7 +258,7 @@ public class LobbyManager : MonoBehaviour
 
             if (currentLobby == null || !currentLobby.Data.ContainsKey("joinCode"))
             {
-                Debug.LogError("Invalid lobby data");
+                Debug.LogWarning("Invalid lobby data");
                 await CloseLobyAndShutdown();
                 return false;
             }
@@ -271,16 +271,34 @@ public class LobbyManager : MonoBehaviour
 
             if (!NetworkManager.Singleton.StartClient())
             {
-                Debug.LogError("Failed to start client");
+                Debug.LogWarning("Failed to start client");
                 await CloseLobyAndShutdown();
                 return false;
             }
 
             return true; // éxito
         }
+        catch (LobbyServiceException e) when (e.Reason == LobbyExceptionReason.LobbyConflict)
+        {
+            Debug.LogWarning($"Conflicto 409: Ya figuramos en la lobby {lobby.Id}. Forzando salida para limpiar sesión...");
+
+            try
+            {
+                // intentar salir de este lobby
+                await LobbyService.Instance.RemovePlayerAsync(lobby.Id, AuthenticationService.Instance.PlayerId);
+                Debug.Log("Salida forzada exitosa. El bucle de búsqueda intentará con otra lobby o creará una.");
+            }
+            catch (Exception removeEx)
+            {
+                Debug.LogError($"No se pudo limpiar la sesión en la lobby: {removeEx.Message}");
+            }
+
+            currentLobby = null;
+            return false;
+        }
         catch (Exception e)
         {
-            Debug.LogError("JoinLobby failed: " + e);
+            Debug.LogWarning("JoinLobby failed: " + e);
             await CloseLobyAndShutdown();
             return false;
         }
