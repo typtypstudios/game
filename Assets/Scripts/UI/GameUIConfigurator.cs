@@ -10,6 +10,8 @@ public class GameUIConfigurator : MonoBehaviour
     [SerializeField] private UIManaBar[] manaBars;
     [Tooltip("Barras de corrupci�n. La primera ha de ser la del cliente.")]
     [SerializeField] private UIBar[] corruptionBars;
+    [Tooltip("UI de efectos de estados de cada jugador.")]
+    [SerializeField] private StatusEffectUI[] statusEffectUIs;
     public static event Action OnUIConfigurated;
 
     private void Awake()
@@ -28,6 +30,8 @@ public class GameUIConfigurator : MonoBehaviour
         Player.User.CurrentCorruption.OnValueChanged += corruptionBars[0].UpdateValue;
         Player.Enemy.CurrentCorruption.OnValueChanged += corruptionBars[1].UpdateValue;
         foreach (UIBar bar in corruptionBars) bar.MaxValue = TypTyp.Settings.Instance.MaxCorruption;
+        statusEffectUIs[0].SubscribeToPlayer(Player.User);
+        statusEffectUIs[1].SubscribeToPlayer(Player.Enemy);
         canvasGroup.alpha = 1.0f;
         OnUIConfigurated?.Invoke();
     }

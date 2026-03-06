@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ff6ef768b5469d4f8e81a1e3e36d8c4, type: 3}
-  m_Name: DoubleSpaceEffect
+  m_Name: TestEffect
   m_EditorClassIdentifier: Assembly-CSharp::TextProcessorEffect
-  <EffectName>k__BackingField: SpacingEffect
-  <DurationType>k__BackingField: 2
-  <EffectPolarityType>k__BackingField: 1
-  <DurationValue>k__BackingField: 3
-  <Description>k__BackingField: Duplica  el  espacio  entre  palabras
-  <ImageUI>k__BackingField: {fileID: 21300000, guid: ea44cec1ee5742f4c89e752c278e1327, type: 3}
+  <EffectName>k__BackingField: TestEffect
+  <DurationType>k__BackingField: 1
+  <EffectPolarityType>k__BackingField: 0
+  <DurationValue>k__BackingField: 30
+  <Description>k__BackingField: Efecto de prueba
+  <ImageUI>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   processor: {fileID: 11400000, guid: 0f6dccc3b1bbfe647a38346ad00a3cd7, type: 2}

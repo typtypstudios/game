@@ -70,7 +70,6 @@ namespace TypTyp.TextSystem
             {
                 text = textPipeline.ProcessText(text);
             }
-            OnLineRequested?.Invoke();
             ReceiveTextRpc(text);
         }
 
@@ -87,6 +86,7 @@ namespace TypTyp.TextSystem
                     break;
                 }
             }
+            OnLineRequested?.Invoke();
         }
     }
 }
