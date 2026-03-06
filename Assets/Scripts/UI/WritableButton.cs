@@ -7,6 +7,7 @@ using System.Collections;
 public class WritableButton : AInputListener
 {
     [SerializeField] private bool resetIfFailed = true;
+    [SerializeField] private bool resetOnWritten = true;
     [SerializeField] private float resetTime = 0.5f;
     private Button button;
     private TextMeshProUGUI buttonText;
@@ -42,8 +43,13 @@ public class WritableButton : AInputListener
         ResetButton();
     }
 
-    public void ResetButton()
+    public void ResetButton(bool force = false)
     {
+        if(!resetOnWritten && !force)
+        {
+            Block = true;
+            return;
+        }
         buttonText.text = originalText;
         idx = 0;
         resetCoroutine = null;
