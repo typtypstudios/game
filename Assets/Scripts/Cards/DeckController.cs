@@ -84,7 +84,7 @@ public class DeckController : NetworkBehaviour
 
         Debug.Log($"[Deck][Server][PlayCard] cid={OwnerClientId} card={card} spell={SpellRegister.Instance.GetId(spellDef)}");
 
-        spellCaster.CastSpell(spellDef);
+        spellCaster.CastSpell(cardDef);
     }
 
     private int DrawCard()
@@ -209,8 +209,8 @@ public class DeckController : NetworkBehaviour
             }
         }
 
-        var spellDef = GetCardDefinitionById(card).Spell;
-        var spellCastRequestValidation = spellCaster.ValidateSpellCastRequest(validationType, spellDef);
+        var cardDef = GetCardDefinitionById(card);
+        var spellCastRequestValidation = spellCaster.ValidateSpellCastRequest(validationType, cardDef);
         if (spellCastRequestValidation != PlayCardRequestResult.Success)
         {
             return spellCastRequestValidation;

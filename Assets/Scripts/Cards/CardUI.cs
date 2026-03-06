@@ -34,7 +34,7 @@ public class CardUI : MonoBehaviour
 
         cardImage.sprite = def.CardImage;
         cardName.text = def.CardName;
-        cardCost.text = def.Spell.ManaCost.ToString();
+        cardCost.text = def.ManaCost.ToString();
         writableSpell.SetText(def.CardName);
     }
 

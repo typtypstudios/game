@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -8,6 +9,7 @@ public class SpellCaster : NetworkBehaviour
 {
     Player player;
     ManaGainManager manaManager;
+    public static event Action<ulong, CardDefinition> OnCardApplied;
 
     public void Awake()
     {
@@ -20,18 +22,18 @@ public class SpellCaster : NetworkBehaviour
 
     #region Server side
 
-    public void CastSpell(SpellDefinition spellDef)
+    public void CastSpell(CardDefinition cardDef)
     {
         if (!IsServer) return;
 
         ulong casterId = OwnerClientId;
-        int spellId = GetSpellId(spellDef);
+        int cardId = GetCardId(cardDef);
         //De momento, si solo hay dos jugadores, elijo al otro
         ulong targetId = NetworkManager.Singleton.ConnectedClientsIds.First(id => id != casterId);
 
         // Debug.Log($"[Spell][Server][Cast] caster={casterId} spell={spellId} manaBefore={player.CurrentMana.Value}");
 
-        manaManager.ConsumeMana(spellDef.ManaCost);
+        manaManager.ConsumeMana(cardDef.ManaCost);
 
         // Debug.Log($"[Spell][Server][ManaConsumed] caster={casterId} cost={spellDef.ManaCost} manaAfter={player.CurrentMana.Value}");
 
@@ -40,25 +42,26 @@ public class SpellCaster : NetworkBehaviour
 
         // Debug.Log($"[Spell][Server][SendRPC] caster={casterId} spell={spellId} target={targetId}");
 
-        ApplySpellRpc(casterId, spellId, targetId);
+        ApplySpellRpc(casterId, cardId, targetId);
     }
 
     #endregion
 
     [Rpc(SendTo.Everyone)]
-    public void ApplySpellRpc(ulong caster, int spell, params ulong[] targets)
+    public void ApplySpellRpc(ulong caster, int cardId, params ulong[] targets)
     {
         // Debug.Log($"[Spell][RPC][Receive] localClient={NetworkManager.LocalClientId} caster={caster} spell={spell} targets={string.Join(",", targets)}");
 
-        ApplySpell(caster, spell, targets);
+        ApplySpell(caster, cardId, targets);
     }
 
-    void ApplySpell(ulong caster, int spell, params ulong[] targets)
+    void ApplySpell(ulong caster, int cardId, params ulong[] targets)
     {
         // Debug.Log($"[Spell][Apply] caster={caster} spell={spell} targets={string.Join(",", targets)}");
 
         Player casterPlayer = GetPlayerById(caster);
-        SpellDefinition spellDef = GetSpellById(spell);
+        CardDefinition cardDef = GetCardById(cardId);
+        SpellDefinition spellDef = cardDef.Spell;
 
         if (spellDef.OnSelfEffects.Any())
         {
@@ -76,6 +79,7 @@ public class SpellCaster : NetworkBehaviour
                 ApplyEffectsToPlayer(targetPlayer, spellDef.OnEnemyEffects);
             }
         }
+        OnCardApplied?.Invoke(caster, cardDef);
     }
 
     void ApplyEffectsToPlayer(Player player, IEnumerable<StatusEffectDefinition> effects)
@@ -90,11 +94,11 @@ public class SpellCaster : NetworkBehaviour
     #region Validation
 
     //De momento la validacion es la misma en server y en cliente
-    public PlayCardRequestResult ValidateSpellCastRequest(RequestValidationType validationType, SpellDefinition spellDef)
+    public PlayCardRequestResult ValidateSpellCastRequest(RequestValidationType validationType, CardDefinition cardDef)
     {
         // Debug.Log($"[Spell][Validate] type={validationType} cid={OwnerClientId} mana={player.CurrentMana.Value} cost={spellDef.ManaCost}");
 
-        bool canCast = player.CurrentMana.Value >= spellDef.ManaCost;
+        bool canCast = player.CurrentMana.Value >= cardDef.ManaCost;
 
         var res = canCast ? PlayCardRequestResult.Success : PlayCardRequestResult.NotEnoughMana;
 
@@ -110,9 +114,9 @@ public class SpellCaster : NetworkBehaviour
     Player GetPlayerById(ulong clientId) =>
         NetworkManager.ConnectedClients[clientId].PlayerObject.GetComponent<Player>();
 
-    SpellDefinition GetSpellById(int id) => SpellRegister.Instance.GetById(id);
+    CardDefinition GetCardById(int id) => CardRegister.Instance.GetById(id);
 
-    int GetSpellId(SpellDefinition spellDefinition) => SpellRegister.Instance.GetId(spellDefinition);
+    int GetCardId(CardDefinition cardDefinition) => CardRegister.Instance.GetId(cardDefinition);
 
     #endregion
 }

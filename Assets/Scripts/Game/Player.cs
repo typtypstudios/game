@@ -6,7 +6,7 @@ using TypTyp;
 
 public class Player : NetworkBehaviour
 {
-    public int PlayerID;
+    //public int PlayerID;
     public MatchManager MatchManager { get; private set; }
     public RitualManager RitualManager { get; private set; }
     public ManaGainManager ManaManager { get; private set; }
@@ -66,7 +66,7 @@ public class Player : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void ConfigurePlayerRpc(int playerIdx)
     {
-        PlayerID = playerIdx == 0 ? TypTyp.Settings.Instance.P1_ID : TypTyp.Settings.Instance.P2_ID;
+        //PlayerID = playerIdx == 0 ? TypTyp.Settings.Instance.P1_ID : TypTyp.Settings.Instance.P2_ID;
         this.tag = playerIdx == 0 ? Settings.Instance.P1_tag : Settings.Instance.P2_tag;
 
         FindFirstObjectByType<PlayerPositioner>().PositionPlayer(this, playerIdx, IsOwner);
