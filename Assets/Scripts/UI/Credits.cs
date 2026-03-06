@@ -37,6 +37,11 @@ public class Credits : MonoBehaviour
         currentButtonIdx = 0;
     }
 
+    public void ContactUs()
+    {
+        Application.OpenURL("https://linktr.ee/typtypstudios");
+    }
+
     private void OnButtonWritten()
     {
         buttons[currentButtonIdx++].Block = true;
