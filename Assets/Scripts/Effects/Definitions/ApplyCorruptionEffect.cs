@@ -1,8 +1,8 @@
 using TypTyp;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CorruptionEffect", menuName = "TypTyp/Effects/CorruptionEffect")]
-public class CorruptionEffect : StatusEffectDefinition
+[CreateAssetMenu(fileName = "ApplyCorruptionEffect", menuName = "TypTyp/Effects/ApplyCorruptionEffect")]
+public class ApplyCorruptionEffect : StatusEffectDefinition
 {
     [Range(0, 100)][SerializeField] float corruptionPercentage;
     [SerializeField] bool heal;

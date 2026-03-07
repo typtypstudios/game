@@ -10,7 +10,9 @@ public class CorruptionGainManager : MonoBehaviour
     public event Action<float> OnCorruptionGain;
     private WaitForSeconds timeToAutoHeal;
     private WaitForSeconds autoHealInterval;
-    public float GainMultiplier { get; set; } = 1;
+    public float HurtGainMultiplier { get; set; } = 1;
+    public float HealGainMultiplier { get; set; } = 1;
+    public float MistakeGainMultiplier { get; set; } = 1;
 
     private void Awake()
     {
@@ -22,7 +24,7 @@ public class CorruptionGainManager : MonoBehaviour
     public void ProcessMistake()
     {
         AddCorruption(Settings.Instance.MistakePenalizationPercentage / 100 * 
-            Settings.Instance.MaxCorruption);
+            Settings.Instance.MaxCorruption * MistakeGainMultiplier);
     }
 
     public void AddCorruption(float corruptionToAdd)
@@ -32,6 +34,8 @@ public class CorruptionGainManager : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(AutoHealCoroutine());
         }
+        float multiplier = corruptionToAdd > 0 ? HurtGainMultiplier : HealGainMultiplier;
+        corruptionToAdd *= multiplier;
         float currentCorruption = player.CurrentCorruption.Value;
         currentCorruption = Mathf.Clamp(currentCorruption + corruptionToAdd, 0, 
             Settings.Instance.MaxCorruption);
