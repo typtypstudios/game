@@ -56,27 +56,53 @@ public class StatusEffectController : MonoBehaviour
         }
     }
 
-    public void AddEffect(StatusEffectDefinition effect)
+    public void AddEffect(StatusEffectDefinition effectDef)
     {
-        var statusEffect = CreateStatusEffect(effect);
-        if (activeEffects.Contains(statusEffect))
+        var statusEffect = CreateStatusEffect(effectDef);
+
+        //Refresh
+        var refreshMatch = activeEffects.Find(e => e.Equals(statusEffect));
+        if (refreshMatch != default)
         {
-            //Se podria hacer refresco de efectos o sumar duracion
-            // o stackeo en caso de reaplicar efectos
+            RefreshEffect(refreshMatch);
             return;
         }
-        if(effect.DurationType != EffectDurationType.Immediate) activeEffects.Add(statusEffect);
+
+        //Polarity
+        var oppositeMatch = activeEffects.Find(e => e.Definition.IsOpposite(effectDef));
+        if (oppositeMatch != default)
+        {
+            RemoveEffect(oppositeMatch);
+        }
+
+        //Addition and activation
+        if (effectDef.DurationType != EffectDurationType.Immediate) activeEffects.Add(statusEffect);
         statusEffect.Activate();
         OnEffectApplied?.Invoke(statusEffect);
     }
 
     void ExpireEffect(StatusEffect effect)
     {
-        effect.Deactivate();
-        if (effect.Definition.DurationType != EffectDurationType.Immediate) activeEffects.Remove(effect);
         OnEffectExpired?.Invoke(effect);
+        RemoveEffect(effect);
+    }
+
+    void RemoveEffect(StatusEffect effect)
+    {
+        effect.Deactivate();
+        //if (effect.Definition.DurationType != EffectDurationType.Immediate)
+        activeEffects.Remove(effect);
         OnEffectRemoved?.Invoke(effect);
     }
+
+    //Asumo que los efectos que se pueden refrescar
+    //solo son aquellos no inmediatos que entran a la coleccion de efectos
+    void RefreshEffect(StatusEffect effect)
+    {
+        effect.RemainingDuration = effect.Definition.DurationValue;
+        OnEffectRefreshed.Invoke(effect);
+    }
+
     StatusEffect CreateStatusEffect(StatusEffectDefinition definition)
     {
         return new StatusEffect(definition, player);

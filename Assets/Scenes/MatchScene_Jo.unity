@@ -826,6 +826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MatchManager
   ShowTopMostFoldoutHeaderGroup: 1
+  countdownText: {fileID: 0}
   playerPrefab: {fileID: 1527992307803624597, guid: a627f6499881c7344a433ff1a21fc70f, type: 3}
 --- !u!4 &377042277
 Transform:
@@ -1100,7 +1101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Multiplayer.Tools.NetworkSimulator.Runtime::Unity.Multiplayer.Tools.NetworkSimulator.Runtime.NetworkSimulator
   m_PresetAsset: {fileID: 0}
   m_PresetReference:
-    rid: 5300399822756380854
+    rid: 4665586446580842496
   m_Scenario:
     rid: 5300399720746451136
   m_IsScenarioSettingsFolded: 1
@@ -1108,6 +1109,17 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 4665586446580842496
+      type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
+      data:
+        <Name>k__BackingField: Home Broadband with Congested Network
+        <Description>k__BackingField: Desktop and console platforms trough congested
+          networks (multiple downloads or streaming already using the network's maximum
+          capacity). Medium ping, bad jitter and little packet loss.
+        <PacketDelayMs>k__BackingField: 50
+        <PacketJitterMs>k__BackingField: 50
+        <PacketLossInterval>k__BackingField: 0
+        <PacketLossPercent>k__BackingField: 1
     - rid: 5300399720746451131
       type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
       data:
@@ -1127,17 +1139,6 @@ MonoBehaviour:
         - m_ClassPreset:
             rid: 5300399720746451131
           m_ScriptableObjectPreset: {fileID: 0}
-    - rid: 5300399822756380854
-      type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
-      data:
-        <Name>k__BackingField: Home Broadband with Congested Network
-        <Description>k__BackingField: Desktop and console platforms trough congested
-          networks (multiple downloads or streaming already using the network's maximum
-          capacity). Medium ping, bad jitter and little packet loss.
-        <PacketDelayMs>k__BackingField: 50
-        <PacketJitterMs>k__BackingField: 50
-        <PacketLossInterval>k__BackingField: 0
-        <PacketLossPercent>k__BackingField: 1
 --- !u!4 &779730825
 Transform:
   m_ObjectHideFlags: 0
@@ -2224,6 +2225,7 @@ MonoBehaviour:
   corruptionBars:
   - {fileID: 26194116}
   - {fileID: 1243210385}
+  statusEffectUIs: []
 --- !u!114 &1813752699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2475,8 +2477,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab88fd5c35a8c24d93b36c1dde1eaa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MatchmakingManager
-  maxReconnectTime: 10
-  reconnectInterval: 2
   heartbeatInterval: 15
 --- !u!1 &2110101310
 GameObject:

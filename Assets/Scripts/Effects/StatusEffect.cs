@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class StatusEffect : IEquatable<StatusEffect>
 {
     [field: SerializeField] public StatusEffectDefinition Definition { get; private set; }
