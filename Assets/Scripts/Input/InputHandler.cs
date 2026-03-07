@@ -1,6 +1,7 @@
 using System;
 using UnityEngine.InputSystem;
 
+[NoAutoCreate]
 public class InputHandler : Singleton<InputHandler>
 {
     private event Action<char> OnCharTyped; //Wraper, onTextInput no deja eliminar todos los listeners
