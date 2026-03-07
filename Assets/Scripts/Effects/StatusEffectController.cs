@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using TypTyp.TextSystem;
 using UnityEngine;
 using UnityEngine.Events;
@@ -19,6 +20,7 @@ public class StatusEffectController : MonoBehaviour
     Player player;
     NetworkTextProvider textProvider;
     List<StatusEffect> toRemove;
+    public List<TMP_FontAsset> ActiveFonts { get; private set; } = new(); //Fuentes provenientes de modificadores
 
     public void Awake()
     {

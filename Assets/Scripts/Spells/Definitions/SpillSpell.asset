@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5cc9ae3d8fa311c4da3b0fb48943249c, type: 3}
-  m_Name: TestSpell
+  m_Name: SpillSpell
   m_EditorClassIdentifier: Assembly-CSharp::SpellDefinition
-  <SpellName>k__BackingField: TestSpell
-  <OnSelfEffects>k__BackingField:
-  - {fileID: 11400000, guid: f99f7d2c9d52d37419552386cc4c92ca, type: 2}
+  <SpellName>k__BackingField: SpillSpell
+  <OnSelfEffects>k__BackingField: []
   <OnEnemyEffects>k__BackingField:
-  - {fileID: 11400000, guid: f19adaba457bb2041b1ba0ee5f7e037e, type: 2}
+  - {fileID: 11400000, guid: ea072d2ea0825994a827452538fac746, type: 2}
