@@ -133,6 +133,8 @@ GameObject:
   - component: {fileID: 2378757180898235989}
   - component: {fileID: 7492893634304590476}
   - component: {fileID: 8216012487965453665}
+  - component: {fileID: 9035799092542523559}
+  - component: {fileID: 7309832286138776066}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -395,6 +397,41 @@ MonoBehaviour:
   OnEffectRefreshed:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9035799092542523559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527992307803624597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7746cbbc1dbb07a4f9712e313c7d27b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputManager
+  changeModeActionReference: {fileID: 1942445823674454441, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+--- !u!95 &7309832286138776066
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527992307803624597}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ff8b17fdc451cb24792c24ee6fe712ef, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2174283757335375879
 GameObject:
   m_ObjectHideFlags: 0
@@ -1560,6 +1597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RitualManager
   fillColor: {r: 1, g: 1, b: 1, a: 1}
+  autoSubscribe: 0
   wrongColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &6446494482979382859 stripped
 MonoBehaviour:

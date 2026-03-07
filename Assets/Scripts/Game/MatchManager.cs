@@ -38,6 +38,7 @@ public class MatchManager : NetworkBehaviour
 
     private double matchStartTime;
     private MatchState matchState;
+    public static event Action OnMatchStarted;
     public static event Action OnMatchEnded;
 
 
@@ -238,8 +239,7 @@ public class MatchManager : NetworkBehaviour
             $"Drift:{drift * 1000:F2} ms"
         );
 
-        NetworkTextProvider networkText = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<NetworkTextProvider>();
-        if (networkText != null) networkText.SetTextsActive(true);
+        OnMatchStarted?.Invoke();
     }
 
     /// <summary>
