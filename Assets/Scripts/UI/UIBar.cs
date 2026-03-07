@@ -25,6 +25,7 @@ public class UIBar : MonoBehaviour
 
     public void SetValueWithoutTransition(float value)
     {
+        StopAllCoroutines();
         bar.fillAmount = value;
         filler.fillAmount = value;
     }

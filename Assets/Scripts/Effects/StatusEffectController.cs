@@ -65,7 +65,7 @@ public class StatusEffectController : MonoBehaviour
             // o stackeo en caso de reaplicar efectos
             return;
         }
-        activeEffects.Add(statusEffect);
+        if(effect.DurationType != EffectDurationType.Immediate) activeEffects.Add(statusEffect);
         statusEffect.Activate();
         OnEffectApplied?.Invoke(statusEffect);
     }
@@ -73,7 +73,7 @@ public class StatusEffectController : MonoBehaviour
     void ExpireEffect(StatusEffect effect)
     {
         effect.Deactivate();
-        activeEffects.Remove(effect);
+        if (effect.Definition.DurationType != EffectDurationType.Immediate) activeEffects.Remove(effect);
         OnEffectExpired?.Invoke(effect);
         OnEffectRemoved?.Invoke(effect);
     }

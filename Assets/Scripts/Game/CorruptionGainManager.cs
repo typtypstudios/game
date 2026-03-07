@@ -25,7 +25,7 @@ public class CorruptionGainManager : MonoBehaviour
             Settings.Instance.MaxCorruption);
     }
 
-    private void AddCorruption(float corruptionToAdd)
+    public void AddCorruption(float corruptionToAdd)
     {
         if(corruptionToAdd > 0)
         {
