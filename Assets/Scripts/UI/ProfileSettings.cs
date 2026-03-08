@@ -17,7 +17,7 @@ public class ProfileSettings : MonoBehaviour
     [SerializeField] private Button[] allProfileButtons;
     private WritableButton[] allWritableButtons;
     private int minNameLength = 4;
-    private int maxNameLength = 15;
+    private int maxNameLength = 12;
 
     private void Start()
     {
