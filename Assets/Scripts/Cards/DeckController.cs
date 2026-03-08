@@ -21,14 +21,19 @@ public enum RequestValidationType
     Server
 }
 
+[RequireComponent(typeof(Player))]
 public class DeckController : NetworkBehaviour
 {
     [field: ContextMenuItem("Update Cards View", nameof(UpdateQueueListView))]
     [field: SerializeField] public CardDefinition[] Cards { get; private set; }
+
+    private Player player;
     private Queue<int> cardQueue;
     private HashSet<int> currentHand;
     private SpellCaster spellCaster;
     private static int seed;
+
+    //Events
     public UnityEvent<CardDefinition> OnCardPlayed = new();
     public UnityEvent<CardDefinition> OnCardDrawn = new();
     public event Action<int> OnCardPlayedEvent;
@@ -38,6 +43,7 @@ public class DeckController : NetworkBehaviour
 
     void Awake()
     {
+        player = GetComponent<Player>();
         Cards = Array.Empty<CardDefinition>();
         spellCaster = GetComponentInParent<SpellCaster>();
         UnityEngine.Assertions.Assert.IsNotNull(spellCaster,
@@ -204,6 +210,7 @@ public class DeckController : NetworkBehaviour
     {
         if (validationType == RequestValidationType.Server)
         {
+            //Hand validation
             if (!currentHand.Contains(card))
             {
                 return PlayCardRequestResult.NotInHand;
@@ -211,10 +218,9 @@ public class DeckController : NetworkBehaviour
         }
 
         var cardDef = GetCardDefinitionById(card);
-        var spellCastRequestValidation = spellCaster.ValidateSpellCastRequest(validationType, cardDef);
-        if (spellCastRequestValidation != PlayCardRequestResult.Success)
+        if (!player.ManaManager.CanAfford(cardDef.ManaCost))
         {
-            return spellCastRequestValidation;
+            return PlayCardRequestResult.NotEnoughMana;
         }
 
         return PlayCardRequestResult.Success;

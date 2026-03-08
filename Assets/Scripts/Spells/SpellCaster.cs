@@ -93,19 +93,11 @@ public class SpellCaster : NetworkBehaviour
 
     #region Validation
 
-    //De momento la validacion es la misma en server y en cliente
-    public PlayCardRequestResult ValidateSpellCastRequest(RequestValidationType validationType, CardDefinition cardDef)
-    {
-        // Debug.Log($"[Spell][Validate] type={validationType} cid={OwnerClientId} mana={player.CurrentMana.Value} cost={spellDef.ManaCost}");
-
-        bool canCast = player.CurrentMana.Value >= cardDef.ManaCost;
-
-        var res = canCast ? PlayCardRequestResult.Success : PlayCardRequestResult.NotEnoughMana;
-
-        // Debug.Log($"[Spell][ValidateResult] type={validationType} cid={OwnerClientId} res={res}");
-
-        return res;
-    }
+    // public PlayCardRequestResult ValidateSpellCastRequest(RequestValidationType validationType, CardDefinition cardDef)
+    // {
+    //     //Maybe will be used for delay validations
+    //     return default;
+    // }
 
     #endregion
 

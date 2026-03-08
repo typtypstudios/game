@@ -47,4 +47,9 @@ public class ManaGainManager : MonoBehaviour
     {
         CostModifier += modifier;
     }
+
+    public bool CanAfford(float baseAmount)
+    {
+        return baseAmount + CostModifier <= player.CurrentMana.Value;
+    }
 }
