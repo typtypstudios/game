@@ -11,6 +11,7 @@ public class PlayerInputManager : MonoBehaviour
     void Awake()
     {
         MatchManager.OnMatchStarted += SubscribeToInput;
+        MatchManager.OnMatchEnded += UnsubscribeToInput;
         anim = GetComponent<Animator>();
         ritualManager = GetComponentInChildren<RitualManager>(true);
     }
@@ -23,6 +24,7 @@ public class PlayerInputManager : MonoBehaviour
     void OnDestroy()
     {
         MatchManager.OnMatchStarted -= SubscribeToInput;
+        MatchManager.OnMatchEnded -= UnsubscribeToInput;
         changeModeActionReference.action.performed -= ChangeMode;
     }
 
@@ -32,6 +34,19 @@ public class PlayerInputManager : MonoBehaviour
         {
             changeModeActionReference.action.performed += ChangeMode;
             SetMode(InputMode.Ritual);
+        }
+    }
+
+    private void UnsubscribeToInput()
+    {
+        if (GetComponent<Player>().IsOwner)
+        {
+            changeModeActionReference.action.performed -= ChangeMode;
+
+            Debug.Log("Deshabilitando el input del ritual y los hechizos");
+            // Desactivar el input
+            foreach (var card in cardUIs) card.ToggleListener(false);
+            ritualManager.ToggleListener(false);
         }
     }
 

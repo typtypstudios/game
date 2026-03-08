@@ -263,12 +263,10 @@ public class MatchManager : NetworkBehaviour
 
         matchState = MatchState.Finished;
 
-        DisableGameplay();
+        OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
         FindFirstObjectByType<EndGamePanel>().ShowEndMatch(isWinner);
-
-        OnMatchEnded?.Invoke();
 
         // Handshake de finalización
         NotifyEndHandledServerRpc();
@@ -301,20 +299,6 @@ public class MatchManager : NetworkBehaviour
         }
     }
 
-    private void DisableGameplay()
-    {
-        var playerObject = NetworkManager.Singleton.LocalClient.PlayerObject;
-        if (playerObject == null) return;
-
-        // Desactivar la escritura del ritual del InputHandler
-        var ritual = playerObject.GetComponentInChildren<RitualManager>();
-        if(ritual != null)
-            ritual.ToggleListener(false);
-
-        // NOTA: desactivar también la escritura de hechizos
-        Debug.LogWarning("Spell deactivation not implemented");
-    }
-
     // Llamado desde el botón
     public void ReturnToMainMenu()
     {
@@ -323,8 +307,6 @@ public class MatchManager : NetworkBehaviour
 
     private void OnClientDisconnected(ulong clientId)
     {
-        Debug.Log("Otro cliente se ha desconectado");
-
         if (!IsServer && (clientId == NetworkManager.ServerClientId || clientId == NetworkManager.Singleton.LocalClientId))
         {
             if (matchState == MatchState.ConfiguringPlayers || matchState == MatchState.WaitingPlayers)
@@ -337,8 +319,7 @@ public class MatchManager : NetworkBehaviour
             {
                 // Terminar la partida
                 matchState = MatchState.Finished;
-                DisableGameplay();
-                OnMatchEnded?.Invoke();
+                OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
                 NetworkManager.Singleton.Shutdown();
 
                 FindFirstObjectByType<EndGamePanel>().ShowEndMatch(true);
@@ -359,9 +340,7 @@ public class MatchManager : NetworkBehaviour
             {
                 // Terminar la partida
                 matchState = MatchState.Finished;
-                DisableGameplay();
-                OnMatchEnded?.Invoke();
-
+                OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
                 _ = ShutdownMatchServer();
                 NetworkManager.Singleton.Shutdown();
 
