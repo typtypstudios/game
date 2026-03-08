@@ -17,7 +17,7 @@ public class InputHandler : Singleton<InputHandler>
 
     private void CommunicateChartTyped(char c) 
     {
-        if (c != '\t') OnCharTyped?.Invoke(c);
+        if (!char.IsControl(c)) OnCharTyped?.Invoke(c);
     }
 
     public void AddListener(Action<char> func) => OnCharTyped += func;

@@ -28,7 +28,7 @@ public class DeckController : NetworkBehaviour
     private Queue<int> cardQueue;
     private HashSet<int> currentHand;
     private SpellCaster spellCaster;
-
+    private static int seed;
     public UnityEvent<CardDefinition> OnCardPlayed = new();
     public UnityEvent<CardDefinition> OnCardDrawn = new();
     public event Action<int> OnCardPlayedEvent;
@@ -42,6 +42,7 @@ public class DeckController : NetworkBehaviour
         spellCaster = GetComponentInParent<SpellCaster>();
         UnityEngine.Assertions.Assert.IsNotNull(spellCaster,
             "DeckController requires a SpellCaster component in its parents");
+        seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
     }
 
     #region Server side
@@ -50,7 +51,7 @@ public class DeckController : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        deck.Shuffle(0);
+        deck.Shuffle(seed);
         //just for editor view purposes
         Cards = deck.Select(c => GetCardDefinitionById(c)).ToArray();
         cardQueue = new(deck);
