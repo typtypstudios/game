@@ -8,6 +8,8 @@ public class ManaGainManager : MonoBehaviour
     public event Action<float> OnManaGain;
     public float GainMultiplier { get; set; } = 1;
 
+    public float CostModifier { get; private set; } = 0;
+
     private void Start()
     {
         player = GetComponent<Player>();
@@ -39,5 +41,10 @@ public class ManaGainManager : MonoBehaviour
         currentMana = Mathf.Clamp(currentMana, 0, Settings.Instance.MaxMana);
         OnManaGain?.Invoke(currentMana);
         return true;
+    }
+
+    public void ApplyCostModifier(float modifier)
+    {
+        CostModifier += modifier;
     }
 }
