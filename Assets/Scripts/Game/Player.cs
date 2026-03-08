@@ -40,7 +40,9 @@ public class Player : NetworkBehaviour
 
         if (IsOwner)
         {
-            FixedString32Bytes PlayerName = $"Player_{OwnerClientId}";
+            // NOTA: el nombre un futuro se puede obtener de los datos del jugador desde los servicios de Unity
+            FixedString32Bytes PlayerName = PlayerPrefs.GetString("Username");
+            Debug.Log(PlayerName);
             int[] deck = CardRegister.Instance.GetIds(DeckBuilder.CardsInDeck);
             PlayerData playerData = new(OwnerClientId, PlayerName, deck);
 
