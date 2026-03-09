@@ -9,13 +9,13 @@ public class TemporalManaCostModifier : StatusEffectDefinition
     {
         if (!target.IsServer) return;
 
-        target.ManaManager.ApplyCostModifier(CostModifier);
+        target.ManaManager.AddCostModifier(CostModifier);
     }
 
     public override void OnDeactivate(Player target)
     {
         if (!target.IsServer) return;
 
-        target.ManaManager.ApplyCostModifier(-CostModifier);
+        target.ManaManager.AddCostModifier(-CostModifier);
     }
 }

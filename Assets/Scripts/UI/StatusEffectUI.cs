@@ -9,42 +9,46 @@ public class StatusEffectUI : MonoBehaviour
     private Player player;
     private readonly List<Image> addedStatus = new();
 
-    public void SubscribeToPlayer(Player player)
+    public void BindToPlayer(Player player)
     {
         this.player = player;
-        player.StatusEffectController.OnEffectApplied.AddListener(AddStatusEffect);
-        player.StatusEffectController.OnEffectExpired.AddListener(RemoveStatusEffect);
-        player.StatusEffectController.OnEffectRemoved.AddListener(RemoveStatusEffect);
+        if (player)
+        {
+            player.StatusEffectController.OnEffectApplied.AddListener(AddStatusEffect);
+            player.StatusEffectController.OnEffectRemoved.AddListener(RemoveStatusEffect);
+        }
     }
 
     private void OnDestroy()
     {
-        player.StatusEffectController.OnEffectApplied.RemoveListener(AddStatusEffect);
-        player.StatusEffectController.OnEffectExpired.RemoveListener(RemoveStatusEffect);
-        player.StatusEffectController.OnEffectRemoved.RemoveListener(RemoveStatusEffect);
+        if (player)
+        {
+            player.StatusEffectController.OnEffectApplied.RemoveListener(AddStatusEffect);
+            player.StatusEffectController.OnEffectRemoved.RemoveListener(RemoveStatusEffect);
+        }
     }
 
     private void AddStatusEffect(StatusEffect effect)
     {
         if (effect.Definition.DurationType == EffectDurationType.Immediate) return;
         Sprite effectSprite = effect.Definition.ImageUI;
-        foreach(var status in addedStatus)
+        foreach (var status in addedStatus)
         {
-            if (status.sprite == effectSprite) return; //Cada efecto únicamente sale una vez
+            if (status.sprite == effectSprite) return; //Cada efecto ï¿½nicamente sale una vez
         }
         Image newEffect = Instantiate(statusImagePrefab, this.transform).GetComponent<Image>();
         newEffect.sprite = effectSprite;
         addedStatus.Add(newEffect);
         //Efectos buenos a la izquierda, malos a la derecha:
-        if (effect.Definition.EffectPolarityType == EffectPolarityType.Good) 
-            newEffect.transform.SetAsFirstSibling(); //Por defecto está en última posición
+        if (effect.Definition.EffectPolarityType == EffectPolarityType.Good)
+            newEffect.transform.SetAsFirstSibling(); //Por defecto estï¿½ en ï¿½ltima posiciï¿½n
     }
 
     private void RemoveStatusEffect(StatusEffect effect)
     {
         if (effect.Definition.DurationType == EffectDurationType.Immediate) return;
         Sprite effectSprite = effect.Definition.ImageUI;
-        for(int i = 0; i < addedStatus.Count; i++)
+        for (int i = 0; i < addedStatus.Count; i++)
         {
             if (addedStatus[i].sprite == effectSprite)
             {

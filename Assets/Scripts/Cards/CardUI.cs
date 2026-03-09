@@ -16,26 +16,35 @@ public class CardUI : MonoBehaviour
     void Awake()
     {
         writableSpell = GetComponentInChildren<WritableSpell>();
+        UnityEngine.Assertions.Assert.IsNotNull(writableSpell);
     }
 
     void OnEnable()
     {
         writableSpell.OnSpellComplete.AddListener(OnSpellWritten);
+        Player.User.PlayerInputManager.OnInputModeChangedEvent += OnInputModeChanged;
     }
 
     void OnDisable()
     {
         writableSpell.OnSpellComplete.RemoveListener(OnSpellWritten);
+        Player.User.PlayerInputManager.OnInputModeChangedEvent -= OnInputModeChanged;
     }
 
-    public void BindCardDefinition(CardDefinition def)
+    public void BindCardDefinition(CardDefinition def, int costModifier = 0)
     {
         CardDefinition = def;
 
         cardImage.sprite = def.CardImage;
         cardName.text = def.CardName;
-        cardCost.text = def.ManaCost.ToString();
         writableSpell.SetText(def.CardName);
+        UpdateManaCostModifier(costModifier);
+    }
+
+    public void UpdateManaCostModifier(int costModifier)
+    {
+        int manaCost = CardDefinition.ManaCost + costModifier;
+        cardCost.text = manaCost.ToString();
     }
 
     public void Clear()
@@ -49,5 +58,10 @@ public class CardUI : MonoBehaviour
     void OnSpellWritten(string _)
     {
         OnCardWritten?.Invoke(this);
+    }
+
+    void OnInputModeChanged(InputMode mode)
+    {
+        writableSpell.ToggleListener(mode == InputMode.CastingSpells);
     }
 }

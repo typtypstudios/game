@@ -21,6 +21,18 @@ public enum RequestValidationType
     Server
 }
 
+public readonly struct CardEventArgs
+{
+    public readonly ulong PlayerId;
+    public readonly int CardId;
+
+    public CardEventArgs(ulong playerId, int cardId)
+    {
+        CardId = cardId;
+        PlayerId = playerId;
+    }
+}
+
 [RequireComponent(typeof(Player))]
 public class DeckController : NetworkBehaviour
 {
@@ -36,10 +48,15 @@ public class DeckController : NetworkBehaviour
     //Events
     public UnityEvent<CardDefinition> OnCardPlayed = new();
     public UnityEvent<CardDefinition> OnCardDrawn = new();
-    public event Action<int> OnCardPlayedEvent;
-    public event Action<int> OnCardDrawnEvent;
-    public event Action<int> OnCardPlayRequestSuccess;
-    public event Action<int> OnCardPlayRequestFailed;
+    public event Action<CardEventArgs> OnCardPlayedEvent;
+    public event Action<CardEventArgs> OnCardDrawnEvent;
+
+    public event Action<CardEventArgs> OnCardPlayRequestSuccess;
+    public event Action<CardEventArgs> OnCardPlayRequestFailed;
+    //Static events
+    public static event Action<CardEventArgs> OnAnyCardPlayedEvent;
+    public static event Action<CardEventArgs> OnAnyCardDrawEvent;
+
 
     void Awake()
     {
@@ -75,8 +92,9 @@ public class DeckController : NetworkBehaviour
         {
             ReturnCardToDeck(card);
             int newCard = DrawCard();
-            PlayCard(card);
-            PlayCardResultRpc(validation, card, newCard);
+            PlayCardServer(card);
+            PlayCardResultRpc(validation, card, newCard);//Owner
+            PlayCardRpc(card);//Not Owner
         }
         else
         {
@@ -84,14 +102,20 @@ public class DeckController : NetworkBehaviour
         }
     }
 
-    void PlayCard(int card)
+    void PlayCardServer(int card)
     {
         var cardDef = GetCardDefinitionById(card);
-        var spellDef = cardDef.Spell;
 
-        Debug.Log($"[Deck][Server][PlayCard] cid={OwnerClientId} card={card} spell={SpellRegister.Instance.GetId(spellDef)}");
+        Debug.Log($"[Deck][Server][PlayCard] cid={OwnerClientId} card={card} spell={SpellRegister.Instance.GetId(cardDef.Spell)}");
 
-        spellCaster.CastSpell(cardDef);
+        if (player.ManaManager.ConsumeMana(cardDef.ManaCost))
+        {
+            // spellCaster.CastSpell(cardDef.Spell);
+        }
+        else
+        {
+            Debug.LogError($"[Deck][Server][PlayCard] cid={OwnerClientId} card={card} NotEnoughMana");
+        }
     }
 
     private int DrawCard()
@@ -158,15 +182,16 @@ public class DeckController : NetworkBehaviour
     }
 
     //Server response to play card request
-    [Rpc(SendTo.Owner)]
+    [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
     void PlayCardResultRpc(PlayCardRequestResult result, int playedCard, params int[] receivedCards)
     {
         Debug.Log($"[Deck][Client][PlayResult] cid={OwnerClientId} card={playedCard} res={result} newCards={string.Join(",", receivedCards)}");
 
         if (result == PlayCardRequestResult.Success)
         {
-            OnCardPlayedEvent?.Invoke(playedCard);
-            OnCardPlayed.Invoke(CardRegister.Instance.GetById(playedCard));
+            // OnCardPlayedEvent?.Invoke(playedCard);
+            // OnCardPlayed.Invoke(CardRegister.Instance.GetById(playedCard));
+            PlayCardClient(playedCard);
         }
         else
         {
@@ -177,7 +202,26 @@ public class DeckController : NetworkBehaviour
             ReceiveCardsDrawn(receivedCards);
     }
 
-    [Rpc(SendTo.Owner)]
+    [Rpc(SendTo.NotOwner, InvokePermission = RpcInvokePermission.Server)]
+    void PlayCardRpc(int playedCard)
+    {
+        PlayCardClient(playedCard);
+    }
+
+    void PlayCardClient(int playedCard)//And server/host
+    {
+        var cardDef = GetCardDefinitionById(playedCard);
+        player.SpellCaster.CastSpell(cardDef.Spell);
+
+        //Events
+        CardEventArgs eventArgs = new(OwnerClientId, playedCard);
+        OnCardPlayedEvent?.Invoke(eventArgs);
+        OnCardPlayed?.Invoke(cardDef);
+        OnAnyCardPlayedEvent?.Invoke(eventArgs);
+    }
+
+    [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
+
     void ReceiveCardsDrawnRpc(params int[] cardIds)
     {
         Debug.Log($"[Deck][Client][ReceiveCardsRpc] cid={OwnerClientId} cards={string.Join(",", cardIds)}");
@@ -196,8 +240,10 @@ public class DeckController : NetworkBehaviour
         {
             // Debug.Log($"[Deck][Client][CardDrawn] cid={OwnerClientId} card={card}");
             var cardDef = CardRegister.Instance.GetById(card);
-            OnCardDrawnEvent?.Invoke(card);
-            OnCardDrawn.Invoke(cardDef);
+            CardEventArgs eventArgs = new(OwnerClientId, card);
+            OnCardDrawnEvent?.Invoke(eventArgs);
+            OnCardDrawn?.Invoke(cardDef);
+            OnAnyCardDrawEvent?.Invoke(eventArgs);
         }
     }
 

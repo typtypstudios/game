@@ -48,7 +48,7 @@ public class DeckBuilder : MonoBehaviour
 
     private void LoadEquippedCards()
     {
-        //Creación de cartas:
+        //Creaciï¿½n de cartas:
         for (int i = 0; i < Settings.Instance.DeckSize; i++)
         {
             CardUI_Builder c = Instantiate(cardPrefab, equippedLayout).GetComponent<CardUI_Builder>();
@@ -59,11 +59,11 @@ public class DeckBuilder : MonoBehaviour
         string eCardsString = PlayerPrefsEncoder.GetString("EquippedCards", string.Empty);
         if (!eCardsString.Equals(string.Empty))
             equippedIndexes = eCardsString.Split(',').Select(int.Parse).ToList();
-        //Manejo de disminución de deck size:
+        //Manejo de disminuciï¿½n de deck size:
         if (Settings.Instance.DeckSize < equippedIndexes.Count)
             equippedIndexes.RemoveRange(Settings.Instance.DeckSize - 1,
                 equippedIndexes.Count - Settings.Instance.DeckSize);
-        //Configuración de cartas:
+        //Configuraciï¿½n de cartas:
         for (int i = 0; i < equippedIndexes.Count; i++)
                 equippedCards[i].SetCard(CardRegister.Instance.GetById(equippedIndexes[i]));
         //Manejo de aumento de deck size:
@@ -109,9 +109,9 @@ public class DeckBuilder : MonoBehaviour
             selectedUnequipped?.Highlight(false);
             selectedUnequipped = card;
         }
-        card.Highlight(true); //Lo pone como último hijo, delante de highlight panel
+        card.Highlight(true); //Lo pone como ï¿½ltimo hijo, delante de highlight panel
         CheckCardChange();
-        //Si algún objeto está en hover (será último hijo) el panel se activa
+        //Si algï¿½n objeto estï¿½ en hover (serï¿½ ï¿½ltimo hijo) el panel se activa
         foreach (GameObject panel in highlightPanels) 
             panel.SetActive(panel.transform.GetSiblingIndex() != panel.transform.parent.childCount - 1);
     }

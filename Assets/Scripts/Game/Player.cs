@@ -14,6 +14,8 @@ public class Player : NetworkBehaviour
     public DeckController DeckController { get; private set; }
     public SpellCaster SpellCaster { get; private set; }
     public StatusEffectController StatusEffectController { get; private set; }
+    public CardUIManager CardUIManager { get; private set; }
+    public PlayerInputManager PlayerInputManager { get; private set; }
     public static Player User { get; private set; } //Acceso global al Player del jugador
     public static Player Enemy { get; private set; } //Acceso global al Player del enemigo
 
@@ -37,9 +39,11 @@ public class Player : NetworkBehaviour
         RitualManager.enabled = IsOwner; //El ritual lo controla el cliente, evita mala UX por lag
         ManaManager.enabled = IsServer; //La ganancia de man� la controla el server exclusivamente
         CorruptionManager.enabled = IsServer; //La corrupci�n igual que el man�
+        CardUIManager.enabled = IsOwner;
 
         if (IsOwner)
         {
+            User = this; //Asignar user aqui permite utilizarlo en el Start de otros objetos del player
             // NOTA: el nombre un futuro se puede obtener de los datos del jugador desde los servicios de Unity
             FixedString32Bytes PlayerName = PlayerPrefs.GetString("Username");
             Debug.Log(PlayerName);
@@ -79,7 +83,7 @@ public class Player : NetworkBehaviour
         if (IsOwner)
         {
             Enemy = FindObjectsByType<Player>(FindObjectsSortMode.None).First(p => p != this);
-            User = this;
+            // User = this;
 
             FindFirstObjectByType<MatchManager>().NotifyPlayerConfiguredServerRpc();
         }
@@ -124,6 +128,8 @@ public class Player : NetworkBehaviour
         DeckController = GetComponent<DeckController>();
         SpellCaster = GetComponent<SpellCaster>();
         StatusEffectController = GetComponent<StatusEffectController>();
+        CardUIManager = GetComponentInChildren<CardUIManager>();
+        PlayerInputManager = GetComponent<PlayerInputManager>();
 
         UnityEngine.Assertions.Assert.IsNotNull(RitualManager);
         UnityEngine.Assertions.Assert.IsNotNull(ManaManager);
@@ -131,6 +137,8 @@ public class Player : NetworkBehaviour
         UnityEngine.Assertions.Assert.IsNotNull(DeckController);
         UnityEngine.Assertions.Assert.IsNotNull(SpellCaster);
         UnityEngine.Assertions.Assert.IsNotNull(StatusEffectController);
+        UnityEngine.Assertions.Assert.IsNotNull(CardUIManager);
+        UnityEngine.Assertions.Assert.IsNotNull(PlayerInputManager);
     }
     #endregion
 }

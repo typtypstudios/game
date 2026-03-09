@@ -1,12 +1,17 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Player))]
 public class PlayerInputManager : MonoBehaviour
 {
     [SerializeField] private InputActionReference changeModeActionReference;
     private Animator anim;
     private RitualManager ritualManager;
-    private WritableSpell[] cardUIs;
+
+    Player player;
+
+    public event Action<InputMode> OnInputModeChangedEvent;
 
     void Awake()
     {
@@ -14,11 +19,7 @@ public class PlayerInputManager : MonoBehaviour
         MatchManager.OnMatchEnded += UnsubscribeToInput;
         anim = GetComponent<Animator>();
         ritualManager = GetComponentInChildren<RitualManager>(true);
-    }
-
-    private void Start()
-    {
-        cardUIs = GetComponentsInChildren<WritableSpell>(true); //Se crean en Awake de CardUIManager
+        player = GetComponent<Player>();
     }
 
     void OnDestroy()
@@ -30,7 +31,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void SubscribeToInput() 
     {
-        if (GetComponent<Player>().IsOwner)
+        if (player.IsOwner)
         {
             changeModeActionReference.action.performed += ChangeMode;
             SetMode(InputMode.Ritual);
@@ -39,14 +40,12 @@ public class PlayerInputManager : MonoBehaviour
 
     private void UnsubscribeToInput()
     {
-        if (GetComponent<Player>().IsOwner)
+        if (player.IsOwner)
         {
             changeModeActionReference.action.performed -= ChangeMode;
 
             Debug.Log("Deshabilitando el input del ritual y los hechizos");
-            // Desactivar el input
-            foreach (var card in cardUIs) card.ToggleListener(false);
-            ritualManager.ToggleListener(false);
+            SetMode(InputMode.GameEnded);
         }
     }
 
@@ -60,12 +59,13 @@ public class PlayerInputManager : MonoBehaviour
     {
         anim.SetBool("CastingSpells", mode == InputMode.CastingSpells);
         ritualManager.ToggleListener(mode == InputMode.Ritual);
-        foreach (var card in cardUIs) card.ToggleListener(mode == InputMode.CastingSpells);
+        OnInputModeChangedEvent?.Invoke(mode);
     }
 }
 
-enum InputMode
+public enum InputMode
 {
     Ritual,
-    CastingSpells
+    CastingSpells,
+    GameEnded
 }
