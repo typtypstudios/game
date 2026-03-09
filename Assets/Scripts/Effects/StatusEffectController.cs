@@ -14,7 +14,7 @@ public class StatusEffectController : MonoBehaviour
     [SerializeField] List<StatusEffect> activeEffects;
     public UnityEvent<StatusEffect> OnEffectApplied;
     public UnityEvent<StatusEffect> OnEffectRemoved;
-    public UnityEvent<StatusEffect> OnEffectExpired; // No se si es distinto a Removed
+    public UnityEvent<StatusEffect> OnEffectExpired;
     public UnityEvent<StatusEffect> OnEffectRefreshed;
 
     Player player;
@@ -114,7 +114,7 @@ public class StatusEffectController : MonoBehaviour
         {
             ExpireEffect(effect);
         }
-        
+
         toRemove.Clear();
     }
 }
