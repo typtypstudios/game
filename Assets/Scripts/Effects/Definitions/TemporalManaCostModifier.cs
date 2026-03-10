@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CorruptionMultEffect", menuName = "TypTyp/Effects/CorruptionMultEffect")]
+[CreateAssetMenu(fileName = "TemporalManaCostModifier", menuName = "TypTyp/Effects/TemporalManaCostModifier")]
 public class TemporalManaCostModifier : StatusEffectDefinition
 {
     [field: SerializeField] public int CostModifier { get; private set; } = 1;

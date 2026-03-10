@@ -72,7 +72,7 @@ public class CardUIManager : MonoBehaviour
         var slot = emptySlots.Dequeue();
         var def = CardRegister.Instance.GetById(cardId);
 
-        slot.BindCardDefinition(def);
+        slot.BindCardDefinition(def, manaManager.CostModifier);
         cardUIById[cardId] = slot;
     }
 

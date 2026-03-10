@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ff6ef768b5469d4f8e81a1e3e36d8c4, type: 3}
-  m_Name: AlternatingCapsEffect
+  m_Name: CamelCaseEffect
   m_EditorClassIdentifier: Assembly-CSharp::AlternatingCapsEffect
-  <EffectName>k__BackingField: AlternatingCapsEffect
+  <EffectName>k__BackingField: CamelCaseEffect
   <DurationType>k__BackingField: 2
   <Category>k__BackingField: {fileID: 0}
   <EffectPolarityType>k__BackingField: 1
   <DurationValue>k__BackingField: 1
-  <Description>k__BackingField: DeScRipTiOn
+  <Description>k__BackingField: SetEnemyTextToCamelCase
   <ImageUI>k__BackingField: {fileID: 21300000, guid: c409a657bcba7164cb39b2a28ff8a85b, type: 3}
-  processor: {fileID: 11400000, guid: 76055860b31543b4eaab115e0d1be341, type: 2}
+  processor: {fileID: 11400000, guid: 07c01ea6117928048a3c43066d7484c2, type: 2}

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TypTyp.TextSystem
 {
-    [CreateAssetMenu(fileName = "AlternatingCapsProcessor", menuName = "TypTyp/Text Processors/AlternatingCapsProcessor")]
+    [CreateAssetMenu(fileName = "AlternatingCapsProcessor", menuName = "TypTyp/Text Processors/AlternatingCaps")]
     public class AlternatingCapsProcessor : ScriptableTextProcessor
     {
         public override string ProcessText(string input)

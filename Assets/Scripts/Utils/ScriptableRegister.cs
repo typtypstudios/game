@@ -81,7 +81,7 @@ public abstract class ScriptableRegister<TItem, TSelf> : ScriptableSingleton<TSe
     public int GetId(TItem item)
     {
         if (!TryGetId(item, out var id))
-            throw new ArgumentException("Item not found in register", nameof(item));
+            throw new ArgumentException($"Item {item.name} not found in register", nameof(item));
 
         return id;
     }
