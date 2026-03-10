@@ -15,6 +15,9 @@ namespace TypTyp.TextSystem
             bool capitalizeNext = false;
             bool firstWord = true;
 
+            int spaceCounter = 0;
+            int nextSpaceToKeep = UnityEngine.Random.Range(2, 5); // 2–4
+
             for (int i = 0; i < input.Length; i++)
             {
                 char c = input[i];
@@ -22,6 +25,16 @@ namespace TypTyp.TextSystem
                 if (char.IsWhiteSpace(c))
                 {
                     capitalizeNext = !firstWord;
+
+                    spaceCounter++;
+
+                    if (spaceCounter >= nextSpaceToKeep)
+                    {
+                        sb.Append(' ');
+                        spaceCounter = 0;
+                        nextSpaceToKeep = UnityEngine.Random.Range(2, 5);
+                    }
+
                     continue;
                 }
 
