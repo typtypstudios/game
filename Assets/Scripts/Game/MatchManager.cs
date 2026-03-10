@@ -214,9 +214,13 @@ public class MatchManager : NetworkBehaviour
 
         canvasUIScript.SetCountdownActive(true);
 
-        while (NetworkManager.Singleton.ServerTime.Time < startTime)
+        while (true)
         {
             double remaining = startTime - NetworkManager.Singleton.ServerTime.Time;
+
+            if (remaining <= 0)
+                break;
+
             int currentSecond = Mathf.CeilToInt((float)remaining);
 
             if (currentSecond != lastSecond)

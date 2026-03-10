@@ -703,6 +703,7 @@ GameObject:
   - component: {fileID: 194793470}
   - component: {fileID: 194793472}
   - component: {fileID: 194793471}
+  - component: {fileID: 194793473}
   m_Layer: 5
   m_Name: OwnerUsername
   m_TagString: Untagged
@@ -829,6 +830,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 194793469}
   m_CullTransparentMesh: 1
+--- !u!114 &194793473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194793469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb11719237efce4294072235cdf0c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
 --- !u!1 &207587877
 GameObject:
   m_ObjectHideFlags: 0
@@ -1994,6 +2007,7 @@ GameObject:
   - component: {fileID: 680211128}
   - component: {fileID: 680211130}
   - component: {fileID: 680211129}
+  - component: {fileID: 680211131}
   m_Layer: 5
   m_Name: EnemyUsername
   m_TagString: Untagged
@@ -2120,6 +2134,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 680211127}
   m_CullTransparentMesh: 1
+--- !u!114 &680211131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680211127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb11719237efce4294072235cdf0c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
 --- !u!1 &681910909
 GameObject:
   m_ObjectHideFlags: 0
