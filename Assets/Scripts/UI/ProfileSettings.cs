@@ -10,19 +10,18 @@ public class ProfileSettings : MonoBehaviour
     [SerializeField] private TextMeshProUGUI usernameText;
     [SerializeField] private TextMeshProUGUI helpText;
     private string defaultUsername = "AverageCultist";
-
-
+    
     private string currentName = "";
     private bool isTyping = false;
-    [SerializeField] private Button[] allProfileButtons;
+    private WritableButton usernameButton;
     private WritableButton[] allWritableButtons;
     private int minNameLength = 4;
-    private int maxNameLength = 12;
+    private int maxNameLength = 15;
 
     private void Start()
     {
-        allWritableButtons = allProfileButtons.Select(b => b.GetComponent<WritableButton>()).ToArray();
-
+        allWritableButtons = GetComponentsInChildren<Button>().Select(b => b.GetComponent<WritableButton>()).ToArray();
+        usernameButton = usernameText.GetComponentInParent<WritableButton>();
         currentName = PlayerPrefs.GetString("Username", defaultUsername);
 
         if (string.IsNullOrWhiteSpace(currentName))
@@ -30,7 +29,13 @@ public class ProfileSettings : MonoBehaviour
             currentName = defaultUsername;
         }
 
-        usernameText.text = currentName;
+        if (currentName.Equals(defaultUsername))
+        {
+            currentName += "#";
+            for (int i = 0; i < 4; i++) currentName += Random.Range(0, 10).ToString();
+        }
+
+        usernameButton.OverrideText(currentName);
 
         if (!PlayerPrefs.HasKey("Username"))
         {
@@ -46,7 +51,7 @@ public class ProfileSettings : MonoBehaviour
         if (Keyboard.current.backspaceKey.wasPressedThisFrame && currentName.Length > 0)
         {
             currentName = currentName.Substring(0, currentName.Length - 1);
-            usernameText.text = currentName;
+            usernameButton.OverrideText(currentName);
         }
 
         if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.numpadEnterKey.wasPressedThisFrame)
@@ -58,10 +63,10 @@ public class ProfileSettings : MonoBehaviour
     public void ChangeName()
     {
         if (isTyping) return;
-
+        usernameButton.Block = true;
         isTyping = true;
         currentName = "";
-        usernameText.text = currentName;
+        usernameButton.OverrideText(currentName);
 
         helpText.enabled = true;
         helpText.text = "Press enter to save name";
@@ -75,10 +80,10 @@ public class ProfileSettings : MonoBehaviour
 
     private void OnCharacterTyped(char c)
     {
-        if (!isTyping) return;
+        if (!isTyping || currentName.Length >= maxNameLength) return;
 
         currentName += c;
-        usernameText.text = currentName;
+        usernameButton.OverrideText(currentName);
     }
 
     private void SubmitName()
@@ -92,7 +97,7 @@ public class ProfileSettings : MonoBehaviour
 
         // habilitar el resto de botones
         ToggleWritableButtons(false);
-
+        currentName = currentName.Trim();
         // Comprobar si el usuario es válido y guardar
         if (CheckText(currentName))
         {
@@ -104,15 +109,16 @@ public class ProfileSettings : MonoBehaviour
         else
         {
             currentName = PlayerPrefs.GetString("Username", defaultUsername);
-            usernameText.text = currentName;
         }
+        usernameButton.OverrideText(currentName);
+        usernameButton.Block = false;
     }
 
     private void ToggleWritableButtons(bool blockState)
     {
-        for (int i = 0; i < allProfileButtons.Length; i++)
+        for (int i = 0; i < allWritableButtons.Length; i++)
         {
-            allProfileButtons[i].interactable = !blockState;
+            allWritableButtons[i].GetComponent<Button>().interactable = !blockState;
             allWritableButtons[i].Block = blockState;
         }
     }

@@ -30,7 +30,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogError($"[Singleton] {typeof(T).Name} is marked with [NoAutoCreate] but was not found in the scene.");
+                        //Debug.LogError($"[Singleton] {typeof(T).Name} is marked with [NoAutoCreate] but was not found in the scene.");
                     }
                 }
             }
