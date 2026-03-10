@@ -26,14 +26,14 @@ public class PlayerInputManager : MonoBehaviour
     {
         MatchManager.OnMatchStarted -= SubscribeToInput;
         MatchManager.OnMatchEnded -= UnsubscribeToInput;
-        changeModeActionReference.action.performed -= ChangeMode;
+        changeModeActionReference.action.started -= ChangeMode;
     }
 
     private void SubscribeToInput() 
     {
         if (player.IsOwner)
         {
-            changeModeActionReference.action.performed += ChangeMode;
+            changeModeActionReference.action.started += ChangeMode;
             SetMode(InputMode.Ritual);
         }
     }
@@ -42,7 +42,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (player.IsOwner)
         {
-            changeModeActionReference.action.performed -= ChangeMode;
+            changeModeActionReference.action.started -= ChangeMode;
 
             Debug.Log("Deshabilitando el input del ritual y los hechizos");
             SetMode(InputMode.GameEnded);
