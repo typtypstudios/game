@@ -1178,6 +1178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardUIManager
   deckController: {fileID: 2378757180898235989}
+  manaManager: {fileID: 0}
   cardUIPrefab: {fileID: 2644428950823274379, guid: bceccdf026e98714ea86ab6c2fc2d6ef, type: 3}
   cardUIParent: {fileID: 6425441533318100510}
 --- !u!1 &8299278595076611550
@@ -1313,6 +1314,10 @@ PrefabInstance:
       value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       propertyPath: m_VerticalAlignment
       value: 512
       objectReference: {fileID: 0}
@@ -1413,6 +1418,10 @@ PrefabInstance:
     - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       propertyPath: m_fontSize
       value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5522567699397296562, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       propertyPath: m_Pivot.x
@@ -1534,6 +1543,10 @@ PrefabInstance:
     - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       propertyPath: m_fontSize
       value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       propertyPath: m_VerticalAlignment
