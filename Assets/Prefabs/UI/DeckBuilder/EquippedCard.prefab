@@ -524,7 +524,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -601,7 +601,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   fillColor: {r: 1, g: 0, b: 0.8533139, a: 1}
+  autoSubscribe: 1
   resetIfFailed: 1
+  resetOnWritten: 1
   resetTime: 0
 --- !u!114 &5508758932249636721
 MonoBehaviour:
