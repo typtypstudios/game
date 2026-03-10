@@ -20,7 +20,11 @@ namespace TypTyp.TextSystem
         public override void OnNetworkSpawn()
         {
             if (IsServer) LoadSource();
-            if (IsOwner) for (int i = 0; i < texts.Length; i++) RequestNextTextRpc(textIdx++);
+            if (IsOwner)
+            {
+                for (int i = 0; i < texts.Length; i++) RequestNextTextRpc(textIdx++);
+                MatchManager.OnMatchStarted += EnableTexts;
+            }
         }
 
 
@@ -35,9 +39,10 @@ namespace TypTyp.TextSystem
             }
         }
 
-        public void SetTextsActive(bool value)
+        public void EnableTexts()
         {
-            foreach (var t in texts) t.gameObject.SetActive(value);
+            foreach (var t in texts) if(t) t.gameObject.SetActive(true);
+            MatchManager.OnMatchStarted -= EnableTexts;
         }
 
         private void LoadSource()

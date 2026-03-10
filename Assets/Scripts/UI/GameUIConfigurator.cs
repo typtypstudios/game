@@ -30,8 +30,8 @@ public class GameUIConfigurator : MonoBehaviour
         Player.User.CurrentCorruption.OnValueChanged += corruptionBars[0].UpdateValue;
         Player.Enemy.CurrentCorruption.OnValueChanged += corruptionBars[1].UpdateValue;
         foreach (UIBar bar in corruptionBars) bar.MaxValue = TypTyp.Settings.Instance.MaxCorruption;
-        statusEffectUIs[0].SubscribeToPlayer(Player.User);
-        statusEffectUIs[1].SubscribeToPlayer(Player.Enemy);
+        statusEffectUIs[0].BindToPlayer(Player.User);
+        statusEffectUIs[1].BindToPlayer(Player.Enemy);
         canvasGroup.alpha = 1.0f;
         OnUIConfigurated?.Invoke();
     }

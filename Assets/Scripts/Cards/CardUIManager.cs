@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CardUIManager : MonoBehaviour
 {
     [SerializeField] private DeckController deckController;
+    [SerializeField] private ManaGainManager manaManager;
     [SerializeField] private CardUI cardUIPrefab;
     [SerializeField] private Transform cardUIParent;
 
@@ -17,8 +19,19 @@ public class CardUIManager : MonoBehaviour
 
         UnityEngine.Assertions.Assert.IsNotNull(
             deckController,
-            "CardUIManager requires a reference to DeckController");
+            $"CardUIManager requires a reference to {nameof(DeckController)}");
 
+        if (!manaManager)
+            manaManager = GetComponentInParent<ManaGainManager>();
+
+        UnityEngine.Assertions.Assert.IsNotNull(
+            manaManager,
+            $"CardUIManager requires a reference to {nameof(ManaGainManager)}"
+        );
+    }
+
+    void Start()
+    {
         CreateSlots(TypTyp.Settings.Instance.HandSize);
     }
 
@@ -26,6 +39,8 @@ public class CardUIManager : MonoBehaviour
     {
         deckController.OnCardDrawnEvent += HandleCardDrawn;
         deckController.OnCardPlayedEvent += HandleCardPlayed;
+
+        manaManager.OnCostModifierChangedEvent += ManaCostModifierChanged;
     }
 
     void OnDisable()
@@ -45,8 +60,9 @@ public class CardUIManager : MonoBehaviour
         }
     }
 
-    void HandleCardDrawn(int cardId)
+    void HandleCardDrawn(CardEventArgs args)
     {
+        var cardId = args.CardId;
         if (emptySlots.Count == 0)
         {
             Debug.LogWarning("No empty slot available for drawn card.");
@@ -56,12 +72,13 @@ public class CardUIManager : MonoBehaviour
         var slot = emptySlots.Dequeue();
         var def = CardRegister.Instance.GetById(cardId);
 
-        slot.BindCardDefinition(def);
+        slot.BindCardDefinition(def, manaManager.CostModifier);
         cardUIById[cardId] = slot;
     }
 
-    void HandleCardPlayed(int cardId)
+    void HandleCardPlayed(CardEventArgs args)
     {
+        var cardId = args.CardId;
         if (!cardUIById.TryGetValue(cardId, out var ui))
         {
             Debug.LogWarning($"No CardUI found for cardId {cardId}", this);
@@ -78,5 +95,13 @@ public class CardUIManager : MonoBehaviour
     {
         int id = CardRegister.Instance.GetId(cardUI.CardDefinition);
         deckController.RequestPlayCard(id);
+    }
+
+    private void ManaCostModifierChanged(int costModifier)
+    {
+        foreach (var card in cardUIById.Values)
+        {
+            card.UpdateManaCostModifier(costModifier);
+        }
     }
 }

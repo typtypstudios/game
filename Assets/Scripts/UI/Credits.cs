@@ -24,7 +24,11 @@ public class Credits : MonoBehaviour
         }
     }
 
-    public void PlayCredits() => StartCoroutine(PlayCreditsCoroutine());
+    public void PlayCredits()
+    {
+        StopAllCoroutines();
+        StartCoroutine(PlayCreditsCoroutine());
+    }
 
     public void StopCredits()
     {

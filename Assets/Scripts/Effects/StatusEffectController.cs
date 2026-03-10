@@ -14,13 +14,13 @@ public class StatusEffectController : MonoBehaviour
     [SerializeField] List<StatusEffect> activeEffects;
     public UnityEvent<StatusEffect> OnEffectApplied;
     public UnityEvent<StatusEffect> OnEffectRemoved;
-    public UnityEvent<StatusEffect> OnEffectExpired; //No se si es distinto a Removed
+    public UnityEvent<StatusEffect> OnEffectExpired;
     public UnityEvent<StatusEffect> OnEffectRefreshed;
 
     Player player;
     NetworkTextProvider textProvider;
     List<StatusEffect> toRemove;
-    public List<TMP_FontAsset> ActiveFonts { get; private set; } = new(); //Fuentes provenientes de modificadores
+    public List<TMP_FontAsset> ActiveFonts { get; private set; } = new(); // Fuentes provenientes de modificadores
 
     public void Awake()
     {
@@ -35,34 +35,19 @@ public class StatusEffectController : MonoBehaviour
 
     void Update()
     {
-        toRemove.Clear();
+        HandleEffectExpiration(EffectDurationType.Time);
+    }
 
-        for (int i = 0; i < activeEffects.Count; i++)
-        {
-            var effect = activeEffects[i];
-
-            if (effect.Definition.DurationType == EffectDurationType.Time)
-            {
-                effect.RemainingDuration -= Time.deltaTime;
-
-                if (effect.RemainingDuration <= 0)
-                {
-                    toRemove.Add(effect);
-                }
-            }
-        }
-
-        for (int i = 0; i < toRemove.Count; i++)
-        {
-            ExpireEffect(toRemove[i]);
-        }
+    void OnRitualLineRequested()
+    {
+        HandleEffectExpiration(EffectDurationType.Lines);
     }
 
     public void AddEffect(StatusEffectDefinition effectDef)
     {
         var statusEffect = CreateStatusEffect(effectDef);
 
-        //Refresh
+        // Refresh
         var refreshMatch = activeEffects.Find(e => e.Equals(statusEffect));
         if (refreshMatch != default)
         {
@@ -70,15 +55,17 @@ public class StatusEffectController : MonoBehaviour
             return;
         }
 
-        //Polarity
+        // Polarity
         var oppositeMatch = activeEffects.Find(e => e.Definition.IsOpposite(effectDef));
         if (oppositeMatch != default)
         {
             RemoveEffect(oppositeMatch);
+            return;
         }
 
-        //Addition and activation
-        if (effectDef.DurationType != EffectDurationType.Immediate) activeEffects.Add(statusEffect);
+        // Addition and activation
+        if (effectDef.DurationType != EffectDurationType.Immediate)
+            activeEffects.Add(statusEffect);
         statusEffect.Activate();
         OnEffectApplied?.Invoke(statusEffect);
     }
@@ -92,13 +79,11 @@ public class StatusEffectController : MonoBehaviour
     void RemoveEffect(StatusEffect effect)
     {
         effect.Deactivate();
-        //if (effect.Definition.DurationType != EffectDurationType.Immediate)
         activeEffects.Remove(effect);
         OnEffectRemoved?.Invoke(effect);
     }
 
-    //Asumo que los efectos que se pueden refrescar
-    //solo son aquellos no inmediatos que entran a la coleccion de efectos
+    // Assume that refreshable effects are only those not immediate and added to the active effects list
     void RefreshEffect(StatusEffect effect)
     {
         effect.RemainingDuration = effect.Definition.DurationValue;
@@ -110,17 +95,13 @@ public class StatusEffectController : MonoBehaviour
         return new StatusEffect(definition, player);
     }
 
-    void OnRitualLineRequested()
+    private void HandleEffectExpiration(EffectDurationType durationType)
     {
-        toRemove.Clear();
-
-        for (int i = 0; i < activeEffects.Count; i++)
+        foreach (var effect in activeEffects)
         {
-            var effect = activeEffects[i];
-
-            if (effect.Definition.DurationType == EffectDurationType.Lines)
+            if (effect.Definition.DurationType == durationType)
             {
-                effect.RemainingDuration -= 1;
+                effect.RemainingDuration -= durationType == EffectDurationType.Time ? Time.deltaTime : 1;
 
                 if (effect.RemainingDuration <= 0)
                 {
@@ -129,9 +110,11 @@ public class StatusEffectController : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < toRemove.Count; i++)
+        foreach (var effect in toRemove)
         {
-            ExpireEffect(toRemove[i]);
+            ExpireEffect(effect);
         }
+
+        toRemove.Clear();
     }
 }

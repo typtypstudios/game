@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TypTyp.TextSystem
 {
-    [CreateAssetMenu(fileName = "DoubleSpaceProcessor", menuName = "TypTyp/Text Processors/DoubleSpaceProcessor")]
+    [CreateAssetMenu(fileName = "DoubleSpaceProcessor", menuName = "TypTyp/Text Processors/DoubleSpace")]
     public class DoubleSpaceProcessor : ScriptableTextProcessor
     {
         [SerializeField] int minSpacesAdded = 0;

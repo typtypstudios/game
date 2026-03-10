@@ -9,7 +9,7 @@ public class CardUI_Builder : MonoBehaviour
     [SerializeField] private TextMeshProUGUI cardName;
     [SerializeField] private TextMeshProUGUI description;
     [SerializeField] private float hoverSizeMult = 1.5f;
-    [SerializeField] private float highlightColorAddition = 0.3f; //Para un color más claro que fill color para highlight
+    [SerializeField] private float highlightColorAddition = 0.3f; //Para un color mï¿½s claro que fill color para highlight
     public static event Action<CardUI_Builder> OnCardChosen;
     private bool hovered = false;
     private WritableButton writableButton;
@@ -37,7 +37,7 @@ public class CardUI_Builder : MonoBehaviour
         {
             transform.localScale *= hoverSizeMult;
             hovered = true;
-            cardName.color = writableButton.FillColor + Color.white * highlightColorAddition; //Ligeramente más claro
+            cardName.color = writableButton.FillColor + Color.white * highlightColorAddition; //Ligeramente mï¿½s claro
             transform.SetAsLastSibling();
         }
         else if(!highlight && hovered)

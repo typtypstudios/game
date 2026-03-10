@@ -14,14 +14,13 @@ public enum EffectDurationType
     Permanent
 }
 
-[CreateAssetMenu(fileName = "StatusEffect", menuName = "TypTyp/Effects/Definition")]
 public abstract class StatusEffectDefinition : ScriptableObject
 {
     [field: SerializeField] public string EffectName { get; private set; }
     [field: SerializeField] public EffectDurationType DurationType { get; private set; }
     [field: SerializeField] public StatusEffectCategory Category { get; private set; }
     [field: SerializeField] public EffectPolarityType EffectPolarityType { get; private set; } = EffectPolarityType.Bad;
-    [field: SerializeField] public float DurationValue { get; private set; } // Tiempo en segundos o número de líneas, dependiendo del tipo de duración
+    [field: SerializeField] public float DurationValue { get; private set; } // Tiempo en segundos o numero de líneas, dependiendo del tipo de duracion
     [field: SerializeField, TextArea] public string Description { get; private set; }
     [field: SerializeField] public Sprite ImageUI { get; private set; }
 

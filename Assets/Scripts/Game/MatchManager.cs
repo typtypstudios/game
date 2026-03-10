@@ -2,10 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using TMPro;
-using TypTyp.TextSystem;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,7 +22,6 @@ public class MatchManager : NetworkBehaviour
     [SerializeField] private GameObject playerPrefab;
 
     private HashSet<ulong> sceneReadyClients = new();
-
     private class ClientSetupState
     {
         public bool playerConfigured;
@@ -38,7 +35,11 @@ public class MatchManager : NetworkBehaviour
 
     private double matchStartTime;
     private MatchState matchState;
+    public static event Action OnMatchStarted;
     public static event Action OnMatchEnded;
+
+    // Referencia al canvas de inicio y final de la partida
+    [SerializeField] private GameUICanvasScript canvasUIScript;
 
 
     //De momento una lista de playerIds server side
@@ -178,16 +179,31 @@ public class MatchManager : NetworkBehaviour
         matchState = MatchState.InGame;
         Debug.Log("SERVER: StartSynchronizedMatch()");
         matchStartTime = NetworkManager.Singleton.ServerTime.Time + 3.0;
-        StartMatchClientRpc(matchStartTime);
+
+        ulong[] clientIds = playersData.Keys.ToArray();
+        ulong client1Id = clientIds[0];
+        ulong client2Id = clientIds[1];
+        string client1Name = playersData[client1Id].PlayerName.ToString();
+        string client2Name = playersData[client2Id].PlayerName.ToString();
+
+        // Enviar los datos de los jugadores
+        StartMatchClientRpc(matchStartTime, client1Id, client1Name, client2Id, client2Name);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    private void StartMatchClientRpc(double startTime)
+    private void StartMatchClientRpc(double startTime, ulong client1Id, string client1Name, ulong client2Id, string client2Name)
     {
         matchState = MatchState.InGame;
         matchStartTime = startTime;
 
         Debug.Log($"CLIENT {NetworkManager.Singleton.LocalClientId}: Received StartMatchClientRpc");
+
+        bool isClient1 = NetworkManager.Singleton.LocalClientId == client1Id;
+        string localPlayerName = isClient1 ? client1Name : client2Name;
+        string enemyPlayerName = isClient1 ? client2Name : client1Name;
+
+        canvasUIScript.ConfigureUsernames(localPlayerName, enemyPlayerName);
+        canvasUIScript.AnimateImagesIn();
 
         StartCoroutine(WaitForStart(startTime));
     }
@@ -196,27 +212,32 @@ public class MatchManager : NetworkBehaviour
     {
         int lastSecond = -1;
 
-        countdownText.gameObject.SetActive(true);
+        canvasUIScript.SetCountdownActive(true);
 
-        while (NetworkManager.Singleton.ServerTime.Time < startTime)
+        while (true)
         {
             double remaining = startTime - NetworkManager.Singleton.ServerTime.Time;
+
+            if (remaining <= 0)
+                break;
+
             int currentSecond = Mathf.CeilToInt((float)remaining);
 
             if (currentSecond != lastSecond)
             {
                 lastSecond = currentSecond;
-                countdownText.text = currentSecond.ToString();
+                canvasUIScript.UpdateCountdownText(currentSecond.ToString());
             }
 
             yield return null;
         }
 
-        countdownText.text = "GO!";
+        canvasUIScript.UpdateCountdownText("GO!");
+        canvasUIScript.AnimateImagesOut();
+
         yield return new WaitForSeconds(0.5f);
 
-        countdownText.gameObject.SetActive(false);
-
+        canvasUIScript.SetCountdownActive(false);
         BeginMatchClient();
     }
 
@@ -238,8 +259,7 @@ public class MatchManager : NetworkBehaviour
             $"Drift:{drift * 1000:F2} ms"
         );
 
-        NetworkTextProvider networkText = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<NetworkTextProvider>();
-        if (networkText != null) networkText.SetTextsActive(true);
+        OnMatchStarted?.Invoke();
     }
 
     /// <summary>
@@ -263,12 +283,10 @@ public class MatchManager : NetworkBehaviour
 
         matchState = MatchState.Finished;
 
-        DisableGameplay();
+        OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
-        FindFirstObjectByType<EndGamePanel>().ShowEndMatch(isWinner);
-
-        OnMatchEnded?.Invoke();
+        canvasUIScript.ShowEndMatch(isWinner);
 
         // Handshake de finalización
         NotifyEndHandledServerRpc();
@@ -301,20 +319,6 @@ public class MatchManager : NetworkBehaviour
         }
     }
 
-    private void DisableGameplay()
-    {
-        var playerObject = NetworkManager.Singleton.LocalClient.PlayerObject;
-        if (playerObject == null) return;
-
-        // Desactivar la escritura del ritual del InputHandler
-        var ritual = playerObject.GetComponentInChildren<RitualManager>();
-        if(ritual != null)
-            ritual.ToggleListener(false);
-
-        // NOTA: desactivar también la escritura de hechizos
-        Debug.LogWarning("Spell deactivation not implemented");
-    }
-
     // Llamado desde el botón
     public void ReturnToMainMenu()
     {
@@ -323,8 +327,6 @@ public class MatchManager : NetworkBehaviour
 
     private void OnClientDisconnected(ulong clientId)
     {
-        Debug.Log("Otro cliente se ha desconectado");
-
         if (!IsServer && (clientId == NetworkManager.ServerClientId || clientId == NetworkManager.Singleton.LocalClientId))
         {
             if (matchState == MatchState.ConfiguringPlayers || matchState == MatchState.WaitingPlayers)
@@ -337,11 +339,10 @@ public class MatchManager : NetworkBehaviour
             {
                 // Terminar la partida
                 matchState = MatchState.Finished;
-                DisableGameplay();
-                OnMatchEnded?.Invoke();
+                OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
                 NetworkManager.Singleton.Shutdown();
 
-                FindFirstObjectByType<EndGamePanel>().ShowEndMatch(true);
+                canvasUIScript.ShowEndMatch(true);
             }
         }
 
@@ -359,13 +360,11 @@ public class MatchManager : NetworkBehaviour
             {
                 // Terminar la partida
                 matchState = MatchState.Finished;
-                DisableGameplay();
-                OnMatchEnded?.Invoke();
-
+                OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
                 _ = ShutdownMatchServer();
                 NetworkManager.Singleton.Shutdown();
 
-                FindFirstObjectByType<EndGamePanel>().ShowEndMatch(true);
+                canvasUIScript.ShowEndMatch(true);
             }
         }
     }

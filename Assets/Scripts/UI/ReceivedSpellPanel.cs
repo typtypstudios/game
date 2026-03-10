@@ -14,25 +14,27 @@ public class ReceivedSpellPanel : MonoBehaviour
     {
         canvasGroup = GetComponent<CanvasGroup>();
         image = GetComponent<Image>();
-        SpellCaster.OnCardApplied += ManageCardApplied;
+        DeckController.OnAnyCardPlayedEvent += ManageCardApplied;
         showTimer = new(showTime);
     }
 
     private void OnDestroy()
     {
-        SpellCaster.OnCardApplied -= ManageCardApplied;
+        DeckController.OnAnyCardPlayedEvent -= ManageCardApplied;
     }
 
-    private void ManageCardApplied(ulong casterId, CardDefinition card)
+    // private void ManageCardApplied(ulong casterId, CardDefinition card)
+    private void ManageCardApplied(CardEventArgs args)
     {
-        if (casterId == Player.User.OwnerClientId) return;
+        if (args.PlayerId == Player.User.OwnerClientId) return;
+        var cardDef = CardRegister.Instance.GetById(args.CardId);
         StopAllCoroutines();
-        StartCoroutine(ShowCardCoroutine(card.CardImage));
+        StartCoroutine(ShowCardCoroutine(cardDef.CardImage));
     }
 
     IEnumerator ShowCardCoroutine(Sprite cardImage)
     {
-        while(canvasGroup.alpha > 0) //Por si acaso había alguna carta lanzada ya desplegada
+        while(canvasGroup.alpha > 0) //Por si acaso habï¿½a alguna carta lanzada ya desplegada
         {
             canvasGroup.alpha -= Time.deltaTime / fadeTime;
             yield return null;
