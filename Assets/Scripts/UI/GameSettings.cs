@@ -14,7 +14,7 @@ public class GameSettings : MonoBehaviour
     private void Start()
     {
         fontDropdown = GetComponentInChildren<FontDropdown>();
-        showSpacesToggle.isOn = PlayerPrefs.GetInt("ShowSpaces", 0) == 1;
+        showSpacesToggle.isOn = PlayerPrefs.GetInt("ShowSpaces", 1) == 1;
         SetShowSpaces(showSpacesToggle.isOn);
         capLocksWarningToggle.isOn = PlayerPrefs.GetInt("CapLocksWarnigng", 0) == 1;
         SetCapsWarning(capLocksWarningToggle.isOn);
