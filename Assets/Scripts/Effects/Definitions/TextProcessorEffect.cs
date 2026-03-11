@@ -8,7 +8,7 @@ public class TextProcessorEffect : StatusEffectDefinition
 
     public override void OnActivate(Player target)
     {
-        if (!target.IsServer) return;
+        // if (!target.IsServer) return;
         if (target.TryGetComponent<ITextPipeline>(out var pipeline))
         {
             pipeline.AddProcessor(processor);
@@ -17,7 +17,7 @@ public class TextProcessorEffect : StatusEffectDefinition
 
     public override void OnDeactivate(Player target)
     {
-        if (!target.IsServer) return;
+        // if (!target.IsServer) return;
         if (target.TryGetComponent<ITextPipeline>(out var pipeline))
         {
             pipeline.RemoveProcessor(processor);

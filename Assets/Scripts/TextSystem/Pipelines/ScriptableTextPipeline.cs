@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,9 @@ namespace TypTyp.TextSystem
     public class ScriptableTextPipeline : ScriptableObject, ITextPipeline
     {
         [SerializeField] List<ScriptableTextProcessor> processors;
+
+        public event Action<ITextProcessor> ProcessorAdded;
+        public event Action<ITextProcessor> ProcessorRemoved;
 
         public string ProcessText(string text)
         {
@@ -25,6 +29,7 @@ namespace TypTyp.TextSystem
             if (!processors.Contains(scriptableProcessor))
             {
                 processors.Add(scriptableProcessor);
+                ProcessorAdded?.Invoke(processor);
             }
         }
 
@@ -35,6 +40,7 @@ namespace TypTyp.TextSystem
             if (processors.Contains(scriptableProcessor))
             {
                 processors.Remove(scriptableProcessor);
+                ProcessorRemoved?.Invoke(processor);
             }
         }
     }
