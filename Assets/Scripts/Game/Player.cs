@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Unity.Collections;
 using TypTyp;
+using TypTyp.TextSystem;
 
 public class Player : NetworkBehaviour
 {
@@ -16,6 +17,7 @@ public class Player : NetworkBehaviour
     public StatusEffectController StatusEffectController { get; private set; }
     public CardUIManager CardUIManager { get; private set; }
     public PlayerInputManager PlayerInputManager { get; private set; }
+    public ITextPipeline TextPipeline { get; private set; }
     public static Player User { get; private set; } //Acceso global al Player del jugador
     public static Player Enemy { get; private set; } //Acceso global al Player del enemigo
 
@@ -130,6 +132,7 @@ public class Player : NetworkBehaviour
         StatusEffectController = GetComponent<StatusEffectController>();
         CardUIManager = GetComponentInChildren<CardUIManager>();
         PlayerInputManager = GetComponent<PlayerInputManager>();
+        TextPipeline = GetComponent<ITextPipeline>();
 
         UnityEngine.Assertions.Assert.IsNotNull(RitualManager);
         UnityEngine.Assertions.Assert.IsNotNull(ManaManager);

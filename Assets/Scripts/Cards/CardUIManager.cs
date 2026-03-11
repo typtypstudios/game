@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using TypTyp.TextSystem;
 using UnityEngine;
 
 public class CardUIManager : MonoBehaviour
 {
     [SerializeField] private DeckController deckController;
     [SerializeField] private ManaGainManager manaManager;
+    private ITextPipeline textPipeline;
     [SerializeField] private CardUI cardUIPrefab;
     [SerializeField] private Transform cardUIParent;
 
@@ -28,6 +30,14 @@ public class CardUIManager : MonoBehaviour
             manaManager,
             $"CardUIManager requires a reference to {nameof(ManaGainManager)}"
         );
+
+        if (textPipeline == null)
+            textPipeline = GetComponentInParent<ITextPipeline>();
+
+        UnityEngine.Assertions.Assert.IsNotNull(
+            textPipeline,
+            $"CardUIManager requires a reference to {nameof(ITextPipeline)}"
+        );
     }
 
     void Start()
@@ -41,12 +51,20 @@ public class CardUIManager : MonoBehaviour
         deckController.OnCardPlayedEvent += HandleCardPlayed;
 
         manaManager.OnCostModifierChangedEvent += ManaCostModifierChanged;
+
+        textPipeline.ProcessorAdded += TextPipelineModified;
+        textPipeline.ProcessorRemoved += TextPipelineModified;
     }
 
     void OnDisable()
     {
         deckController.OnCardDrawnEvent -= HandleCardDrawn;
         deckController.OnCardPlayedEvent -= HandleCardPlayed;
+
+        manaManager.OnCostModifierChangedEvent -= ManaCostModifierChanged;
+
+        textPipeline.ProcessorAdded -= TextPipelineModified;
+        textPipeline.ProcessorRemoved -= TextPipelineModified;
     }
 
     void CreateSlots(int count)
@@ -72,7 +90,7 @@ public class CardUIManager : MonoBehaviour
         var slot = emptySlots.Dequeue();
         var def = CardRegister.Instance.GetById(cardId);
 
-        slot.BindCardDefinition(def, manaManager.CostModifier);
+        slot.BindCardDefinition(def, textPipeline, manaManager.CostModifier);
         cardUIById[cardId] = slot;
     }
 
@@ -102,6 +120,14 @@ public class CardUIManager : MonoBehaviour
         foreach (var card in cardUIById.Values)
         {
             card.UpdateManaCostModifier(costModifier);
+        }
+    }
+
+    private void TextPipelineModified(ITextProcessor processor)
+    {
+        foreach (var card in cardUIById.Values)
+        {
+            card.UpdateCardName(textPipeline);
         }
     }
 }
