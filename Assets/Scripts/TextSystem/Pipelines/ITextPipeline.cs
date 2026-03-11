@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace TypTyp.TextSystem
@@ -6,5 +7,8 @@ namespace TypTyp.TextSystem
     {
         public void AddProcessor(ITextProcessor processor);
         public void RemoveProcessor(ITextProcessor processor);
+
+        public event Action<ITextProcessor> ProcessorAdded;
+        public event Action<ITextProcessor> ProcessorRemoved;
     }
 }

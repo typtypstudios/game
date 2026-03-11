@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using TypTyp.TextSystem;
 
 public class CardUI : MonoBehaviour
 {
@@ -31,14 +32,20 @@ public class CardUI : MonoBehaviour
         Player.User.PlayerInputManager.OnInputModeChangedEvent -= OnInputModeChanged;
     }
 
-    public void BindCardDefinition(CardDefinition def, int costModifier = 0)
+    public void BindCardDefinition(CardDefinition def, ITextPipeline pipeline, int costModifier = 0)
     {
         CardDefinition = def;
 
         cardImage.sprite = def.CardImage;
-        cardName.text = def.CardName;
-        writableSpell.SetText(def.CardName);
+        UpdateCardName(pipeline);
         UpdateManaCostModifier(costModifier);
+    }
+
+    public void UpdateCardName(ITextPipeline pipeline)
+    {
+        var text = pipeline.ProcessText(CardDefinition.CardName);
+        cardName.text = text;
+        writableSpell.SetText(text);
     }
 
     public void UpdateManaCostModifier(int costModifier)
