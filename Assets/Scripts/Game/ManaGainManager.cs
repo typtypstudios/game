@@ -52,7 +52,7 @@ public class ManaGainManager : MonoBehaviour
     public void AddCostModifier(int modifier)
     {
         CostModifier += modifier;
-        OnCostModifierChangedEvent.Invoke(CostModifier);
+        OnCostModifierChangedEvent?.Invoke(CostModifier);
     }
 
     public float GetTotalCost(float baseAmount)
