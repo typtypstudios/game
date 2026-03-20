@@ -87,7 +87,7 @@ public class Player : NetworkBehaviour
             Enemy = FindObjectsByType<Player>(FindObjectsSortMode.None).First(p => p != this);
             // User = this;
 
-            FindFirstObjectByType<MatchManager>().NotifyPlayerConfiguredServerRpc();
+            FindFirstObjectByType<MatchManager>().NotifyConfiguredServerRpc(SetupType.Player);
         }
     }
 
@@ -114,9 +114,12 @@ public class Player : NetworkBehaviour
         CurrentCorruption.Value = value;
         if (value == Settings.Instance.MaxCorruption)
         {
-            Player winner = MatchManager.GetPlayerById(MatchManager.GetPlayerId(this) == 0 ? 1 : 0);
+            Player winner = MatchManager.GetOpponent(OwnerClientId);
 
-            MatchManager.HandlePlayerVictory(winner);
+            if (winner != null)
+            {
+                MatchManager.HandlePlayerVictory(winner);
+            }
         }
     }
 

@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,7 @@ public class ReceivedSpellPanel : MonoBehaviour
     // private void ManageCardApplied(ulong casterId, CardDefinition card)
     private void ManageCardApplied(CardEventArgs args)
     {
+        if (!NetworkManager.Singleton.IsClient) return;
         if (args.PlayerId == Player.User.OwnerClientId) return;
         var cardDef = CardRegister.Instance.GetById(args.CardId);
         StopAllCoroutines();

@@ -1497,7 +1497,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   countdownText: {fileID: 1736977038}
   playerPrefab: {fileID: 1527992307803624597, guid: a627f6499881c7344a433ff1a21fc70f, type: 3}
-  canvasUIScript: {fileID: 1813752703}
+  gameUICanvas: {fileID: 1813752703}
 --- !u!4 &377042277
 Transform:
   m_ObjectHideFlags: 0
@@ -4830,7 +4830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Transports.UTP.UnityTransport
-  m_ProtocolType: 1
+  m_ProtocolType: 0
   m_UseWebSockets: 0
   m_UseEncryption: 0
   m_MaxPacketQueueSize: 256
@@ -4870,7 +4870,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 66d7fdacbbdb11244949786f4847eae2, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
+    ConnectionApproval: 1
     ConnectionData: 
     EnableTimeResync: 0
     TimeResyncInterval: 30
@@ -4918,7 +4918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab88fd5c35a8c24d93b36c1dde1eaa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MatchmakingManager
-  heartbeatInterval: 15
+  heartbeatInterval: 10
 --- !u!1 &2058548440
 GameObject:
   m_ObjectHideFlags: 0

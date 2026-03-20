@@ -16,6 +16,12 @@ public enum MatchState
     Finished
 }
 
+public enum SetupType
+{
+    Player,
+    UI
+}
+
 public class MatchManager : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI countdownText;
@@ -37,23 +43,20 @@ public class MatchManager : NetworkBehaviour
     private MatchState matchState;
     public static event Action OnMatchStarted;
     public static event Action OnMatchEnded;
+    private bool isShuttingDown;
 
-    // Referencia al canvas de inicio y final de la partida
-    [SerializeField] private GameUICanvasScript canvasUIScript;
+    [SerializeField] private GameUICanvasScript gameUICanvas;
 
+    Dictionary<ulong, Player> playersById;
 
-    //De momento una lista de playerIds server side
-    Dictionary<int, Player> playersById;
-    public Player GetPlayerById(int id) => playersById.GetValueOrDefault(id);
-    public int GetPlayerId(Player player) => playersById.FirstOrDefault(kvp => kvp.Value == player).Key;
+    public Player GetPlayerById(ulong id) => playersById.GetValueOrDefault(id);
+    public Player GetOpponent(ulong myClientId) => playersById.Values.FirstOrDefault(p => p.OwnerClientId != myClientId);
 
-    //Cambiar esto mas adelante para mas jugadores
     int MaxPlayers => 2;
 
     public override void OnNetworkSpawn()
     {
         if (NetworkManager.Singleton == null) return;
-
 
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
 
@@ -64,25 +67,25 @@ public class MatchManager : NetworkBehaviour
         }
     }
 
-    /// <summary>
-    /// Instantiate the prefab
-    /// </summary>
-    /// <param name="clientId"></param>
     private void OnClientConnected(ulong clientId)
     {
         if (!IsServer) return;
+        if (clientId == NetworkManager.ServerClientId) return;
 
-        var player = Instantiate(playerPrefab);
-        player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
+        GameObject playerObj = Instantiate(playerPrefab);
+        playerObj.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
+
+        Player playerComponent = playerObj.GetComponent<Player>();
+        playersById.Add(clientId, playerComponent);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void OnPlayerReadyRpc(PlayerData playerData, RpcParams rpcParams = default)
     {
         if (!IsServer) return;
-        Debug.Log($"[MatchManager][Server] Player ready:\n{playerData}");
 
         ulong clientId = rpcParams.Receive.SenderClientId;
+        Debug.Log($"[MatchManager][Server] Player ready: {clientId}");
 
         if (sceneReadyClients.Contains(clientId))
             return;
@@ -102,58 +105,51 @@ public class MatchManager : NetworkBehaviour
         }
     }
 
-    // Se ejecuta todavia en el server
     private void SetupPlayers()
     {
-        playersById.Clear();
-        Player[] players = FindObjectsByType<Player>(FindObjectsSortMode.None);
+        int index = 0;
 
-        for (int i = 0; i < players.Length; i++)
+        foreach (var client in NetworkManager.Singleton.ConnectedClients)
         {
-            playersById.Add(i, players[i]);
-            players[i].ConfigureServerPlayer(playersData[players[i].OwnerClientId]);
-            players[i].ConfigurePlayerRpc(i);
+            ulong clientId = client.Key;
+            if (playersById.TryGetValue(clientId, out Player player))
+            {
+                player.ConfigureServerPlayer(playersData[clientId]);
+                player.ConfigurePlayerRpc(index);
+                index++;
+            }
         }
-
         ConfigureUIRpc();
     }
 
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void NotifyPlayerConfiguredServerRpc(RpcParams rpcParams = default)
-    {
-        if (!IsServer) return;
-
-        ulong clientId = rpcParams.Receive.SenderClientId;
-
-        if (!setupStates.ContainsKey(clientId))
-            setupStates[clientId] = new ClientSetupState();
-
-        setupStates[clientId].playerConfigured = true;
-
-        CheckEverythingReady(clientId);
-    }
-
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void NotifyUIConfiguredServerRpc(RpcParams rpcParams = default)
-    {
-        if (!IsServer) return;
-
-        ulong clientId = rpcParams.Receive.SenderClientId;
-
-        if (!setupStates.ContainsKey(clientId))
-            setupStates[clientId] = new ClientSetupState();
-
-        setupStates[clientId].uiConfigured = true;
-
-        CheckEverythingReady(clientId);
-    }
-
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.NotServer)]
     public void ConfigureUIRpc()
     {
         FindFirstObjectByType<GameUIConfigurator>().ConfigureUI();
+        NotifyConfiguredServerRpc(SetupType.UI);
+    }
 
-        NotifyUIConfiguredServerRpc();
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void NotifyConfiguredServerRpc(SetupType type, RpcParams rpcParams = default)
+    {
+        if (!IsServer) return;
+
+        ulong clientId = rpcParams.Receive.SenderClientId;
+
+        if (!setupStates.ContainsKey(clientId))
+            setupStates[clientId] = new ClientSetupState();
+
+        switch (type)
+        {
+            case SetupType.Player:
+                setupStates[clientId].playerConfigured = true;
+                break;
+            case SetupType.UI:
+                setupStates[clientId].uiConfigured = true;
+                break;
+        }
+
+        CheckEverythingReady(clientId);
     }
 
     private void CheckEverythingReady(ulong clientId)
@@ -186,24 +182,21 @@ public class MatchManager : NetworkBehaviour
         string client1Name = playersData[client1Id].PlayerName.ToString();
         string client2Name = playersData[client2Id].PlayerName.ToString();
 
-        // Enviar los datos de los jugadores
         StartMatchClientRpc(matchStartTime, client1Id, client1Name, client2Id, client2Name);
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.NotServer)]
     private void StartMatchClientRpc(double startTime, ulong client1Id, string client1Name, ulong client2Id, string client2Name)
     {
         matchState = MatchState.InGame;
         matchStartTime = startTime;
 
-        Debug.Log($"CLIENT {NetworkManager.Singleton.LocalClientId}: Received StartMatchClientRpc");
-
         bool isClient1 = NetworkManager.Singleton.LocalClientId == client1Id;
         string localPlayerName = isClient1 ? client1Name : client2Name;
         string enemyPlayerName = isClient1 ? client2Name : client1Name;
 
-        canvasUIScript.ConfigureUsernames(localPlayerName, enemyPlayerName);
-        canvasUIScript.AnimateImagesIn();
+        gameUICanvas.ConfigureUsernames(localPlayerName, enemyPlayerName);
+        gameUICanvas.AnimateImagesIn();
 
         StartCoroutine(WaitForStart(startTime));
     }
@@ -211,100 +204,72 @@ public class MatchManager : NetworkBehaviour
     private IEnumerator WaitForStart(double startTime)
     {
         int lastSecond = -1;
-
-        canvasUIScript.SetCountdownActive(true);
+        gameUICanvas.SetCountdownActive(true);
 
         while (true)
         {
             double remaining = startTime - NetworkManager.Singleton.ServerTime.Time;
-
-            if (remaining <= 0)
-                break;
+            if (remaining <= 0) break;
 
             int currentSecond = Mathf.CeilToInt((float)remaining);
-
             if (currentSecond != lastSecond)
             {
                 lastSecond = currentSecond;
-                canvasUIScript.UpdateCountdownText(currentSecond.ToString());
+                gameUICanvas.UpdateCountdownText(currentSecond.ToString());
             }
-
             yield return null;
         }
 
-        canvasUIScript.UpdateCountdownText("GO!");
-        canvasUIScript.AnimateImagesOut();
+        gameUICanvas.UpdateCountdownText("GO!");
+        gameUICanvas.AnimateImagesOut();
 
         yield return new WaitForSeconds(0.5f);
 
-        canvasUIScript.SetCountdownActive(false);
+        gameUICanvas.SetCountdownActive(false);
         BeginMatchClient();
     }
 
-    /// <summary>
-    /// Comienza la partida
-    /// </summary>
     private void BeginMatchClient()
     {
-        double localTime = NetworkManager.Singleton.LocalTime.Time;
         double serverTime = NetworkManager.Singleton.ServerTime.Time;
-
         double drift = serverTime - matchStartTime;
 
-        Debug.Log(
-            $"MATCH STARTED | " +
-            $"Client:{NetworkManager.Singleton.LocalClientId} | " +
-            $"ServerTime:{serverTime:F4} | " +
-            $"Scheduled:{matchStartTime:F4} | " +
-            $"Drift:{drift * 1000:F2} ms"
-        );
-
+        Debug.Log($"MATCH STARTED | Client:{NetworkManager.Singleton.LocalClientId} | Drift:{drift * 1000:F2} ms");
         OnMatchStarted?.Invoke();
     }
 
-    /// <summary>
-    /// System to end the game
-    /// </summary>
-    /// <param name="winner"></param>
     public void HandlePlayerVictory(Player winner)
     {
-        if (!IsServer || matchState == MatchState.Finished)
-            return;
+        if (!IsServer || matchState == MatchState.Finished) return;
 
         matchState = MatchState.Finished;
-
         EndMatchClientRpc(winner.OwnerClientId);
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.NotServer)]
     private void EndMatchClientRpc(ulong winnerClientId)
     {
-        // Muestra el mensaje de victoria.
-
         matchState = MatchState.Finished;
-
-        OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
+        OnMatchEnded?.Invoke();
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
-        canvasUIScript.ShowEndMatch(isWinner);
+        gameUICanvas.ShowEndMatch(isWinner);
 
-        // Handshake de finalización
         NotifyEndHandledServerRpc();
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     private void NotifyEndHandledServerRpc(RpcParams rpcParams = default)
     {
-        if (!IsServer) return;
-
         ulong clientId = rpcParams.Receive.SenderClientId;
 
-        if (endMatchConfirmedClients.Contains(clientId))
-            return;
+        if (endMatchConfirmedClients.Contains(clientId)) return;
 
         endMatchConfirmedClients.Add(clientId);
 
-        if (endMatchConfirmedClients.Count == MaxPlayers)
+        int activePlayersCount = NetworkManager.Singleton.ConnectedClients.Count - 1;
+
+        if (activePlayersCount <= 0 || endMatchConfirmedClients.Count >= activePlayersCount)
         {
             _ = ShutdownMatchServer();
         }
@@ -312,6 +277,9 @@ public class MatchManager : NetworkBehaviour
 
     private async Task ShutdownMatchServer()
     {
+        if (isShuttingDown) return;
+        isShuttingDown = true;
+
         LobbyManager lobbyManager = FindFirstObjectByType<LobbyManager>();
         if (lobbyManager != null)
         {
@@ -319,7 +287,6 @@ public class MatchManager : NetworkBehaviour
         }
     }
 
-    // Llamado desde el botón
     public void ReturnToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
@@ -327,49 +294,47 @@ public class MatchManager : NetworkBehaviour
 
     private void OnClientDisconnected(ulong clientId)
     {
-        if (!IsServer && (clientId == NetworkManager.ServerClientId || clientId == NetworkManager.Singleton.LocalClientId))
+        if (IsServer)
         {
-            if (matchState == MatchState.ConfiguringPlayers || matchState == MatchState.WaitingPlayers)
+            if (clientId != NetworkManager.ServerClientId)
             {
-                // Salir de la partida
-                NetworkManager.Singleton.Shutdown();
-                SceneManager.LoadScene("MainMenu");
-            }
-            else if (matchState == MatchState.InGame)
-            {
-                // Terminar la partida
-                matchState = MatchState.Finished;
-                OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
-                NetworkManager.Singleton.Shutdown();
+                if (matchState == MatchState.InGame || matchState == MatchState.ConfiguringPlayers)
+                {
+                    matchState = MatchState.Finished;
 
-                canvasUIScript.ShowEndMatch(true);
+                    ulong winnerId = playersData.Keys.FirstOrDefault(id => id != clientId);
+                    EndMatchClientRpc(winnerId);
+
+                    playersById.Remove(clientId);
+                    playersData.Remove(clientId);
+                }
+                else
+                {
+                    _ = ShutdownMatchServer();
+                    NetworkManager.Singleton.Shutdown();
+                    SceneManager.LoadScene("MainMenu");
+                }
             }
         }
-
-        // Caso del host sigue vivo
-        if (clientId != NetworkManager.ServerClientId)
+        else
         {
-            if (matchState == MatchState.ConfiguringPlayers || matchState == MatchState.WaitingPlayers)
+            if (matchState != MatchState.Finished)
             {
-                // Salir de la partida
-                _ = ShutdownMatchServer();
-                NetworkManager.Singleton.Shutdown();
-                SceneManager.LoadScene("MainMenu");
-            }
-            else if (matchState == MatchState.InGame)
-            {
-                // Terminar la partida
                 matchState = MatchState.Finished;
-                OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
-                _ = ShutdownMatchServer();
+                OnMatchEnded?.Invoke();
                 NetworkManager.Singleton.Shutdown();
 
-                canvasUIScript.ShowEndMatch(true);
+                if (gameUICanvas != null)
+                {
+                    gameUICanvas.ShowEndMatch(false);
+                }
+                else
+                {
+                    SceneManager.LoadScene("MainMenu");
+                }
             }
         }
     }
-
-
 
     public override void OnDestroy()
     {
@@ -381,5 +346,4 @@ public class MatchManager : NetworkBehaviour
 
         base.OnDestroy();
     }
-
 }

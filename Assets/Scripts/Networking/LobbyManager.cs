@@ -3,35 +3,64 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
-using Unity.Networking.Transport.Relay;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using Unity.Services.Relay;
-using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using LobbyPlayer = Unity.Services.Lobbies.Models.Player;
 
-// Gestiona el matchmaking usando Unity Lobby + Relay + Netcode for GameObjects
 public class LobbyManager : MonoBehaviour
 {
-    // Número máximo de jugadores permitidos en la lobby
-    const int MaxPlayers = 2;
+    const int MaxPlayers = 3;   // Osea son 2 pero con el server pues 3 lol
+    [Tooltip("Intervalo en segundos para enviar el latido de la lobby")]
+    [SerializeField] private float heartbeatInterval = 10f;
 
-    // Intervalo del heartbeat de la lobby (segundos)
-    [SerializeField] private float heartbeatInterval = 15f;
-
-    // Referencia a la lobby actual (si somos host o cliente)
     Lobby currentLobby;
     bool isMatching;
 
-    // Se ejecuta al iniciar el objeto
+    // Valores por defecto para pruebas locales
+    private string serverIpAddress = "127.0.0.1";
+    private ushort serverPort = 7777;
+
     async void Awake()
     {
+        ReadServerArguments();
+
         await InitializeServices();
-        _ = SearchLobby();
+
+        if (MainMenuManager.IsDedicatedServer)
+        {
+            _ = CreateLobby();
+        }
+        else
+        {
+            _ = SearchLobby();
+        }
+    }
+
+    private void ReadServerArguments()
+    {
+        // Obtenemos todos los argumentos con los que se inició el programa
+        string[] args = System.Environment.GetCommandLineArgs();
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == "-serverIp" && args.Length > i + 1)
+            {
+                serverIpAddress = args[i + 1];
+                Debug.Log($"[Server Args] IP sobreescrita por comandos: {serverIpAddress}");
+            }
+            else if (args[i] == "-serverPort" && args.Length > i + 1)
+            {
+                if (ushort.TryParse(args[i + 1], out ushort parsedPort))
+                {
+                    serverPort = parsedPort;
+                    Debug.Log($"[Server Args] Puerto sobreescrito por comandos: {serverPort}");
+                }
+            }
+        }
     }
 
     async Task InitializeServices()
@@ -48,8 +77,6 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    // Método público para hacer "Quick Play"
-    // Busca una lobby existente o crea una nueva si no hay ninguna
     public async Task SearchLobby()
     {
         if (!AuthenticationService.Instance.IsSignedIn)
@@ -71,28 +98,21 @@ public class LobbyManager : MonoBehaviour
                         {
                             Filters = new List<QueryFilter>
                             {
-                            new QueryFilter(
-                                QueryFilter.FieldOptions.AvailableSlots,
-                                "0",
-                                QueryFilter.OpOptions.GT),
-
-                            new QueryFilter(
-                                QueryFilter.FieldOptions.S1,
-                                "waiting",
-                                QueryFilter.OpOptions.EQ)
+                                new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT),
+                                new QueryFilter(QueryFilter.FieldOptions.S1, "waiting", QueryFilter.OpOptions.EQ)
                             }
-                        });
+                        }
+                    );
 
-                    // Intentar unirse
-                    if (query.Results.Count > 0)
+                    // Intentar unirse al primer lobby disponible
+                    // Si el servidor nos rechaza, JoinLobby devolverá false, y el bucle continuará (o pasará a la siguiente iteración).
+                    foreach (var lobby in query.Results)
                     {
-                        if (await JoinLobby(query.Results[0]))
-                            return;
+                        if (await JoinLobby(lobby)) return;
                     }
 
-                    // Intentar crear
-                    if (await CreateLobby())
-                        return;
+                    // Esperar un par de segundillos antes de volver a intentar buscar lobbies, para evitar spamear el servicio en caso de que no haya lobbies disponibles.
+                    await Task.Delay(2000);
                 }
                 catch (LobbyServiceException e) when (e.Reason == LobbyExceptionReason.RateLimited)
                 {
@@ -101,13 +121,12 @@ public class LobbyManager : MonoBehaviour
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError("Matchmaking failed: " + e);
+                    Debug.Log("Matchmaking failed: " + e);
                     await Task.Delay(1000);
                 }
-            }// End for
+            }
 
-            Debug.LogWarning("Matchmaking exhausted. Returning to main menu.");
-            await CloseLobyAndShutdown();
+            Debug.Log("No se encontraron servidores disponibles tras varios intentos. Volviendo al menú principal.");
             SceneManager.LoadScene("MainMenu");
         }
         finally
@@ -116,59 +135,39 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    // Crea una lobby y configura Relay como host
+    // El Servidor Dedicado crea la lobby y expone su IP y Puerto
     async Task<bool> CreateLobby()
     {
         try
         {
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(MaxPlayers - 1, "europe-west4");
-            string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-
-            var playerData = new Dictionary<string, PlayerDataObject>
-            {
-                {
-                    "sessionId",
-                    new PlayerDataObject(
-                        PlayerDataObject.VisibilityOptions.Member,
-                        AuthenticationService.Instance.PlayerId)
-                }
-            };
-
             CreateLobbyOptions options = new CreateLobbyOptions
             {
-                Player = new LobbyPlayer(data: playerData),
+                IsPrivate = false,
                 Data = new Dictionary<string, DataObject>
                 {
-                    { "joinCode", new DataObject(DataObject.VisibilityOptions.Member, joinCode) },
-                    { "state", new DataObject(
-                        DataObject.VisibilityOptions.Public,
-                        "waiting",
-                        DataObject.IndexOptions.S1)
-                    }
+                    { "serverIP", new DataObject(DataObject.VisibilityOptions.Public, serverIpAddress) },
+                    { "serverPort", new DataObject(DataObject.VisibilityOptions.Public, serverPort.ToString()) },
+                    { "state", new DataObject(DataObject.VisibilityOptions.Public, "waiting", DataObject.IndexOptions.S1) }
                 }
             };
 
-            currentLobby = await LobbyService.Instance.CreateLobbyAsync("Lobby", MaxPlayers, options);
-            ConfigureTransport(allocation);
+            currentLobby = await LobbyService.Instance.CreateLobbyAsync("DedicatedServer", MaxPlayers, options);
 
-            if (!NetworkManager.Singleton.StartHost())
+            ConfigureTransport(serverIpAddress, serverPort);
+
+            NetworkManager.Singleton.ConnectionApprovalCallback = ApprovalCheck;
+
+            // Start as server
+            if (!NetworkManager.Singleton.StartServer())
             {
-                Debug.LogWarning("Failed to start host");
+                Debug.LogWarning("Failed to start server");
                 await CloseLobyAndShutdown();
                 return false;
             }
 
-            await Task.Delay(2000);
-
-            bool stillHost = await ResolveHostConflict();
-            if (!stillHost)
-            {
-                return false; // perdió el conflicto reintentar
-            }
-
             InvokeRepeating(nameof(SendHeartbeatWrapper), heartbeatInterval, heartbeatInterval);
 
-            return true; // éxito
+            return true;
         }
         catch (Exception e)
         {
@@ -178,220 +177,180 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+    {
+        int currentPlayers = NetworkManager.Singleton.ConnectedClientsIds.Count;
+
+        if (currentPlayers >= MaxPlayers)
+        {
+            response.Approved = false;
+            response.Reason = "La partida ya esta llena.";
+            Debug.Log("[Connection Approval] Conexion rechazada: Servidor lleno.");
+            return;
+        }
+
+        response.Approved = true;
+        response.CreatePlayerObject = false;
+        response.Pending = false;
+    }
+
     void SendHeartbeatWrapper()
     {
         _ = HeartbeatLobby();
     }
 
-    // Detecta si existen dos hosts y resuelve el conflicto
-    async Task<bool> ResolveHostConflict()
-    {
-        QueryResponse query = await LobbyService.Instance.QueryLobbiesAsync(
-        new QueryLobbiesOptions
-        {
-            Filters = new List<QueryFilter>
-            {
-                new QueryFilter(
-                    QueryFilter.FieldOptions.AvailableSlots,
-                    "0",
-                    QueryFilter.OpOptions.GT),
-
-                new QueryFilter(
-                    QueryFilter.FieldOptions.S1,
-                    "waiting",
-                    QueryFilter.OpOptions.EQ)
-            }
-        });
-
-        if (query.Results.Count <= 1)
-            return true;
-
-        query.Results.Sort((a, b) => string.Compare(a.Id, b.Id, StringComparison.Ordinal));
-
-        Lobby winningLobby = query.Results[0];
-
-        if (currentLobby == null)
-        {
-            Debug.LogWarning("Current lobby is null during host conflict resolution.");
-            return false;
-        }
-
-        // Decide si se queda o se va del lobby
-        if (currentLobby.Id != winningLobby.Id)
-        {
-            Debug.Log("ABANDONANDO ESTE LOBBY");
-
-            await CloseLobyAndShutdown();
-
-            await Task.Delay(500);
-
-            return false;
-        }
-
-        return true;
-    }
-
-    // Se une a una lobby existente y configura Relay como cliente
+    // El Cliente extrae la IP y el Puerto de la Lobby y se conecta
     async Task<bool> JoinLobby(Lobby lobby)
     {
         try
         {
-            Debug.Log("Uniendose a un lobby como cliente");
+            Debug.Log($"Intentando unirse a la lobby {lobby.Id}...");
 
             var playerData = new Dictionary<string, PlayerDataObject>
             {
-                {
-                    "sessionId",
-                    new PlayerDataObject(
-                        PlayerDataObject.VisibilityOptions.Member,
-                        AuthenticationService.Instance.PlayerId)
-                }
+                { "sessionId", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, AuthenticationService.Instance.PlayerId) }
             };
 
-            currentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(
-                lobby.Id,
-                new JoinLobbyByIdOptions
-                {
-                    Player = new LobbyPlayer(data: playerData)
-                });
+            currentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, new JoinLobbyByIdOptions { Player = new LobbyPlayer(data: playerData) });
 
-            if (currentLobby == null || !currentLobby.Data.ContainsKey("joinCode"))
+            if (currentLobby == null || !currentLobby.Data.ContainsKey("serverIP") || !currentLobby.Data.ContainsKey("serverPort"))
             {
-                Debug.LogWarning("Invalid lobby data");
-                await CloseLobyAndShutdown();
+                Debug.LogWarning("Datos de lobby inválidos o falta IP/Puerto");
                 return false;
             }
 
-            string joinCode = currentLobby.Data["joinCode"].Value;
+            string ip = currentLobby.Data["serverIP"].Value;
+            ushort port = ushort.Parse(currentLobby.Data["serverPort"].Value);
 
-            JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+            ConfigureTransport(ip, port);
 
-            ConfigureTransport(allocation);
+            var tcs = new TaskCompletionSource<bool>();
+
+            void OnClientDisconnect(ulong clientId)
+            {
+                if (clientId == NetworkManager.Singleton.LocalClientId || clientId == 0)
+                {
+                    Debug.LogWarning("El servidor nos ha rechazado o no hemos podido conectar.");
+                    tcs.TrySetResult(false);
+                }
+            }
+
+            void OnClientConnected(ulong clientId)
+            {
+                if (clientId == NetworkManager.Singleton.LocalClientId)
+                {
+                    Debug.Log("¡Conexion aprobada por el servidor!");
+                    tcs.TrySetResult(true);
+                }
+            }
+
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
 
             if (!NetworkManager.Singleton.StartClient())
             {
-                Debug.LogWarning("Failed to start client");
-                await CloseLobyAndShutdown();
+                Debug.LogWarning("StartClient() fallo al iniciar.");
+                NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnect;
+                NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
                 return false;
             }
 
-            return true; // éxito
-        }
-        catch (LobbyServiceException e) when (e.Reason == LobbyExceptionReason.LobbyConflict)
-        {
-            Debug.LogWarning($"Conflicto 409: Ya figuramos en la lobby {lobby.Id}. Forzando salida para limpiar sesión...");
+            Task timeoutTask = Task.Delay(5000);
+            Task completedTask = await Task.WhenAny(tcs.Task, timeoutTask);
 
-            try
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnect;
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+
+            if (completedTask == timeoutTask)
             {
-                // intentar salir de este lobby
-                await LobbyService.Instance.RemovePlayerAsync(lobby.Id, AuthenticationService.Instance.PlayerId);
-                Debug.Log("Salida forzada exitosa. El bucle de búsqueda intentará con otra lobby o creará una.");
-            }
-            catch (Exception removeEx)
-            {
-                Debug.LogError($"No se pudo limpiar la sesión en la lobby: {removeEx.Message}");
+                Debug.LogWarning("Timeout esperando respuesta del servidor.");
+                NetworkManager.Singleton.Shutdown();
+                return false;
             }
 
-            currentLobby = null;
-            return false;
+            bool isApproved = tcs.Task.Result;
+
+            if (!isApproved)
+            {
+                try { await LobbyService.Instance.RemovePlayerAsync(currentLobby.Id, AuthenticationService.Instance.PlayerId); } catch { }
+                currentLobby = null;
+                NetworkManager.Singleton.Shutdown();
+            }
+
+            return isApproved;
         }
         catch (Exception e)
         {
             Debug.LogWarning("JoinLobby failed: " + e);
-            await CloseLobyAndShutdown();
+            if (currentLobby != null)
+            {
+                try { await LobbyService.Instance.RemovePlayerAsync(currentLobby.Id, AuthenticationService.Instance.PlayerId); } catch { }
+                currentLobby = null;
+            }
             return false;
         }
     }
 
-    // Configura UnityTransport con datos de Relay
-    void ConfigureTransport(Allocation allocation)
+    void ConfigureTransport(string ip, ushort port)
     {
-        RelayServerData relayData = AllocationUtils.ToRelayServerData(allocation, "dtls");
-        NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayData);
-    }
-
-    // Overload para JoinAllocation
-    void ConfigureTransport(JoinAllocation allocation)
-    {
-        RelayServerData relayData = AllocationUtils.ToRelayServerData(allocation, "dtls");
-        NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayData);
+        var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        transport.SetConnectionData(ip, port);
     }
 
     async Task HeartbeatLobby()
     {
-        if (currentLobby != null && NetworkManager.Singleton.IsHost)
+        if (currentLobby != null && NetworkManager.Singleton.IsServer)
         {
-            try
-            {
-                await LobbyService.Instance.SendHeartbeatPingAsync(currentLobby.Id);
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning("Heartbeat failed: " + e.Message);
-            }
+            try { await LobbyService.Instance.SendHeartbeatPingAsync(currentLobby.Id); }
+            catch { }
         }
     }
 
     public async Task UpdateLobbyState(string newState)
     {
-        if (currentLobby == null) return;
+        if (currentLobby == null || !NetworkManager.Singleton.IsServer) return;
 
         try
         {
-            await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id,
-                new UpdateLobbyOptions
+            await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id, new UpdateLobbyOptions
+            {
+                Data = new Dictionary<string, DataObject>
                 {
-                    Data = new Dictionary<string, DataObject>
-                    {
-                    {
-                        "state",
-                        new DataObject(
-                            DataObject.VisibilityOptions.Public,
-                            newState,
-                            DataObject.IndexOptions.S1)
-                    }
-                    }
-                });
+                    { "state", new DataObject(DataObject.VisibilityOptions.Public, newState, DataObject.IndexOptions.S1) }
+                }
+            });
         }
-        catch (Exception e)
-        {
-            Debug.LogWarning("Failed to update lobby state: " + e.Message);
-        }
+        catch (Exception e) { Debug.LogWarning("Failed to update lobby state: " + e.Message); }
     }
 
-
+    // Solo el server deberia acceder a esta funcion
+    // Solo el server deberia acceder a esta funcion
     public async Task CloseLobyAndShutdown()
     {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
+
         CancelInvoke(nameof(SendHeartbeatWrapper));
-
-        bool wasHost = NetworkManager.Singleton != null && NetworkManager.Singleton.IsHost;
-
-        if (NetworkManager.Singleton != null &&
-            (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient))
-        {
-            NetworkManager.Singleton.Shutdown();
-            await Task.Yield();
-        }
 
         if (currentLobby != null)
         {
+            string lobbyIdToDelete = currentLobby.Id;
+
+            currentLobby = null;
+
             try
             {
-                if (wasHost)
-                {
-                    await LobbyService.Instance.DeleteLobbyAsync(currentLobby.Id);
-                }
-                else
-                {
-                    await LobbyService.Instance.RemovePlayerAsync(currentLobby.Id, AuthenticationService.Instance.PlayerId);
-                }
+                await LobbyService.Instance.DeleteLobbyAsync(lobbyIdToDelete);
             }
             catch (Exception e)
             {
                 Debug.LogWarning("Error leaving lobby: " + e.Message);
             }
+        }
 
-            currentLobby = null;
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.Shutdown();
+            await Task.Yield();
         }
     }
 }
