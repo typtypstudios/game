@@ -26,6 +26,7 @@ public abstract class StatusEffectDefinition : ScriptableObject
 
     public abstract void OnActivate(Player target);
     public abstract void OnDeactivate(Player target);
+    public abstract string GetDefaultValue();
 
     public bool IsOpposite(StatusEffectDefinition other)
     {

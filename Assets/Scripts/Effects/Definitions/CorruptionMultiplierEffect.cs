@@ -21,6 +21,11 @@ public class CorruptionMultiplierEffect : StatusEffectDefinition
         else if (type == MultiplierType.Heal) target.CorruptionManager.HealGainMultiplier = 1;
         else target.CorruptionManager.MistakeGainMultiplier = 1;
     }
+
+    public override string GetDefaultValue()
+    {
+        return $"x{multiplier}";
+    }
 }
 
 enum MultiplierType

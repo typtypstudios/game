@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13ff729c8fdbc5746970f51872e2d6f8, type: 3}
   m_Name: ShellEffect
   m_EditorClassIdentifier: Assembly-CSharp::CorruptionMultiplierEffect
-  <EffectName>k__BackingField: ShellEffect
+  <EffectName>k__BackingField: Shell
   <DurationType>k__BackingField: 1
   <Category>k__BackingField: {fileID: 0}
   <EffectPolarityType>k__BackingField: 0
   <DurationValue>k__BackingField: 30
-  <Description>k__BackingField: Applies 50% corruption reduction for 30 seconds
+  <Description>k__BackingField: Applies <default> corruption reduction for <duration>
+    seconds.
   <ImageUI>k__BackingField: {fileID: 916869346174002656, guid: 6c8a80058fba96ab5bdb2db2963b2e38, type: 3}
   type: 0
   multiplier: 0.5

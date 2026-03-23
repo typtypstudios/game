@@ -18,4 +18,9 @@ public class TemporalManaCostModifier : StatusEffectDefinition
 
         target.ManaManager.AddCostModifier(-CostModifier);
     }
+
+    public override string GetDefaultValue()
+    {
+        return $"{(CostModifier >= 0 ? "+" : "-")}{CostModifier}";
+    }
 }

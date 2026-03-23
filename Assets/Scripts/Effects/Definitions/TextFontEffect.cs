@@ -25,4 +25,9 @@ public class TextFontEffect : StatusEffectDefinition
                 Settings.Instance.DefaultFont : target.StatusEffectController.ActiveFonts[^1];
         }
     }
+
+    public override string GetDefaultValue()
+    {
+        return "";
+    }
 }

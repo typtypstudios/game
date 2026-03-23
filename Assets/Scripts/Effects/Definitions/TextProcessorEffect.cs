@@ -23,4 +23,9 @@ public class TextProcessorEffect : StatusEffectDefinition
             pipeline.RemoveProcessor(processor);
         }
     }
+
+    public override string GetDefaultValue()
+    {
+        return "";
+    }
 }

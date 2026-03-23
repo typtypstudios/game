@@ -16,4 +16,9 @@ public class ApplyCorruptionEffect : StatusEffectDefinition
     }
 
     public override void OnDeactivate(Player target) { }
+
+    public override string GetDefaultValue()
+    {
+        return $"{(int)corruptionPercentage}%";
+    }
 }

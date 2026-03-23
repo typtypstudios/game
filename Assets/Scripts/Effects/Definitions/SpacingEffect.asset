@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff6ef768b5469d4f8e81a1e3e36d8c4, type: 3}
   m_Name: SpacingEffect
   m_EditorClassIdentifier: Assembly-CSharp::TextProcessorEffect
-  <EffectName>k__BackingField: SpacingEffect
+  <EffectName>k__BackingField: Spacing
   <DurationType>k__BackingField: 2
   <Category>k__BackingField: {fileID: 0}
   <EffectPolarityType>k__BackingField: 1
   <DurationValue>k__BackingField: 3
   <Description>k__BackingField: Randomly adds spaces between words in rival's ritual
+    for <duration> lines.
   <ImageUI>k__BackingField: {fileID: 645076027151833052, guid: 5c9346c20238ab8bc82a891fc7bd4e6b, type: 3}
   processor: {fileID: 11400000, guid: 0f6dccc3b1bbfe647a38346ad00a3cd7, type: 2}
