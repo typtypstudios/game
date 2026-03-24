@@ -8,7 +8,8 @@ public class AdaptiveGridLayout : MonoBehaviour
     [Header("Padding & spacing")]
     [Range(0, 0.4f)][SerializeField] private float horizontalPaddingPercentaje = 0.1f;
     [Range(0, 0.4f)][SerializeField] private float verticalPaddingPercentaje = 0.1f;
-    [Range(0, 1)][SerializeField] private float spacingPercentaje = 0.02f;
+    [Range(0, 1)][SerializeField] private float verticalSpacingPercentaje = 0.02f;
+    [Range(0, 1)][SerializeField] private float horizontalSpacingPercentaje = 0.02f;
     [Header("Cell related")]
     [Min(1)][SerializeField] private int numColumns = 2;
     [SerializeField] private float cellRatio = 1.3333333f;
@@ -54,8 +55,8 @@ public class AdaptiveGridLayout : MonoBehaviour
         int numRows = (int)Mathf.Ceil((float)children.Count / numColumns);
         float horizontalPadding = rectTransform.rect.width * horizontalPaddingPercentaje;
         float verticalPadding = rectTransform.rect.height * verticalPaddingPercentaje;
-        float horizontalSpacing = spacingPercentaje * rectTransform.rect.width;
-        float verticalSpacing = spacingPercentaje * rectTransform.rect.height;
+        float horizontalSpacing = horizontalSpacingPercentaje * rectTransform.rect.width;
+        float verticalSpacing = verticalSpacingPercentaje * rectTransform.rect.height;
         float availableVertSpace = rectTransform.rect.height - 2 * verticalPadding - 
             (numRows - 1) * verticalSpacing;
         float availableHorSpace = rectTransform.rect.width - 2 * horizontalPadding -

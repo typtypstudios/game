@@ -76,6 +76,12 @@ public class WritableButton : AInputListener
         else if(resetIfFailed) ResetButton();
     }
 
+    public void CompletelyBlock(bool block)
+    {
+        Block = block;
+        button.interactable = !block;
+    }
+
     IEnumerator ResetButtonCoroutine()
     {
         idx = 0;

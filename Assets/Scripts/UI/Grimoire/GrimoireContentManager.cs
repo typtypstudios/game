@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,6 +13,10 @@ public class GrimoireContentManager : MonoBehaviour //Habría que refactorizar, p
     private StatusEffectDefinition[] effects;
     private readonly List<Page> pages = new();
     private readonly List<int> sectionStartPages = new();
+    public event Action<int, int> OnPageChanged;
+    public event Action<int, int> OnSectionChanged;
+    private int currentSection = 0;
+    private int currentPage = 0;
     
     private void Awake()
     {
@@ -27,38 +32,48 @@ public class GrimoireContentManager : MonoBehaviour //Habría que refactorizar, p
     {
         AddSection(defaultCards);
         AddSection(effects);
-        GoToPage(0);
+        GoToSection(0);
         displayers[0].GetComponent<Button>().onClick?.Invoke();
     }
 
     public void GoToPage(int idx)
     {
         idx = Mathf.Clamp(idx, 0, pages.Count - 1);
-        if (pages[idx].cards.Count > 0)
+        if (idx != currentPage) { }
+        foreach (var displayer in displayers)
         {
-            for (int i = 0; i < numDisplayers; i++)
+            displayer.GetComponent<WritableButton>().ResetButton(true);
+            displayer.Highlight(false);
+        }
+        for (int i = 0; i < numDisplayers; i++)
+        {
+            if (pages[idx].cards.Count > 0)
             {
-                if (pages[idx].cards.Count > 0)
+                if (i < pages[idx].cards.Count)
                 {
-                    if (i < pages[idx].cards.Count)
-                    {
-                        displayers[i].SetCard(pages[idx].cards[i]);
-                        displayers[i].gameObject.SetActive(true);
-                    }
-                    else displayers[i].gameObject.SetActive(false);
+                    displayers[i].SetCard(pages[idx].cards[i]);
+                    displayers[i].gameObject.SetActive(true);
                 }
-                else
+                else displayers[i].gameObject.SetActive(false);
+            }
+            else
+            {
+                if (i < pages[idx].effects.Count)
                 {
-                    if (i < pages[idx].effects.Count)
-                    {
-                        displayers[i].SetEffect(pages[idx].effects[i]);
-                        displayers[i].gameObject.SetActive(true);
-                    }
-                    else displayers[i].gameObject.SetActive(false);
+                    displayers[i].SetEffect(pages[idx].effects[i]);
+                    displayers[i].gameObject.SetActive(true);
                 }
+                else displayers[i].gameObject.SetActive(false);
             }
         }
+        int prevSection = currentSection;
+        currentSection = pages[idx].sectionIndex;
+        currentPage = idx;
+        OnSectionChanged?.Invoke(currentSection, prevSection);
+        OnPageChanged?.Invoke(currentPage, pages.Count);
     }
+
+    public void TurnPage(int pages) => GoToPage(currentPage + pages);
 
     public void GoToSection(int idx)
     {
@@ -71,7 +86,7 @@ public class GrimoireContentManager : MonoBehaviour //Habría que refactorizar, p
         sectionStartPages.Add(pages.Count);
         for(int i = 0; i < cards.Length; i += numDisplayers)
         {
-            Page currentPage = new(pages.Count, sectionStartPages.Count);
+            Page currentPage = new(pages.Count, sectionStartPages.Count - 1);
             for (int j = 0; j < numDisplayers; j++)
             {
                 int idx = i + j;
@@ -87,7 +102,7 @@ public class GrimoireContentManager : MonoBehaviour //Habría que refactorizar, p
         sectionStartPages.Add(pages.Count);
         for (int i = 0; i < effects.Length; i += numDisplayers)
         {
-            Page currentPage = new(pages.Count, sectionStartPages.Count);
+            Page currentPage = new(pages.Count, sectionStartPages.Count - 1);
             for (int j = 0; j < numDisplayers; j++)
             {
                 int idx = i + j;
