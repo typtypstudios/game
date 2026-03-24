@@ -8,7 +8,7 @@ public class GrimoireInfoDisplayer : InfoDisplayer
     private CardDefinition card;
     private StatusEffectDefinition effect;
 
-    private void Start()
+    private void OnEnable()
     {
         infoPanel = FindFirstObjectByType<GrimoireInfoPanel>();   
     }

@@ -17,17 +17,12 @@ public class GrimoireInfoPanel : MonoBehaviour
     private string negativeColor;
     private string effectColor;
 
-
-    [SerializeField] private CardDefinition startInfo;//CAMBIAR LUEGO PARA QUE COJA AUTOMÁTICAMENTE PRIMERA CARTA
-
-
     private void Start()
     {
         durationColor = Utils.ColorToTag(durationHighlightColor);
         positiveColor = Utils.ColorToTag(positiveHighlightColor);
         negativeColor = Utils.ColorToTag(negativeHighlightColor);
         effectColor = Utils.ColorToTag(effectHighlightColor);
-        SetInfo(startInfo);
     }
 
     public void SetInfo(CardDefinition card)
