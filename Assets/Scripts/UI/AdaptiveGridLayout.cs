@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
+[ExecuteAlways]
 public class AdaptiveGridLayout : MonoBehaviour
 {
     [Header("Padding & spacing")]
@@ -17,9 +18,26 @@ public class AdaptiveGridLayout : MonoBehaviour
     private RectTransform rectTransform;
     private readonly List<RectTransform> children = new();
 
+#if UNITY_EDITOR
+    private void OnEnable()
+    {
+        rectTransform = GetComponent<RectTransform>();
+        children.Clear();
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (excludedObjects.Contains(transform.GetChild(i))) continue;
+            RectTransform rt = transform.GetChild(i).GetComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(0f, 1f);
+            children.Add(rt);
+        }
+    }
+#endif
+
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
+        children.Clear();
         for (int i = 0; i < transform.childCount; i++)
         {
             if (excludedObjects.Contains(transform.GetChild(i))) continue;

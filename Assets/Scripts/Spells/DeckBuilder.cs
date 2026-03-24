@@ -10,11 +10,11 @@ public class DeckBuilder : MonoBehaviour
     [SerializeField] private Transform equippedLayout;
     [SerializeField] private Transform unequippedLayout;
     [SerializeField] private GameObject[] highlightPanels;
-    private readonly List<CardUI_Builder> equippedCards = new();
-    private readonly List<CardUI_Builder> unequippedCards = new();
+    private readonly List<CardDisplayer_builder> equippedCards = new();
+    private readonly List<CardDisplayer_builder> unequippedCards = new();
     private List<int> equippedIndexes = new();
-    private CardUI_Builder selectedEquipped;
-    private CardUI_Builder selectedUnequipped;
+    private CardDisplayer_builder selectedEquipped;
+    private CardDisplayer_builder selectedUnequipped;
     public static CardDefinition[] CardsInDeck { get; private set; }
 
     private void Awake()
@@ -24,10 +24,10 @@ public class DeckBuilder : MonoBehaviour
         LoadUnequippedCards();
         foreach (GameObject panel in highlightPanels) 
             panel.transform.SetAsLastSibling(); //Para estar por encima de las cartas creadas
-        CardUI_Builder.OnCardChosen += ProcessCardChosen;
+        CardDisplayer_builder.OnCardChosen += ProcessCardChosen;
     }
 
-    private void OnDestroy() => CardUI_Builder.OnCardChosen -= ProcessCardChosen;
+    private void OnDestroy() => CardDisplayer_builder.OnCardChosen -= ProcessCardChosen;
 
     public void SaveEquippedCards()
     {
@@ -51,7 +51,7 @@ public class DeckBuilder : MonoBehaviour
         //Creaci�n de cartas:
         for (int i = 0; i < Settings.Instance.DeckSize; i++)
         {
-            CardUI_Builder c = Instantiate(cardPrefab, equippedLayout).GetComponent<CardUI_Builder>();
+            CardDisplayer_builder c = Instantiate(cardPrefab, equippedLayout).GetComponent<CardDisplayer_builder>();
             equippedCards.Add(c);
         }
         //Carga de cartas guardadas:
@@ -85,13 +85,13 @@ public class DeckBuilder : MonoBehaviour
         for(int i = 0; i < CardRegister.Instance.Count; i++)
         {
             if (equippedIndexes.Contains(i)) continue;
-            CardUI_Builder c = Instantiate(cardPrefab, unequippedLayout).GetComponent<CardUI_Builder>();
+            CardDisplayer_builder c = Instantiate(cardPrefab, unequippedLayout).GetComponent<CardDisplayer_builder>();
             unequippedCards.Add(c);
             c.SetCard(CardRegister.Instance.GetById(i));
         }
     }
 
-    private void ProcessCardChosen(CardUI_Builder card)
+    private void ProcessCardChosen(CardDisplayer_builder card)
     {
         StartCoroutine(ResetButtonsCoroutine()); //Se resetean los botones para resetear su escritura
         if (card == selectedEquipped || card == selectedUnequipped)

@@ -1,20 +1,16 @@
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using TMPro;
-using System;
+using UnityEngine.UI;
 
-public class CardUI_Builder : MonoBehaviour
+public class InfoDisplayer : MonoBehaviour
 {
-    private Image image;
     [SerializeField] private TextMeshProUGUI cardName;
-    [SerializeField] private TextMeshProUGUI description;
     [SerializeField] private float hoverSizeMult = 1.5f;
-    [SerializeField] private float highlightColorAddition = 0.3f; //Para un color m�s claro que fill color para highlight
-    public static event Action<CardUI_Builder> OnCardChosen;
+    [SerializeField] private float highlightColorAddition = 0.3f; //Para un color mas claro que fill color para highlight
+    private Image image;
     private bool hovered = false;
     private WritableButton writableButton;
     private Color originalNameColor = Color.white;
-    public CardDefinition Card { get; private set; }
 
     private void Awake()
     {
@@ -23,12 +19,16 @@ public class CardUI_Builder : MonoBehaviour
         originalNameColor = cardName.color;
     }
 
-    public void SetCard(CardDefinition card)
+    public virtual void SetCard(CardDefinition card)
     {
-        Card = card;
         image.sprite = card.CardImage;
-        description.text = card.Description;
         writableButton.OverrideText(card.CardName);
+    }
+
+    public virtual void SetEffect(StatusEffectDefinition effect)
+    {
+        image.sprite = effect.ImageUI;
+        writableButton.OverrideText(effect.EffectName);
     }
 
     public void Highlight(bool highlight)
@@ -40,7 +40,7 @@ public class CardUI_Builder : MonoBehaviour
             cardName.color = writableButton.FillColor + Color.white * highlightColorAddition; //Ligeramente m�s claro
             transform.SetAsLastSibling();
         }
-        else if(!highlight && hovered)
+        else if (!highlight && hovered)
         {
             transform.localScale /= hoverSizeMult;
             hovered = false;
@@ -48,6 +48,4 @@ public class CardUI_Builder : MonoBehaviour
             transform.SetAsFirstSibling();
         }
     }
-
-    public void OnButtonClicked() => OnCardChosen?.Invoke(this);
 }

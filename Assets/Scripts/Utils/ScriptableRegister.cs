@@ -9,7 +9,7 @@ public abstract class ScriptableRegister<TItem, TSelf> : ScriptableSingleton<TSe
     where TSelf : ScriptableRegister<TItem, TSelf>
 {
     [SerializeField] private TItem[] registeredItems = Array.Empty<TItem>();
-
+    public TItem[] RegisteredItems => registeredItems;
     private Dictionary<TItem, int> lookup;
 
     private void OnEnable()
