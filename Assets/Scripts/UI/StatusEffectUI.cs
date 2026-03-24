@@ -31,7 +31,7 @@ public class StatusEffectUI : MonoBehaviour
     private void AddStatusEffect(StatusEffect effect)
     {
         if (effect.Definition.DurationType == EffectDurationType.Immediate) return;
-        Sprite effectSprite = effect.Definition.ImageUI;
+        Sprite effectSprite = effect.Definition.Image;
         foreach (var status in addedStatus)
         {
             if (status.sprite == effectSprite) return; //Cada efecto �nicamente sale una vez
@@ -47,7 +47,7 @@ public class StatusEffectUI : MonoBehaviour
     private void RemoveStatusEffect(StatusEffect effect)
     {
         if (effect.Definition.DurationType == EffectDurationType.Immediate) return;
-        Sprite effectSprite = effect.Definition.ImageUI;
+        Sprite effectSprite = effect.Definition.Image;
         for (int i = 0; i < addedStatus.Count; i++)
         {
             if (addedStatus[i].sprite == effectSprite)

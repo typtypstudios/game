@@ -12,24 +12,25 @@ public class GrimoireInfoPanel : MonoBehaviour
     [SerializeField] private Color positiveHighlightColor = Color.green;
     [SerializeField] private Color negativeHighlightColor = Color.red;
     [SerializeField] private Color effectHighlightColor = Color.purple;
-    private string durationColor;
-    private string positiveColor;
-    private string negativeColor;
-    private string effectColor;
+    private string durationTag;
+    private string positiveTag;
+    private string negativeTag;
+    private string effectTag;
 
     private void Start()
     {
-        durationColor = Utils.ColorToTag(durationHighlightColor);
-        positiveColor = Utils.ColorToTag(positiveHighlightColor);
-        negativeColor = Utils.ColorToTag(negativeHighlightColor);
-        effectColor = Utils.ColorToTag(effectHighlightColor);
+        durationTag = Utils.ColorToTag(durationHighlightColor);
+        positiveTag = Utils.ColorToTag(positiveHighlightColor);
+        negativeTag = Utils.ColorToTag(negativeHighlightColor);
+        effectTag = Utils.ColorToTag(effectHighlightColor);
     }
 
-    public void SetInfo(CardDefinition card)
+    public void SetInfo(ADefinition definition)
     {
-        image.sprite = card.CardImage;
-        nameText.text = card.CardName;
-        infoText.text = FillCardInfo(card);
+        image.sprite = definition.Image;
+        nameText.text = definition.Name;
+        infoText.text = definition is CardDefinition ? FillCardInfo(definition as CardDefinition) : 
+            FillStatusInfo(definition as StatusEffectDefinition);
     }
 
     private string FillCardInfo(CardDefinition card)
@@ -40,7 +41,7 @@ public class GrimoireInfoPanel : MonoBehaviour
         foreach (Match m in matches) 
         {
             string effectName = m.Groups[1].Value;
-            desc = desc.Replace(effectName, effectColor + effectName + "</color>");
+            desc = desc.Replace(effectName, effectTag + effectName + "</color>");
         }
         matches = Regex.Matches(desc, @"<effectSelf_([a-zA-Z0-9]+)>");
         foreach (Match m in matches)
@@ -63,22 +64,14 @@ public class GrimoireInfoPanel : MonoBehaviour
         return desc;
     }
 
-    public void SetInfo(StatusEffectDefinition effect)
-    {
-        image.sprite = effect.ImageUI;
-        nameText.text = effect.EffectName;
-        infoText.text = effect.Description;
-        infoText.text = FillStatusInfo(effect);
-    }
-
     private string FillStatusInfo(StatusEffectDefinition effect)
     {
         string desc = effect.Description;
         desc = desc.Replace("seconds", "seconds</color>").Replace("lines", "lines</color>");
         if (effect.DurationValue == 1) desc = desc.Replace("seconds", "second").Replace("lines", "line");
-        desc = desc.Replace("<duration>", durationColor + effect.DurationValue);
+        desc = desc.Replace("<duration>", durationTag + effect.DurationValue);
         string polarityColor = effect.EffectPolarityType == EffectPolarityType.Bad ? 
-            negativeColor : positiveColor;
+            negativeTag : positiveTag;
         desc = desc.Replace("<value>", polarityColor + effect.GetDefaultValue() + "</color>");
         return desc;
     }

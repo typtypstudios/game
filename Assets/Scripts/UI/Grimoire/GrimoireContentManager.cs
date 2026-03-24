@@ -4,24 +4,23 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GrimoireContentManager : MonoBehaviour //Habría que refactorizar, pero funciona
+public class GrimoireContentManager : MonoBehaviour
 {
     [SerializeField] private GameObject displayerPrefab;
     [SerializeField] private int numDisplayers = 9;
+    [SerializeField] private GrimoireSection[] sections;
+    GrimoireNavigationController navController;
     private readonly List<GrimoireInfoDisplayer> displayers = new();
-    private CardDefinition[] defaultCards;
-    private StatusEffectDefinition[] effects;
     private readonly List<Page> pages = new();
+    private int currentPage = 0;
     private readonly List<int> sectionStartPages = new();
+    private int currentSection = 0;
     public event Action<int, int> OnPageChanged;
     public event Action<int, int> OnSectionChanged;
-    private int currentSection = 0;
-    private int currentPage = 0;
-    
+
     private void Awake()
     {
-        defaultCards = CardRegister.Instance.RegisteredItems.OrderBy(c => c.CardName).ToArray();
-        effects = StatusEffectRegister.Instance.RegisteredItems.OrderBy(e => e.EffectName).ToArray();
+        navController = GetComponentInChildren<GrimoireNavigationController>();
         for(int i = 0; i < numDisplayers; i++)
             displayers.Add(Instantiate(displayerPrefab, this.transform).GetComponent<GrimoireInfoDisplayer>());
     }
@@ -30,8 +29,7 @@ public class GrimoireContentManager : MonoBehaviour //Habría que refactorizar, p
 
     private void InitializeData()
     {
-        AddSection(defaultCards);
-        AddSection(effects);
+        foreach (var section in sections) GenerateSection(section);
         GoToSection(0);
         displayers[0].GetComponent<Button>().onClick?.Invoke();
     }
@@ -39,37 +37,20 @@ public class GrimoireContentManager : MonoBehaviour //Habría que refactorizar, p
     public void GoToPage(int idx)
     {
         idx = Mathf.Clamp(idx, 0, pages.Count - 1);
-        if (idx != currentPage) { }
-        foreach (var displayer in displayers)
-        {
-            displayer.GetComponent<WritableButton>().ResetButton(true);
-            displayer.Highlight(false);
-        }
+        ResetDisplayers();
         for (int i = 0; i < numDisplayers; i++)
         {
-            if (pages[idx].cards.Count > 0)
+            if (i < pages[idx].definition.Count)
             {
-                if (i < pages[idx].cards.Count)
-                {
-                    displayers[i].SetCard(pages[idx].cards[i]);
-                    displayers[i].gameObject.SetActive(true);
-                }
-                else displayers[i].gameObject.SetActive(false);
+                displayers[i].SetInfo(pages[idx].definition[i]);
+                displayers[i].gameObject.SetActive(true);
             }
-            else
-            {
-                if (i < pages[idx].effects.Count)
-                {
-                    displayers[i].SetEffect(pages[idx].effects[i]);
-                    displayers[i].gameObject.SetActive(true);
-                }
-                else displayers[i].gameObject.SetActive(false);
-            }
+            else displayers[i].gameObject.SetActive(false);
         }
         int prevSection = currentSection;
         currentSection = pages[idx].sectionIndex;
-        currentPage = idx;
         OnSectionChanged?.Invoke(currentSection, prevSection);
+        currentPage = idx;
         OnPageChanged?.Invoke(currentPage, pages.Count);
     }
 
@@ -81,51 +62,60 @@ public class GrimoireContentManager : MonoBehaviour //Habría que refactorizar, p
         GoToPage(sectionStartPages[idx]);
     }
 
-    private void AddSection(CardDefinition[] cards)
+    private void GenerateSection(GrimoireSection section)
+    {
+        navController.AddSection(sectionStartPages.Count, section.sectionName);
+        ADefinition[] definitions;
+        if (section.cardRegister) 
+            definitions = section.cardRegister.RegisteredItems.OrderBy(c => c.Name).ToArray();
+        else definitions = section.effectRegister.RegisteredItems.OrderBy(c => c.name).ToArray();
+        FillSection(definitions);
+    }
+
+    private void FillSection(ADefinition[] definition)
     {
         sectionStartPages.Add(pages.Count);
-        for(int i = 0; i < cards.Length; i += numDisplayers)
+        for(int i = 0; i < definition.Length; i += numDisplayers)
         {
             Page currentPage = new(pages.Count, sectionStartPages.Count - 1);
             for (int j = 0; j < numDisplayers; j++)
             {
                 int idx = i + j;
-                if (idx >= cards.Length) break;
-                currentPage.cards.Add(cards[idx]);
+                if (idx >= definition.Length) break;
+                currentPage.definition.Add(definition[idx]);
             }
             pages.Add(currentPage);
         }
     }
 
-    private void AddSection(StatusEffectDefinition[] effects)
+    private void ResetDisplayers()
     {
-        sectionStartPages.Add(pages.Count);
-        for (int i = 0; i < effects.Length; i += numDisplayers)
+        foreach (var displayer in displayers)
         {
-            Page currentPage = new(pages.Count, sectionStartPages.Count - 1);
-            for (int j = 0; j < numDisplayers; j++)
-            {
-                int idx = i + j;
-                if (idx >= effects.Length) break;
-                currentPage.effects.Add(effects[idx]);
-            }
-            pages.Add(currentPage);
+            displayer.GetComponent<WritableButton>().ResetButton(true);
+            displayer.Highlight(false);
         }
     }
+}
+
+[Serializable]
+public class GrimoireSection
+{
+    public string sectionName;
+    public CardRegister cardRegister;
+    public StatusEffectRegister effectRegister;
 }
 
 public struct Page
 {
     public int pageIndex;
     public int sectionIndex;
-    public List<CardDefinition> cards;
-    public List<StatusEffectDefinition> effects;
+    public List<ADefinition> definition;
 
     public Page(int idx, int sectionIdx)
     {
         pageIndex = idx;
         sectionIndex = sectionIdx;
-        cards = new();
-        effects = new();
+        definition = new();
     }
 }

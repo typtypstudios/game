@@ -11,6 +11,7 @@ public class InfoDisplayer : MonoBehaviour
     private bool hovered = false;
     private WritableButton writableButton;
     private Color originalNameColor = Color.white;
+    public ADefinition Definition { get; private set; }
 
     private void Awake()
     {
@@ -19,16 +20,11 @@ public class InfoDisplayer : MonoBehaviour
         originalNameColor = cardName.color;
     }
 
-    public virtual void SetCard(CardDefinition card)
+    public virtual void SetInfo(ADefinition definition)
     {
-        image.sprite = card.CardImage;
-        writableButton.OverrideText(card.CardName);
-    }
-
-    public virtual void SetEffect(StatusEffectDefinition effect)
-    {
-        image.sprite = effect.ImageUI;
-        writableButton.OverrideText(effect.EffectName);
+        image.sprite = definition.Image;
+        writableButton.OverrideText(definition.Name);
+        Definition = definition;
     }
 
     public void Highlight(bool highlight)

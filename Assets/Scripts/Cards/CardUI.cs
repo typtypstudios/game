@@ -36,14 +36,14 @@ public class CardUI : MonoBehaviour
     {
         CardDefinition = def;
 
-        cardImage.sprite = def.CardImage;
+        cardImage.sprite = def.Image;
         UpdateCardName(pipeline);
         UpdateManaCostModifier(costModifier);
     }
 
     public void UpdateCardName(ITextPipeline pipeline)
     {
-        var text = pipeline.ProcessText(CardDefinition.CardName);
+        var text = pipeline.ProcessText(CardDefinition.Name);
         cardName.text = text;
         writableSpell.SetText(text);
     }

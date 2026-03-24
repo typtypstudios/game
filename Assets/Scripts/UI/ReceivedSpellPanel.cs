@@ -29,7 +29,7 @@ public class ReceivedSpellPanel : MonoBehaviour
         if (args.PlayerId == Player.User.OwnerClientId) return;
         var cardDef = CardRegister.Instance.GetById(args.CardId);
         StopAllCoroutines();
-        StartCoroutine(ShowCardCoroutine(cardDef.CardImage));
+        StartCoroutine(ShowCardCoroutine(cardDef.Image));
     }
 
     IEnumerator ShowCardCoroutine(Sprite cardImage)

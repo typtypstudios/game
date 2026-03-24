@@ -65,7 +65,7 @@ public class DeckBuilder : MonoBehaviour
                 equippedIndexes.Count - Settings.Instance.DeckSize);
         //Configuraci�n de cartas:
         for (int i = 0; i < equippedIndexes.Count; i++)
-                equippedCards[i].SetCard(CardRegister.Instance.GetById(equippedIndexes[i]));
+                equippedCards[i].SetInfo(CardRegister.Instance.GetById(equippedIndexes[i]));
         //Manejo de aumento de deck size:
         if(equippedIndexes.Count < equippedCards.Count)
         {
@@ -74,7 +74,7 @@ public class DeckBuilder : MonoBehaviour
             {
                 List<CardDefinition> currentCards = equippedCards.Select(c => c.Card).ToList();
                 (CardDefinition c, int idx) = CardRegister.Instance.GetUncontainedItem(currentCards);
-                equippedCards[equippedIndexes.Count].SetCard(c);
+                equippedCards[equippedIndexes.Count].SetInfo(c);
                 equippedIndexes.Add(idx);
             }
         }
@@ -87,7 +87,7 @@ public class DeckBuilder : MonoBehaviour
             if (equippedIndexes.Contains(i)) continue;
             CardDisplayer_builder c = Instantiate(cardPrefab, unequippedLayout).GetComponent<CardDisplayer_builder>();
             unequippedCards.Add(c);
-            c.SetCard(CardRegister.Instance.GetById(i));
+            c.SetInfo(CardRegister.Instance.GetById(i));
         }
     }
 
@@ -121,8 +121,8 @@ public class DeckBuilder : MonoBehaviour
         if (selectedUnequipped && selectedEquipped)
         {
             CardDefinition c = selectedUnequipped.Card;
-            selectedUnequipped.SetCard(selectedEquipped.Card);
-            selectedEquipped.SetCard(c);
+            selectedUnequipped.SetInfo(selectedEquipped.Card);
+            selectedEquipped.SetInfo(c);
             ResetSelection();
         }
     }
