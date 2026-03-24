@@ -10,6 +10,8 @@ public class AdaptiveGridLayout : MonoBehaviour
     [Range(0, 0.4f)][SerializeField] private float verticalPaddingPercentaje = 0.1f;
     [Range(0, 1)][SerializeField] private float verticalSpacingPercentaje = 0.02f;
     [Range(0, 1)][SerializeField] private float horizontalSpacingPercentaje = 0.02f;
+    [Range(-1, 1)][SerializeField] private float verticalOffset = 0;
+    [Range(-1, 1)][SerializeField] private float horizontalOffset = 0;
     [Header("Cell related")]
     [Min(1)][SerializeField] private int numColumns = 2;
     [SerializeField] private float cellRatio = 1.3333333f;
@@ -74,8 +76,8 @@ public class AdaptiveGridLayout : MonoBehaviour
         verticalPadding = (rectTransform.rect.height - (targetHeight * numRows + (numRows - 1) * 
             verticalSpacing)) / 2;
         //Colocación de las cartas:
-        float startXPos = horizontalPadding + targetWidth / 2;
-        float startYPos = - (verticalPadding + targetHeight / 2);
+        float startXPos = horizontalPadding + targetWidth / 2 + horizontalPadding * horizontalOffset;
+        float startYPos = - (verticalPadding + targetHeight / 2) + verticalPadding * verticalOffset;
         int incompletedCount = 0; //Número de cartas de una fila incompleta
         for (int i = 0; i < numRows; i++)
         {
