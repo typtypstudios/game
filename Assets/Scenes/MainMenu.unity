@@ -6497,10 +6497,11 @@ MonoBehaviour:
   image: {fileID: 432951273}
   nameText: {fileID: 866592073}
   infoText: {fileID: 790525273}
-  durationHighlightColor: {r: 1, g: 0, b: 0.7322521, a: 1}
+  durationHighlightColor: {r: 0, g: 0.9612417, b: 1, a: 1}
   positiveHighlightColor: {r: 0, g: 1, b: 0, a: 1}
   negativeHighlightColor: {r: 1, g: 0, b: 0, a: 1}
-  startInfo: {fileID: 11400000, guid: 822b2da37fad65c448960ddaf91e14b3, type: 2}
+  effectHighlightColor: {r: 0.9137255, g: 0.1254902, b: 0.9411765, a: 1}
+  startInfo: {fileID: 11400000, guid: 87b06bfb30cff694b875659741e5e955, type: 2}
 --- !u!1 &1184433046
 GameObject:
   m_ObjectHideFlags: 0
@@ -7954,7 +7955,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1375366902}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -10566,7 +10567,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902940366}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
