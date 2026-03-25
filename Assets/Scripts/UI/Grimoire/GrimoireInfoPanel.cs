@@ -19,6 +19,8 @@ public class GrimoireInfoPanel : MonoBehaviour
 
     private void Start()
     {
+        image.material = new(image.material);
+        image.material.SetFloat("_EmissionForce", 0.7f);
         durationTag = Utils.ColorToTag(durationHighlightColor);
         positiveTag = Utils.ColorToTag(positiveHighlightColor);
         negativeTag = Utils.ColorToTag(negativeHighlightColor);

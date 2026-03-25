@@ -11,11 +11,14 @@ public class InfoDisplayer : MonoBehaviour
     private bool hovered = false;
     private WritableButton writableButton;
     private Color originalNameColor = Color.white;
+    private Material emissiveMat;
     public ADefinition Definition { get; private set; }
 
     private void Awake()
     {
         image = GetComponent<Image>();
+        emissiveMat = new(image.material);
+        image.material = emissiveMat; //Una copia para cada uno, ya que no hay mat prop block para UI
         writableButton = GetComponent<WritableButton>();
         originalNameColor = cardName.color;
     }
@@ -35,6 +38,7 @@ public class InfoDisplayer : MonoBehaviour
             hovered = true;
             cardName.color = writableButton.FillColor + Color.white * highlightColorAddition; //Ligeramente m�s claro
             transform.SetAsLastSibling();
+            emissiveMat.SetFloat("_EmissionForce", 1);
         }
         else if (!highlight && hovered)
         {
@@ -42,6 +46,7 @@ public class InfoDisplayer : MonoBehaviour
             hovered = false;
             cardName.color = originalNameColor;
             transform.SetAsFirstSibling();
+            emissiveMat.SetFloat("_EmissionForce", 0);
         }
     }
 }
