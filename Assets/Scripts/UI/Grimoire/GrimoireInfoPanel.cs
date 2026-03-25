@@ -40,27 +40,21 @@ public class GrimoireInfoPanel : MonoBehaviour
     private string FillCardInfo(CardDefinition card)
     {
         string desc = card.Description;
-        MatchCollection matches = Regex.Matches(desc, @"'([^']*)'");
-        desc = desc.Replace("'", "");
+        MatchCollection matches = Regex.Matches(desc, @"<effect([a-zA-Z0-9]+)_(\d+)>");
         foreach (Match m in matches) 
         {
-            string effectName = m.Groups[1].Value;
-            desc = desc.Replace(effectName, effectTag + effectName + "</color>");
+            if (m.Groups[1].Value.Contains("Desc")) break;
+            int idx = int.Parse(m.Groups[2].Value);
+            string effectName = m.Groups[1].Value.Equals("Self") ? 
+                card.Spell.OnSelfEffects[idx].Name : card.Spell.OnEnemyEffects[idx].Name;
+            desc = desc.Replace(m.Groups[0].Value, effectTag + effectName + "</color>");
         }
-        matches = Regex.Matches(desc, @"<effectSelf_([a-zA-Z0-9]+)>");
+        matches = Regex.Matches(desc, @"<effect([a-zA-Z0-9]+)Desc_([a-zA-Z0-9]+)>");
         foreach (Match m in matches)
         {
-            int idx = int.Parse(m.Groups[1].Value[0].ToString());
-            string effectDesc = FillStatusInfo(card.Spell.OnSelfEffects[idx]);
-            if (m.Groups[1].Value.ToLower().Contains("c")) 
-                effectDesc = effectDesc.Remove(effectDesc.Length - 1);
-            desc = desc.Replace(m.Groups[0].Value, effectDesc);
-        }
-        matches = Regex.Matches(desc, @"<effectEnemy_([a-zA-Z0-9]+)>");
-        foreach (Match m in matches)
-        {
-            int idx = int.Parse(m.Groups[1].Value[0].ToString());
-            string effectDesc = FillStatusInfo(card.Spell.OnEnemyEffects[idx]);
+            int idx = int.Parse(m.Groups[2].Value);
+            string effectDesc = m.Groups[1].Value.Equals("Self") ?
+                FillStatusInfo(card.Spell.OnSelfEffects[idx]) : FillStatusInfo(card.Spell.OnEnemyEffects[idx]);
             if (m.Groups[1].Value.ToLower().Contains("c")) 
                 effectDesc = effectDesc.Remove(effectDesc.Length - 1);
             desc = desc.Replace(m.Groups[0].Value, effectDesc);
