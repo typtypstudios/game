@@ -19,7 +19,7 @@ public class GrimoireContentManager : MonoBehaviour
     private void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        infoPanel = FindFirstObjectByType<GrimoireInfoPanel>();
+        infoPanel = GetComponentInParent<Canvas>().GetComponentInChildren<GrimoireInfoPanel>();
         displayers = GetComponentsInChildren<GrimoireInfoDisplayer>();
         GoToPage(0, true);
         displayers[0].PerformClick();

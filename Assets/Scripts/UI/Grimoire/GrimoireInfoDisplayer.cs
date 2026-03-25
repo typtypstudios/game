@@ -1,5 +1,4 @@
-
-
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GrimoireInfoDisplayer : InfoDisplayer
@@ -9,7 +8,7 @@ public class GrimoireInfoDisplayer : InfoDisplayer
 
     private void OnEnable()
     {
-        infoPanel = FindFirstObjectByType<GrimoireInfoPanel>();   
+        infoPanel = GetComponentInParent<Canvas>().GetComponentInChildren<GrimoireInfoPanel>();
     }
 
     public void PerformClick() => GetComponent<Button>().onClick?.Invoke();

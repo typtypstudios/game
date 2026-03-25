@@ -7279,10 +7279,6 @@ MonoBehaviour:
   emission: 0.9
   nameText: {fileID: 866592073}
   infoText: {fileID: 790525273}
-  durationHighlightColor: {r: 0, g: 0.9612417, b: 1, a: 1}
-  positiveHighlightColor: {r: 0, g: 1, b: 0, a: 1}
-  negativeHighlightColor: {r: 1, g: 0, b: 0, a: 1}
-  effectHighlightColor: {r: 0.9137255, g: 0.1254902, b: 0.9411765, a: 1}
 --- !u!1 &1184433046
 GameObject:
   m_ObjectHideFlags: 0
@@ -12442,9 +12438,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3719485855297543948}
   - {fileID: 1372536018}
   - {fileID: 90573293}
-  - {fileID: 3719485855297543948}
   m_Father: {fileID: 1396010323}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

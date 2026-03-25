@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(Button))]
 public class WritableButton : AInputListener
@@ -18,6 +19,7 @@ public class WritableButton : AInputListener
     private Coroutine resetCoroutine;
     private Canvas canvas;
     public bool Block { get; set; } = false;
+    private static event Action<WritableButton> OnButtonWritten;
 
     private void Awake()
     {
@@ -27,6 +29,7 @@ public class WritableButton : AInputListener
         textLength = originalText.Length;
         canvas = GetComponentInParent<Canvas>();
         resetTimer = new(resetTime);
+        OnButtonWritten += OnOtherButtonWritten;
     }
 
     protected override void OnDisable()
@@ -34,6 +37,11 @@ public class WritableButton : AInputListener
         base.OnDisable();
         StopAllCoroutines();
         ResetButton();
+    }
+
+    private void OnOtherButtonWritten(WritableButton b)
+    {
+        if (b != this && resetIfFailed) ResetButton();
     }
 
     public void OverrideText(string text)
@@ -71,6 +79,7 @@ public class WritableButton : AInputListener
             {
                 resetCoroutine = StartCoroutine(ResetButtonCoroutine());
                 button.onClick?.Invoke();
+                OnButtonWritten?.Invoke(this);
             }
         }
         else if(resetIfFailed) ResetButton();
