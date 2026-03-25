@@ -1,23 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GrimoireContentManager : MonoBehaviour
 {
-    [SerializeField] private GameObject displayerPrefab;
-    [SerializeField] private int numDisplayers = 9;
     [SerializeField] private float transitionSpeed = 1;
-    [SerializeField] private GrimoireSection[] sections;
-    private GrimoireNavigationController navController;
+    private GrimoireInfoDisplayer[] displayers;
     private GrimoireInfoPanel infoPanel;
     private CanvasGroup canvasGroup;
-    private readonly List<GrimoireInfoDisplayer> displayers = new();
-    private readonly List<Page> pages = new();
+    public List<GrimoirePage> Pages { get; set; } = new();
     private int currentPage = 0;
-    private readonly List<int> sectionStartPages = new();
+    public List<int> SectionStartPages { get; set; } = new();
     private int currentSection = 0;
     public event Action<int, int> OnPageChanged;
     public event Action<int, int> OnSectionChanged;
@@ -25,29 +20,26 @@ public class GrimoireContentManager : MonoBehaviour
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        navController = GetComponentInParent<GrimoireNavigationController>();
         infoPanel = FindFirstObjectByType<GrimoireInfoPanel>();
-        for(int i = 0; i < numDisplayers; i++)
-            displayers.Add(Instantiate(displayerPrefab, this.transform).GetComponent<GrimoireInfoDisplayer>());
+        displayers = GetComponentsInChildren<GrimoireInfoDisplayer>();
     }
 
-    private void Start() => InitializeData();
-
-    private void InitializeData()
+    private void Start()
     {
-        foreach (var section in sections) GenerateSection(section);
         StartCoroutine(TurnPageCoroutine(true));
+        OnSectionChanged?.Invoke(currentSection, currentSection);
+        OnPageChanged?.Invoke(currentPage, Pages.Count);
         displayers[0].GetComponent<Button>().onClick?.Invoke();
     }
 
     public void GoToPage(int idx)
     {
-        idx = Mathf.Clamp(idx, 0, pages.Count - 1);
+        idx = Mathf.Clamp(idx, 0, Pages.Count - 1);
         int prevSection = currentSection;
-        currentSection = pages[idx].sectionIndex;
+        currentSection = Pages[idx].sectionIndex;
         OnSectionChanged?.Invoke(currentSection, prevSection);
         currentPage = idx;
-        OnPageChanged?.Invoke(currentPage, pages.Count);
+        OnPageChanged?.Invoke(currentPage, Pages.Count);
         StopAllCoroutines();
         StartCoroutine(TurnPageCoroutine());
     }
@@ -56,34 +48,8 @@ public class GrimoireContentManager : MonoBehaviour
 
     public void GoToSection(int idx)
     {
-        idx = Mathf.Clamp(idx, 0, sectionStartPages.Count - 1);
-        GoToPage(sectionStartPages[idx]);
-    }
-
-    private void GenerateSection(GrimoireSection section)
-    {
-        navController.AddSection(sectionStartPages.Count, section.sectionName);
-        ADefinition[] definitions;
-        if (section.cardRegister) 
-            definitions = section.cardRegister.RegisteredItems.OrderBy(c => c.Name).ToArray();
-        else definitions = section.effectRegister.RegisteredItems.OrderBy(c => c.name).ToArray();
-        FillSection(definitions);
-    }
-
-    private void FillSection(ADefinition[] definition)
-    {
-        sectionStartPages.Add(pages.Count);
-        for(int i = 0; i < definition.Length; i += numDisplayers)
-        {
-            Page currentPage = new(pages.Count, sectionStartPages.Count - 1);
-            for (int j = 0; j < numDisplayers; j++)
-            {
-                int idx = i + j;
-                if (idx >= definition.Length) break;
-                currentPage.definition.Add(definition[idx]);
-            }
-            pages.Add(currentPage);
-        }
+        idx = Mathf.Clamp(idx, 0, SectionStartPages.Count - 1);
+        GoToPage(SectionStartPages[idx]);
     }
 
     private void ResetDisplayers()
@@ -98,9 +64,7 @@ public class GrimoireContentManager : MonoBehaviour
     private void BlockDisplayers(bool block)
     {
         foreach(var displayer in displayers)
-        {
             displayer.GetComponent<WritableButton>().CompletelyBlock(block);
-        }
     }
 
     IEnumerator TurnPageCoroutine(bool directTransition = false)
@@ -112,12 +76,12 @@ public class GrimoireContentManager : MonoBehaviour
             yield return null;
         }
         ResetDisplayers();
-        for (int i = 0; i < numDisplayers; i++)
+        for (int i = 0; i < displayers.Length; i++)
         {
-            if (i < pages[currentPage].definition.Count)
+            if (i < Pages[currentPage].definitions.Count)
             {
                 displayers[i].gameObject.SetActive(true);
-                displayers[i].SetInfo(pages[currentPage].definition[i]);
+                displayers[i].SetInfo(Pages[currentPage].definitions[i]);
                 if (displayers[i].Definition.Name.Equals(infoPanel.DisplayedName)) 
                     displayers[i].Highlight(true);
             }
@@ -129,27 +93,5 @@ public class GrimoireContentManager : MonoBehaviour
             yield return null;
         }
         BlockDisplayers(false);
-    }
-}
-
-[Serializable]
-public class GrimoireSection
-{
-    public string sectionName;
-    public CardRegister cardRegister;
-    public StatusEffectRegister effectRegister;
-}
-
-public struct Page
-{
-    public int pageIndex;
-    public int sectionIndex;
-    public List<ADefinition> definition;
-
-    public Page(int idx, int sectionIdx)
-    {
-        pageIndex = idx;
-        sectionIndex = sectionIdx;
-        definition = new();
     }
 }
