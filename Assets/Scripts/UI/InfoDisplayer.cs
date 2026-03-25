@@ -30,7 +30,7 @@ public class InfoDisplayer : MonoBehaviour
         Definition = definition;
     }
 
-    public void Highlight(bool highlight)
+    public virtual void Highlight(bool highlight)
     {
         if (highlight && !hovered)
         {

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GrimoireContentManager : MonoBehaviour
 {
@@ -17,22 +16,16 @@ public class GrimoireContentManager : MonoBehaviour
     public event Action<int, int> OnPageChanged;
     public event Action<int, int> OnSectionChanged;
 
-    private void Awake()
+    private void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         infoPanel = FindFirstObjectByType<GrimoireInfoPanel>();
         displayers = GetComponentsInChildren<GrimoireInfoDisplayer>();
+        GoToPage(0, true);
+        displayers[0].PerformClick();
     }
 
-    private void Start()
-    {
-        StartCoroutine(TurnPageCoroutine(true));
-        OnSectionChanged?.Invoke(currentSection, currentSection);
-        OnPageChanged?.Invoke(currentPage, Pages.Count);
-        displayers[0].GetComponent<Button>().onClick?.Invoke();
-    }
-
-    public void GoToPage(int idx)
+    public void GoToPage(int idx, bool directTransition = false)
     {
         idx = Mathf.Clamp(idx, 0, Pages.Count - 1);
         int prevSection = currentSection;
@@ -41,7 +34,7 @@ public class GrimoireContentManager : MonoBehaviour
         currentPage = idx;
         OnPageChanged?.Invoke(currentPage, Pages.Count);
         StopAllCoroutines();
-        StartCoroutine(TurnPageCoroutine());
+        StartCoroutine(TurnPageCoroutine(directTransition));
     }
 
     public void TurnPage(int pages) => GoToPage(currentPage + pages);
@@ -50,6 +43,22 @@ public class GrimoireContentManager : MonoBehaviour
     {
         idx = Mathf.Clamp(idx, 0, SectionStartPages.Count - 1);
         GoToPage(SectionStartPages[idx]);
+    }
+
+    public void GoToDefinition(string definitionName)
+    {
+        foreach(var page in Pages)
+        {
+            foreach(var def in page.definitions)
+            {
+                if(def.Name.Equals(definitionName))
+                {
+                    GoToPage(page.pageIndex, true);
+                    displayers[page.definitions.IndexOf(def)].PerformClick();
+                    return;
+                }
+            }
+        }
     }
 
     private void ResetDisplayers()
@@ -67,7 +76,7 @@ public class GrimoireContentManager : MonoBehaviour
             displayer.GetComponent<WritableButton>().CompletelyBlock(block);
     }
 
-    IEnumerator TurnPageCoroutine(bool directTransition = false)
+    IEnumerator TurnPageCoroutine(bool directTransition)
     {
         BlockDisplayers(true);
         while(canvasGroup.alpha > 0 && !directTransition)

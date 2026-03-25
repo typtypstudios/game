@@ -1,5 +1,7 @@
 
 
+using UnityEngine.UI;
+
 public class GrimoireInfoDisplayer : InfoDisplayer
 {
     private static GrimoireInfoDisplayer highlightedDisplayer;
@@ -9,6 +11,8 @@ public class GrimoireInfoDisplayer : InfoDisplayer
     {
         infoPanel = FindFirstObjectByType<GrimoireInfoPanel>();   
     }
+
+    public void PerformClick() => GetComponent<Button>().onClick?.Invoke();
 
     public void DisplayInfo()
     {
