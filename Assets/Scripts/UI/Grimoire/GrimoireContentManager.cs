@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,8 +9,11 @@ public class GrimoireContentManager : MonoBehaviour
 {
     [SerializeField] private GameObject displayerPrefab;
     [SerializeField] private int numDisplayers = 9;
+    [SerializeField] private float transitionSpeed = 1;
     [SerializeField] private GrimoireSection[] sections;
-    GrimoireNavigationController navController;
+    private GrimoireNavigationController navController;
+    private GrimoireInfoPanel infoPanel;
+    private CanvasGroup canvasGroup;
     private readonly List<GrimoireInfoDisplayer> displayers = new();
     private readonly List<Page> pages = new();
     private int currentPage = 0;
@@ -20,7 +24,9 @@ public class GrimoireContentManager : MonoBehaviour
 
     private void Awake()
     {
-        navController = GetComponentInChildren<GrimoireNavigationController>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        navController = GetComponentInParent<GrimoireNavigationController>();
+        infoPanel = FindFirstObjectByType<GrimoireInfoPanel>();
         for(int i = 0; i < numDisplayers; i++)
             displayers.Add(Instantiate(displayerPrefab, this.transform).GetComponent<GrimoireInfoDisplayer>());
     }
@@ -30,28 +36,20 @@ public class GrimoireContentManager : MonoBehaviour
     private void InitializeData()
     {
         foreach (var section in sections) GenerateSection(section);
-        GoToSection(0);
+        StartCoroutine(TurnPageCoroutine(true));
         displayers[0].GetComponent<Button>().onClick?.Invoke();
     }
 
     public void GoToPage(int idx)
     {
         idx = Mathf.Clamp(idx, 0, pages.Count - 1);
-        ResetDisplayers();
-        for (int i = 0; i < numDisplayers; i++)
-        {
-            if (i < pages[idx].definition.Count)
-            {
-                displayers[i].SetInfo(pages[idx].definition[i]);
-                displayers[i].gameObject.SetActive(true);
-            }
-            else displayers[i].gameObject.SetActive(false);
-        }
         int prevSection = currentSection;
         currentSection = pages[idx].sectionIndex;
         OnSectionChanged?.Invoke(currentSection, prevSection);
         currentPage = idx;
         OnPageChanged?.Invoke(currentPage, pages.Count);
+        StopAllCoroutines();
+        StartCoroutine(TurnPageCoroutine());
     }
 
     public void TurnPage(int pages) => GoToPage(currentPage + pages);
@@ -95,6 +93,42 @@ public class GrimoireContentManager : MonoBehaviour
             displayer.GetComponent<WritableButton>().ResetButton(true);
             displayer.Highlight(false);
         }
+    }
+
+    private void BlockDisplayers(bool block)
+    {
+        foreach(var displayer in displayers)
+        {
+            displayer.GetComponent<WritableButton>().CompletelyBlock(block);
+        }
+    }
+
+    IEnumerator TurnPageCoroutine(bool directTransition = false)
+    {
+        BlockDisplayers(true);
+        while(canvasGroup.alpha > 0 && !directTransition)
+        {
+            canvasGroup.alpha -= transitionSpeed * Time.deltaTime;
+            yield return null;
+        }
+        ResetDisplayers();
+        for (int i = 0; i < numDisplayers; i++)
+        {
+            if (i < pages[currentPage].definition.Count)
+            {
+                displayers[i].gameObject.SetActive(true);
+                displayers[i].SetInfo(pages[currentPage].definition[i]);
+                if (displayers[i].Definition.Name.Equals(infoPanel.DisplayedName)) 
+                    displayers[i].Highlight(true);
+            }
+            else displayers[i].gameObject.SetActive(false);
+        }
+        while (canvasGroup.alpha < 1 && !directTransition)
+        {
+            canvasGroup.alpha += transitionSpeed * Time.deltaTime;
+            yield return null;
+        }
+        BlockDisplayers(false);
     }
 }
 

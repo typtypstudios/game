@@ -15,6 +15,6 @@ public class DefaultFontConfigurator : MonoBehaviour
 
     public void ResetFont()
     {
-        textMesh.font = Settings.Instance.DefaultFont;
+        if(textMesh != null) textMesh.font = Settings.Instance.DefaultFont;
     }
 }

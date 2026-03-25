@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GrimoireInfoPanel : MonoBehaviour
 {
     [SerializeField] private Image image;
+    [SerializeField] private float emission = 0.9f;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text infoText;
     [SerializeField] private Color durationHighlightColor;
@@ -16,11 +17,12 @@ public class GrimoireInfoPanel : MonoBehaviour
     private string positiveTag;
     private string negativeTag;
     private string effectTag;
+    public string DisplayedName => nameText.text;
 
     private void Start()
     {
         image.material = new(image.material);
-        image.material.SetFloat("_EmissionForce", 0.7f);
+        image.material.SetFloat("_EmissionForce", emission);
         durationTag = Utils.ColorToTag(durationHighlightColor);
         positiveTag = Utils.ColorToTag(positiveHighlightColor);
         negativeTag = Utils.ColorToTag(negativeHighlightColor);

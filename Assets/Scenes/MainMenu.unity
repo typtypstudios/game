@@ -2146,7 +2146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: eb6299107d24c2c41b06566b5b1dc5b9, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -7198,7 +7198,7 @@ GameObject:
   - component: {fileID: 1160133968}
   - component: {fileID: 1160133970}
   m_Layer: 5
-  m_Name: InfoPanel
+  m_Name: RightPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7276,6 +7276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrimoireInfoPanel
   image: {fileID: 432951273}
+  emission: 0.9
   nameText: {fileID: 866592073}
   infoText: {fileID: 790525273}
   durationHighlightColor: {r: 0, g: 0.9612417, b: 1, a: 1}
@@ -9965,7 +9966,7 @@ GameObject:
   - component: {fileID: 1601831184}
   - component: {fileID: 1601831185}
   m_Layer: 5
-  m_Name: Navigation
+  m_Name: LeftPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9978,19 +9979,20 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1601831183}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1628431280}
   - {fileID: 777676351}
   - {fileID: 181868521}
-  m_Father: {fileID: 1628431280}
+  m_Father: {fileID: 1804105694}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -192.5, y: 0}
+  m_SizeDelta: {x: -425, y: -50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1601831185
 MonoBehaviour:
@@ -10168,6 +10170,7 @@ GameObject:
   - component: {fileID: 1628431280}
   - component: {fileID: 1628431283}
   - component: {fileID: 1628431282}
+  - component: {fileID: 1628431285}
   - component: {fileID: 1628431284}
   - component: {fileID: 1628431281}
   m_Layer: 5
@@ -10188,14 +10191,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1601831184}
-  m_Father: {fileID: 1804105694}
+  m_Children: []
+  m_Father: {fileID: 1601831184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -192.5, y: 0}
-  m_SizeDelta: {x: -425, y: -50}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1628431281
 MonoBehaviour:
@@ -10272,6 +10274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GrimoireContentManager
   displayerPrefab: {fileID: 7375930373604903835, guid: c456b0dc5fdf3764e82f26c963430ce3, type: 3}
   numDisplayers: 6
+  transitionSpeed: 5
   sections:
   - sectionName: Cards
     cardRegister: {fileID: 11400000, guid: 22e4f9f6a80af544fb8ea4525960b483, type: 2}
@@ -10279,6 +10282,18 @@ MonoBehaviour:
   - sectionName: Effects
     cardRegister: {fileID: 0}
     effectRegister: {fileID: 11400000, guid: f86b8a5596902a044b4c3cdc8ba47a99, type: 2}
+--- !u!225 &1628431285
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1628431279}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1677178642
 GameObject:
   m_ObjectHideFlags: 0
@@ -11167,7 +11182,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1628431280}
+  - {fileID: 1601831184}
   - {fileID: 1160133966}
   m_Father: {fileID: 1375366906}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

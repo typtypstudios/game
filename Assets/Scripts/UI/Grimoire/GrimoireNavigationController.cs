@@ -14,7 +14,7 @@ public class GrimoireNavigationController : MonoBehaviour
     private void Awake()
     {
         group = GetComponentInChildren<HorizontalLayoutGroup>().transform;
-        contentManager = GetComponentInParent<GrimoireContentManager>();
+        contentManager = GetComponentInChildren<GrimoireContentManager>();
         contentManager.OnPageChanged += CheckCurrentPage;
         contentManager.OnSectionChanged += CheckCurrentSection;
     }
