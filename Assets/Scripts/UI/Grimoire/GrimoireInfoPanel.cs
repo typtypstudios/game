@@ -65,9 +65,9 @@ public class GrimoireInfoPanel : MonoBehaviour
     private string FillStatusInfo(StatusEffectDefinition effect)
     {
         string desc = effect.Description;
-        desc = desc.Replace("seconds", "seconds</color>").Replace("lines", "lines</color>");
+        desc = desc.Replace("<duration>", durationTag + effect.DurationValue + 
+            (effect.DurationType == EffectDurationType.Lines ? " lines" : " seconds") + "</color>");
         if (effect.DurationValue == 1) desc = desc.Replace("seconds", "second").Replace("lines", "line");
-        desc = desc.Replace("<duration>", durationTag + effect.DurationValue);
         string polarityColor = effect.EffectPolarityType == EffectPolarityType.Bad ? 
             negativeTag : positiveTag;
         desc = desc.Replace("<value>", polarityColor + effect.GetDefaultValue() + "</color>");
