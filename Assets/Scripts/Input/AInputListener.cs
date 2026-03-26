@@ -14,6 +14,7 @@ public abstract class AInputListener : MonoBehaviour
             fillColorTag = Utils.ColorToTag(FillColor);
         } 
     }
+    public int Idx { get; protected set; } = 0;
 
     protected virtual void OnEnable()
     {

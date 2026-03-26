@@ -11,7 +11,6 @@ public class RitualManager : AInputListener
     public string OriginalText { get; set; } = "";
     private ITextProvider textProvider;
     private string wrongColorTag;
-    private int charIdx = 0;
     private int numTextsCompleted = 0;
     bool isErrorDisplayed = false;
 
@@ -35,23 +34,23 @@ public class RitualManager : AInputListener
 
         if (OriginalText.Equals(string.Empty)) return;
         if (Settings.Instance.ShowSpaces && c == ' ') c = '-';
-        if (c == OriginalText[charIdx])
+        if (c == OriginalText[Idx])
         {
-            charIdx++;
+            Idx++;
             isErrorDisplayed = false;
-            ritualText.text = fillColorTag + OriginalText[..charIdx] +
-                "</color>" + OriginalText[charIdx..];
+            ritualText.text = fillColorTag + OriginalText[..Idx] +
+                "</color>" + OriginalText[Idx..];
             OnCorrectChar?.Invoke();
         }
         else if (!isErrorDisplayed)
         {
             isErrorDisplayed = true;
             string original = ritualText.text;
-            ritualText.text = fillColorTag + OriginalText[..charIdx] + "</color>" +
-                wrongColorTag + OriginalText[charIdx] + "</color>" + OriginalText[(charIdx + 1)..];
+            ritualText.text = fillColorTag + OriginalText[..Idx] + "</color>" +
+                wrongColorTag + OriginalText[Idx] + "</color>" + OriginalText[(Idx + 1)..];
             OnWrongChar?.Invoke();
         }
-        if (charIdx >= OriginalText.Length)
+        if (Idx >= OriginalText.Length)
         {
             numTextsCompleted++;
             GetNextText();
@@ -63,7 +62,7 @@ public class RitualManager : AInputListener
     {
         OriginalText = textProvider.GetNextText();
         ritualText.text = OriginalText;
-        charIdx = 0;
+        Idx = 0;
         //Esto solo ocurre en cliente
         LineCompleted?.Invoke(numTextsCompleted);
     }
@@ -72,7 +71,7 @@ public class RitualManager : AInputListener
     {
         float globalProgress = (float)numTextsCompleted / TypTyp.Settings.Instance.MaxTextsProvided;
         float localProgress = OriginalText.Length == 0 ? 0 : 
-            (float)charIdx / (OriginalText.Length * TypTyp.Settings.Instance.MaxTextsProvided);
+            (float)Idx / (OriginalText.Length * TypTyp.Settings.Instance.MaxTextsProvided);
         float progress = globalProgress + localProgress;
         OnProgressUpdated?.Invoke(progress);
     }

@@ -10,7 +10,6 @@ public class WritableText : AInputListener
     [SerializeField] private bool resetIfFail = false;
     private TextMeshProUGUI text;
     private string originalText;
-    private int idx;
     private Canvas canvas;
     private int seed;
 
@@ -29,21 +28,21 @@ public class WritableText : AInputListener
     {
         if(!onlyRandomize) text.color = FillColor;
         FillColor = Utils.GetDifferentColor(FillColor, fixedSeedBasedOnText ? seed : -1);
-        idx = 0;
+        Idx = 0;
     }
 
     protected override void ProcessInput(char c)
     {
         if (!canvas.enabled) return;
-        if (originalText[idx].ToString().ToLower().Equals(c.ToString().ToLower()))
+        if (originalText[Idx].ToString().ToLower().Equals(c.ToString().ToLower()))
         {
-            text.text = fillColorTag + originalText[..(idx + 1)] + "</color>" + originalText[(idx + 1)..];
-            if (++idx == originalText.Length) OnStringTyped();
+            text.text = fillColorTag + originalText[..(Idx + 1)] + "</color>" + originalText[(Idx + 1)..];
+            if (++Idx == originalText.Length) OnStringTyped();
         }
         else if(resetIfFail)
         {
             text.text = originalText;
-            idx = 0;
+            Idx = 0;
         }
     }
 }

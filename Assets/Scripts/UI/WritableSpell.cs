@@ -8,7 +8,6 @@ public class WritableSpell : AInputListener
     private TMP_Text spellText;
     private string originalText;
     private int textLength;
-    private int idx;
 
     public UnityEvent<string> OnSpellComplete = new();
 
@@ -29,16 +28,16 @@ public class WritableSpell : AInputListener
     private void ResetText()
     {
         spellText.text = originalText;
-        idx = 0;
+        Idx = 0;
     }
 
     protected override void ProcessInput(char c)
     {
-        if (originalText[idx] == c)
+        if (originalText[Idx] == c)
         {
-            spellText.text = fillColorTag + originalText[..(idx + 1)] + "</color>" + 
-                originalText[(idx + 1)..];
-            if (++idx == textLength)
+            spellText.text = fillColorTag + originalText[..(Idx + 1)] + "</color>" + 
+                originalText[(Idx + 1)..];
+            if (++Idx == textLength)
             {
                 OnSpellComplete?.Invoke(originalText);
                 ResetText();

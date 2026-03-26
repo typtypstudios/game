@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using TypTyp;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 

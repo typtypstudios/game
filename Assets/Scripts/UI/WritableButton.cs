@@ -14,7 +14,6 @@ public class WritableButton : AInputListener
     private TextMeshProUGUI buttonText;
     private string originalText;
     private int textLength;
-    private int idx;
     private WaitForSeconds resetTimer;
     private Coroutine resetCoroutine;
     private Canvas canvas;
@@ -59,23 +58,23 @@ public class WritableButton : AInputListener
             return;
         }
         buttonText.text = originalText;
-        idx = 0;
+        Idx = 0;
         resetCoroutine = null;
     }
 
     protected override void ProcessInput(char c)
     {
         if(!canvas.enabled || Block) return;
-        if (originalText[idx].ToString().ToLower().Equals(c.ToString().ToLower()))
+        if (originalText[Idx].ToString().ToLower().Equals(c.ToString().ToLower()))
         {
             if(resetCoroutine != null)
             {
                 StopCoroutine(resetCoroutine);
                 ResetButton();
             }
-            buttonText.text = fillColorTag + originalText[..(idx + 1)] + "</color>" + 
-                originalText[(idx + 1)..];
-            if (++idx == textLength)
+            buttonText.text = fillColorTag + originalText[..(Idx + 1)] + "</color>" + 
+                originalText[(Idx + 1)..];
+            if (++Idx == textLength)
             {
                 resetCoroutine = StartCoroutine(ResetButtonCoroutine());
                 button.onClick?.Invoke();
@@ -93,7 +92,7 @@ public class WritableButton : AInputListener
 
     IEnumerator ResetButtonCoroutine()
     {
-        idx = 0;
+        Idx = 0;
         yield return resetTimer;
         ResetButton();
     }
