@@ -34,7 +34,6 @@ public class BuilderDisplayer : InfoDisplayer
         if (!enable) return;
         infoPanel.SetInfo(Card);
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-        Debug.Log(screenPos);
         float newX = Mathf.Abs(infoPanel.transform.localPosition.x) *
             (screenPos.x > Screen.width * 0.5f ? -1 : 1);
         infoPanel.transform.localPosition = new(newX, infoPanel.transform.localPosition.y,

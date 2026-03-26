@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff6ef768b5469d4f8e81a1e3e36d8c4, type: 3}
+  m_Name: SimplifyEffect
+  m_EditorClassIdentifier: Assembly-CSharp::TextProcessorEffect
+  <Name>k__BackingField: Simplify
+  <Description>k__BackingField: 'Removes periods, commas and capital letters from
+    ritual''s text for <duration> lines. '
+  <Image>k__BackingField: {fileID: 1924441234622216464, guid: d822909c9b6407fefbaa91eee56eb64f, type: 3}
+  <DurationType>k__BackingField: 2
+  <Category>k__BackingField: {fileID: 0}
+  <EffectPolarityType>k__BackingField: 0
+  <DurationValue>k__BackingField: 3
+  processor: {fileID: 11400000, guid: dfb723bbcfb14c84ca6a469f22a96c3d, type: 2}
