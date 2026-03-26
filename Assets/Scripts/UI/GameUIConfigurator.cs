@@ -12,6 +12,8 @@ public class GameUIConfigurator : MonoBehaviour
     [SerializeField] private UIBar[] corruptionBars;
     [Tooltip("UI de efectos de estados de cada jugador.")]
     [SerializeField] private StatusEffectUI[] statusEffectUIs;
+    [Tooltip("Reminder text para los efectos")]
+    [SerializeField] private PlayerFeedbackUI playerFeedbackUI;
     public static event Action OnUIConfigurated;
 
     private void Awake()
@@ -32,6 +34,11 @@ public class GameUIConfigurator : MonoBehaviour
         foreach (UIBar bar in corruptionBars) bar.MaxValue = TypTyp.Settings.Instance.MaxCorruption;
         statusEffectUIs[0].BindToPlayer(Player.User);
         statusEffectUIs[1].BindToPlayer(Player.Enemy);
+        PlayerInputManager userInput = Player.User.GetComponent<PlayerInputManager>();
+        if (userInput != null)
+        {
+            userInput.OnSilencedAttempt += playerFeedbackUI.ShowSilencedWarning;
+        }
         canvasGroup.alpha = 1.0f;
         OnUIConfigurated?.Invoke();
     }
