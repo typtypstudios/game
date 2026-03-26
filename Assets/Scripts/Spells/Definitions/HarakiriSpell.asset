@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cc9ae3d8fa311c4da3b0fb48943249c, type: 3}
+  m_Name: HarakiriSpell
+  m_EditorClassIdentifier: Assembly-CSharp::SpellDefinition
+  <SpellName>k__BackingField: HarakiriSpell
+  <OnSelfEffects>k__BackingField:
+  - {fileID: 11400000, guid: 1cd46e8517fac7e44bbf40f865946242, type: 2}
+  - {fileID: 11400000, guid: 04d004087c8cb56438502813a4464119, type: 2}
+  - {fileID: 11400000, guid: ed06cec26046f5241a43490bdb996c64, type: 2}
+  <OnEnemyEffects>k__BackingField: []

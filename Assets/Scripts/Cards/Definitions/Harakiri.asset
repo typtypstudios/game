@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1eeb958cb2b90274786c2f17d9078fb6, type: 3}
-  m_Name: Purify
+  m_Name: Harakiri
   m_EditorClassIdentifier: Assembly-CSharp::CardDefinition
-  <Name>k__BackingField: Purify
-  <Description>k__BackingField: <effectSelfDesc_0c> to self.
-  <Image>k__BackingField: {fileID: 2233209589683976517, guid: 700a85d503436324f81e1052c3096422, type: 3}
-  <Spell>k__BackingField: {fileID: 11400000, guid: 92d592ccf6731ff4e9b8dd18937c2d13, type: 2}
-  <ManaCost>k__BackingField: 1
+  <Name>k__BackingField: Harakiri
+  <Description>k__BackingField: <effectSelfDesc_0c> and <effectSelf_1> to self, but
+    fills all ink bars in exchange.
+  <Image>k__BackingField: {fileID: -6155714755233060606, guid: 307801e1ee3d7d94c8be3f7e16870931, type: 3}
+  <Spell>k__BackingField: {fileID: 11400000, guid: 9ff7bb5c617de3549885c28626379421, type: 2}
+  <ManaCost>k__BackingField: 0

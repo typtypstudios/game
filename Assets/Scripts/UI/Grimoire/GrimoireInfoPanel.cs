@@ -43,7 +43,7 @@ public class GrimoireInfoPanel : MonoBehaviour
         MatchCollection matches = Regex.Matches(desc, @"<effect([a-zA-Z0-9]+)_(\d+)>");
         foreach (Match m in matches) 
         {
-            if (m.Groups[1].Value.Contains("Desc")) break;
+            if (m.Groups[1].Value.Contains("Desc")) continue;
             int idx = int.Parse(m.Groups[2].Value);
             string effectName = m.Groups[1].Value.Equals("Self") ? 
                 card.Spell.OnSelfEffects[idx].Name : card.Spell.OnEnemyEffects[idx].Name;
@@ -52,10 +52,10 @@ public class GrimoireInfoPanel : MonoBehaviour
         matches = Regex.Matches(desc, @"<effect([a-zA-Z0-9]+)Desc_([a-zA-Z0-9]+)>");
         foreach (Match m in matches)
         {
-            int idx = int.Parse(m.Groups[2].Value);
+            int idx = int.Parse(m.Groups[2].Value[0].ToString());
             string effectDesc = m.Groups[1].Value.Equals("Self") ?
                 FillStatusInfo(card.Spell.OnSelfEffects[idx]) : FillStatusInfo(card.Spell.OnEnemyEffects[idx]);
-            if (m.Groups[1].Value.ToLower().Contains("c")) 
+            if (m.Groups[2].Value.ToLower().Contains("c"))
                 effectDesc = effectDesc.Remove(effectDesc.Length - 1);
             desc = desc.Replace(m.Groups[0].Value, effectDesc);
         }

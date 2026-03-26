@@ -27,6 +27,13 @@ public class ManaGainManager : MonoBehaviour
         player.RitualProgress.OnValueChanged -= AddMana;
     }
 
+    public void AddBars(int bars)
+    {
+        float currentMana = player.CurrentMana.Value;
+        float barsValue = Settings.Instance.MaxMana / Settings.Instance.NumManaBars;
+        AddMana(currentMana, currentMana + barsValue);
+    }
+
     public void AddMana(float oldValue, float newValue)
     {
         float currentMana = player.CurrentMana.Value;
