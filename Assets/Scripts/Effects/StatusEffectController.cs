@@ -20,8 +20,7 @@ public class StatusEffectController : MonoBehaviour
     Player player;
     NetworkTextProvider textProvider;
     List<StatusEffect> toRemove;
-    public List<TMP_FontAsset> ActiveFonts { get; private set; } = new(); // Fuentes provenientes de modificadores
-
+    
     public void Awake()
     {
         player = GetComponent<Player>();
