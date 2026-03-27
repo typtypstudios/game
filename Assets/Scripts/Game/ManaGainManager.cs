@@ -19,25 +19,30 @@ public class ManaGainManager : MonoBehaviour
 
     void OnEnable()
     {
-        player.RitualProgress.OnValueChanged += AddMana;
+        player.RitualProgress.OnValueChanged += OnRigualProgress;
     }
 
     private void OnDisable()
     {
-        player.RitualProgress.OnValueChanged -= AddMana;
+        player.RitualProgress.OnValueChanged -= OnRigualProgress;
     }
 
     public void AddBars(int bars)
     {
-        float currentMana = player.CurrentMana.Value;
         float barsValue = Settings.Instance.MaxMana / Settings.Instance.NumManaBars;
-        AddMana(currentMana, currentMana + barsValue);
+        AddMana(barsValue * bars);
     }
 
-    public void AddMana(float oldValue, float newValue)
+    public void OnRigualProgress(float oldValue, float newValue)
     {
-        float currentMana = player.CurrentMana.Value;
-        currentMana += (newValue - oldValue) * Settings.Instance.MaxMana * Settings.Instance.ManaGain * GainMultiplier;
+        float obtainedMana = (newValue - oldValue) * Settings.Instance.MaxMana * 
+            Settings.Instance.ManaGain * GainMultiplier;
+        AddMana(obtainedMana);
+    }
+
+    public void AddMana(float mana)
+    {
+        float currentMana = player.CurrentMana.Value + mana;
         currentMana = Mathf.Clamp(currentMana, 0, Settings.Instance.MaxMana);
         OnManaGain?.Invoke(currentMana);
     }

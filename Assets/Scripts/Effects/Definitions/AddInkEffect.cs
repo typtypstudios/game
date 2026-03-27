@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AddTintEffect", menuName = "TypTyp/Effects/AddTintEffect")]
+[CreateAssetMenu(fileName = "AddInkEffect", menuName = "TypTyp/Effects/AddInkEffect")]
 public class AddInkEffect : StatusEffectDefinition
 {
     [SerializeField] int tintBars;
@@ -15,6 +15,6 @@ public class AddInkEffect : StatusEffectDefinition
 
     public override string GetDefaultValue()
     {
-        return $"{tintBars}";
+        return $"{Mathf.Abs(tintBars)}";
     }
 }
