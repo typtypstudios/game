@@ -211,7 +211,7 @@ public class DeckController : NetworkBehaviour
     void PlayCardClient(int playedCard)//And server/host
     {
         var cardDef = GetCardDefinitionById(playedCard);
-        player.SpellCaster.CastSpell(cardDef.Spell);
+        player.SpellCaster.CastSpell(cardDef);
 
         //Events
         CardEventArgs eventArgs = new(OwnerClientId, playedCard);
