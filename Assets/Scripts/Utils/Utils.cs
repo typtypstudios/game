@@ -1,3 +1,4 @@
+using TypTyp;
 using UnityEngine;
 
 public static class Utils
@@ -17,5 +18,12 @@ public static class Utils
             newColorVec = new((float)rng.NextDouble(), (float)rng.NextDouble(), (float)rng.NextDouble());
         } while (Mathf.Abs((newColorVec - cVec).magnitude) < threshold);
         return new(newColorVec.x, newColorVec.y, newColorVec.z);
+    }
+
+    public static int GetSeedFromNames()
+    {
+        string p1Name = GameObject.FindGameObjectWithTag(Settings.Instance.P1_tag).name;
+        string p2Name = GameObject.FindGameObjectWithTag(Settings.Instance.P2_tag).name;
+        return p1Name.GetHashCode() + p2Name.GetHashCode(); 
     }
 }

@@ -201,7 +201,8 @@ public class MatchManager : NetworkBehaviour
         bool isClient1 = NetworkManager.Singleton.LocalClientId == client1Id;
         string localPlayerName = isClient1 ? client1Name : client2Name;
         string enemyPlayerName = isClient1 ? client2Name : client1Name;
-
+        Player.User.name = localPlayerName;
+        Player.Enemy.name = enemyPlayerName;
         canvasUIScript.ConfigureUsernames(localPlayerName, enemyPlayerName);
         canvasUIScript.AnimateImagesIn();
 
