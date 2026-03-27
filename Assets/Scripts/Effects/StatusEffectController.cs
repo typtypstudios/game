@@ -16,6 +16,7 @@ public class StatusEffectController : MonoBehaviour
     public UnityEvent<StatusEffect> OnEffectRemoved;
     public UnityEvent<StatusEffect> OnEffectExpired;
     public UnityEvent<StatusEffect> OnEffectRefreshed;
+    public List<StatusEffect> Effects => activeEffects;
 
     Player player;
     NetworkTextProvider textProvider;
@@ -75,7 +76,7 @@ public class StatusEffectController : MonoBehaviour
         RemoveEffect(effect);
     }
 
-    void RemoveEffect(StatusEffect effect)
+    public void RemoveEffect(StatusEffect effect)
     {
         effect.Deactivate();
         activeEffects.Remove(effect);

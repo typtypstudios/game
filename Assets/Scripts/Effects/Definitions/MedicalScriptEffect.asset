@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 255187d153fe7a24aba39552af8c3b41, type: 3}
-  m_Name: WetEffect
+  m_Name: MedicalScriptEffect
   m_EditorClassIdentifier: Assembly-CSharp::TextFontEffect
-  <Name>k__BackingField: Wet
-  <Description>k__BackingField: Grimoire gets wet, typography changes for <duration>.
+  <Name>k__BackingField: Medical script
+  <Description>k__BackingField: Changes ritual's typography to doctor's handwriting
+    for <duration>.
   <Image>k__BackingField: {fileID: -8264642209029974010, guid: 476734bbfb14c87d0871633e16f09937, type: 3}
   <DurationType>k__BackingField: 1
   <Category>k__BackingField: {fileID: 0}
   <EffectPolarityType>k__BackingField: 1
-  <DurationValue>k__BackingField: 30
-  font: {fileID: 11400000, guid: 79890b545c2f5bf419c6a81b6adb7aba, type: 2}
+  <DurationValue>k__BackingField: 10
+  font: {fileID: 11400000, guid: 1eb5f765426fece4185125cab81727b5, type: 2}
