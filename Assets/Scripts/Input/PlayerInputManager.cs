@@ -58,6 +58,11 @@ public class PlayerInputManager : MonoBehaviour
             OnSilencedAttempt?.Invoke();
             return;
         }
+        ChangeModeLogic();
+    }
+
+    private void ChangeModeLogic()
+    {
         bool castingSpells = !anim.GetBool("CastingSpells");
         SetMode(castingSpells ? InputMode.CastingSpells : InputMode.Ritual);
     }
@@ -69,11 +74,21 @@ public class PlayerInputManager : MonoBehaviour
         OnInputModeChangedEvent?.Invoke(mode);
     }
 
-    public void SilenceSpellCasting(bool state)
+    #region SpellEffects
+
+    public void SilenceSpellEffect(bool state)
     {
         isSilenced = state;
         if (state) SetMode(InputMode.Ritual);
     }
+    public void SwapEffect()
+    {
+        // Si el jugador esta silenciado: no hacer nada
+        if (isSilenced) return;
+        ChangeModeLogic();
+    }
+
+    #endregion
 }
 
 public enum InputMode
