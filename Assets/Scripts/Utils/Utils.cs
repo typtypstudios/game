@@ -26,4 +26,15 @@ public static class Utils
         string p2Name = GameObject.FindGameObjectWithTag(Settings.Instance.P2_tag).name;
         return p1Name.GetHashCode() + p2Name.GetHashCode(); 
     }
+
+    public static Transform FindChildrenWithTag(Transform t, string tag)
+    {
+        foreach(Transform child in t.GetComponentsInChildren<Transform>())
+        {
+            if (child == t) continue;
+            if (child.CompareTag(tag)) return child;
+            FindChildrenWithTag(child, tag);
+        }
+        return null;
+    }
 }
