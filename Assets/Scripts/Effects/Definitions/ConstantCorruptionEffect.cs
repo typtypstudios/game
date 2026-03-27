@@ -1,7 +1,8 @@
-using UnityEngine;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using TypTyp;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "ConstantCorruptionEffect", menuName = "TypTyp/Effects/ConstantCorruptionEffect")]
 public class ConstantCorruptionEffect : StatusEffectDefinition
@@ -10,23 +11,23 @@ public class ConstantCorruptionEffect : StatusEffectDefinition
     [SerializeField] private float timeInterval;
     private float corruptionPerTick;
     private int millisecondsTime;
-    private CancellationTokenSource cts;
+    private Dictionary<Player, CancellationTokenSource> cts = new();
 
     public override void OnActivate(Player target)
     {
         if (!target.IsServer) return;
-        cts = new();
+        cts[target] = new();
         millisecondsTime = (int)(timeInterval * 1000);
         corruptionPerTick = totalCorruptionPercentage / 100 * Settings.Instance.MaxCorruption;
         int numTicks = (int)Mathf.Ceil(DurationValue / timeInterval);
         corruptionPerTick /= numTicks;
-        _ = CorruptCoroutine(target.CorruptionManager, cts.Token);
+        _ = CorruptCoroutine(target.CorruptionManager, cts[target].Token);
     }
 
     public override void OnDeactivate(Player target)
     {
         if (!target.IsServer) return;
-        cts.Cancel();
+        cts[target].Cancel();
     }
 
     public override string GetDefaultValue()
