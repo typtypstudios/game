@@ -1,19 +1,30 @@
 using System;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [NoAutoCreate]
 public class InputHandler : Singleton<InputHandler>
 {
+    public float Lag { get; set; } = 0;
     private event Action<char> OnCharTyped; //Wraper, onTextInput no deja eliminar todos los listeners
 
     protected override void Awake()
     {
         base.Awake();
         OnCharTyped = null;
-        Keyboard.current.onTextInput += CommunicateChartTyped;
+        Keyboard.current.onTextInput += ProcessInput;
+        SceneManager.sceneLoaded += (_, _) => Lag = 0;
     }
 
-    private void OnDisable() => Keyboard.current.onTextInput -= CommunicateChartTyped;
+    private void OnDisable() => Keyboard.current.onTextInput -= ProcessInput;
+
+    private void ProcessInput(char c)
+    {
+        if (Lag == 0) CommunicateChartTyped(c);
+        else StartCoroutine(LagCoroutine(c));
+    }
 
     private void CommunicateChartTyped(char c) 
     {
@@ -32,6 +43,12 @@ public class InputHandler : Singleton<InputHandler>
     {
         OnCharTyped = null;
         AddListener(func);
+    }
+
+    IEnumerator LagCoroutine(char c)
+    {
+        yield return new WaitForSeconds(Lag);
+        CommunicateChartTyped(c);
     }
 }
 
