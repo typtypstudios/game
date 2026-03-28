@@ -24,64 +24,61 @@ public class AdaptiveGridLayout : MonoBehaviour
 #if UNITY_EDITOR
     private void OnEnable()
     {
-        rectTransform = GetComponent<RectTransform>();
-        children.Clear();
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            if (excludedObjects.Contains(transform.GetChild(i))) continue;
-            RectTransform rt = transform.GetChild(i).GetComponent<RectTransform>();
-            rt.anchorMin = new Vector2(0f, 1f);
-            rt.anchorMax = new Vector2(0f, 1f);
-            children.Add(rt);
-        }
+        RefreshChildren();
     }
 #endif
 
     private void Start()
     {
-        rectTransform = GetComponent<RectTransform>();
-        children.Clear();
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            if (excludedObjects.Contains(transform.GetChild(i))) continue;
-            RectTransform rt = transform.GetChild(i).GetComponent<RectTransform>();
-            rt.anchorMin = new Vector2(0f, 1f);
-            rt.anchorMax = new Vector2(0f, 1f);
-            children.Add(rt);
-        }
+        RefreshChildren();
+    }
+
+    private void OnTransformChildrenChanged()
+    {
+        RefreshChildren();
     }
 
     private void LateUpdate()
     {
-        //Cálculo de espacio disponible para las cartas:
+        if (rectTransform == null)
+        {
+            rectTransform = GetComponent<RectTransform>();
+        }
+
+        children.RemoveAll(child => child == null);
+        if (rectTransform == null || children.Count == 0 || numColumns <= 0)
+        {
+            return;
+        }
+
         int numRows = (int)Mathf.Ceil((float)children.Count / numColumns);
         float horizontalPadding = rectTransform.rect.width * horizontalPaddingPercentaje;
         float verticalPadding = rectTransform.rect.height * verticalPaddingPercentaje;
         float horizontalSpacing = horizontalSpacingPercentaje * rectTransform.rect.width;
         float verticalSpacing = verticalSpacingPercentaje * rectTransform.rect.height;
-        float availableVertSpace = rectTransform.rect.height - 2 * verticalPadding - 
+        float availableVertSpace = rectTransform.rect.height - 2 * verticalPadding -
             (numRows - 1) * verticalSpacing;
         float availableHorSpace = rectTransform.rect.width - 2 * horizontalPadding -
             (numColumns - 1) * horizontalSpacing;
-        //Cálculo tamaño de las cartas:
+
         float targetHeight = availableVertSpace / numRows;
         float targetWidth = availableHorSpace / numColumns;
         float targetRatio = targetHeight / targetWidth;
-        //Conservación del aspect ratio:
+
         if (targetRatio > cellRatio) targetHeight = cellRatio * targetWidth;
         else targetWidth = targetHeight / cellRatio;
-        //Centrado de las cartas una vez se ha conservado el aspect ratio:
-        horizontalPadding = (rectTransform.rect.width - (targetWidth * numColumns + 
+
+        horizontalPadding = (rectTransform.rect.width - (targetWidth * numColumns +
             (numColumns - 1) * horizontalSpacing)) / 2;
-        verticalPadding = (rectTransform.rect.height - (targetHeight * numRows + (numRows - 1) * 
+        verticalPadding = (rectTransform.rect.height - (targetHeight * numRows + (numRows - 1) *
             verticalSpacing)) / 2;
-        //Colocación de las cartas:
+
         float startXPos = horizontalPadding + targetWidth / 2 + horizontalPadding * horizontalOffset;
-        float startYPos = - (verticalPadding + targetHeight / 2) + verticalPadding * verticalOffset;
-        int incompletedCount = 0; //Número de cartas de una fila incompleta
+        float startYPos = -(verticalPadding + targetHeight / 2) + verticalPadding * verticalOffset;
+        int incompletedCount = 0;
         for (int i = 0; i < numRows; i++)
         {
-            for(int j = 0; j < numColumns; j++)
+            for (int j = 0; j < numColumns; j++)
             {
                 float offsetX = startXPos + (horizontalSpacing + targetWidth) * j;
                 float offsetY = startYPos - (verticalSpacing + targetHeight) * i;
@@ -91,11 +88,15 @@ public class AdaptiveGridLayout : MonoBehaviour
                     incompletedCount = idx % numColumns;
                     break;
                 }
-                children[idx].anchoredPosition = new Vector2(offsetX, offsetY);
-                children[idx].sizeDelta = new Vector2(targetWidth, targetHeight);
+
+                RectTransform child = children[idx];
+                if (child == null) continue;
+
+                child.anchoredPosition = new Vector2(offsetX, offsetY);
+                child.sizeDelta = new Vector2(targetWidth, targetHeight);
             }
         }
-        //Centrado de filas incompletas:
+
         if (!centerIncompleteRows || incompletedCount == 0) return;
         horizontalPadding = (rectTransform.rect.width - (targetWidth * incompletedCount +
             (incompletedCount - 1) * horizontalSpacing)) / 2;
@@ -104,7 +105,27 @@ public class AdaptiveGridLayout : MonoBehaviour
         {
             float offsetX = startXPos + (horizontalSpacing + targetWidth) * i;
             int idx = incompletedCount - i;
-            children[^idx].anchoredPosition = new Vector2(offsetX, children[^idx].anchoredPosition.y);
+            RectTransform child = children[^idx];
+            if (child == null) continue;
+            child.anchoredPosition = new Vector2(offsetX, child.anchoredPosition.y);
+        }
+    }
+
+    private void RefreshChildren()
+    {
+        rectTransform = GetComponent<RectTransform>();
+        children.Clear();
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            if (excludedObjects.Contains(child)) continue;
+
+            RectTransform rt = child.GetComponent<RectTransform>();
+            if (rt == null) continue;
+
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(0f, 1f);
+            children.Add(rt);
         }
     }
 }

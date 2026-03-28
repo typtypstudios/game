@@ -9,39 +9,46 @@ public class ProfileSettings : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI usernameText;
     [SerializeField] private TextMeshProUGUI helpText;
-    private string defaultUsername = "AverageCultist";
-    
-    private string currentName = "";
-    private bool isTyping = false;
+    private readonly string defaultUsername = "AverageCultist";
+
+    private string currentName = string.Empty;
+    private bool isTyping;
     private WritableButton usernameButton;
     private WritableButton[] allWritableButtons;
-    private int minNameLength = 4;
-    private int maxNameLength = 15;
+    private readonly int minNameLength = 4;
+    private readonly int maxNameLength = 15;
 
-    private void Start()
+    private void Awake()
     {
         allWritableButtons = GetComponentsInChildren<Button>().Select(b => b.GetComponent<WritableButton>()).ToArray();
         usernameButton = usernameText.GetComponentInParent<WritableButton>();
-        currentName = PlayerPrefs.GetString("Username", defaultUsername);
+    }
 
-        if (string.IsNullOrWhiteSpace(currentName))
+    private void OnEnable()
+    {
+        SaveManager.Instance.OnBeforeSave += HandleBeforeSave;
+        SaveManager.Instance.OnAfterLoad += HandleAfterLoad;
+    }
+
+    private void Start()
+    {
+        if (SaveManager.Instance.TryGetSnapshot(out SaveState state))
         {
-            currentName = defaultUsername;
+            ApplyProfile(state);
         }
-
-        if (currentName.Equals(defaultUsername))
+        else
         {
-            currentName += "#";
-            for (int i = 0; i < 4; i++) currentName += Random.Range(0, 10).ToString();
+            currentName = GenerateDisplayName(defaultUsername);
+            usernameButton.OverrideText(currentName);
         }
+    }
 
-        usernameButton.OverrideText(currentName);
+    private void OnDisable()
+    {
+        if (SaveManager.Instance == null) return;
 
-        if (!PlayerPrefs.HasKey("Username"))
-        {
-            PlayerPrefs.SetString("Username", currentName);
-            PlayerPrefs.Save();
-        }
+        SaveManager.Instance.OnBeforeSave -= HandleBeforeSave;
+        SaveManager.Instance.OnAfterLoad -= HandleAfterLoad;
     }
 
     private void Update()
@@ -65,16 +72,13 @@ public class ProfileSettings : MonoBehaviour
         if (isTyping) return;
         usernameButton.Block = true;
         isTyping = true;
-        currentName = "";
+        currentName = string.Empty;
         usernameButton.OverrideText(currentName);
 
         helpText.enabled = true;
         helpText.text = "Press enter to save name";
 
-        // Deshabilitar el resto de botones
         ToggleWritableButtons(true);
-
-        // Usar el listener del input handler
         InputHandler.Instance.AddListener(OnCharacterTyped);
     }
 
@@ -95,21 +99,22 @@ public class ProfileSettings : MonoBehaviour
             InputHandler.Instance.RemoveListener(OnCharacterTyped);
         }
 
-        // habilitar el resto de botones
         ToggleWritableButtons(false);
         currentName = currentName.Trim();
-        // Comprobar si el usuario es válido y guardar
         if (CheckText(currentName))
         {
             helpText.text = "Name saved!";
-
-            PlayerPrefs.SetString("Username", currentName);
-            PlayerPrefs.Save();
+            SaveManager.Instance.Save();
+        }
+        else if (SaveManager.Instance.TryGetSnapshot(out SaveState state))
+        {
+            ApplyProfile(state);
         }
         else
         {
-            currentName = PlayerPrefs.GetString("Username", defaultUsername);
+            currentName = GenerateDisplayName(defaultUsername);
         }
+
         usernameButton.OverrideText(currentName);
         usernameButton.Block = false;
     }
@@ -153,7 +158,6 @@ public class ProfileSettings : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Seguridad por si el objeto se destruye a mitad de la escritura
         if (isTyping && InputHandler.Instance != null)
         {
             InputHandler.Instance.RemoveListener(OnCharacterTyped);
@@ -163,5 +167,42 @@ public class ProfileSettings : MonoBehaviour
     public void LinkAccount()
     {
         Debug.Log("Not implemented yet");
+    }
+
+    private void HandleBeforeSave(SaveState state)
+    {
+        state.slot.profile.username = currentName.Trim();
+    }
+
+    private void HandleAfterLoad(SaveState state)
+    {
+        ApplyProfile(state);
+    }
+
+    private void ApplyProfile(SaveState state)
+    {
+        currentName = GenerateDisplayName(state?.slot?.profile?.username);
+
+        if (usernameButton != null)
+        {
+            usernameButton.OverrideText(currentName);
+        }
+    }
+
+    private string GenerateDisplayName(string candidate)
+    {
+        string normalized = string.IsNullOrWhiteSpace(candidate) ? defaultUsername : candidate.Trim();
+        if (!normalized.Equals(defaultUsername))
+        {
+            return normalized;
+        }
+
+        string generated = normalized + "#";
+        for (int i = 0; i < 4; i++)
+        {
+            generated += Random.Range(0, 10).ToString();
+        }
+
+        return generated;
     }
 }

@@ -11,24 +11,40 @@ public class GameSettings : MonoBehaviour
     [SerializeField] private AudioMixer mixer;
     private FontDropdown fontDropdown;
 
-    private void Start()
+    private void Awake()
     {
         fontDropdown = GetComponentInChildren<FontDropdown>();
-        showSpacesToggle.isOn = PlayerPrefs.GetInt("ShowSpaces", 1) == 1;
-        SetShowSpaces(showSpacesToggle.isOn);
-        capLocksWarningToggle.isOn = PlayerPrefs.GetInt("CapLocksWarnigng", 0) == 1;
-        SetCapsWarning(capLocksWarningToggle.isOn);
-        volumeSlider.value = PlayerPrefs.GetFloat("Volume", 0.75f);
-        SetVolume(volumeSlider.value);
-        fontDropdown.SetFont(PlayerPrefs.GetInt("Font", 0));
+    }
+
+    private void OnEnable()
+    {
+        SaveManager.Instance.OnBeforeSave += HandleBeforeSave;
+        SaveManager.Instance.OnAfterLoad += HandleAfterLoad;
+    }
+
+    private void Start()
+    {
+        if (SaveManager.Instance.TryGetSnapshot(out SaveState state))
+        {
+            ApplySettings(state);
+        }
+        else
+        {
+            ApplySettings(new SaveState());
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (SaveManager.Instance == null) return;
+
+        SaveManager.Instance.OnBeforeSave -= HandleBeforeSave;
+        SaveManager.Instance.OnAfterLoad -= HandleAfterLoad;
     }
 
     public void Save()
     {
-        PlayerPrefs.SetInt("ShowSpaces", showSpacesToggle.isOn ? 1 : 0);
-        PlayerPrefs.SetInt("CapLocksWarnigng", capLocksWarningToggle.isOn ? 1 : 0);
-        PlayerPrefs.SetFloat("Volume", volumeSlider.value);
-        PlayerPrefs.SetInt("Font", fontDropdown.CurrentFontIdx);
+        SaveManager.Instance.Save();
     }
 
     public void ToggleShowSpaces() => showSpacesToggle.isOn = !showSpacesToggle.isOn;
@@ -48,5 +64,34 @@ public class GameSettings : MonoBehaviour
         float maxDB = 20f;
         float logValue = Mathf.Log10(1f + value * 9f) / Mathf.Log10(10f);
         mixer.SetFloat("MasterVolume", Mathf.Lerp(minDB, maxDB, logValue));
+    }
+
+    private void HandleBeforeSave(SaveState state)
+    {
+        state.global.showSpaces = showSpacesToggle.isOn;
+        state.global.capsLockWarning = capLocksWarningToggle.isOn;
+        state.global.volume = volumeSlider.value;
+        state.global.fontIndex = fontDropdown.CurrentFontIdx;
+    }
+
+    private void HandleAfterLoad(SaveState state)
+    {
+        ApplySettings(state);
+    }
+
+    private void ApplySettings(SaveState state)
+    {
+        GlobalSettingsData data = state.global ?? new GlobalSettingsData();
+
+        showSpacesToggle.isOn = data.showSpaces;
+        SetShowSpaces(data.showSpaces);
+
+        capLocksWarningToggle.isOn = data.capsLockWarning;
+        SetCapsWarning(data.capsLockWarning);
+
+        volumeSlider.value = data.volume;
+        SetVolume(data.volume);
+
+        fontDropdown.SetFont(data.fontIndex);
     }
 }

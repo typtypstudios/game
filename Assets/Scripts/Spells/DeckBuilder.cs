@@ -17,24 +17,50 @@ public class DeckBuilder : MonoBehaviour
     private BuilderDisplayer selectedUnequipped;
     public static CardDefinition[] CardsInDeck { get; private set; }
 
+    private void OnEnable()
+    {
+        SaveManager.Instance.OnBeforeSave += HandleBeforeSave;
+        SaveManager.Instance.OnAfterLoad += HandleAfterLoad;
+    }
+
     private void Awake()
     {
-        LoadEquippedCards();
-        CardsInDeck = equippedCards.Select(c => c.Card).ToArray();
-        LoadUnequippedCards();
-        foreach (GameObject panel in highlightPanels) 
-            panel.transform.SetAsLastSibling(); //Para estar por encima de las cartas creadas
+        InitializeEquippedCards();
+
+        if (SaveManager.Instance.TryGetSnapshot(out SaveState state))
+        {
+            ApplyDeck(state);
+        }
+        else
+        {
+            ApplyDeck(new SaveState());
+        }
+
+        foreach (GameObject panel in highlightPanels)
+        {
+            panel.transform.SetAsLastSibling();
+        }
+
         BuilderDisplayer.OnCardChosen += ProcessCardChosen;
     }
 
-    private void OnDestroy() => BuilderDisplayer.OnCardChosen -= ProcessCardChosen;
+    private void OnDisable()
+    {
+        if (SaveManager.Instance == null) return;
+
+        SaveManager.Instance.OnBeforeSave -= HandleBeforeSave;
+        SaveManager.Instance.OnAfterLoad -= HandleAfterLoad;
+    }
+
+    private void OnDestroy()
+    {
+        BuilderDisplayer.OnCardChosen -= ProcessCardChosen;
+    }
 
     public void SaveEquippedCards()
     {
-        List<int> indexes = equippedCards.Select(c => CardRegister.Instance.GetId(c.Card)).ToList();
-        string eCardsString = string.Join(",", indexes);
-        PlayerPrefsEncoder.SetString("EquippedCards", eCardsString);
-        CardsInDeck = equippedCards.Select(c => c.Card).ToArray();
+        RefreshCardsInDeck();
+        SaveManager.Instance.Save();
     }
 
     public void ResetSelection()
@@ -46,60 +72,46 @@ public class DeckBuilder : MonoBehaviour
         foreach (GameObject panel in highlightPanels) panel.SetActive(false);
     }
 
-    private void LoadEquippedCards()
+    private void InitializeEquippedCards()
     {
-        //Creaci�n de cartas:
         for (int i = 0; i < Settings.Instance.DeckSize; i++)
         {
-            BuilderDisplayer c = Instantiate(cardPrefab, equippedLayout).GetComponent<BuilderDisplayer>();
-            equippedCards.Add(c);
-        }
-        //Carga de cartas guardadas:
-        equippedIndexes = Enumerable.Range(0, Settings.Instance.DeckSize).ToList();
-        string eCardsString = PlayerPrefsEncoder.GetString("EquippedCards", string.Empty);
-        if (!eCardsString.Equals(string.Empty))
-            equippedIndexes = eCardsString.Split(',').Select(int.Parse).ToList();
-        //Manejo de disminuci�n de deck size:
-        if (Settings.Instance.DeckSize < equippedIndexes.Count)
-            equippedIndexes.RemoveRange(Settings.Instance.DeckSize - 1,
-                equippedIndexes.Count - Settings.Instance.DeckSize);
-        //Configuraci�n de cartas:
-        for (int i = 0; i < equippedIndexes.Count; i++)
-                equippedCards[i].SetInfo(CardRegister.Instance.GetById(equippedIndexes[i]));
-        //Manejo de aumento de deck size:
-        if(equippedIndexes.Count < equippedCards.Count)
-        {
-            int count = equippedCards.Count - equippedIndexes.Count;
-            for(int i = 0; i < count; i++)
-            {
-                List<CardDefinition> currentCards = equippedCards.Select(c => c.Card).ToList();
-                (CardDefinition c, int idx) = CardRegister.Instance.GetUncontainedItem(currentCards);
-                equippedCards[equippedIndexes.Count].SetInfo(c);
-                equippedIndexes.Add(idx);
-            }
+            BuilderDisplayer card = Instantiate(cardPrefab, equippedLayout).GetComponent<BuilderDisplayer>();
+            equippedCards.Add(card);
         }
     }
 
-    private void LoadUnequippedCards()
+    private void RebuildUnequippedCards()
     {
-        for(int i = 0; i < CardRegister.Instance.Count; i++)
+        foreach (BuilderDisplayer card in unequippedCards)
+        {
+            if (card != null)
+            {
+                Destroy(card.gameObject);
+            }
+        }
+
+        unequippedCards.Clear();
+
+        for (int i = 0; i < CardRegister.Instance.Count; i++)
         {
             if (equippedIndexes.Contains(i)) continue;
-            BuilderDisplayer c = Instantiate(cardPrefab, unequippedLayout).GetComponent<BuilderDisplayer>();
-            unequippedCards.Add(c);
-            c.SetInfo(CardRegister.Instance.GetById(i));
+            BuilderDisplayer card = Instantiate(cardPrefab, unequippedLayout).GetComponent<BuilderDisplayer>();
+            unequippedCards.Add(card);
+            card.SetInfo(CardRegister.Instance.GetById(i));
         }
     }
 
     private void ProcessCardChosen(BuilderDisplayer card)
     {
-        StartCoroutine(ResetButtonsCoroutine()); //Se resetean los botones para resetear su escritura
+        StartCoroutine(ResetButtonsCoroutine());
         if (card == selectedEquipped || card == selectedUnequipped)
         {
             ResetSelection();
             return;
         }
-        if(card.transform.parent == equippedLayout)
+
+        if (card.transform.parent == equippedLayout)
         {
             selectedEquipped?.Highlight(false);
             selectedEquipped = card;
@@ -109,27 +121,94 @@ public class DeckBuilder : MonoBehaviour
             selectedUnequipped?.Highlight(false);
             selectedUnequipped = card;
         }
-        card.Highlight(true); //Lo pone como �ltimo hijo, delante de highlight panel
+
+        card.Highlight(true);
         CheckCardChange();
-        //Si alg�n objeto est� en hover (ser� �ltimo hijo) el panel se activa
-        foreach (GameObject panel in highlightPanels) 
+        foreach (GameObject panel in highlightPanels)
+        {
             panel.SetActive(panel.transform.GetSiblingIndex() != panel.transform.parent.childCount - 1);
+        }
     }
 
     private void CheckCardChange()
     {
         if (selectedUnequipped && selectedEquipped)
         {
-            CardDefinition c = selectedUnequipped.Card;
+            CardDefinition card = selectedUnequipped.Card;
             selectedUnequipped.SetInfo(selectedEquipped.Card);
-            selectedEquipped.SetInfo(c);
+            selectedEquipped.SetInfo(card);
+            RefreshIndexesFromUI();
+            RefreshCardsInDeck();
             ResetSelection();
         }
     }
 
-    IEnumerator ResetButtonsCoroutine()
+    private IEnumerator ResetButtonsCoroutine()
     {
         yield return null;
-        foreach (var b in GetComponentsInChildren<WritableButton>()) b.ResetButton();
+        foreach (WritableButton button in GetComponentsInChildren<WritableButton>()) button.ResetButton();
+    }
+
+    private void HandleBeforeSave(SaveState state)
+    {
+        RefreshIndexesFromUI();
+        RefreshCardsInDeck();
+        state.slot.deck.equippedCardIds = equippedIndexes.ToList();
+    }
+
+    private void HandleAfterLoad(SaveState state)
+    {
+        ApplyDeck(state);
+    }
+
+    private void ApplyDeck(SaveState state)
+    {
+        equippedIndexes = ResolveEquippedIndexes(state?.slot?.deck?.equippedCardIds);
+
+        for (int i = 0; i < equippedCards.Count; i++)
+        {
+            equippedCards[i].SetInfo(CardRegister.Instance.GetById(equippedIndexes[i]));
+        }
+
+        RebuildUnequippedCards();
+        RefreshCardsInDeck();
+        ResetSelection();
+    }
+
+    private List<int> ResolveEquippedIndexes(List<int> savedIndexes)
+    {
+        List<int> resolved = new();
+        if (savedIndexes != null)
+        {
+            resolved = savedIndexes
+                .Where(index => index >= 0 && index < CardRegister.Instance.Count)
+                .Distinct()
+                .Take(Settings.Instance.DeckSize)
+                .ToList();
+        }
+
+        if (resolved.Count == 0)
+        {
+            resolved = Enumerable.Range(0, Mathf.Min(Settings.Instance.DeckSize, CardRegister.Instance.Count)).ToList();
+        }
+
+        while (resolved.Count < equippedCards.Count)
+        {
+            List<CardDefinition> currentCards = resolved.Select(CardRegister.Instance.GetById).ToList();
+            (CardDefinition card, int idx) = CardRegister.Instance.GetUncontainedItem(currentCards);
+            resolved.Add(idx);
+        }
+
+        return resolved;
+    }
+
+    private void RefreshIndexesFromUI()
+    {
+        equippedIndexes = equippedCards.Select(card => CardRegister.Instance.GetId(card.Card)).ToList();
+    }
+
+    private void RefreshCardsInDeck()
+    {
+        CardsInDeck = equippedCards.Select(card => card.Card).ToArray();
     }
 }
