@@ -8,6 +8,7 @@ using UnityEngine;
 public class SpellCaster : NetworkBehaviour
 {
     Player player;
+    public bool Sealed { get; set; } = false;
     public event Action<CardDefinition, Player> OnSpellCasted;
 
     public void Awake()
@@ -22,7 +23,8 @@ public class SpellCaster : NetworkBehaviour
     {
         ulong targetId = NetworkManager.Singleton.ConnectedClientsIds.First(id => id != OwnerClientId);
         var target = GetPlayerById(targetId);
-        ApplySpell(player, cardDef.Spell, target);
+        if (!Sealed) ApplySpell(player, cardDef.Spell, target);
+        else Sealed = false;
         OnSpellCasted?.Invoke(cardDef, player);
     }
 
