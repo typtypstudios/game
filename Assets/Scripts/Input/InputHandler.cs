@@ -18,7 +18,7 @@ public class InputHandler : Singleton<InputHandler>
         SceneManager.sceneLoaded += (_, _) => Lag = 0;
     }
 
-    private void OnDisable() => Keyboard.current.onTextInput -= ProcessInput;
+    private void OnDestroy() => Keyboard.current.onTextInput -= ProcessInput;
 
     private void ProcessInput(char c)
     {

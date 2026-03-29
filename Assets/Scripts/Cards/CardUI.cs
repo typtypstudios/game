@@ -12,11 +12,13 @@ public class CardUI : MonoBehaviour
     [SerializeField] private TMP_Text cardName;
     [SerializeField] private TMP_Text cardCost;
     private WritableSpell writableSpell;
+    private DeckController deckController;
     public UnityEvent<CardUI> OnCardWritten = new();
 
     void Awake()
     {
         writableSpell = GetComponentInChildren<WritableSpell>();
+        deckController = GetComponentInParent<Player>().DeckController;
         UnityEngine.Assertions.Assert.IsNotNull(writableSpell);
     }
 
@@ -50,7 +52,7 @@ public class CardUI : MonoBehaviour
 
     public void UpdateManaCostModifier(int costModifier)
     {
-        int manaCost = CardDefinition.ManaCost + costModifier;
+        int manaCost = CardDefinition.ManaCost - deckController.GetDiscount(CardDefinition) + costModifier;
         cardCost.text = manaCost.ToString();
     }
 
@@ -69,6 +71,7 @@ public class CardUI : MonoBehaviour
 
     void OnInputModeChanged(InputMode mode)
     {
-        writableSpell.ToggleListener(mode == InputMode.CastingSpells);
+        if(writableSpell.gameObject.activeSelf) 
+            writableSpell.ToggleListener(mode == InputMode.CastingSpells);
     }
 }

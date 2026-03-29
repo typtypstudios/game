@@ -70,7 +70,7 @@ public class PlayerInputManager : MonoBehaviour
     private void SetMode(InputMode mode)
     {
         anim.SetBool("CastingSpells", mode == InputMode.CastingSpells);
-        ritualManager.ToggleListener(mode == InputMode.Ritual);
+        if(ritualManager.gameObject.activeSelf) ritualManager.ToggleListener(mode == InputMode.Ritual);
         OnInputModeChangedEvent?.Invoke(mode);
     }
 

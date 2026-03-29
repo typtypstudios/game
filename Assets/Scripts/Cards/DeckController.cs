@@ -38,6 +38,7 @@ public class DeckController : NetworkBehaviour
 {
     [field: ContextMenuItem("Update Cards View", nameof(UpdateQueueListView))]
     [field: SerializeField] public CardDefinition[] Cards { get; private set; }
+    private readonly Dictionary<CardDefinition, int> discounts = new();
 
     private Player player;
     private Queue<int> cardQueue;
@@ -53,6 +54,7 @@ public class DeckController : NetworkBehaviour
 
     public event Action<CardEventArgs> OnCardPlayRequestSuccess;
     public event Action<CardEventArgs> OnCardPlayRequestFailed;
+    public event Action OnDiscountApplied;
     //Static events
     public static event Action<CardEventArgs> OnAnyCardPlayedEvent;
     public static event Action<CardEventArgs> OnAnyCardDrawEvent;
@@ -79,7 +81,7 @@ public class DeckController : NetworkBehaviour
         Cards = deck.Select(c => GetCardDefinitionById(c)).ToArray();
         cardQueue = new(deck);
         currentHand = new(Settings.Instance.HandSize);
-
+        SetCardsClientRpc(deck);
         DrawInitialCards();
     }
 
@@ -108,7 +110,7 @@ public class DeckController : NetworkBehaviour
 
         Debug.Log($"[Deck][Server][PlayCard] cid={OwnerClientId} card={card} spell={SpellRegister.Instance.GetId(cardDef.Spell)}");
 
-        if (player.ManaManager.ConsumeMana(cardDef.ManaCost))
+        if (player.ManaManager.ConsumeMana(cardDef.ManaCost - GetDiscount(cardDef)))
         {
             // spellCaster.CastSpell(cardDef.Spell);
         }
@@ -158,6 +160,12 @@ public class DeckController : NetworkBehaviour
     #endregion
 
     #region Client Side
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void SetCardsClientRpc(int[] cards)
+    {
+        Cards = cards.Select(c => GetCardDefinitionById(c)).ToArray();
+    }
 
     //Client entry point
     public void RequestPlayCard(int card)
@@ -247,6 +255,20 @@ public class DeckController : NetworkBehaviour
         }
     }
 
+    public bool TryApplyDiscount(CardDefinition card, int discount)
+    {
+        if (card.ManaCost - GetDiscount(card) - discount < 0) return false;
+        discounts[card] += discount;
+        OnDiscountApplied?.Invoke();
+        return true;
+    }
+
+    public int GetDiscount(CardDefinition card)
+    {
+        if (!discounts.ContainsKey(card)) discounts[card] = 0;
+        return discounts[card];
+    }
+
     #endregion
 
     #region Validation
@@ -264,7 +286,7 @@ public class DeckController : NetworkBehaviour
         }
 
         var cardDef = GetCardDefinitionById(card);
-        if (!player.ManaManager.CanAfford(cardDef.ManaCost))
+        if (!player.ManaManager.CanAfford(cardDef.ManaCost - GetDiscount(cardDef)))
         {
             return PlayCardRequestResult.NotEnoughMana;
         }
