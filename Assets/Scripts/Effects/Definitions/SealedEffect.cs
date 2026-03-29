@@ -20,7 +20,7 @@ public class SealedEffect : StatusEffectDefinition
         return "";
     }
 
-    public void KillSelf(CardDefinition _, Player player)
+    private void KillSelf(CardDefinition _, Player player)
     {
         StatusEffect effectToRemove = null;
         foreach(var effect in player.StatusEffectController.Effects)

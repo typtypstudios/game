@@ -10,6 +10,7 @@ public class CorruptionGainManager : MonoBehaviour
     public event Action<float> OnCorruptionGain;
     private WaitForSeconds timeToAutoHeal;
     private WaitForSeconds autoHealInterval;
+    public event Action<float, Player> OnMistake;
     public float HurtGainMultiplier { get; set; } = 1;
     public float HealGainMultiplier { get; set; } = 1;
     public float MistakeGainMultiplier { get; set; } = 1;
@@ -23,8 +24,10 @@ public class CorruptionGainManager : MonoBehaviour
 
     public void ProcessMistake()
     {
-        AddCorruption(Settings.Instance.MistakePenalizationPercentage / 100 * 
-            Settings.Instance.MaxCorruption * MistakeGainMultiplier);
+        float corruption = Settings.Instance.MistakePenalizationPercentage / 100 *
+            Settings.Instance.MaxCorruption * MistakeGainMultiplier;
+        AddCorruption(corruption);
+        OnMistake?.Invoke(corruption, player);
     }
 
     public void AddCorruption(float corruptionToAdd)
