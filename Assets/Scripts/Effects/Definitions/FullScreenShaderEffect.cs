@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -18,6 +19,7 @@ public class FullScreenShaderEffect : StatusEffectDefinition
             if (feature is FullScreenPassRendererFeature fullScreen && fullScreen.passMaterial == mat)
             {
                 feature.SetActive(true);
+                fullScreen.passMaterial.SetFloat("_StartTime", Time.time);
             }
         }
         if(additionalVolume)

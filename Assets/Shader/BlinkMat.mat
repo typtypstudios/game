@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DrowsyMat
+  m_Name: BlinkMat
   m_Shader: {fileID: -6465566751694194690, guid: 0f39f205475ad6944b78915dc2b0a717, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -39,18 +39,20 @@ Material:
     m_Floats:
     - _BaseOpening: 1
     - _Closing: 0
+    - _DarknessFactor: 0.9
     - _EyeDistance: 1
     - _EyeSize: 0.5
     - _MaxOpening: 0.8
     - _Opening: 2
     - _Pow: 4
     - _Size: 0.405
-    - _Speed: 2
+    - _Speed: 2.5
+    - _StartTime: 39.066586
     - _Test: 1
     - _Threshold: 0.903
     - _Threshold_x: 10
     - _Threshold_y: 10
-    - _VerticalOffset: 0.176
+    - _VerticalOffset: 0.2
     m_Colors:
     - _Center: {r: -0.39, g: 0, b: 0, a: 0}
     - _EyeOffset: {r: -0.5, g: 0, b: 0, a: 0}
