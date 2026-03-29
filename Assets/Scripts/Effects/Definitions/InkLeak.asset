@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a68b11a55f11574bab128d2e32f493a, type: 3}
-  m_Name: BurnedEffect
+  m_Name: InkLeak
   m_EditorClassIdentifier: Assembly-CSharp::ConstantCorruptionEffect
-  <Name>k__BackingField: Burned
-  <Description>k__BackingField: Applies up to <value> corruption over time for <duration>.
-  <Image>k__BackingField: {fileID: 8512755680495624288, guid: b0dfffc8c56d08414b2f9a1943da2a5c, type: 3}
+  <Name>k__BackingField: Ink leak
+  <Description>k__BackingField: Loses up to <value> ink over time for <duration>.
+  <Image>k__BackingField: {fileID: 5764532198144960534, guid: 2ad600501851142768667ed5b9d34117, type: 3}
   <DurationType>k__BackingField: 1
   <Category>k__BackingField: {fileID: 0}
   <EffectPolarityType>k__BackingField: 1
   <DurationValue>k__BackingField: 20
-  totalPercentage: 25
+  totalPercentage: -25
   timeInterval: 0.5
-  type: 0
+  type: 1
