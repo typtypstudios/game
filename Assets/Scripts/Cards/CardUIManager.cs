@@ -133,7 +133,7 @@ public class CardUIManager : MonoBehaviour
         }
     }
 
-    private void HandleDiscount()
+    private void HandleDiscount(CardDefinition _)
     {
         foreach (var card in cardUIById.Values)
         {

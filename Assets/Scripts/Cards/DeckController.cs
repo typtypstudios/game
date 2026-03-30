@@ -54,7 +54,7 @@ public class DeckController : NetworkBehaviour
 
     public event Action<CardEventArgs> OnCardPlayRequestSuccess;
     public event Action<CardEventArgs> OnCardPlayRequestFailed;
-    public event Action OnDiscountApplied;
+    public event Action<CardDefinition> OnDiscountApplied;
     //Static events
     public static event Action<CardEventArgs> OnAnyCardPlayedEvent;
     public static event Action<CardEventArgs> OnAnyCardDrawEvent;
@@ -259,7 +259,7 @@ public class DeckController : NetworkBehaviour
     {
         if (card.ManaCost - GetDiscount(card) - discount < 0) return false;
         discounts[card] += discount;
-        OnDiscountApplied?.Invoke();
+        OnDiscountApplied?.Invoke(card);
         return true;
     }
 
