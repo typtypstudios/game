@@ -39,6 +39,10 @@ public class GameUIConfigurator : MonoBehaviour
         {
             userInput.OnSilencedAttempt += playerFeedbackUI.ShowSilencedWarning;
         }
+        if (Player.User.DeckController != null)
+        {
+            Player.User.DeckController.OnNotEnoughInkAttempt += playerFeedbackUI.ShowNotEnoughInkWarning;
+        }
         canvasGroup.alpha = 1.0f;
         OnUIConfigurated?.Invoke();
     }

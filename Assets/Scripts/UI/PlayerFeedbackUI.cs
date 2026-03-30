@@ -18,6 +18,11 @@ public class PlayerFeedbackUI : MonoBehaviour
         ShowMessage("You are silenced!");
     }
 
+    public void ShowNotEnoughInkWarning()
+    {
+        ShowMessage("Not enough ink!");
+    }
+
     private void ShowMessage(string message)
     {
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);

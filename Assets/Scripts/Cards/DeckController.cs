@@ -56,6 +56,8 @@ public class DeckController : NetworkBehaviour
     public event Action<CardEventArgs> OnCardPlayRequestFailed;
     public event Action<CardDefinition> OnDiscountApplied;
     public event Action<int[]> OnShuffledEvent;
+    public event Action OnNotEnoughInkAttempt;
+
     //Static events
     public static event Action<CardEventArgs> OnAnyCardPlayedEvent;
     public static event Action<CardEventArgs> OnAnyCardDrawEvent;
@@ -211,6 +213,10 @@ public class DeckController : NetworkBehaviour
         else
         {
             // Debug.Log($"[Deck][Client][RejectLocal] cid={OwnerClientId} card={card} res={validation}");
+            if (validation == PlayCardRequestResult.NotEnoughMana)
+            {
+                OnNotEnoughInkAttempt?.Invoke();
+            }
         }
     }
 
