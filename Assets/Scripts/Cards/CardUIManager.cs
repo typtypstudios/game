@@ -50,6 +50,7 @@ public class CardUIManager : MonoBehaviour
         deckController.OnCardDrawnEvent += HandleCardDrawn;
         deckController.OnCardPlayedEvent += HandleCardPlayed;
         deckController.OnDiscountApplied += HandleDiscount;
+        deckController.OnShuffledEvent += HandleHandShuffled;
 
         manaManager.OnCostModifierChangedEvent += ManaCostModifierChanged;
 
@@ -62,6 +63,7 @@ public class CardUIManager : MonoBehaviour
         deckController.OnCardDrawnEvent -= HandleCardDrawn;
         deckController.OnCardPlayedEvent -= HandleCardPlayed;
         deckController.OnDiscountApplied -= HandleDiscount;
+        deckController.OnShuffledEvent -= HandleHandShuffled;
 
         manaManager.OnCostModifierChangedEvent -= ManaCostModifierChanged;
 
@@ -139,5 +141,16 @@ public class CardUIManager : MonoBehaviour
         {
             card.UpdateManaCostModifier(manaManager.CostModifier);
         }
+    }
+
+    void HandleHandShuffled(int[] newCards)
+    {
+        foreach (CardUI ui in cardUIById.Values)
+        {
+            ui.Clear();
+            emptySlots.Enqueue(ui);
+        }
+
+        cardUIById.Clear();
     }
 }

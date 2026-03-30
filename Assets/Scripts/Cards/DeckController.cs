@@ -55,6 +55,7 @@ public class DeckController : NetworkBehaviour
     public event Action<CardEventArgs> OnCardPlayRequestSuccess;
     public event Action<CardEventArgs> OnCardPlayRequestFailed;
     public event Action<CardDefinition> OnDiscountApplied;
+    public event Action<int[]> OnShuffledEvent;
     //Static events
     public static event Action<CardEventArgs> OnAnyCardPlayedEvent;
     public static event Action<CardEventArgs> OnAnyCardDrawEvent;
@@ -157,6 +158,30 @@ public class DeckController : NetworkBehaviour
         ReceiveCardsDrawnRpc(initialCardIds);
     }
 
+    public void ShuffleHand()
+    {
+        if (!IsServer) return;
+
+        int[] currentCards = currentHand.ToArray();
+        foreach (int card in currentCards)
+        {
+            ReturnCardToDeck(card);
+        }
+
+        // Barajar
+        List<int> shuffledList = cardQueue.OrderBy(x => UnityEngine.Random.value).ToList();
+        cardQueue = new Queue<int>(shuffledList);
+
+
+        int[] newHand = new int[TypTyp.Settings.Instance.HandSize];
+        for (int i = 0; i < newHand.Length; i++)
+        {
+            newHand[i] = DrawCard();
+        }
+
+        ShuffleHandRpc(newHand);
+    }
+
     #endregion
 
     #region Client Side
@@ -253,6 +278,14 @@ public class DeckController : NetworkBehaviour
             OnCardDrawn?.Invoke(cardDef);
             OnAnyCardDrawEvent?.Invoke(eventArgs);
         }
+    }
+
+    [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
+    private void ShuffleHandRpc(params int[] newCards)
+    {
+        Debug.Log($"[Deck][Client][ShuffleHandRpc] cid={OwnerClientId} newCards={string.Join(",", newCards)}");
+        OnShuffledEvent?.Invoke(newCards);
+        ReceiveCardsDrawn(newCards);
     }
 
     public bool TryApplyDiscount(CardDefinition card, int discount)
