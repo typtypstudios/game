@@ -10,10 +10,6 @@ public class ShuffleEffect : StatusEffectDefinition
 
     public override void OnActivate(Player target)
     {
-        if (target.DeckController != null)
-        {
-            target.DeckController.ShuffleHand();
-        }
     }
 
     public override void OnDeactivate(Player target)

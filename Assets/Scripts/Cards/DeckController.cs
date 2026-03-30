@@ -62,6 +62,8 @@ public class DeckController : NetworkBehaviour
     public static event Action<CardEventArgs> OnAnyCardPlayedEvent;
     public static event Action<CardEventArgs> OnAnyCardDrawEvent;
 
+    //Necesario para el conjuro suffle
+    private int shuffleCardId;
 
     void Awake()
     {
@@ -71,6 +73,17 @@ public class DeckController : NetworkBehaviour
         UnityEngine.Assertions.Assert.IsNotNull(spellCaster,
             "DeckController requires a SpellCaster component in its parents");
         seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+
+        CardDefinition shuffleCard = CardRegister.Instance.RegisteredItems.FirstOrDefault(card => card != null && card.name == "Shuffle");
+        if (shuffleCard != null)
+        {
+            shuffleCardId = CardRegister.Instance.GetId(shuffleCard);
+            Debug.Log("El ID de Shuffle es: " + shuffleCardId);
+        }
+        else
+        {
+            Debug.LogError("No se ha encontrado ninguna carta llamada Shuffle en el registro.");
+        }
     }
 
     #region Server side
@@ -95,11 +108,40 @@ public class DeckController : NetworkBehaviour
 
         if (validation == PlayCardRequestResult.Success)
         {
-            ReturnCardToDeck(card);
-            int newCard = DrawCard();
-            PlayCardServer(card);
-            PlayCardResultRpc(validation, card, newCard);//Owner
-            PlayCardRpc(card);//Not Owner
+            if (card != shuffleCardId)
+            {
+                ReturnCardToDeck(card);
+                int newCard = DrawCard();
+                PlayCardServer(card);
+                PlayCardResultRpc(validation, card, newCard);//Owner
+                PlayCardRpc(card);//Not Owner
+            }
+            else
+            {
+                // Al final he optado por hacerlo aquí forzado porque la lógica del
+                // shuffle es bastante diferente al anterior flujo
+                ReturnCardToDeck(card);
+                
+                int[] currentCards = currentHand.ToArray();
+                foreach (int cardInHand in currentCards)
+                {
+                    ReturnCardToDeck(cardInHand);
+                }
+
+                List<int> shuffledList = cardQueue.OrderBy(x => UnityEngine.Random.value).ToList();
+                cardQueue = new Queue<int>(shuffledList);
+
+                int[] cardsToDraw = new int[TypTyp.Settings.Instance.HandSize];
+                for (int i = 0; i < cardsToDraw.Length; i++)
+                {
+                    cardsToDraw[i] = DrawCard();
+                }
+
+                ShuffleHandRpc(currentCards);
+                PlayCardServer(card);
+                PlayCardResultRpc(validation, card, cardsToDraw);//Owner
+                PlayCardRpc(card);//Not Owner
+            }
         }
         else
         {
@@ -158,30 +200,6 @@ public class DeckController : NetworkBehaviour
         // Debug.Log($"[Deck][Server][InitialDrawSend] cid={OwnerClientId} cards={string.Join(",", initialCardIds)}");
 
         ReceiveCardsDrawnRpc(initialCardIds);
-    }
-
-    public void ShuffleHand()
-    {
-        if (!IsServer) return;
-
-        int[] currentCards = currentHand.ToArray();
-        foreach (int card in currentCards)
-        {
-            ReturnCardToDeck(card);
-        }
-
-        // Barajar
-        List<int> shuffledList = cardQueue.OrderBy(x => UnityEngine.Random.value).ToList();
-        cardQueue = new Queue<int>(shuffledList);
-
-
-        int[] newHand = new int[TypTyp.Settings.Instance.HandSize];
-        for (int i = 0; i < newHand.Length; i++)
-        {
-            newHand[i] = DrawCard();
-        }
-
-        ShuffleHandRpc(newHand);
     }
 
     #endregion
@@ -287,11 +305,10 @@ public class DeckController : NetworkBehaviour
     }
 
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
-    private void ShuffleHandRpc(params int[] newCards)
+    private void ShuffleHandRpc(params int[] oldCards)
     {
-        Debug.Log($"[Deck][Client][ShuffleHandRpc] cid={OwnerClientId} newCards={string.Join(",", newCards)}");
-        OnShuffledEvent?.Invoke(newCards);
-        ReceiveCardsDrawn(newCards);
+        // Borrar las cartas viejas de la UI
+        OnShuffledEvent?.Invoke(oldCards);
     }
 
     public bool TryApplyDiscount(CardDefinition card, int discount)

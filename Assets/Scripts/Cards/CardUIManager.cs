@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TypTyp.TextSystem;
 using UnityEngine;
@@ -143,14 +142,17 @@ public class CardUIManager : MonoBehaviour
         }
     }
 
-    void HandleHandShuffled(int[] newCards)
+    private void HandleHandShuffled(int[] cardsToClear)
     {
-        foreach (CardUI ui in cardUIById.Values)
+        foreach (int cardId in cardsToClear)
         {
-            ui.Clear();
-            emptySlots.Enqueue(ui);
-        }
+            if (cardUIById.TryGetValue(cardId, out CardUI ui))
+            {
+                cardUIById.Remove(cardId);
 
-        cardUIById.Clear();
+                ui.Clear();
+                emptySlots.Enqueue(ui);
+            }
+        }
     }
 }
