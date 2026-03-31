@@ -72,8 +72,8 @@ public class WritableButton : AInputListener
                 StopCoroutine(resetCoroutine);
                 ResetButton();
             }
-            buttonText.text = fillColorTag + originalText[..(Idx + 1)] + "</color>" + 
-                originalText[(Idx + 1)..];
+            buttonText.text = "<color=#9A1837><b>" + originalText[..(Idx + 1)] + "</b></color>" +
+            "<color=#555555>" + originalText[(Idx + 1)..] + "</color>";
             if (++Idx == textLength)
             {
                 resetCoroutine = StartCoroutine(ResetButtonCoroutine());
