@@ -66,11 +66,13 @@ public class SpellTypingUI : MonoBehaviour
         {
             if (Settings.Instance.ChatActive)
             {
+                Debug.Log("Todo el chat sin filtro");
                 Player.User.SpellTypingTracker.OnLocalRawTextChanged += UpdateUserTextLocal;
                 UpdateUserTextLocal(Player.User.SpellTypingTracker.CurrentLocalRawText);
             }
             else
             {
+                Debug.Log("Solo chat filtrado");
                 Player.User.SpellTypingTracker.OnLocalFilteredTextChanged += UpdateUserTextLocal;
                 UpdateUserTextLocal(Player.User.SpellTypingTracker.CurrentLocalFilteredText);
             }
