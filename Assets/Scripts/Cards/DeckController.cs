@@ -45,6 +45,7 @@ public class DeckController : NetworkBehaviour
     private HashSet<int> currentHand;
     private SpellCaster spellCaster;
     private static int seed;
+    public HashSet<int> CurrentHand => currentHand;
 
     //Events
     public UnityEvent<CardDefinition> OnCardPlayed = new();

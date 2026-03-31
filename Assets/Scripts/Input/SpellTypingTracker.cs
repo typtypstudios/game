@@ -1,20 +1,21 @@
 using Unity.Netcode;
 using Unity.Collections;
 using UnityEngine;
-using TypTyp; // Añadido para acceder a Settings.Instance
+using TypTyp;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Player))]
 public class SpellTypingTracker : NetworkBehaviour
 {
     #region varaibles de texto
-    // Network variables que escribe el owner
+    // Network variable que escribe el owner
     [Tooltip("Lo que escribe el jugador.")]
     public NetworkVariable<FixedString32Bytes> RawText = new NetworkVariable<FixedString32Bytes>(
         "",
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner);
 
-    [Tooltip("El texto filtrado.")]
+    [Tooltip("El texto filtrado por el servidor.")]
     public NetworkVariable<FixedString32Bytes> FilteredText = new NetworkVariable<FixedString32Bytes>(
         "",
         NetworkVariableReadPermission.Everyone,
@@ -38,14 +39,16 @@ public class SpellTypingTracker : NetworkBehaviour
     // Other varaibles
     private Player player;
     private CardUIManager cardUIManager;
+    private DeckController deckController;
     private bool isCastingSpells = false;
-    private const int MAX_CHARS = 20;   // Modificar el tamaño máximo del chat
+    private const int MAX_CHARS = 20;
 
 
     private void Awake()
     {
         player = GetComponent<Player>();
         cardUIManager = GetComponentInChildren<CardUIManager>();
+        deckController = GetComponent<DeckController>();
     }
 
     public override void OnNetworkSpawn()
@@ -89,7 +92,14 @@ public class SpellTypingTracker : NetworkBehaviour
 
     private void OnInputModeChanged(InputMode mode)
     {
+        bool wasCasting = isCastingSpells;
         isCastingSpells = (mode == InputMode.CastingSpells);
+
+        if (isCastingSpells && !wasCasting && IsOwner)
+        {
+            RawText.Value = "";
+            UpdateLocalTexts("");
+        }
     }
 
     private void OnCharTyped(char c)
@@ -109,19 +119,25 @@ public class SpellTypingTracker : NetworkBehaviour
         UpdateLocalTexts(current);
     }
 
+    /// <summary>
+    /// Updates User's chat, locally. If they have the chat setting off, it 
+    /// filters their chats locally looking at the cardUIManager cards.
+    /// </summary>
+    /// <param name="rawString">New text</param>
     private void UpdateLocalTexts(string rawString)
     {
-        // Local crudo
+        // El cliente filtra en local para, en todo momento,
+        // ver el texto lo más rápido posible en su pantalla, si necesidad de esperar a que el server revise su propio chat
+
         CurrentLocalRawText = rawString;
         OnLocalRawTextChanged?.Invoke(CurrentLocalRawText);
-
-        // Local filtrado (con filtrado local)
-        CurrentLocalFilteredText = CalculateFilteredText(rawString);
+        // Filtrado local (usando la UI local)
+        CurrentLocalFilteredText = CalculateFilteredTextLocal(rawString);
         OnLocalFilteredTextChanged?.Invoke(CurrentLocalFilteredText);
     }
 
-    // Función de filtrado
-    private string CalculateFilteredText(string rawString)
+    // Función de filtrado local (Cliente)
+    private string CalculateFilteredTextLocal(string rawString)
     {
         if (string.IsNullOrEmpty(rawString)) return "";
 
@@ -133,7 +149,6 @@ public class SpellTypingTracker : NetworkBehaviour
             string possiblePrefix = rawString.Substring(i);
             bool matchFound = false;
 
-            // Obtener cartas y filtrar
             foreach (string spellName in cardUIManager.GetHandSpellNames())
             {
                 if (spellName.StartsWith(possiblePrefix, System.StringComparison.Ordinal))
@@ -143,16 +158,43 @@ public class SpellTypingTracker : NetworkBehaviour
                     break;
                 }
             }
-
             if (matchFound) break;
         }
-
         return matchedText;
     }
 
-    // Filtrado en red
+    // Filtrado en red (Servidor)
     private void ProcessFilteringOnServer(FixedString32Bytes previous, FixedString32Bytes current)
     {
-        FilteredText.Value = CalculateFilteredText(current.ToString());
+        // El server se encarga de filtrar el texto que le llega para solo mostrar el texto que coincida con las cartas que está escribiendo
+        FilteredText.Value = CalculateFilteredTextServer(current.ToString());
+    }
+
+    private string CalculateFilteredTextServer(string rawString)
+    {
+        if (string.IsNullOrEmpty(rawString)) return "";
+
+        string matchedText = "";
+        if (deckController == null || deckController.CurrentHand == null) return "";
+
+        for (int i = 0; i < rawString.Length; i++)
+        {
+            string possiblePrefix = rawString.Substring(i);
+            bool matchFound = false;
+
+            // Obtener cartas desde el DeckController en el servidor y filtrar
+            foreach (int cardId in deckController.CurrentHand)
+            {
+                var cardDef = CardRegister.Instance.GetById(cardId);
+                if (cardDef != null && cardDef.name.StartsWith(possiblePrefix, System.StringComparison.Ordinal))
+                {
+                    matchedText = possiblePrefix;
+                    matchFound = true;
+                    break;
+                }
+            }
+            if (matchFound) break;
+        }
+        return matchedText;
     }
 }

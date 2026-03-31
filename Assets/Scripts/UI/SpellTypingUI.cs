@@ -7,7 +7,10 @@ public class SpellTypingUI : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private TMP_Text userSpellingText;
+    [SerializeField] private CanvasGroup userChatGroup;
+
     [SerializeField] private TMP_Text enemySpellingText;
+    [SerializeField] private CanvasGroup enemyChatGroup;
 
     [Header("Fade Settings")]
     [SerializeField] private float fadeDelay = 2.0f;
@@ -18,8 +21,8 @@ public class SpellTypingUI : MonoBehaviour
 
     private void Awake()
     {
-        ClearTextAndAlpha(userSpellingText);
-        ClearTextAndAlpha(enemySpellingText);
+        ClearTextAndAlpha(userSpellingText, userChatGroup);
+        ClearTextAndAlpha(enemySpellingText, enemyChatGroup);
     }
 
     private void OnEnable()
@@ -35,18 +38,18 @@ public class SpellTypingUI : MonoBehaviour
 
     private void Update()
     {
-        ProcessFading(userSpellingText, ref userIdleTimer);
-        ProcessFading(enemySpellingText, ref enemyIdleTimer);
+        ProcessFading(userSpellingText, userChatGroup, ref userIdleTimer);
+        ProcessFading(enemySpellingText, enemyChatGroup, ref enemyIdleTimer);
     }
 
     private void UpdateEnemyText(FixedString32Bytes previous, FixedString32Bytes current)
     {
-        ApplyNewText(enemySpellingText, current.ToString(), ref enemyIdleTimer);
+        ApplyNewText(enemySpellingText, enemyChatGroup, current.ToString(), ref enemyIdleTimer);
     }
 
     private void UpdateUserTextLocal(string current)
     {
-        ApplyNewText(userSpellingText, current, ref userIdleTimer);
+        ApplyNewText(userSpellingText, userChatGroup, current, ref userIdleTimer);
     }
 
     #region addListeners
@@ -105,25 +108,26 @@ public class SpellTypingUI : MonoBehaviour
     #endregion
 
     #region text
-    private void ApplyNewText(TMP_Text textComponent, string newText, ref float timer)
+
+    private void ApplyNewText(TMP_Text textComponent, CanvasGroup group, string newText, ref float timer)
     {
         textComponent.text = newText;
 
         if (string.IsNullOrEmpty(newText))
         {
-            SetTextAlpha(textComponent, 0f);
+            group.alpha = 0f;
             timer = 0f;
         }
         else
         {
-            SetTextAlpha(textComponent, 1f);
+            group.alpha = 1f;
             timer = fadeDelay;
         }
     }
 
-    private void ProcessFading(TMP_Text textComponent, ref float timer)
+    private void ProcessFading(TMP_Text textComponent, CanvasGroup group, ref float timer)
     {
-        if (string.IsNullOrEmpty(textComponent.text) || textComponent.color.a <= 0f) return;
+        if (string.IsNullOrEmpty(textComponent.text) || group.alpha <= 0f) return;
 
         if (timer > 0f)
         {
@@ -131,24 +135,16 @@ public class SpellTypingUI : MonoBehaviour
         }
         else
         {
-            Color c = textComponent.color;
-            c.a = Mathf.MoveTowards(c.a, 0f, Time.deltaTime * fadeSpeed);
-            textComponent.color = c;
+            group.alpha = Mathf.MoveTowards(group.alpha, 0f, Time.deltaTime * fadeSpeed);
         }
     }
 
-    private void ClearTextAndAlpha(TMP_Text textComponent)
+    private void ClearTextAndAlpha(TMP_Text textComponent, CanvasGroup group)
     {
         textComponent.text = "";
-        SetTextAlpha(textComponent, 0f);
+        group.alpha = 0f;
     }
 
-    private void SetTextAlpha(TMP_Text textComponent, float alpha)
-    {
-        Color c = textComponent.color;
-        c.a = alpha;
-        textComponent.color = c;
-    }
     #endregion
 
     #region removeListeners
