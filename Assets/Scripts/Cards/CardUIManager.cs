@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TypTyp.TextSystem;
 using UnityEngine;
 
@@ -155,4 +156,9 @@ public class CardUIManager : MonoBehaviour
             }
         }
     }
+    public IEnumerable<string> GetHandSpellNames()
+    {
+        return cardUIById.Values.Select(ui => ui.CardDefinition.name);
+    }
+
 }

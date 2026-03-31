@@ -7,6 +7,7 @@ public class GameSettings : MonoBehaviour
 {
     [SerializeField] private Toggle showSpacesToggle;
     [SerializeField] private Toggle capLocksWarningToggle;
+    [SerializeField] private Toggle filterChatToggle;
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private AudioMixer mixer;
     private FontDropdown fontDropdown;
@@ -55,6 +56,13 @@ public class GameSettings : MonoBehaviour
 
     public void SetCapsWarning(bool value) => Settings.Instance.CapsLockWarning = value;
 
+    public void ToggleFilterChat() => filterChatToggle.isOn = !filterChatToggle.isOn;
+
+    public void SetFilterChat(bool value)
+    {
+        Settings.Instance.ChatActive = value;
+    }
+
     public void AddVolume(float volumeToAdd) => volumeSlider.value += volumeToAdd;
 
     public void SetVolume(float value)
@@ -69,6 +77,7 @@ public class GameSettings : MonoBehaviour
     private void HandleBeforeSave(SaveState state)
     {
         state.global.showSpaces = showSpacesToggle.isOn;
+        state.global.chatActive = filterChatToggle.isOn;
         state.global.capsLockWarning = capLocksWarningToggle.isOn;
         state.global.volume = volumeSlider.value;
         state.global.fontIndex = fontDropdown.CurrentFontIdx;
@@ -85,6 +94,9 @@ public class GameSettings : MonoBehaviour
 
         showSpacesToggle.isOn = data.showSpaces;
         SetShowSpaces(data.showSpaces);
+
+        filterChatToggle.isOn = data.chatActive;
+        SetFilterChat(data.chatActive);
 
         capLocksWarningToggle.isOn = data.capsLockWarning;
         SetCapsWarning(data.capsLockWarning);
