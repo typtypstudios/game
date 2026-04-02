@@ -27,8 +27,9 @@ public class DeckBuilder : MonoBehaviour
     {
         InitializeEquippedCards();
 
-        if (SaveManager.Instance.TryGetSnapshot(out SaveState state))
+        if (SaveManager.Instance.HasLoadedState)
         {
+            SaveState state = SaveManager.Instance.GetState();
             ApplyDeck(state);
         }
         else

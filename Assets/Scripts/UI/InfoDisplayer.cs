@@ -12,7 +12,6 @@ public class InfoDisplayer : MonoBehaviour
     private WritableButton writableButton;
     private Color originalNameColor = Color.white;
     private Material emissiveMat;
-    private int originalSiblingIndex = -1;
     public ADefinition Definition { get; private set; }
 
     private void Awake()
@@ -35,11 +34,9 @@ public class InfoDisplayer : MonoBehaviour
     {
         if (highlight && !hovered)
         {
-            originalSiblingIndex = transform.GetSiblingIndex();
             transform.localScale *= hoverSizeMult;
             hovered = true;
             cardName.color = writableButton.FillColor + Color.white * highlightColorAddition; //Ligeramente mas claro
-            transform.SetAsLastSibling();
             emissiveMat.SetFloat("_EmissionForce", 1);
         }
         else if (!highlight && hovered)
@@ -47,15 +44,6 @@ public class InfoDisplayer : MonoBehaviour
             transform.localScale /= hoverSizeMult;
             hovered = false;
             cardName.color = originalNameColor;
-
-            int targetSiblingIndex = originalSiblingIndex;
-            if (transform.parent != null)
-            {
-                targetSiblingIndex = Mathf.Clamp(targetSiblingIndex, 0, transform.parent.childCount - 1);
-                transform.SetSiblingIndex(targetSiblingIndex);
-            }
-
-            originalSiblingIndex = -1;
             emissiveMat.SetFloat("_EmissionForce", 0);
         }
     }

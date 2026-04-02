@@ -1,6 +1,5 @@
 using System;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 
 public class BuilderDisplayer : InfoDisplayer
@@ -25,7 +24,6 @@ public class BuilderDisplayer : InfoDisplayer
     {
         base.Highlight(highlight);
         EnableInfoPanel(highlight);
-        if (highlight) transform.parent.SetAsLastSibling();
     }
 
     private void EnableInfoPanel(bool enable)
