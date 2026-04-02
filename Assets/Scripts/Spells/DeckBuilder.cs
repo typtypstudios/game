@@ -4,6 +4,8 @@ using System.Linq;
 using TypTyp;
 using UnityEngine;
 
+//?
+
 public class DeckBuilder : MonoBehaviour
 {
     [SerializeField] private GameObject cardPrefab;
@@ -39,7 +41,9 @@ public class DeckBuilder : MonoBehaviour
 
         foreach (GameObject panel in highlightPanels)
         {
-            panel.transform.SetAsLastSibling();
+            // Keep highlight panels behind cards so selected cards remain visible
+            // without reordering card siblings.
+            panel.transform.SetAsFirstSibling();
         }
 
         BuilderDisplayer.OnCardChosen += ProcessCardChosen;
@@ -70,7 +74,7 @@ public class DeckBuilder : MonoBehaviour
         if (selectedUnequipped) selectedUnequipped.Highlight(false);
         selectedEquipped = null;
         selectedUnequipped = null;
-        foreach (GameObject panel in highlightPanels) panel.SetActive(false);
+        UpdateHighlightPanelsVisibility();
     }
 
     private void InitializeEquippedCards()
@@ -125,10 +129,7 @@ public class DeckBuilder : MonoBehaviour
 
         card.Highlight(true);
         CheckCardChange();
-        foreach (GameObject panel in highlightPanels)
-        {
-            panel.SetActive(panel.transform.GetSiblingIndex() != panel.transform.parent.childCount - 1);
-        }
+        UpdateHighlightPanelsVisibility();
     }
 
     private void CheckCardChange()
@@ -211,5 +212,14 @@ public class DeckBuilder : MonoBehaviour
     private void RefreshCardsInDeck()
     {
         CardsInDeck = equippedCards.Select(card => card.Card).ToArray();
+    }
+
+    private void UpdateHighlightPanelsVisibility()
+    {
+        bool hasSelection = selectedEquipped != null || selectedUnequipped != null;
+        foreach (GameObject panel in highlightPanels)
+        {
+            panel.SetActive(hasSelection);
+        }
     }
 }
