@@ -77,11 +77,30 @@ public class GameSettings : MonoBehaviour
 
     private void HandleBeforeSave(SaveState state)
     {
-        state.global.showSpaces = showSpacesToggle.isOn;
-        state.global.chatActive = filterChatToggle.isOn;
-        state.global.capsLockWarning = capLocksWarningToggle.isOn;
-        state.global.volume = volumeSlider.value;
-        state.global.fontIndex = fontDropdown.CurrentFontIdx;
+        if (showSpacesToggle != null)
+        {
+            state.global.showSpaces = showSpacesToggle.isOn;
+        }
+
+        if (filterChatToggle != null)
+        {
+            state.global.chatActive = filterChatToggle.isOn;
+        }
+
+        if (capLocksWarningToggle != null)
+        {
+            state.global.capsLockWarning = capLocksWarningToggle.isOn;
+        }
+
+        if (volumeSlider != null)
+        {
+            state.global.volume = volumeSlider.value;
+        }
+
+        if (fontDropdown != null)
+        {
+            state.global.fontIndex = fontDropdown.CurrentFontIdx;
+        }
     }
 
     private void HandleAfterLoad(SaveState state)
@@ -93,18 +112,37 @@ public class GameSettings : MonoBehaviour
     {
         GlobalSettingsData data = state.global ?? new GlobalSettingsData();
 
-        showSpacesToggle.isOn = data.showSpaces;
         SetShowSpaces(data.showSpaces);
+        if (showSpacesToggle != null)
+        {
+            showSpacesToggle.isOn = data.showSpaces;
+        }
 
-        filterChatToggle.isOn = data.chatActive;
         SetFilterChat(data.chatActive);
+        if (filterChatToggle != null)
+        {
+            filterChatToggle.isOn = data.chatActive;
+        }
 
-        capLocksWarningToggle.isOn = data.capsLockWarning;
         SetCapsWarning(data.capsLockWarning);
+        if (capLocksWarningToggle != null)
+        {
+            capLocksWarningToggle.isOn = data.capsLockWarning;
+        }
 
-        volumeSlider.value = data.volume;
         SetVolume(data.volume);
+        if (volumeSlider != null)
+        {
+            volumeSlider.value = data.volume;
+        }
 
-        fontDropdown.SetFont(data.fontIndex);
+        if (fontDropdown != null)
+        {
+            if (fontDropdown.Options != null && fontDropdown.Options.Length > 0)
+            {
+                int safeFontIndex = Mathf.Clamp(data.fontIndex, 0, fontDropdown.Options.Length - 1);
+                fontDropdown.SetFont(safeFontIndex);
+            }
+        }
     }
 }

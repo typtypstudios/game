@@ -21,11 +21,34 @@ public class GrimoireContentGenerator : MonoBehaviour
 
     private void GenerateSection(GrimoireSection section)
     {
+        if (section == null)
+        {
+            return;
+        }
+
         navController.AddSection(contentManager.SectionStartPages.Count, section.sectionName);
         ADefinition[] definitions;
         if (section.cardRegister)
-            definitions = section.cardRegister.RegisteredItems.OrderBy(c => c.Name).ToArray();
-        else definitions = section.effectRegister.RegisteredItems.OrderBy(c => c.name).ToArray();
+        {
+            definitions = section.cardRegister.RegisteredItems
+                .Where(c => c != null)
+                .OrderBy(c => c.Name)
+                .ToArray();
+        }
+        else if (section.effectRegister)
+        {
+            definitions = section.effectRegister.RegisteredItems
+                .Where(c => c != null)
+                .OrderBy(c => c.name)
+                .Cast<ADefinition>()
+                .ToArray();
+        }
+        else
+        {
+            Debug.LogWarning($"[GrimoireContentGenerator] Section '{section.sectionName}' has no register assigned.");
+            definitions = System.Array.Empty<ADefinition>();
+        }
+
         FillSection(definitions);
     }
 
