@@ -43,10 +43,13 @@ public class Player : NetworkBehaviour
             User = this;
 
             string playerNameValue = "AverageCultist";
-            if (SaveManager.Instance.TryGetSnapshot(out SaveState state) &&
-                !string.IsNullOrWhiteSpace(state.slot.profile.username))
+            if (SaveManager.Instance.HasLoadedState)
             {
-                playerNameValue = state.slot.profile.username;
+                SaveState state = SaveManager.Instance.GetState();
+                if (!string.IsNullOrWhiteSpace(state.slot.profile.username))
+                {
+                    playerNameValue = state.slot.profile.username;
+                }
             }
 
             FixedString32Bytes playerName = playerNameValue;

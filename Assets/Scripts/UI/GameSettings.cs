@@ -25,8 +25,9 @@ public class GameSettings : MonoBehaviour
 
     private void Start()
     {
-        if (SaveManager.Instance.TryGetSnapshot(out SaveState state))
+        if (SaveManager.Instance.HasLoadedState)
         {
+            SaveState state = SaveManager.Instance.GetState();
             ApplySettings(state);
         }
         else

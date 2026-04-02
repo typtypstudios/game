@@ -1,4 +1,5 @@
 using System;
+using TypTyp.Application;
 
 [Serializable]
 public class GlobalSettingsData
@@ -9,4 +10,5 @@ public class GlobalSettingsData
     public float volume = 0.75f;
     public int fontIndex;
     public bool initialTipUnderstood;
+    public VideoSettingsData videoSettings = VideoSettingsData.CreateDefault();
 }
