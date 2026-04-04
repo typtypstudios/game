@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 namespace TypTyp.TextSystem.Typable
 {
-    public class TypableProgressBarView : MonoBehaviour, ITypableView
+    public class TypableProgressBarView : TypableViewBase
     {
         [SerializeField] private Image fill;
 
-        public void UpdateView(in TypableViewDTO dto)
+        public override void UpdateView(in TypableViewDTO dto)
         {
             if (fill == null) return;
 

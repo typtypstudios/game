@@ -4,7 +4,7 @@ namespace TypTyp.TextSystem.Typable
 {
     public class TypableController : MonoBehaviour
     {
-        [SerializeField] TMPTypableView view;
+        [SerializeField] private TypableViewBase[] views;
         [SerializeField] TypableConfig config;
 
         Typable typable;
@@ -13,8 +13,12 @@ namespace TypTyp.TextSystem.Typable
         void Awake()
         {
             typable = new Typable(config);
-            presenter = new TypablePresenter(typable);
-            presenter.AddView(view);
+            presenter = new TypablePresenter(typable, views);
+            // if (views == null) return;
+            // for (int i = 0; i < views.Length; i++)
+            // {
+            //     presenter.AddView(views[i]);
+            // }
         }
 
         void OnEnable()

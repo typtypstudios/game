@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TypTyp.TextSystem.Typable
 {
-    public class TMPTypableView : MonoBehaviour, ITypableView
+    public class TMPTypableView : TypableViewBase
     {
         [SerializeField] private TMP_Text text;
         [SerializeField] private TypableViewStylePreset stylePreset;
@@ -20,7 +20,7 @@ namespace TypTyp.TextSystem.Typable
         }
 
         //Es posible que se pueda beneficiar de un string builder
-        public void UpdateView(in TypableViewDTO dto)
+        public override void UpdateView(in TypableViewDTO dto)
         {
             if (this.text == null) return;
 
