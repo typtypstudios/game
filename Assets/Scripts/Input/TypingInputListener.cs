@@ -1,19 +1,8 @@
 using System;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace TypTyp.Input
 {
-    [Flags]
-    public enum InputModeMask : byte
-    {
-        Nothing = 0,
-        Ritual = 1 << 0,
-        Spells = 1 << 1,
-        GameEnded = 1 << 2
-    }
-
-
     public class TypingInputListener : MonoBehaviour, ITypingInputListener
     {
         [field: SerializeField] public InputModeMask InputMask = InputModeMask.Nothing;
@@ -31,16 +20,10 @@ namespace TypTyp.Input
 
         void HandleInput(char c)
         {
-            if (InputMask.HasFlag(GetGameInputMode()))
+            if (InputMask.HasFlag(InputHandler.Instance.CurrentMode))
             {
                 OnInputTyped?.Invoke(c);
             }
-        }
-
-        //TODO: Unificar esto con el PlayerInputManager, que ahora mismo usa el anterior enum
-        InputModeMask GetGameInputMode()
-        {
-            return default;
         }
     }
 }

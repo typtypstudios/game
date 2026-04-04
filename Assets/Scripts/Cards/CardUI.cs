@@ -25,13 +25,11 @@ public class CardUI : MonoBehaviour
     void OnEnable()
     {
         writableSpell.OnSpellComplete.AddListener(OnSpellWritten);
-        Player.User.PlayerInputManager.OnInputModeChangedEvent += OnInputModeChanged;
     }
 
     void OnDisable()
     {
         writableSpell.OnSpellComplete.RemoveListener(OnSpellWritten);
-        Player.User.PlayerInputManager.OnInputModeChangedEvent -= OnInputModeChanged;
     }
 
     public void BindCardDefinition(CardDefinition def, ITextPipeline pipeline, int costModifier = 0)
@@ -69,9 +67,5 @@ public class CardUI : MonoBehaviour
         OnCardWritten?.Invoke(this);
     }
 
-    void OnInputModeChanged(InputMode mode)
-    {
-        if(writableSpell.gameObject.activeSelf) 
-            writableSpell.ToggleListener(mode == InputMode.CastingSpells);
-    }
+    // El modo de input se gestiona via TypingInputListener en el propio objeto.
 }

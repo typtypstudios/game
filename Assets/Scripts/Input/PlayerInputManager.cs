@@ -1,18 +1,16 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TypTyp.Input;
 
 [RequireComponent(typeof(Player))]
 public class PlayerInputManager : MonoBehaviour
 {
     [SerializeField] private InputActionReference changeModeActionReference;
     private Animator anim;
-    private RitualManager ritualManager;
 
     Player player;
 
-    public event Action<InputMode> OnInputModeChangedEvent;
-    public event Action OnSilencedAttempt;
+    public event System.Action OnSilencedAttempt;
 
     // Bool para el efecto de silenciado
     private bool isSilenced = false;
@@ -22,7 +20,6 @@ public class PlayerInputManager : MonoBehaviour
         MatchManager.OnMatchStarted += SubscribeToInput;
         MatchManager.OnMatchEnded += UnsubscribeToInput;
         anim = GetComponent<Animator>();
-        ritualManager = GetComponentInChildren<RitualManager>(true);
         player = GetComponent<Player>();
     }
 
@@ -38,7 +35,7 @@ public class PlayerInputManager : MonoBehaviour
         if (player.IsOwner)
         {
             changeModeActionReference.action.started += ChangeMode;
-            SetMode(InputMode.Ritual);
+            SetMode(InputModeMask.Ritual);
         }
     }
 
@@ -47,7 +44,7 @@ public class PlayerInputManager : MonoBehaviour
         if (player.IsOwner)
         {
             changeModeActionReference.action.started -= ChangeMode;
-            SetMode(InputMode.GameEnded);
+            SetMode(InputModeMask.GameEnded);
         }
     }
 
@@ -64,14 +61,13 @@ public class PlayerInputManager : MonoBehaviour
     private void ChangeModeLogic()
     {
         bool castingSpells = !anim.GetBool("CastingSpells");
-        SetMode(castingSpells ? InputMode.CastingSpells : InputMode.Ritual);
+        SetMode(castingSpells ? InputModeMask.Spells : InputModeMask.Ritual);
     }
 
-    private void SetMode(InputMode mode)
+    private void SetMode(InputModeMask mode)
     {
-        anim.SetBool("CastingSpells", mode == InputMode.CastingSpells);
-        if(ritualManager.gameObject.activeSelf) ritualManager.ToggleListener(mode == InputMode.Ritual);
-        OnInputModeChangedEvent?.Invoke(mode);
+        anim.SetBool("CastingSpells", mode == InputModeMask.Spells);
+        InputHandler.Instance.SetMode(mode);
     }
 
     #region SpellEffects
@@ -79,7 +75,7 @@ public class PlayerInputManager : MonoBehaviour
     public void SilenceSpellEffect(bool state)
     {
         isSilenced = state;
-        if (state) SetMode(InputMode.Ritual);
+        if (state) SetMode(InputModeMask.Ritual);
     }
     public void SwapEffect()
     {
@@ -89,11 +85,4 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     #endregion
-}
-
-public enum InputMode
-{
-    Ritual,
-    CastingSpells,
-    GameEnded
 }

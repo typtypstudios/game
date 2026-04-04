@@ -1,4 +1,5 @@
 using UnityEngine;
+using TypTyp.Input;
 
 public abstract class AInputListener : MonoBehaviour
 {
