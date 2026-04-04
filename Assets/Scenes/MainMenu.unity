@@ -766,7 +766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameSettings
   showSpacesToggle: {fileID: 1469096328}
   capLocksWarningToggle: {fileID: 1547368321}
-  filterChatToggle: {fileID: 756084147}
+  filterChatToggle: {fileID: 0}
   volumeSlider: {fileID: 235908569}
   mixer: {fileID: 24100000, guid: a06ae66d7f7c48147b692d2b088bd019, type: 2}
 --- !u!114 &183026549
@@ -1867,6 +1867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cb11719237efce4294072235cdf0c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
+  ignoreRestriction: 0
 --- !u!114 &358177299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4086,7 +4087,7 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 1925619749}
   toggleTransition: 1
-  graphic: {fileID: 1690960829}
+  graphic: {fileID: 0}
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
@@ -12681,8 +12682,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1690960828}
+  m_Children: []
   m_Father: {fileID: 756084146}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
@@ -13096,6 +13096,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   fillColor: {r: 1, g: 0, b: 1, a: 1}
   autoSubscribe: 1
+  useDefaultColor: 1
   resetIfFailed: 1
   resetOnWritten: 1
   resetTime: 0.5
