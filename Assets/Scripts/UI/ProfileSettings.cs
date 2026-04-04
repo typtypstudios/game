@@ -32,8 +32,9 @@ public class ProfileSettings : MonoBehaviour
 
     private void Start()
     {
-        if (SaveManager.Instance.TryGetSnapshot(out SaveState state))
+        if (SaveManager.Instance.HasLoadedState)
         {
+            SaveState state = SaveManager.Instance.GetState();
             ApplyProfile(state);
         }
         else
@@ -106,8 +107,9 @@ public class ProfileSettings : MonoBehaviour
             helpText.text = "Name saved!";
             SaveManager.Instance.Save();
         }
-        else if (SaveManager.Instance.TryGetSnapshot(out SaveState state))
+        else if (SaveManager.Instance.HasLoadedState)
         {
+            SaveState state = SaveManager.Instance.GetState();
             ApplyProfile(state);
         }
         else

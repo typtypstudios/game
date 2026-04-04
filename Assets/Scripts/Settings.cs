@@ -53,5 +53,7 @@ namespace TypTyp
         [field: SerializeField] public Color NegativeHighlightColor { get; set; } = Color.red;
         [field: SerializeField] public Color EffectHighlightColor { get; set; } = Color.purple;
 
+        [Header("ChatRelated")]
+        [field: SerializeField] public bool ChatActive { get; internal set; } = true;
     }
 }

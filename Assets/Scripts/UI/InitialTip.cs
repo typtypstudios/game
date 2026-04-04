@@ -19,8 +19,9 @@ public class InitialTip : MonoBehaviour
 
     private void Start()
     {
-        if (SaveManager.Instance.TryGetSnapshot(out SaveState state))
+        if (SaveManager.Instance.HasLoadedState)
         {
+            SaveState state = SaveManager.Instance.GetState();
             ApplyState(state);
         }
         else

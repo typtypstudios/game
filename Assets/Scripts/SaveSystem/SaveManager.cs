@@ -44,9 +44,9 @@ public class SaveManager : ScriptableSingleton<SaveManager>
 
         SaveData data = NormalizeSlotData(new SaveData());
         SaveDataInternal(data);
-        currentState.slot = DeepCopy(data);
+        currentState.slot = NormalizeSlotData(data);
         HasLoadedState = true;
-        OnAfterLoad?.Invoke(GetSnapshot());
+        OnAfterLoad?.Invoke(GetState());
     }
 
     public void SetActiveSlot(string slotId)
@@ -68,13 +68,12 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         EnsureInitialized();
         EnsureActiveSlot();
 
-        SaveState state = NormalizeState(GetSnapshot() ?? new SaveState());
+        SaveState state = GetState();
         OnBeforeSave?.Invoke(state);
         NormalizeState(state);
 
         SaveDataInternal(state.slot);
         SaveGlobalSettingsInternal(state.global);
-        currentState = DeepCopy(state);
         HasLoadedState = true;
     }
 
@@ -94,13 +93,20 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         LoadGlobalSettingsInternal();
         currentState = NormalizeState(currentState);
         HasLoadedState = true;
-        OnAfterLoad?.Invoke(GetSnapshot());
+        OnAfterLoad?.Invoke(GetState());
     }
 
-    public bool TryGetSnapshot(out SaveState state)
+    public SaveState GetState()
     {
         EnsureInitialized();
-        state = HasLoadedState ? GetSnapshot() : null;
+        currentState = NormalizeState(currentState);
+        return currentState;
+    }
+
+    [Obsolete("TryGetSnapshot is deprecated. Use HasLoadedState + GetState() instead.")]
+    public bool TryGetSnapshot(out SaveState state)
+    {
+        state = HasLoadedState ? GetState() : null;
         return state != null;
     }
 
@@ -146,7 +152,7 @@ public class SaveManager : ScriptableSingleton<SaveManager>
 
         currentState = NormalizeState(currentState);
         HasLoadedState = true;
-        OnAfterLoad?.Invoke(GetSnapshot());
+        OnAfterLoad?.Invoke(GetState());
     }
 
     private void EnsureActiveSlot()
@@ -189,9 +195,10 @@ public class SaveManager : ScriptableSingleton<SaveManager>
 #endif
     }
 
+    [Obsolete("GetSnapshot is deprecated. Use GetState() instead.")]
     private SaveState GetSnapshot()
     {
-        return DeepCopy(NormalizeState(currentState));
+        return GetState();
     }
 
     private static SaveState NormalizeState(SaveState state)
@@ -229,13 +236,4 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         }
     }
 
-    private static T DeepCopy<T>(T source) where T : class
-    {
-        if (source == null)
-        {
-            return null;
-        }
-
-        return DeserializeOrDefault(JsonUtility.ToJson(source), source, typeof(T).Name);
-    }
 }

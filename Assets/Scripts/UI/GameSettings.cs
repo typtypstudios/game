@@ -7,6 +7,7 @@ public class GameSettings : MonoBehaviour
 {
     [SerializeField] private Toggle showSpacesToggle;
     [SerializeField] private Toggle capLocksWarningToggle;
+    [SerializeField] private Toggle filterChatToggle;
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private AudioMixer mixer;
     private FontDropdown fontDropdown;
@@ -24,8 +25,9 @@ public class GameSettings : MonoBehaviour
 
     private void Start()
     {
-        if (SaveManager.Instance.TryGetSnapshot(out SaveState state))
+        if (SaveManager.Instance.HasLoadedState)
         {
+            SaveState state = SaveManager.Instance.GetState();
             ApplySettings(state);
         }
         else
@@ -55,6 +57,13 @@ public class GameSettings : MonoBehaviour
 
     public void SetCapsWarning(bool value) => Settings.Instance.CapsLockWarning = value;
 
+    public void ToggleFilterChat() => filterChatToggle.isOn = !filterChatToggle.isOn;
+
+    public void SetFilterChat(bool value)
+    {
+        Settings.Instance.ChatActive = value;
+    }
+
     public void AddVolume(float volumeToAdd) => volumeSlider.value += volumeToAdd;
 
     public void SetVolume(float value)
@@ -68,10 +77,30 @@ public class GameSettings : MonoBehaviour
 
     private void HandleBeforeSave(SaveState state)
     {
-        state.global.showSpaces = showSpacesToggle.isOn;
-        state.global.capsLockWarning = capLocksWarningToggle.isOn;
-        state.global.volume = volumeSlider.value;
-        state.global.fontIndex = fontDropdown.CurrentFontIdx;
+        if (showSpacesToggle != null)
+        {
+            state.global.showSpaces = showSpacesToggle.isOn;
+        }
+
+        if (filterChatToggle != null)
+        {
+            state.global.chatActive = filterChatToggle.isOn;
+        }
+
+        if (capLocksWarningToggle != null)
+        {
+            state.global.capsLockWarning = capLocksWarningToggle.isOn;
+        }
+
+        if (volumeSlider != null)
+        {
+            state.global.volume = volumeSlider.value;
+        }
+
+        if (fontDropdown != null)
+        {
+            state.global.fontIndex = fontDropdown.CurrentFontIdx;
+        }
     }
 
     private void HandleAfterLoad(SaveState state)
@@ -83,15 +112,37 @@ public class GameSettings : MonoBehaviour
     {
         GlobalSettingsData data = state.global ?? new GlobalSettingsData();
 
-        showSpacesToggle.isOn = data.showSpaces;
         SetShowSpaces(data.showSpaces);
+        if (showSpacesToggle != null)
+        {
+            showSpacesToggle.isOn = data.showSpaces;
+        }
 
-        capLocksWarningToggle.isOn = data.capsLockWarning;
+        SetFilterChat(data.chatActive);
+        if (filterChatToggle != null)
+        {
+            filterChatToggle.isOn = data.chatActive;
+        }
+
         SetCapsWarning(data.capsLockWarning);
+        if (capLocksWarningToggle != null)
+        {
+            capLocksWarningToggle.isOn = data.capsLockWarning;
+        }
 
-        volumeSlider.value = data.volume;
         SetVolume(data.volume);
+        if (volumeSlider != null)
+        {
+            volumeSlider.value = data.volume;
+        }
 
-        fontDropdown.SetFont(data.fontIndex);
+        if (fontDropdown != null)
+        {
+            if (fontDropdown.Options != null && fontDropdown.Options.Length > 0)
+            {
+                int safeFontIndex = Mathf.Clamp(data.fontIndex, 0, fontDropdown.Options.Length - 1);
+                fontDropdown.SetFont(safeFontIndex);
+            }
+        }
     }
 }
