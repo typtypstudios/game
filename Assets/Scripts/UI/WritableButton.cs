@@ -3,10 +3,12 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System;
+using TypTyp;
 
 [RequireComponent(typeof(Button))]
 public class WritableButton : AInputListener
 {
+    [SerializeField] private bool useDefaultColor = true;
     [SerializeField] private bool resetIfFailed = true;
     [SerializeField] private bool resetOnWritten = true;
     [SerializeField] private float resetTime = 0.5f;
@@ -29,6 +31,12 @@ public class WritableButton : AInputListener
         canvas = GetComponentInParent<Canvas>();
         resetTimer = new(resetTime);
         OnButtonWritten += OnOtherButtonWritten;
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        if (useDefaultColor) FillColor = Settings.Instance.DefaultButtonColor;
     }
 
     protected override void OnDisable()
@@ -72,8 +80,8 @@ public class WritableButton : AInputListener
                 StopCoroutine(resetCoroutine);
                 ResetButton();
             }
-            buttonText.text = fillColorTag + originalText[..(Idx + 1)] + "</color>" + 
-                originalText[(Idx + 1)..];
+			buttonText.text =  fillColorTag + originalText[..(Idx + 1)] + "</color>" + 
+				originalText[(Idx + 1)..];
             if (++Idx == textLength)
             {
                 resetCoroutine = StartCoroutine(ResetButtonCoroutine());

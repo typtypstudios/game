@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(TMP_Text))]
 public class DefaultFontConfigurator : MonoBehaviour
 {
+    [SerializeField] private bool ignoreRestriction = false;
     private TMP_Text textMesh;
 
     private void Awake()
@@ -15,6 +16,8 @@ public class DefaultFontConfigurator : MonoBehaviour
 
     public void ResetFont()
     {
+        bool isRitual = GetComponentInParent<Player>() != null;
+        if (Settings.Instance.OnlyApplyDefaultFontOnRitual && !isRitual && !ignoreRestriction) return;
         if(textMesh != null) textMesh.font = Settings.Instance.DefaultFont;
     }
 }

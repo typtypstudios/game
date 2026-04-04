@@ -44,6 +44,8 @@ namespace TypTyp
 
         [Header("Settings")]
         [field: SerializeField] public TMP_FontAsset DefaultFont { get; set; }
+        [field: SerializeField] public bool OnlyApplyDefaultFontOnRitual { get; set; } = true;
+        [field: SerializeField] public Color DefaultButtonColor { get; set; }
 
         [Header("GrimoireRelated")]
         [field: SerializeField] public Color DurationHighlightColor { get; set; } = Color.cyan;
