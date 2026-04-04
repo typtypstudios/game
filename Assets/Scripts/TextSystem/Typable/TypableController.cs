@@ -14,11 +14,6 @@ namespace TypTyp.TextSystem.Typable
         {
             typable = new Typable(config);
             presenter = new TypablePresenter(typable, views);
-            // if (views == null) return;
-            // for (int i = 0; i < views.Length; i++)
-            // {
-            //     presenter.AddView(views[i]);
-            // }
         }
 
         void OnEnable()

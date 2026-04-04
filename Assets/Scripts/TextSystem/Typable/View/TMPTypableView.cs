@@ -6,7 +6,7 @@ namespace TypTyp.TextSystem.Typable
 {
     public class TMPTypableView : TypableViewBase
     {
-        [SerializeField] private TMP_Text text;
+        [SerializeField] private TMP_Text tmp;
         [SerializeField] private TypableViewStylePreset stylePreset;
         [SerializeField] private TypableViewStyleConfig styleConfig = TypableViewStyleConfig.Default;
 
@@ -19,10 +19,9 @@ namespace TypTyp.TextSystem.Typable
                 styleConfig = stylePreset.Config;
         }
 
-        //Es posible que se pueda beneficiar de un string builder
         public override void UpdateView(in TypableViewDTO dto)
         {
-            if (this.text == null) return;
+            if (tmp == null) return;
 
             string safeText = dto.Text ?? "";
             int idx = dto.Idx;
@@ -63,7 +62,7 @@ namespace TypTyp.TextSystem.Typable
             if (restStart < safeText.Length)
                 sb.Append(safeText, restStart, safeText.Length - restStart);
 
-            this.text.text = sb.ToString();
+            tmp.text = sb.ToString();
 
             if (!wasComplete && dto.IsComplete && styleConfig.RandomizeCorrectColorOnComplete)
             {
