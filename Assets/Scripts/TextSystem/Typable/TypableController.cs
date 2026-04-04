@@ -1,7 +1,9 @@
 using UnityEngine;
+using TypTyp.Input;
 
 namespace TypTyp.TextSystem.Typable
 {
+    [RequireComponent(typeof(TypingInputListener))]
     public class TypableController : MonoBehaviour
     {
         [SerializeField] private TypableViewBase[] views;
@@ -9,21 +11,23 @@ namespace TypTyp.TextSystem.Typable
 
         Typable typable;
         TypablePresenter presenter;
+        TypingInputListener input; 
 
         void Awake()
         {
+            input = GetComponent<TypingInputListener>();
             typable = new Typable(config);
             presenter = new TypablePresenter(typable, views);
         }
 
         void OnEnable()
         {
-            InputHandler.Instance.AddListener(HandleInput);
+            input.OnInputTyped += HandleInput;
         }
 
         void OnDisable()
         {
-            InputHandler.Instance.RemoveListener(HandleInput);
+            input.OnInputTyped -= HandleInput;
         }
 
         public void SetText(string text)
