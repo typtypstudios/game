@@ -13,7 +13,9 @@ namespace TypTyp.Cults
 
         public IEnumerable<CardDefinition> GetCards()
         {
-            return CardRegister.Instance.RegisteredItems.Where(x => x.Cult == this);
+            return CardRegister.Instance.RegisteredItems.
+                Where(x => x.Cult == this).
+                Distinct();
         }
 
         public string GetRank(int rank)
