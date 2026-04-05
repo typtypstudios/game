@@ -15,7 +15,8 @@ namespace TypTyp.Input
 
         void OnDisable()
         {
-            InputHandler.Instance.RemoveListener(HandleInput);
+            if (InputHandler.Instance != null)
+                InputHandler.Instance.RemoveListener(HandleInput);
         }
 
         void HandleInput(char c)
