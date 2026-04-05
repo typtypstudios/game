@@ -16,6 +16,14 @@ namespace TypTyp.TextSystem.Typable
         TypingInputListener input; 
 
         public event Action OnComplete;
+        public event Action OnChanged;
+        public event Action OnError;
+
+        public Func<char, char> InputTransform;
+
+        public int Idx => typable != null ? typable.Idx : 0;
+        public string Text => typable != null ? typable.Text : string.Empty;
+        public bool HasMistake => typable != null && typable.HasMistake;
 
         void Awake()
         {
@@ -25,6 +33,8 @@ namespace TypTyp.TextSystem.Typable
             typable = new Typable(config);
             presenter = new TypablePresenter(typable, views);
             typable.OnComplete += HandleComplete;
+            typable.OnChanged += HandleChanged;
+            typable.OnError += HandleError;
         }
 
         void Reset()
@@ -45,7 +55,11 @@ namespace TypTyp.TextSystem.Typable
         void OnDestroy()
         {
             if (typable != null)
+            {
                 typable.OnComplete -= HandleComplete;
+                typable.OnChanged -= HandleChanged;
+                typable.OnError -= HandleError;
+            }
         }
 
         public void SetText(string text)
@@ -55,12 +69,23 @@ namespace TypTyp.TextSystem.Typable
 
         void HandleInput(char c)
         {
-            typable.Input(c);
+            char processed = InputTransform != null ? InputTransform(c) : c;
+            typable.Input(processed);
         }
 
         void HandleComplete()
         {
             OnComplete?.Invoke();
+        }
+
+        void HandleChanged()
+        {
+            OnChanged?.Invoke();
+        }
+
+        void HandleError()
+        {
+            OnError?.Invoke();
         }
     }
 }

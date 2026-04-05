@@ -19,7 +19,7 @@ namespace TypTyp.Input
     public class InputHandler : Singleton<InputHandler>
     {
         public float Lag { get; set; } = 0;
-        public InputModeMask CurrentMode { get; private set; } = InputModeMask.Nothing;
+        [field: SerializeField] public InputModeMask CurrentMode { get; private set; } = InputModeMask.Nothing;
 
         public event Action<InputModeMask> OnInputModeChanged;
 
@@ -78,4 +78,3 @@ namespace TypTyp.Input
         }
     }
 }
-

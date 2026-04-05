@@ -20,7 +20,8 @@ namespace TypTyp.Input
 
         void HandleInput(char c)
         {
-            if (InputMask.HasFlag(InputHandler.Instance.CurrentMode))
+            bool allowed = InputMask.HasFlag(InputHandler.Instance.CurrentMode);
+            if (allowed)
             {
                 OnInputTyped?.Invoke(c);
             }
