@@ -59,10 +59,7 @@ public class GameSettings : MonoBehaviour
 
     public void ToggleFilterChat() => filterChatToggle.isOn = !filterChatToggle.isOn;
 
-    public void SetFilterChat(bool value)
-    {
-        Settings.Instance.ChatActive = value;
-    }
+    public void SetFilterChat(bool value) => Settings.Instance.ChatActive = value;    
 
     public void AddVolume(float volumeToAdd) => volumeSlider.value += volumeToAdd;
 
@@ -128,6 +125,12 @@ public class GameSettings : MonoBehaviour
         if (capLocksWarningToggle != null)
         {
             capLocksWarningToggle.isOn = data.capsLockWarning;
+        }
+
+        SetFilterChat(data.chatActive);
+        if (filterChatToggle != null)
+        {
+            filterChatToggle.isOn = data.chatActive;
         }
 
         SetVolume(data.volume);
