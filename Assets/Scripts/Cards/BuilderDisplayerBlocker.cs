@@ -13,9 +13,7 @@ public class BuilderDisplayerBlocker : MonoBehaviour
     {
         defaultText ??= tmp.text;
         colorTag ??= Utils.ColorToTag(levelHighlightColor);
-        SaveState state = SaveManager.Instance.GetState();
-        int currentLevel = state.slot.cultData[state.slot.cultId].level;
-        bool block = card.Cult != null && card.RequiredLevel > currentLevel;
+        bool block = card.Cult != null && card.RequiredLevel > RuntimeVariables.Instance.CurrentLevel;
         tmp.text = defaultText.Replace("<level>", colorTag + card.RequiredLevel + "</color>");
         cardButton.CompletelyBlock(block);
         this.gameObject.SetActive(block);
