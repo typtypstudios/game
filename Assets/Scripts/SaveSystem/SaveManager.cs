@@ -1,4 +1,5 @@
 using System;
+using TypTyp.Cults;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -213,8 +214,8 @@ public class SaveManager : ScriptableSingleton<SaveManager>
     {
         data ??= new SaveData();
         data.profile ??= new ProfileSaveData();
-        data.deck ??= new DeckSaveData();
-        data.deck.equippedCardIds ??= new System.Collections.Generic.List<int>();
+        data.cultData ??= new CultData[CultRegister.Instance.Count];
+        for (int i = 0; i < CultRegister.Instance.Count; i++) data.cultData[i] ??= new();
         return data;
     }
 

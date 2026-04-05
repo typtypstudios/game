@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TypTyp;
+using TypTyp.Cults;
 using UnityEngine;
 
 //?
@@ -28,16 +29,6 @@ public class DeckBuilder : MonoBehaviour
     private void Awake()
     {
         InitializeEquippedCards();
-
-        if (SaveManager.Instance.HasLoadedState)
-        {
-            SaveState state = SaveManager.Instance.GetState();
-            ApplyDeck(state);
-        }
-        else
-        {
-            ApplyDeck(new SaveState());
-        }
 
         foreach (GameObject panel in highlightPanels)
         {
@@ -86,7 +77,7 @@ public class DeckBuilder : MonoBehaviour
         }
     }
 
-    private void RebuildUnequippedCards()
+    private void RebuildUnequippedCards(CultDefinition cult)
     {
         foreach (BuilderDisplayer card in unequippedCards)
         {
@@ -98,12 +89,26 @@ public class DeckBuilder : MonoBehaviour
 
         unequippedCards.Clear();
 
-        for (int i = 0; i < CardRegister.Instance.Count; i++)
+        List<CardDefinition> defaultCards = CardRegister.Instance.RegisteredItems.
+            Where((c) => c.Cult == null).
+            Distinct().
+            OrderBy((c) => c.Name).ToList();
+        AddUnequippedCardCollection(defaultCards);
+        List<CardDefinition> cultCards = cult.GetCards().
+            Distinct().
+            OrderBy((c) => c.RequiredLevel).
+            ThenBy((c) => c.Name).ToList();
+        AddUnequippedCardCollection(cultCards);
+    }
+
+    private void AddUnequippedCardCollection(List<CardDefinition> cards)
+    {
+        foreach (CardDefinition card in cards)
         {
-            if (equippedIndexes.Contains(i)) continue;
-            BuilderDisplayer card = Instantiate(cardPrefab, unequippedLayout).GetComponent<BuilderDisplayer>();
-            unequippedCards.Add(card);
-            card.SetInfo(CardRegister.Instance.GetById(i));
+            if (equippedIndexes.Contains(CardRegister.Instance.GetId(card))) continue;
+            BuilderDisplayer displayer = Instantiate(cardPrefab, unequippedLayout).GetComponent<BuilderDisplayer>();
+            unequippedCards.Add(displayer);
+            displayer.SetInfo(card);
         }
     }
 
@@ -155,7 +160,7 @@ public class DeckBuilder : MonoBehaviour
     {
         RefreshIndexesFromUI();
         RefreshCardsInDeck();
-        state.slot.deck.equippedCardIds = equippedIndexes.ToList();
+        state.slot.cultData[state.slot.cultId].deck.equippedCardIds = equippedIndexes.ToList();
     }
 
     private void HandleAfterLoad(SaveState state)
@@ -165,14 +170,15 @@ public class DeckBuilder : MonoBehaviour
 
     private void ApplyDeck(SaveState state)
     {
-        equippedIndexes = ResolveEquippedIndexes(state?.slot?.deck?.equippedCardIds);
+        int cultId = state?.slot?.cultId ?? 0;
+        equippedIndexes = ResolveEquippedIndexes(state?.slot?.cultData[cultId]?.deck?.equippedCardIds);
 
         for (int i = 0; i < equippedCards.Count; i++)
         {
             equippedCards[i].SetInfo(CardRegister.Instance.GetById(equippedIndexes[i]));
         }
 
-        RebuildUnequippedCards();
+        RebuildUnequippedCards(CultRegister.Instance.GetById(cultId));
         RefreshCardsInDeck();
         ResetSelection();
     }
