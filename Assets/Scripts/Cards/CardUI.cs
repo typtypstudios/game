@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using TypTyp.TextSystem;
+using TypTyp.TextSystem.Typable;
 
 public class CardUI : MonoBehaviour
 {
@@ -11,25 +12,25 @@ public class CardUI : MonoBehaviour
     [SerializeField] private Image cardImage;
     [SerializeField] private TMP_Text cardName;
     [SerializeField] private TMP_Text cardCost;
-    private WritableSpell writableSpell;
+    private TypableController typableController;
     private DeckController deckController;
     public UnityEvent<CardUI> OnCardWritten = new();
 
     void Awake()
     {
-        writableSpell = GetComponentInChildren<WritableSpell>();
+        typableController = GetComponentInChildren<TypableController>();
         deckController = GetComponentInParent<Player>().DeckController;
-        UnityEngine.Assertions.Assert.IsNotNull(writableSpell);
+        UnityEngine.Assertions.Assert.IsNotNull(typableController);
     }
 
     void OnEnable()
     {
-        writableSpell.OnSpellComplete.AddListener(OnSpellWritten);
+        typableController.OnComplete += OnSpellWritten;
     }
 
     void OnDisable()
     {
-        writableSpell.OnSpellComplete.RemoveListener(OnSpellWritten);
+        typableController.OnComplete -= OnSpellWritten;
     }
 
     public void BindCardDefinition(CardDefinition def, ITextPipeline pipeline, int costModifier = 0)
@@ -45,7 +46,7 @@ public class CardUI : MonoBehaviour
     {
         var text = pipeline.ProcessText(CardDefinition.Name);
         cardName.text = text;
-        writableSpell.SetText(text);
+        typableController.SetText(text);
     }
 
     public void UpdateManaCostModifier(int costModifier)
@@ -62,7 +63,7 @@ public class CardUI : MonoBehaviour
         cardCost.text = string.Empty;
     }
 
-    void OnSpellWritten(string _)
+    void OnSpellWritten()
     {
         OnCardWritten?.Invoke(this);
     }
