@@ -1215,7 +1215,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 52.07
+  m_Spacing: 5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -1923,13 +1923,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GrimoireContentGenerator
   displayerPrefab: {fileID: 7375930373604903835, guid: c456b0dc5fdf3764e82f26c963430ce3, type: 3}
   numDisplayers: 6
-  sections:
-  - sectionName: Cards
-    cardRegister: {fileID: 11400000, guid: 22e4f9f6a80af544fb8ea4525960b483, type: 2}
-    effectRegister: {fileID: 0}
-  - sectionName: Effects
-    cardRegister: {fileID: 0}
-    effectRegister: {fileID: 11400000, guid: f86b8a5596902a044b4c3cdc8ba47a99, type: 2}
+  basicSpellsLabel: Basic Spells
+  effectsSectionLabel: Status Effects
 --- !u!114 &9172273791226884937
 MonoBehaviour:
   m_ObjectHideFlags: 0
