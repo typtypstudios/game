@@ -26,6 +26,11 @@ public class NavigationController : MonoBehaviour
 
     public void GoTo(Screens screen)
     {
+        if(screen == Screens.GoBack)
+        {
+            GoBack();
+            return;
+        }
         screenStack.Push(currentScreen);
         NavigateToScreen(screen);
     }
@@ -62,5 +67,6 @@ public enum Screens
     DeckBuilder,
     Grimoire,
     Credits,
-    CultSelection
+    CultSelection,
+    GoBack
 }

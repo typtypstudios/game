@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(Button))]
 public class NavigationButton : MonoBehaviour
 {
     [SerializeField] private Screens destination;
@@ -9,9 +11,8 @@ public class NavigationButton : MonoBehaviour
     {
         controller = GetComponentInParent<NavigationController>();
         if (!controller) Debug.LogError("Error: NavigationButton fuera de la jerarquía del controller.");
+        GetComponent<Button>().onClick.AddListener(Navigate);
     }
 
     public void Navigate() => controller.GoTo(destination);
-
-    public void GoBack() => controller.GoBack();
 }

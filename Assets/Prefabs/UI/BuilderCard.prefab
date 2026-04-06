@@ -942,6 +942,7 @@ GameObject:
   - component: {fileID: 1438267249509855779}
   - component: {fileID: 2899627709069969921}
   - component: {fileID: 7364915118283166792}
+  - component: {fileID: 7089825130380552418}
   m_Layer: 5
   m_Name: InfoButton
   m_TagString: Untagged
@@ -1063,12 +1064,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 0, b: 0.8533139, a: 1}
-  autoSubscribe: 1
-  useDefaultColor: 1
   resetIfFailed: 1
   resetOnWritten: 1
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
 --- !u!114 &7364915118283166792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1081,6 +1081,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e7513fc4ebf5d48a97e906612fe0d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfoButtonBuilder
+--- !u!114 &7089825130380552418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7040977329672987897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b853ef8ca493d47bd95a5c077cb94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NavigationButton
+  destination: 5
 --- !u!1 &7172333241101322937
 GameObject:
   m_ObjectHideFlags: 0
@@ -1231,12 +1244,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 0, b: 0.8533139, a: 1}
-  autoSubscribe: 1
-  useDefaultColor: 1
   resetIfFailed: 1
   resetOnWritten: 1
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
 --- !u!114 &3717271149658651939
 MonoBehaviour:
   m_ObjectHideFlags: 0
