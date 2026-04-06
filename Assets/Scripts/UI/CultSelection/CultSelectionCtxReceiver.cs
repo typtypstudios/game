@@ -1,17 +1,19 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(CultSelectionController))]
 public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
 {
     private CultSelectionController controller;
+    private Stack<CultSelectionConfig> configStack = new();
 
     private void Awake()
     {
         controller = GetComponent<CultSelectionController>();
     }
 
-    public void ReceiveContext(Screens prevScreen)
+    public void ReceiveContext(Screens prevScreen, bool isGoingBack)
     {
         CultSelectionConfig config = new();
         if(prevScreen == Screens.MainMenu)

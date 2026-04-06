@@ -10,6 +10,7 @@ public class CultButton : MonoBehaviour
     [SerializeField] private TMP_Text levelTMP;
     [SerializeField] private GameObject displayerPrefab;
     [SerializeField] private Transform deckTransform;
+    [SerializeField] private WritableButton editButton;
     private CultSelectionController selectionController;
     private readonly List<InfoDisplayer> displayers = new();
     private WritableButton writableButton;
@@ -36,8 +37,8 @@ public class CultButton : MonoBehaviour
     public void SetCultInfo(CultRuntimeInfo cultInfo)
     {
         cultId = cultInfo.cultId;
-        writableButton.OverrideText(cultInfo.cult.Name);
         image.sprite = cultInfo.cult.Image;
+        writableButton.OverrideText(cultInfo.cult.Name);
         int cultLevel = cultInfo.level;
         levelTMP.text = defaultLevelText.Replace("<level>", cultLevel.ToString()).
             Replace("<rankName>", cultInfo.cult.RankNames[cultLevel]);
@@ -46,9 +47,15 @@ public class CultButton : MonoBehaviour
             int cardID = cultInfo.equippedCards.Count > 0 ? cultInfo.equippedCards[i] : i;
             displayers[i].SetInfo(CardRegister.Instance.GetById(cardID));
         }
+        string editButtonText = editButton.GetComponentInChildren<TMP_Text>().text;
+        editButton.OverrideText(editButtonText.Replace("<name>", cultInfo.cult.Abbreviation));
     }
 
     public void UpdateInfo() => SetCultInfo(RuntimeVariables.Instance.CultsInfo[cultId]);
 
     public void OnClick() => selectionController.SetCult(cultId);
+
+    public void OnEdit() => selectionController.SetCult(cultId, false);
+
+    public void ToggleEditButton(bool activate) => editButton.gameObject.SetActive(activate);
 }

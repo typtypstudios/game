@@ -25,18 +25,23 @@ public class CultSelectionController : MonoBehaviour
     {
         labelTMP.text = config.labelInfo;
         OnCultChosen = config.OnCultChosen;
-        //De momento no hay botones de ir a editar mazo, hay que ver cómo solucionar el hecho de que 
-        //no se puedan escribir si en los tres pone lo mismo
-        foreach(var button in buttons) button.UpdateInfo();
+        foreach (var button in buttons)
+        {
+            button.UpdateInfo();
+            button.ToggleEditButton(config.showEquipmentButtons);
+        }
     }
 
-    public void SetCult(int cultId)
+    public void SetCult(int cultId, bool triggerAction = true)
     {
         SaveState state = SaveManager.Instance.GetState();
         state.slot.cultId = cultId;
         SaveManager.Instance.Save(false);
         SaveManager.Instance.Load();
-        OnCultChosen?.Invoke();
-        OnCultChosen = null;
+        if (triggerAction)
+        {
+            OnCultChosen?.Invoke();
+            OnCultChosen = null;
+        }
     }
 }

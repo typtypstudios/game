@@ -1,5 +1,5 @@
 
 public interface INavigationCtxReceiver
 {
-    public void ReceiveContext(Screens prevScreen);
+    public void ReceiveContext(Screens prevScreen, bool isGoingBack);
 }
