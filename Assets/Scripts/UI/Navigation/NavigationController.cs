@@ -32,19 +32,19 @@ public class NavigationController : MonoBehaviour
             return;
         }
         screenStack.Push(currentScreen);
-        NavigateToScreen(screen);
+        NavigateToScreen(screen, false);
     }
 
     public void GoBack()
     {
         if (screenStack.Count == 0) return;
-        NavigateToScreen(screenStack.Pop());
+        NavigateToScreen(screenStack.Pop(), true);
     }
 
-    private void NavigateToScreen(Screens screen)
+    private void NavigateToScreen(Screens screen, bool isGoingBack)
     {
-        foreach(var ctxReceiver in screenDictionary[screen].GetComponentsInChildren<INavigationCtxReceiver>(true))
-            ctxReceiver.ReceiveContext(currentScreen);
+        foreach (var ctxReceiver in screenDictionary[screen].GetComponentsInChildren<INavigationCtxReceiver>(true))
+            ctxReceiver.ReceiveContext(currentScreen, isGoingBack);
         screenDictionary[currentScreen].enabled = false;
         currentScreen = screen;
         screenDictionary[currentScreen].enabled = true;

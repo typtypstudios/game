@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(CultSelectionController))]
 public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
@@ -11,19 +12,10 @@ public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
         controller = GetComponent<CultSelectionController>();
     }
 
-    public void ReceiveContext(Screens prevScreen)
+    public void ReceiveContext(Screens prevScreen, bool isGoingBack)
     {
         CultSelectionConfig config = new();
-        if(prevScreen == Screens.MainMenu)
-        {
-            config = new()
-            {
-                labelInfo = "Choose your cult!",
-                OnCultChosen = () => FindFirstObjectByType<MainMenuManager>().Play(),
-                showEquipmentButtons = true
-            };
-        }
-        else if(prevScreen == Screens.DeckBuilder)
+        if (prevScreen == Screens.DeckBuilder && !isGoingBack)
         {
             config = new()
             {
@@ -32,7 +24,16 @@ public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
                 showEquipmentButtons = false
             };
         }
-        controller.SetConfiguration(config);
+        else
+        {
+            config = new()
+            {
+                labelInfo = "Choose your cult!",
+                OnCultChosen = () => FindFirstObjectByType<MainMenuManager>().Play(),
+                showEquipmentButtons = true
+            };
+        }
+            controller.SetConfiguration(config);
     }
 }
 
