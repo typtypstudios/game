@@ -34,6 +34,7 @@ public class RuntimeVariables : Singleton<RuntimeVariables>
         {
             CultsInfo.Add(new()
             {
+                cultId = i,
                 cult = CultRegister.Instance.GetById(i),
                 level = Mathf.FloorToInt(saveState.slot.cultData[i].level),
                 equippedCards = saveState.slot.cultData[i].deck.equippedCardIds
@@ -44,6 +45,7 @@ public class RuntimeVariables : Singleton<RuntimeVariables>
 
 public struct CultRuntimeInfo
 {
+    public int cultId;
     public CultDefinition cult;
     public int level;
     public List<int> equippedCards;

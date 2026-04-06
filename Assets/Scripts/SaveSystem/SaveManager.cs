@@ -64,13 +64,13 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         PlayerPrefs.Save();
     }
 
-    public void Save()
+    public void Save(bool triggerEvent = true)
     {
         EnsureInitialized();
         EnsureActiveSlot();
 
         SaveState state = GetState();
-        OnBeforeSave?.Invoke(state);
+        if(triggerEvent) OnBeforeSave?.Invoke(state);
         NormalizeState(state);
 
         SaveDataInternal(state.slot);

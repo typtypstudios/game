@@ -10,12 +10,15 @@ public class CultButton : MonoBehaviour
     [SerializeField] private TMP_Text levelTMP;
     [SerializeField] private GameObject displayerPrefab;
     [SerializeField] private Transform deckTransform;
+    private CultSelectionController selectionController;
     private List<InfoDisplayer> displayers = new();
     private WritableButton writableButton;
     private string defaultLevelText;
+    private int cultId;
 
     private void Awake()
     {
+        selectionController = GetComponentInParent<CultSelectionController>();
         writableButton = GetComponent<WritableButton>();
         defaultLevelText = levelTMP.text;
         InstantiateDisplayers();
@@ -32,6 +35,7 @@ public class CultButton : MonoBehaviour
 
     public void SetCultInfo(CultRuntimeInfo cultInfo)
     {
+        cultId = cultInfo.cultId;
         writableButton.OverrideText(cultInfo.cult.Name);
         //FALTA IMAGEN DE CULTO
         int cultLevel = cultInfo.level;
@@ -43,4 +47,6 @@ public class CultButton : MonoBehaviour
             displayers[i].SetInfo(CardRegister.Instance.GetById(cardID));
         }
     }
+
+    public void OnClick() => selectionController.SetCult(cultId);
 }
