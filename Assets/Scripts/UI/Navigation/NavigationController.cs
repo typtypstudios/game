@@ -68,5 +68,6 @@ public enum Screens
     Grimoire,
     Credits,
     CultSelection,
-    GoBack
+    GoBack,
+    Loading
 }

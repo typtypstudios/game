@@ -345,7 +345,11 @@ MonoBehaviour:
     uppercase and lowercase.
 
 
-    Mouse interaction is still available.'
+    Mouse interaction is still available.
+
+
+    Please,
+    type "Understood" to continue.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 726a8b5ed0544ce4580e9e587102553a, type: 2}
   m_sharedMaterial: {fileID: 8728615164726586411, guid: 726a8b5ed0544ce4580e9e587102553a, type: 2}
@@ -372,7 +376,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.8
+  m_fontSize: 20.45
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -411,7 +415,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 73.46696, z: 0, w: -38.256226}
+  m_margin: {x: 0, y: 65.53402, z: 0, w: -53.873703}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -665,8 +669,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  useDefaultColor: 1
-  useDefaultStyle: 1
   resetIfFailed: 1
   resetOnWritten: 1
   resetTime: 0.5
