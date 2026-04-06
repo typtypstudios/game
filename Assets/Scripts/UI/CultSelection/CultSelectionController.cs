@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CultSelectionController : MonoBehaviour
 {
     [SerializeField] private GameObject cultButtonPrefab;
     [SerializeField] private Transform cultButtonsParent;
+    [SerializeField] private TMP_Text labelTMP;
     private readonly List<CultButton> buttons = new();
+    private Action OnCultChosen;
 
     void Start()
     {
@@ -17,8 +21,12 @@ public class CultSelectionController : MonoBehaviour
         }
     }
 
-    public void UpdateInfo()
+    public void SetConfiguration(CultSelectionConfig config)
     {
+        labelTMP.text = config.labelInfo;
+        OnCultChosen = config.OnCultChosen;
+        //De momento no hay botones de ir a editar mazo, hay que ver cómo solucionar el hecho de que 
+        //no se puedan escribir si en los tres pone lo mismo
         foreach(var button in buttons) button.UpdateInfo();
     }
 
@@ -28,5 +36,7 @@ public class CultSelectionController : MonoBehaviour
         state.slot.cultId = cultId;
         SaveManager.Instance.Save(false);
         SaveManager.Instance.Load();
+        OnCultChosen?.Invoke();
+        OnCultChosen = null;
     }
 }

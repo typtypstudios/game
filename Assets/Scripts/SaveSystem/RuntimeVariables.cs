@@ -12,6 +12,14 @@ public class RuntimeVariables : Singleton<RuntimeVariables>
     public float CurrentLevel { get; private set; }
     public List<CultRuntimeInfo> CultsInfo { get; private set; } = new();
 
+    protected override void Awake()
+    {
+        base.Awake();
+        SaveManager.Instance.OnBeforeSave += UpdateVariables;
+        //No se hace aquí el OnAfterLoad ya que UpdateVariables se llama primero por el SaveManager,
+        //Garantizando que los datos están actualizados antes de que se ejecute el AfterLoad en otros scripts
+    }
+
     public void UpdateVariables(SaveState saveState)
     {
         int cultId = saveState.slot.cultId;

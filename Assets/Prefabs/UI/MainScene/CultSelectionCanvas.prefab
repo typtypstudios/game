@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8839386652151931455}
   - component: {fileID: 4503110541816198664}
   - component: {fileID: 5418352782156384958}
+  - component: {fileID: 4060611530696228698}
   m_Layer: 5
   m_Name: CultSelectionCanvas
   m_TagString: Untagged
@@ -49,7 +50,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1482578168065201922}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 0}
@@ -119,6 +120,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CultSelection
   cultButtonPrefab: {fileID: 7019996624761539213, guid: d1afd898bd3aadd45bb227f91f86bac3, type: 3}
   cultButtonsParent: {fileID: 8622418914536796570}
+  labelTMP: {fileID: 3745362791043868679}
+--- !u!114 &4060611530696228698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482578168065201922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ed5191cb9172ec4cb645b8515325db0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CultSelectionCtxReceiver
 --- !u!1 &3586296200780296936
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,7 +145,7 @@ GameObject:
   - component: {fileID: 191726115987294125}
   - component: {fileID: 3745362791043868679}
   m_Layer: 5
-  m_Name: Title
+  m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -331,6 +345,7 @@ GameObject:
   - component: {fileID: 5076783163095702372}
   - component: {fileID: 1834651169144989488}
   - component: {fileID: 8354065042550601478}
+  - component: {fileID: 2298532980715648365}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -440,10 +455,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7249783569985634984}
-        m_TargetAssemblyTypeName: UnityEngine.Canvas, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
+      - m_Target: {fileID: 2298532980715648365}
+        m_TargetAssemblyTypeName: NavigationButton, Assembly-CSharp
+        m_MethodName: GoBack
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -470,6 +485,19 @@ MonoBehaviour:
   resetIfFailed: 1
   resetOnWritten: 1
   resetTime: 0.5
+--- !u!114 &2298532980715648365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6080809457879844759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b853ef8ca493d47bd95a5c077cb94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NavigationButton
+  destination: 0
 --- !u!1 &8508734728026690660
 GameObject:
   m_ObjectHideFlags: 0
