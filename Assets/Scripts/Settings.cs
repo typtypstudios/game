@@ -45,20 +45,8 @@ namespace TypTyp
         [Header("Settings")]
         [field: SerializeField] public TMP_FontAsset DefaultFont { get; set; }
         [field: SerializeField] public bool OnlyApplyDefaultFontOnRitual { get; set; } = true;
-        [field: SerializeField] public Color DefaultButtonColor { get; set; }
-
-        [Header("GrimoireRelated")]
-        [field: SerializeField] public Color DurationHighlightColor { get; set; } = Color.cyan;
-        [field: SerializeField] public Color PositiveHighlightColor { get; set; } = Color.green;
-        [field: SerializeField] public Color NegativeHighlightColor { get; set; } = Color.red;
-        [field: SerializeField] public Color EffectHighlightColor { get; set; } = Color.purple;
 
         [Header("ChatRelated")]
         [field: SerializeField] public bool ChatActive { get; internal set; } = true;
-
-        [Header("XPRelated")]
-        [field: SerializeField] public float XPPerRank { get; set; } = 100f;
-        [field: SerializeField] public Vector2 XPGainRange { get; set; } = new(15, 20); //Porcentaje!!
-        [field: SerializeField] public float PerformanceMult { get; set; } = 1.2f;
     }
 }

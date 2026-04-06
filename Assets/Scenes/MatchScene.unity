@@ -434,11 +434,6 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!1 &92138022 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7702713817636774, guid: f2881566cf534af4b81bfc42bb383bf4, type: 3}
-  m_PrefabInstance: {fileID: 510821498142951557}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &143758090
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,17 +798,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 182253453}
   m_CullTransparentMesh: 1
---- !u!114 &194793471 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1065334370121912102, guid: f2881566cf534af4b81bfc42bb383bf4, type: 3}
-  m_PrefabInstance: {fileID: 510821498142951557}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &207587877
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,9 +1374,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MatchManager
   ShowTopMostFoldoutHeaderGroup: 1
-  countdownText: {fileID: 1736977038}
+  countdownText: {fileID: 510821498142951559}
   playerPrefab: {fileID: 1527992307803624597, guid: a627f6499881c7344a433ff1a21fc70f, type: 3}
-  canvasUIScript: {fileID: 1813752703}
+  canvasUIScript: {fileID: 510821498142951558}
 --- !u!4 &377042277
 Transform:
   m_ObjectHideFlags: 0
@@ -1724,17 +1708,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 581099687}
   m_CullTransparentMesh: 1
---- !u!114 &592455688 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9136418510302254556, guid: f2881566cf534af4b81bfc42bb383bf4, type: 3}
-  m_PrefabInstance: {fileID: 510821498142951557}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &592982590
 GameObject:
   m_ObjectHideFlags: 0
@@ -1909,17 +1882,6 @@ RectTransform:
   m_AnchoredPosition: {x: 178.1, y: 113.00005}
   m_SizeDelta: {x: 300, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &680211129 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1766474644352591295, guid: f2881566cf534af4b81bfc42bb383bf4, type: 3}
-  m_PrefabInstance: {fileID: 510821498142951557}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &681910909
 GameObject:
   m_ObjectHideFlags: 0
@@ -2026,11 +1988,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &754473777 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6740089104364294578, guid: f2881566cf534af4b81bfc42bb383bf4, type: 3}
-  m_PrefabInstance: {fileID: 510821498142951557}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &779730823
 GameObject:
   m_ObjectHideFlags: 0
@@ -4398,22 +4355,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &1723181336 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 9212096538138898796, guid: f2881566cf534af4b81bfc42bb383bf4, type: 3}
-  m_PrefabInstance: {fileID: 510821498142951557}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1736977038 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7064571878545414487, guid: f2881566cf534af4b81bfc42bb383bf4, type: 3}
-  m_PrefabInstance: {fileID: 510821498142951557}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1746589863
 GameObject:
   m_ObjectHideFlags: 0
@@ -4502,7 +4443,6 @@ GameObject:
   - component: {fileID: 1813752700}
   - component: {fileID: 1813752699}
   - component: {fileID: 1813752698}
-  - component: {fileID: 1813752703}
   - component: {fileID: 1813752707}
   - component: {fileID: 1813752706}
   - component: {fileID: 1813752704}
@@ -4627,31 +4567,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1813752703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813752697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86718cc9e7e286d40ae40673b0d0895c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EndGamePanel
-  panel: {fileID: 92138022}
-  resultText: {fileID: 592455688}
-  exitButton: {fileID: 1858240188}
-  countdownText: {fileID: 1736977038}
-  leftImage: {fileID: 1723181336}
-  rightImage: {fileID: 754473777}
-  playerNameText: {fileID: 194793471}
-  enemyNameText: {fileID: 680211129}
-  slideDuration: 0.5
-  leftImageOffscreenPos: {x: -1500, y: -160}
-  rightImageOffscreenPos: {x: 1500, y: 0}
-  leftImageCenterPos: {x: -200, y: -160}
-  rightImageCenterPos: {x: 200, y: 0}
 --- !u!225 &1813752704
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4708,11 +4623,6 @@ MonoBehaviour:
   enemyChatGroup: {fileID: 1022948014}
   fadeDelay: 3
   fadeSpeed: 3
---- !u!1 &1858240188 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7747025661505770700, guid: f2881566cf534af4b81bfc42bb383bf4, type: 3}
-  m_PrefabInstance: {fileID: 510821498142951557}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1919890736
 GameObject:
   m_ObjectHideFlags: 0
@@ -5240,6 +5150,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2881566cf534af4b81bfc42bb383bf4, type: 3}
+--- !u!114 &510821498142951558 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8463401820893573567, guid: f2881566cf534af4b81bfc42bb383bf4, type: 3}
+  m_PrefabInstance: {fileID: 510821498142951557}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86718cc9e7e286d40ae40673b0d0895c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndGamePanel
+--- !u!114 &510821498142951559 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4753377440538585727, guid: f2881566cf534af4b81bfc42bb383bf4, type: 3}
+  m_PrefabInstance: {fileID: 510821498142951557}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

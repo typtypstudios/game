@@ -258,7 +258,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <points> Devotion Points earned
+  m_text: <points> earned
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1270,7 +1270,7 @@ MonoBehaviour:
   rightImageCenterPos: {x: 200, y: 0}
   earnedXPText: {fileID: 9040325390901113666}
   progressionBar: {fileID: 3772506444680189326}
-  animSpeed: 0.25
+  animSpeed: 0.1
 --- !u!1 &8760947034096798205
 GameObject:
   m_ObjectHideFlags: 0

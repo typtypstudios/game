@@ -691,6 +691,10 @@ PrefabInstance:
       propertyPath: useDefaultStyle
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4140338351222185567, guid: 6c0234f17d7486746b8f61d4ff1dc3ed, type: 3}
+      propertyPath: destination
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5400689060714599314, guid: 6c0234f17d7486746b8f61d4ff1dc3ed, type: 3}
       propertyPath: m_Colors.m_DisabledColor.a
       value: 0.4745098
@@ -766,34 +770,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1977937093188463713, guid: 6c0234f17d7486746b8f61d4ff1dc3ed, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 239921292327119768}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c0234f17d7486746b8f61d4ff1dc3ed, type: 3}
 --- !u!224 &6162446377683439077 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1685686275213139218, guid: 6c0234f17d7486746b8f61d4ff1dc3ed, type: 3}
   m_PrefabInstance: {fileID: 4819320993663308023}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6454398952165047446 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1977937093188463713, guid: 6c0234f17d7486746b8f61d4ff1dc3ed, type: 3}
-  m_PrefabInstance: {fileID: 4819320993663308023}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &239921292327119768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6454398952165047446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8b853ef8ca493d47bd95a5c077cb94d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NavigationButton
-  destination: 4
 --- !u!1001 &6043202916041835116
 PrefabInstance:
   m_ObjectHideFlags: 0

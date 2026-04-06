@@ -23,10 +23,10 @@ public class GrimoireInfoPanel : MonoBehaviour
             image.material = new(image.material);
             image.material.SetFloat("_EmissionForce", emission);
         }
-        durationTag = Utils.ColorToTag(Settings.Instance.DurationHighlightColor);
-        positiveTag = Utils.ColorToTag(Settings.Instance.PositiveHighlightColor);
-        negativeTag = Utils.ColorToTag(Settings.Instance.NegativeHighlightColor);
-        effectTag = Utils.ColorToTag(Settings.Instance.EffectHighlightColor);
+        durationTag = Utils.ColorToTag(UIColors.Instance.DurationHighlightColor);
+        positiveTag = Utils.ColorToTag(UIColors.Instance.PositiveHighlightColor);
+        negativeTag = Utils.ColorToTag(UIColors.Instance.NegativeHighlightColor);
+        effectTag = Utils.ColorToTag(UIColors.Instance.EffectHighlightColor);
     }
 
     public void SetInfo(ADefinition definition)

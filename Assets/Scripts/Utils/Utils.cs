@@ -42,4 +42,9 @@ public static class Utils
     {
         return Random.Range(range.x, range.y);
     }
+
+    public static string ApplyColorToText(string text, Color color)
+    {
+        return $"{ColorToTag(color)}{text}</color>";
+    }
 }

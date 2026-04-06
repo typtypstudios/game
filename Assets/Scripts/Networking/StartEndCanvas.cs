@@ -126,8 +126,9 @@ public class StartEndCanvas : MonoBehaviour
 
     IEnumerator GainAnimationCoroutine(float prevXP, float nextXP)
     {
-        int xpEarned = Mathf.RoundToInt((nextXP - prevXP) * Settings.Instance.XPPerRank);
-        earnedXPText.text = earnedXPText.text.Replace("<points>", xpEarned.ToString());
+        int xpEarned = Mathf.RoundToInt((nextXP - prevXP) * XPManager.Instance.XPPerRank);
+        earnedXPText.text = earnedXPText.text.Replace("<points>", 
+            Utils.ApplyColorToText(xpEarned.ToString() + " Devotion Points", UIColors.Instance.DevotionPointsColor));
         while (prevXP != nextXP)
         {
             prevXP = Mathf.MoveTowards(prevXP, nextXP, Time.deltaTime * animSpeed);
