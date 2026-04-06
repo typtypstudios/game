@@ -4,51 +4,77 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-[NoAutoCreate]
-public class InputHandler : Singleton<InputHandler>
+namespace TypTyp.Input
 {
-    public float Lag { get; set; } = 0;
-    private event Action<char> OnCharTyped; //Wraper, onTextInput no deja eliminar todos los listeners
-
-    protected override void Awake()
+    [Flags]
+    public enum InputModeMask : byte
     {
-        base.Awake();
-        OnCharTyped = null;
-        Keyboard.current.onTextInput += ProcessInput;
-        SceneManager.sceneLoaded += (_, _) => Lag = 0;
+        Nothing = 0,
+        Ritual = 1 << 0,
+        Spells = 1 << 1,
+        GameEnded = 1 << 2
     }
 
-    private void OnDestroy() => Keyboard.current.onTextInput -= ProcessInput;
-
-    private void ProcessInput(char c)
+    [NoAutoCreate]
+    public class InputHandler : Singleton<InputHandler>
     {
-        if (Lag == 0) CommunicateChartTyped(c);
-        else StartCoroutine(LagCoroutine(c));
-    }
+        public float Lag { get; set; } = 0;
+        [field: SerializeField] public InputModeMask CurrentMode { get; private set; } = InputModeMask.Nothing;
 
-    private void CommunicateChartTyped(char c) 
-    {
-        if (!char.IsControl(c)) OnCharTyped?.Invoke(c);
-    }
+        public event Action<InputModeMask> OnInputModeChanged;
 
-    public void AddListener(Action<char> func) => OnCharTyped += func;
+        private event Action<char> OnCharTyped; //Wraper, onTextInput no deja eliminar todos los listeners
 
-    public void RemoveListener(Action<char> func) => OnCharTyped -= func;
+        protected override void Awake()
+        {
+            base.Awake();
+            OnCharTyped = null;
+            Keyboard.current.onTextInput += ProcessInput;
+            SceneManager.sceneLoaded += (_, _) =>
+            {
+                Lag = 0;
+                SetMode(InputModeMask.Nothing);
+            };
+        }
 
-    /// <summary>
-    /// Hace AddListener tras borrar la lista de listeners previa
-    /// </summary>
-    /// <param name="func"></param>
-    public void SetUniqueListener(Action<char> func)
-    {
-        OnCharTyped = null;
-        AddListener(func);
-    }
+        private void OnDestroy() => Keyboard.current.onTextInput -= ProcessInput;
 
-    IEnumerator LagCoroutine(char c)
-    {
-        yield return new WaitForSeconds(Lag);
-        CommunicateChartTyped(c);
+        private void ProcessInput(char c)
+        {
+            if (Lag == 0) CommunicateChartTyped(c);
+            else StartCoroutine(LagCoroutine(c));
+        }
+
+        private void CommunicateChartTyped(char c)
+        {
+            if (!char.IsControl(c)) OnCharTyped?.Invoke(c);
+        }
+
+        public void AddListener(Action<char> func) => OnCharTyped += func;
+
+        public void RemoveListener(Action<char> func) => OnCharTyped -= func;
+
+        /// <summary>
+        /// Hace AddListener tras borrar la lista de listeners previa
+        /// </summary>
+        /// <param name="func"></param>
+        public void SetUniqueListener(Action<char> func)
+        {
+            OnCharTyped = null;
+            AddListener(func);
+        }
+
+        public void SetMode(InputModeMask mode)
+        {
+            if (CurrentMode == mode) return;
+            CurrentMode = mode;
+            OnInputModeChanged?.Invoke(mode);
+        }
+
+        IEnumerator LagCoroutine(char c)
+        {
+            yield return new WaitForSeconds(Lag);
+            CommunicateChartTyped(c);
+        }
     }
 }
-

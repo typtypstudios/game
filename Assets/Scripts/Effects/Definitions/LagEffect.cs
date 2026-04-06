@@ -1,4 +1,5 @@
 using UnityEngine;
+using TypTyp.Input;
 
 [CreateAssetMenu(fileName = "LagEffect", menuName = "TypTyp/Effects/LagEffect")]
 public class LagEffect : StatusEffectDefinition

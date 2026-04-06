@@ -4,18 +4,18 @@ using TMPro;
 using System.Collections;
 using System;
 using TypTyp;
+using TypTyp.TextSystem.Typable;
 
 [RequireComponent(typeof(Button))]
-public class WritableButton : AInputListener
+public class WritableButton : MonoBehaviour
 {
-    [SerializeField] private bool useDefaultColor = true;
     [SerializeField] private bool resetIfFailed = true;
     [SerializeField] private bool resetOnWritten = true;
     [SerializeField] private float resetTime = 0.5f;
+    [SerializeField] private TypableController typableController;
+    [SerializeField] private TMPTypableView tmpView;
     private Button button;
-    private TextMeshProUGUI buttonText;
     private string originalText;
-    private int textLength;
     private WaitForSeconds resetTimer;
     private Coroutine resetCoroutine;
     private Canvas canvas;
@@ -25,24 +25,37 @@ public class WritableButton : AInputListener
     private void Awake()
     {
         button = GetComponent<Button>();
-        buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
-        originalText = buttonText.text.Trim();
-        textLength = originalText.Length;
+        var tmp = button.GetComponentInChildren<TextMeshProUGUI>();
+        originalText = tmp != null ? tmp.text.Trim() : string.Empty;
         canvas = GetComponentInParent<Canvas>();
         resetTimer = new(resetTime);
         OnButtonWritten += OnOtherButtonWritten;
+        if (typableController == null)
+            typableController = GetComponent<TypableController>();
+        if (tmpView == null)
+            tmpView = GetComponent<TMPTypableView>();
     }
 
-    protected override void OnEnable()
+    private void OnEnable()
     {
-        base.OnEnable();
-        if (useDefaultColor) FillColor = Settings.Instance.DefaultButtonColor;
+        if (typableController != null)
+        {
+            typableController.OnComplete += HandleComplete;
+            typableController.OnError += HandleError;
+        }
+
+        if (typableController != null && !string.IsNullOrEmpty(originalText))
+            typableController.SetText(originalText);
     }
 
-    protected override void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
         StopAllCoroutines();
+        if (typableController != null)
+        {
+            typableController.OnComplete -= HandleComplete;
+            typableController.OnError -= HandleError;
+        }
         ResetButton();
     }
 
@@ -54,53 +67,64 @@ public class WritableButton : AInputListener
     public void OverrideText(string text)
     {
         originalText = text;
-        textLength = text.Length;
         ResetButton();
     }
 
     public void ResetButton(bool force = false)
     {
-        if(!resetOnWritten && !force)
+        if (!resetOnWritten && !force)
         {
             Block = true;
+            if (typableController != null)
+                typableController.enabled = false;
             return;
         }
-        buttonText.text = originalText;
-        Idx = 0;
+        if (typableController != null)
+        {
+            typableController.enabled = true;
+            typableController.SetText(originalText);
+        }
         resetCoroutine = null;
     }
 
-    protected override void ProcessInput(char c)
+    private void HandleComplete()
     {
-        if(!canvas.enabled || Block) return;
-        if (originalText[Idx].ToString().ToLower().Equals(c.ToString().ToLower()))
+        if (!canvas.enabled || Block) return;
+
+        if (resetCoroutine != null)
         {
-            if(resetCoroutine != null)
-            {
-                StopCoroutine(resetCoroutine);
-                ResetButton();
-            }
-			buttonText.text =  fillColorTag + originalText[..(Idx + 1)] + "</color>" + 
-				originalText[(Idx + 1)..];
-            if (++Idx == textLength)
-            {
-                resetCoroutine = StartCoroutine(ResetButtonCoroutine());
-                button.onClick?.Invoke();
-                OnButtonWritten?.Invoke(this);
-            }
+            StopCoroutine(resetCoroutine);
+            ResetButton();
         }
-        else if(resetIfFailed) ResetButton();
+
+        resetCoroutine = StartCoroutine(ResetButtonCoroutine());
+        button.onClick?.Invoke();
+        OnButtonWritten?.Invoke(this);
+    }
+
+    private void HandleError()
+    {
+        if (!canvas.enabled || Block) return;
+        if (resetIfFailed) ResetButton();
     }
 
     public void CompletelyBlock(bool block)
     {
         Block = block;
         button.interactable = !block;
+        if (typableController != null)
+            typableController.enabled = !block;
+    }
+
+    public Color GetButtonColor()
+    {
+        if (tmpView != null)
+            return tmpView.StyleConfig.CorrectColor;
+        return Color.white;
     }
 
     IEnumerator ResetButtonCoroutine()
     {
-        Idx = 0;
         yield return resetTimer;
         ResetButton();
     }

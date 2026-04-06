@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using TypTyp.Input;
 
 public class ProfileSettings : MonoBehaviour
 {

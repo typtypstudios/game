@@ -165,6 +165,10 @@ GameObject:
   - component: {fileID: 833512466087636091}
   - component: {fileID: 4574583645589029804}
   - component: {fileID: 2661482451581123682}
+  - component: {fileID: 6390517851620403179}
+  - component: {fileID: 2392436029541026035}
+  - component: {fileID: 961779556248214550}
+  - component: {fileID: 2195776658267963408}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -360,12 +364,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &6390517851620403179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477287910377851974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &2392436029541026035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477287910377851974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 961779556248214550}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &961779556248214550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477287910377851974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 7427603092274400110}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &2195776658267963408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477287910377851974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 2392436029541026035}
+  text: {fileID: 7427603092274400110}
 --- !u!1 &593812322559137416
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,6 +453,10 @@ GameObject:
   - component: {fileID: 3893241541670510595}
   - component: {fileID: 2532746541727149145}
   - component: {fileID: 1091997024259028189}
+  - component: {fileID: 4657476087654620446}
+  - component: {fileID: 7238007562527455531}
+  - component: {fileID: 6562818932234442781}
+  - component: {fileID: 6702634505139139448}
   m_Layer: 5
   m_Name: TypTyp
   m_TagString: Untagged
@@ -596,12 +672,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &4657476087654620446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593812322559137416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &7238007562527455531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593812322559137416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 6562818932234442781}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &6562818932234442781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593812322559137416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 7064828586207197524}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &6702634505139139448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593812322559137416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 7238007562527455531}
+  text: {fileID: 7064828586207197524}
 --- !u!1 &922419817221665320
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,6 +760,10 @@ GameObject:
   - component: {fileID: 6518739469723160538}
   - component: {fileID: 1130090925758508484}
   - component: {fileID: 4762154004712571473}
+  - component: {fileID: 912696707811017999}
+  - component: {fileID: 4941533702345364333}
+  - component: {fileID: 6196471524009716552}
+  - component: {fileID: 824297028998198847}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -811,12 +959,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &912696707811017999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922419817221665320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &4941533702345364333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922419817221665320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 6196471524009716552}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &6196471524009716552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922419817221665320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 1067839989503999409}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &824297028998198847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922419817221665320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 4941533702345364333}
+  text: {fileID: 1067839989503999409}
 --- !u!1 &1497280261540957874
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,6 +1162,10 @@ GameObject:
   - component: {fileID: 3536627130138026537}
   - component: {fileID: 703369768473843075}
   - component: {fileID: 9105617451003666587}
+  - component: {fileID: 5135820491549309763}
+  - component: {fileID: 4998615522680430197}
+  - component: {fileID: 8170494105039515029}
+  - component: {fileID: 4796827866678182614}
   m_Layer: 5
   m_Name: Production & Design
   m_TagString: Untagged
@@ -1162,12 +1382,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &5135820491549309763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546856602522972977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &4998615522680430197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546856602522972977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 8170494105039515029}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &8170494105039515029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546856602522972977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 9152742509496077974}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &4796827866678182614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546856602522972977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 4998615522680430197}
+  text: {fileID: 9152742509496077974}
 --- !u!1 &1743785475170612015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1182,6 +1470,10 @@ GameObject:
   - component: {fileID: 5460504276398484654}
   - component: {fileID: 1320596138010882356}
   - component: {fileID: 2776753454735135789}
+  - component: {fileID: 6940473196067552105}
+  - component: {fileID: 6458510778917166833}
+  - component: {fileID: 6864205254442828925}
+  - component: {fileID: 4644487407088898649}
   m_Layer: 5
   m_Name: Name_1
   m_TagString: Untagged
@@ -1377,12 +1669,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &6940473196067552105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743785475170612015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &6458510778917166833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743785475170612015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 6864205254442828925}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &6864205254442828925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743785475170612015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 3539626508594259130}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &4644487407088898649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743785475170612015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 6458510778917166833}
+  text: {fileID: 3539626508594259130}
 --- !u!1 &2507948827142248923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1398,6 +1758,10 @@ GameObject:
   - component: {fileID: 1631513289066990660}
   - component: {fileID: 8795854941018459839}
   - component: {fileID: 5994298949796084204}
+  - component: {fileID: 4331582357683919798}
+  - component: {fileID: 7699010090894423660}
+  - component: {fileID: 3411321248577767469}
+  - component: {fileID: 3264801008125427563}
   m_Layer: 5
   m_Name: Marketing & SM
   m_TagString: Untagged
@@ -1614,12 +1978,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &4331582357683919798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507948827142248923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &7699010090894423660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507948827142248923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 3411321248577767469}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &3411321248577767469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507948827142248923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 4333779503588123538}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &3264801008125427563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507948827142248923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 7699010090894423660}
+  text: {fileID: 4333779503588123538}
 --- !u!1 &2769554038057838802
 GameObject:
   m_ObjectHideFlags: 0
@@ -1635,6 +2067,10 @@ GameObject:
   - component: {fileID: 906177654698795326}
   - component: {fileID: 6053396921611170232}
   - component: {fileID: 1912198672629875441}
+  - component: {fileID: 2917387264169878839}
+  - component: {fileID: 863202406238150153}
+  - component: {fileID: 1478781417808986599}
+  - component: {fileID: 783890030609112727}
   m_Layer: 5
   m_Name: Programming
   m_TagString: Untagged
@@ -1851,12 +2287,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &2917387264169878839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2769554038057838802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &863202406238150153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2769554038057838802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 1478781417808986599}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &1478781417808986599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2769554038057838802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 3477306758319698122}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &783890030609112727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2769554038057838802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 863202406238150153}
+  text: {fileID: 3477306758319698122}
 --- !u!1 &2847016109646686534
 GameObject:
   m_ObjectHideFlags: 0
@@ -1871,6 +2375,10 @@ GameObject:
   - component: {fileID: 128549684295860006}
   - component: {fileID: 8651160224044673033}
   - component: {fileID: 1530392462705741336}
+  - component: {fileID: 652608029196949158}
+  - component: {fileID: 7679544017718059047}
+  - component: {fileID: 6971676482645138250}
+  - component: {fileID: 4514486488431869153}
   m_Layer: 5
   m_Name: Name_2
   m_TagString: Untagged
@@ -2066,12 +2574,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &652608029196949158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2847016109646686534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &7679544017718059047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2847016109646686534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 6971676482645138250}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &6971676482645138250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2847016109646686534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 3904131049883249161}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &4514486488431869153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2847016109646686534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 7679544017718059047}
+  text: {fileID: 3904131049883249161}
 --- !u!1 &3046949884796119706
 GameObject:
   m_ObjectHideFlags: 0
@@ -2085,6 +2661,10 @@ GameObject:
   - component: {fileID: 1359495001298165302}
   - component: {fileID: 7437555570622450358}
   - component: {fileID: 4981484584512722218}
+  - component: {fileID: 2887764606877042076}
+  - component: {fileID: 9015491501071376192}
+  - component: {fileID: 4574882921692281681}
+  - component: {fileID: 6547666931549109222}
   m_Layer: 5
   m_Name: ContactUsButton
   m_TagString: Untagged
@@ -2218,12 +2798,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 0, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 1
   resetOnWritten: 1
   resetTime: 0.5
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &2887764606877042076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3046949884796119706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &9015491501071376192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3046949884796119706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 4574882921692281681}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &4574882921692281681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3046949884796119706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 0}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &6547666931549109222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3046949884796119706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 9015491501071376192}
+  text: {fileID: 0}
 --- !u!1 &3248900060981461091
 GameObject:
   m_ObjectHideFlags: 0
@@ -2238,6 +2886,10 @@ GameObject:
   - component: {fileID: 7223355311518492400}
   - component: {fileID: 6544339769639917235}
   - component: {fileID: 5362937341659750018}
+  - component: {fileID: 2644977515161070926}
+  - component: {fileID: 3046435783147593727}
+  - component: {fileID: 4608297146965612347}
+  - component: {fileID: 8280106202521621501}
   m_Layer: 5
   m_Name: Name_2
   m_TagString: Untagged
@@ -2433,12 +3085,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &2644977515161070926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3248900060981461091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &3046435783147593727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3248900060981461091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 4608297146965612347}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &4608297146965612347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3248900060981461091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 7122360260545320013}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &8280106202521621501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3248900060981461091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 3046435783147593727}
+  text: {fileID: 7122360260545320013}
 --- !u!1 &3651658853036035040
 GameObject:
   m_ObjectHideFlags: 0
@@ -2517,6 +3237,10 @@ GameObject:
   - component: {fileID: 987663565065677289}
   - component: {fileID: 811030494172764889}
   - component: {fileID: 5883176253946698973}
+  - component: {fileID: 5656278556943177380}
+  - component: {fileID: 8457741457649544337}
+  - component: {fileID: 5087077406267406195}
+  - component: {fileID: 6617615105504148783}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -2712,12 +3436,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &5656278556943177380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3708763857760200164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &8457741457649544337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3708763857760200164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 5087077406267406195}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &5087077406267406195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3708763857760200164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 7745696588055088322}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &6617615105504148783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3708763857760200164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 8457741457649544337}
+  text: {fileID: 7745696588055088322}
 --- !u!1 &4419429226893111810
 GameObject:
   m_ObjectHideFlags: 0
@@ -2970,6 +3762,10 @@ GameObject:
   - component: {fileID: 6050127541547343427}
   - component: {fileID: 366244439448886262}
   - component: {fileID: 8336407668515477544}
+  - component: {fileID: 2779019255193196376}
+  - component: {fileID: 96267475050019606}
+  - component: {fileID: 252785009570966943}
+  - component: {fileID: 5617168304578444652}
   m_Layer: 5
   m_Name: Documentation
   m_TagString: Untagged
@@ -3186,12 +3982,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &2779019255193196376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4752007290065783781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &96267475050019606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4752007290065783781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 252785009570966943}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &252785009570966943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4752007290065783781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 9063323771612691632}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &5617168304578444652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4752007290065783781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 96267475050019606}
+  text: {fileID: 9063323771612691632}
 --- !u!1 &4993671493771928319
 GameObject:
   m_ObjectHideFlags: 0
@@ -3206,6 +4070,10 @@ GameObject:
   - component: {fileID: 5462747610972694467}
   - component: {fileID: 2901751404866892866}
   - component: {fileID: 7407319634062785747}
+  - component: {fileID: 8219503603143295397}
+  - component: {fileID: 3190436409123717272}
+  - component: {fileID: 5941032622905151795}
+  - component: {fileID: 1635804456170280754}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -3401,12 +4269,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &8219503603143295397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4993671493771928319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &3190436409123717272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4993671493771928319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 5941032622905151795}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &5941032622905151795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4993671493771928319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 1192104131462448659}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &1635804456170280754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4993671493771928319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 3190436409123717272}
+  text: {fileID: 1192104131462448659}
 --- !u!1 &5293241279482477149
 GameObject:
   m_ObjectHideFlags: 0
@@ -3486,6 +4422,10 @@ GameObject:
   - component: {fileID: 4573676083022479655}
   - component: {fileID: 6005251317801370648}
   - component: {fileID: 6399122057988806108}
+  - component: {fileID: 3818279395772753641}
+  - component: {fileID: 7465364785738358320}
+  - component: {fileID: 8251061867749938330}
+  - component: {fileID: 5351368515122311849}
   m_Layer: 5
   m_Name: Name_2
   m_TagString: Untagged
@@ -3681,12 +4621,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &3818279395772753641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5693849186012371882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &7465364785738358320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5693849186012371882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 8251061867749938330}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &8251061867749938330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5693849186012371882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 5015342116838628439}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &5351368515122311849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5693849186012371882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 7465364785738358320}
+  text: {fileID: 5015342116838628439}
 --- !u!1 &5714535241670050854
 GameObject:
   m_ObjectHideFlags: 0
@@ -3764,6 +4772,10 @@ GameObject:
   - component: {fileID: 3725651514796659089}
   - component: {fileID: 6859717600840045150}
   - component: {fileID: 6617091393132639778}
+  - component: {fileID: 4970290796622761164}
+  - component: {fileID: 8484692860312896471}
+  - component: {fileID: 5474589582138106407}
+  - component: {fileID: 3362948599576414486}
   m_Layer: 5
   m_Name: Name_1
   m_TagString: Untagged
@@ -3959,12 +4971,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &4970290796622761164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231479369553368217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &8484692860312896471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231479369553368217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 5474589582138106407}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &5474589582138106407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231479369553368217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 2501932715234568457}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &3362948599576414486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231479369553368217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 8484692860312896471}
+  text: {fileID: 2501932715234568457}
 --- !u!1 &6486710436237585808
 GameObject:
   m_ObjectHideFlags: 0
@@ -3979,6 +5059,10 @@ GameObject:
   - component: {fileID: 1471964299717238743}
   - component: {fileID: 2950339822474577430}
   - component: {fileID: 2514735561552632903}
+  - component: {fileID: 1475490780072806378}
+  - component: {fileID: 729203274622253775}
+  - component: {fileID: 1383516860993330458}
+  - component: {fileID: 4580373229686664016}
   m_Layer: 5
   m_Name: Name_1
   m_TagString: Untagged
@@ -4174,12 +5258,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &1475490780072806378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6486710436237585808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &729203274622253775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6486710436237585808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 1383516860993330458}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &1383516860993330458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6486710436237585808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 8359058801354035279}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &4580373229686664016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6486710436237585808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 729203274622253775}
+  text: {fileID: 8359058801354035279}
 --- !u!1 &6940954930642791487
 GameObject:
   m_ObjectHideFlags: 0
@@ -4194,6 +5346,10 @@ GameObject:
   - component: {fileID: 233503333342624611}
   - component: {fileID: 7475975322251975054}
   - component: {fileID: 6316361434089032311}
+  - component: {fileID: 8489601970998834074}
+  - component: {fileID: 5602936032707075627}
+  - component: {fileID: 2634654194248040620}
+  - component: {fileID: 1882979608238450195}
   m_Layer: 5
   m_Name: Name_1
   m_TagString: Untagged
@@ -4389,12 +5545,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &8489601970998834074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940954930642791487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &5602936032707075627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940954930642791487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 2634654194248040620}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &2634654194248040620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940954930642791487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 4618543249467598907}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &1882979608238450195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940954930642791487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 5602936032707075627}
+  text: {fileID: 4618543249467598907}
 --- !u!1 &7245872585884720741
 GameObject:
   m_ObjectHideFlags: 0
@@ -4539,6 +5763,10 @@ GameObject:
   - component: {fileID: 7818050576743539216}
   - component: {fileID: 589333854148464941}
   - component: {fileID: 41785538566752025}
+  - component: {fileID: 389815612786985452}
+  - component: {fileID: 8824579093420321615}
+  - component: {fileID: 701281717035696755}
+  - component: {fileID: 5496705133791187111}
   m_Layer: 5
   m_Name: 2D Art
   m_TagString: Untagged
@@ -4755,12 +5983,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &389815612786985452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7379424313308731361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &8824579093420321615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7379424313308731361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 701281717035696755}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &701281717035696755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7379424313308731361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 3155218369701810139}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &5496705133791187111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7379424313308731361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 8824579093420321615}
+  text: {fileID: 3155218369701810139}
 --- !u!1 &7567719155533172516
 GameObject:
   m_ObjectHideFlags: 0
@@ -4776,6 +6072,10 @@ GameObject:
   - component: {fileID: 7512814205673812319}
   - component: {fileID: 8591067480692885557}
   - component: {fileID: 5450500524889995707}
+  - component: {fileID: 518582010346323269}
+  - component: {fileID: 8430880159729284400}
+  - component: {fileID: 4455847086581721147}
+  - component: {fileID: 4674341656386425126}
   m_Layer: 5
   m_Name: VFX & SFX
   m_TagString: Untagged
@@ -4992,12 +6292,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &518582010346323269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7567719155533172516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &8430880159729284400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7567719155533172516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 4455847086581721147}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &4455847086581721147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7567719155533172516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 2735013605854419996}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &4674341656386425126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7567719155533172516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 8430880159729284400}
+  text: {fileID: 2735013605854419996}
 --- !u!1 &7934846532677027945
 GameObject:
   m_ObjectHideFlags: 0
@@ -5011,6 +6379,10 @@ GameObject:
   - component: {fileID: 71602921905701134}
   - component: {fileID: 2971157168389567046}
   - component: {fileID: 1921190655675849554}
+  - component: {fileID: 8512921887631562882}
+  - component: {fileID: 1169830903809849391}
+  - component: {fileID: 2692292515191035046}
+  - component: {fileID: 5166531797689000146}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -5168,12 +6540,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 0, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 1
   resetOnWritten: 1
   resetTime: 0.5
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &8512921887631562882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7934846532677027945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &1169830903809849391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7934846532677027945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 2692292515191035046}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &2692292515191035046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7934846532677027945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 0}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &5166531797689000146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7934846532677027945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 1169830903809849391}
+  text: {fileID: 0}
 --- !u!1 &7942043863496741602
 GameObject:
   m_ObjectHideFlags: 0
@@ -5188,6 +6628,10 @@ GameObject:
   - component: {fileID: 3104538342555073988}
   - component: {fileID: 7346772558553096979}
   - component: {fileID: 1260590160753587940}
+  - component: {fileID: 824261707102619076}
+  - component: {fileID: 1684993195204179330}
+  - component: {fileID: 4038756223386409091}
+  - component: {fileID: 602360946892657914}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -5383,12 +6827,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &824261707102619076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7942043863496741602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &1684993195204179330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7942043863496741602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 4038756223386409091}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &4038756223386409091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7942043863496741602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 8355214552498806765}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &602360946892657914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7942043863496741602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 1684993195204179330}
+  text: {fileID: 8355214552498806765}
 --- !u!1 &8140867638478765695
 GameObject:
   m_ObjectHideFlags: 0
@@ -5404,6 +6916,10 @@ GameObject:
   - component: {fileID: 1682704726183033998}
   - component: {fileID: 66964121373350079}
   - component: {fileID: 4459688125784572742}
+  - component: {fileID: 3541275883286545501}
+  - component: {fileID: 1688600089674576619}
+  - component: {fileID: 6385762598449786658}
+  - component: {fileID: 7779144623916289262}
   m_Layer: 5
   m_Name: 3D Art
   m_TagString: Untagged
@@ -5620,12 +7136,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &3541275883286545501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8140867638478765695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &1688600089674576619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8140867638478765695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 6385762598449786658}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &6385762598449786658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8140867638478765695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 1273675948737415373}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &7779144623916289262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8140867638478765695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 1688600089674576619}
+  text: {fileID: 1273675948737415373}
 --- !u!1 &8255306919560786297
 GameObject:
   m_ObjectHideFlags: 0
@@ -5791,6 +7375,10 @@ GameObject:
   - component: {fileID: 1176656852712249211}
   - component: {fileID: 1426824077986009877}
   - component: {fileID: 5128302140293070513}
+  - component: {fileID: 6372024113733813686}
+  - component: {fileID: 829428838601080950}
+  - component: {fileID: 7801173085312533469}
+  - component: {fileID: 3148499899732134154}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -5986,9 +7574,77 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
   useDefaultColor: 1
+  useDefaultStyle: 1
   resetIfFailed: 0
   resetOnWritten: 0
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
+--- !u!114 &6372024113733813686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8582115444820052895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 0
+--- !u!114 &829428838601080950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8582115444820052895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 7801173085312533469}
+  configPreset: {fileID: 0}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 0
+    ResetOnMistake: 0
+    ResetOnComplete: 0
+--- !u!114 &7801173085312533469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8582115444820052895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 1004236785528088298}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  StyleConfig:
+    CorrectColor: {r: 0, g: 0, b: 0, a: 0}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &3148499899732134154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8582115444820052895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83306664a798048499b2dab0ee29d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
+  controller: {fileID: 829428838601080950}
+  text: {fileID: 1004236785528088298}

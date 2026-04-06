@@ -1,83 +1,115 @@
 using UnityEngine;
-using TMPro;
 using System;
 using TypTyp.TextSystem;
+using TypTyp.TextSystem.Typable;
 using TypTyp;
 
-public class RitualManager : AInputListener
+public class RitualManager : MonoBehaviour
 {
-    [SerializeField] private Color wrongColor = Color.red;
-    private TMP_Text ritualText;
-    public string OriginalText { get; set; } = "";
+    private TypableController typableController;
     private ITextProvider textProvider;
-    private string wrongColorTag;
     private int numTextsCompleted = 0;
-    bool isErrorDisplayed = false;
+    private int lastIdx = 0;
+    private bool lastHasMistake = false;
+    private string originalText = "";
+
+    public string OriginalText
+    {
+        get => originalText;
+        set => SetText(value);
+    }
 
     public event Action OnCorrectChar;
     public event Action OnWrongChar;
     public event Action<float> OnProgressUpdated;
     public event Action<int> LineCompleted;
 
-    private bool ritualActive = true;
-
     void Awake()
     {
-        wrongColorTag = Utils.ColorToTag(wrongColor);
-        ritualText = GetComponent<TMP_Text>();
+        typableController = GetComponent<TypableController>();
         textProvider = GetComponentInParent<ITextProvider>();
+        UnityEngine.Assertions.Assert.IsNotNull(typableController);
+        if (typableController != null)
+        {
+            typableController.InputTransform = TransformInput;
+        }
     }
 
-    protected override void ProcessInput(char c)
+    void OnEnable()
     {
-        if (!ritualActive) return;
+        if (typableController == null) return;
+        typableController.OnChanged += HandleChanged;
+        typableController.OnError += HandleError;
+        typableController.OnComplete += HandleComplete;
+    }
 
-        if (OriginalText.Equals(string.Empty)) return;
-        if (Settings.Instance.ShowSpaces && c == ' ') c = '-';
-        if (c == OriginalText[Idx])
+    void OnDisable()
+    {
+        if (typableController == null) return;
+        typableController.OnChanged -= HandleChanged;
+        typableController.OnError -= HandleError;
+        typableController.OnComplete -= HandleComplete;
+    }
+
+    public void SetText(string text)
+    {
+        originalText = text ?? "";
+        lastIdx = 0;
+        lastHasMistake = false;
+        if (typableController != null)
+            typableController.SetText(originalText);
+        UpdateProgress();
+    }
+
+    private void HandleChanged()
+    {
+        int idx = typableController.Idx;
+        if (idx > lastIdx)
         {
-            Idx++;
-            isErrorDisplayed = false;
-            ritualText.text = fillColorTag + OriginalText[..Idx] +
-                "</color>" + OriginalText[Idx..];
             OnCorrectChar?.Invoke();
         }
-        else if (!isErrorDisplayed)
+
+        lastIdx = idx;
+        lastHasMistake = typableController.HasMistake;
+        UpdateProgress();
+    }
+
+    private void HandleError()
+    {
+        if (!lastHasMistake)
         {
-            isErrorDisplayed = true;
-            string original = ritualText.text;
-            ritualText.text = fillColorTag + OriginalText[..Idx] + "</color>" +
-                wrongColorTag + OriginalText[Idx] + "</color>" + OriginalText[(Idx + 1)..];
+            lastHasMistake = true;
             OnWrongChar?.Invoke();
         }
-        if (Idx >= OriginalText.Length)
-        {
-            numTextsCompleted++;
-            GetNextText();
-        }
-        UpdateProgress();
+    }
+
+    private void HandleComplete()
+    {
+        numTextsCompleted++;
+        GetNextText();
     }
 
     private void GetNextText()
     {
-        OriginalText = textProvider.GetNextText();
-        ritualText.text = OriginalText;
-        Idx = 0;
+        if (textProvider == null) return;
+        SetText(textProvider.GetNextText());
         //Esto solo ocurre en cliente
         LineCompleted?.Invoke(numTextsCompleted);
     }
 
     private void UpdateProgress()
     {
+        if (typableController == null) return;
         float globalProgress = (float)numTextsCompleted / TypTyp.Settings.Instance.MaxTextsProvided;
-        float localProgress = OriginalText.Length == 0 ? 0 : 
-            (float)Idx / (OriginalText.Length * TypTyp.Settings.Instance.MaxTextsProvided);
+        float localProgress = originalText.Length == 0 ? 0 :
+            (float)typableController.Idx / (originalText.Length * TypTyp.Settings.Instance.MaxTextsProvided);
         float progress = globalProgress + localProgress;
         OnProgressUpdated?.Invoke(progress);
     }
 
-    public void SetActive(bool value)
+    private char TransformInput(char c)
     {
-        ritualActive = value;
+        if (Settings.Instance.ShowSpaces && c == ' ') return '-';
+        return c;
     }
 }

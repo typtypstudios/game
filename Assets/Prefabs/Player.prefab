@@ -504,7 +504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellTypingTracker
   ShowTopMostFoldoutHeaderGroup: 1
-  TypedText:
+  RawText:
     m_InternalValue:
       utf8LengthInBytes: 0
       bytes:
@@ -539,6 +539,43 @@ MonoBehaviour:
         byte0027: 0
         byte0028: 0
         byte0029: 0
+  FilteredText:
+    m_InternalValue:
+      utf8LengthInBytes: 0
+      bytes:
+        offset0000:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        byte0016: 0
+        byte0017: 0
+        byte0018: 0
+        byte0019: 0
+        byte0020: 0
+        byte0021: 0
+        byte0022: 0
+        byte0023: 0
+        byte0024: 0
+        byte0025: 0
+        byte0026: 0
+        byte0027: 0
+        byte0028: 0
+        byte0029: 0
+  AllowRawChat:
+    m_InternalValue: 0
 --- !u!95 &7309832286138776066
 Animator:
   serializedVersion: 7
@@ -1770,7 +1807,16 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 67419306736124226, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       insertIndex: 3
+      addedObject: {fileID: 7235811082346303283}
+    - targetCorrespondingSourceObject: {fileID: 67419306736124226, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
+      insertIndex: 4
       addedObject: {fileID: 2871317661360311635}
+    - targetCorrespondingSourceObject: {fileID: 67419306736124226, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 239745702879375163}
+    - targetCorrespondingSourceObject: {fileID: 67419306736124226, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7082801598199352939}
   m_SourcePrefab: {fileID: 100100000, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
 --- !u!224 &1925575968682149488 stripped
 RectTransform:
@@ -1782,6 +1828,27 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 67419306736124226, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
   m_PrefabInstance: {fileID: 6205150170385696706}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7235811082346303283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6265240132577248896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+  views:
+  - {fileID: 239745702879375163}
+  configPreset: {fileID: 11400000, guid: 9cc25ac586d30e44ebc342afded84ce6, type: 2}
+  config:
+    StopOnMistake: 1
+    MarkMistakes: 0
+    CaseSensitive: 1
+    ResetOnMistake: 0
+    ResetOnComplete: 0
 --- !u!114 &2871317661360311635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1794,9 +1861,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf3a0fdc489a0945a9e7cfeff62a874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RitualManager
-  fillColor: {r: 1, g: 1, b: 1, a: 1}
-  autoSubscribe: 1
-  wrongColor: {r: 1, g: 0, b: 0, a: 1}
+  typableController: {fileID: 7235811082346303283}
+--- !u!114 &239745702879375163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6265240132577248896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
+  tmp: {fileID: 6446494482979382859}
+  stylePreset: {fileID: 11400000, guid: d6392fd4e45d67742b9d7e6028ee6453, type: 2}
+  styleConfig:
+    CorrectColor: {r: 1, g: 1, b: 1, a: 1}
+    WrongColor: {r: 1, g: 0, b: 0, a: 1}
+    UnderlineNext: 1
+    RandomizeCorrectColorOnComplete: 0
+--- !u!114 &7082801598199352939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6265240132577248896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
+  InputMask: 1
 --- !u!114 &6446494482979382859 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}

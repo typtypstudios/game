@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 454f12c399ac85b4e97416596638c0ce, type: 3}
+  m_Name: TypablePreset-Ritual
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableConfigPreset
+  <Config>k__BackingField:
+    StopOnMistake: 1
+    MarkMistakes: 1
+    CaseSensitive: 1
+    ResetOnMistake: 0
+    ResetOnComplete: 0
