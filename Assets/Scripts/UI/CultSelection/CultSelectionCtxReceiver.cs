@@ -6,7 +6,6 @@ using System.Collections.Generic;
 public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
 {
     private CultSelectionController controller;
-    private Stack<CultSelectionConfig> configStack = new();
 
     private void Awake()
     {
@@ -16,16 +15,7 @@ public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
     public void ReceiveContext(Screens prevScreen, bool isGoingBack)
     {
         CultSelectionConfig config = new();
-        if(prevScreen == Screens.MainMenu)
-        {
-            config = new()
-            {
-                labelInfo = "Choose your cult!",
-                OnCultChosen = () => FindFirstObjectByType<MainMenuManager>().Play(),
-                showEquipmentButtons = true
-            };
-        }
-        else if(prevScreen == Screens.DeckBuilder)
+        if (prevScreen == Screens.DeckBuilder && !isGoingBack)
         {
             config = new()
             {
@@ -34,7 +24,16 @@ public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
                 showEquipmentButtons = false
             };
         }
-        controller.SetConfiguration(config);
+        else
+        {
+            config = new()
+            {
+                labelInfo = "Choose your cult!",
+                OnCultChosen = () => FindFirstObjectByType<MainMenuManager>().Play(),
+                showEquipmentButtons = true
+            };
+        }
+            controller.SetConfiguration(config);
     }
 }
 
