@@ -8,7 +8,7 @@ namespace TypTyp.TextSystem.Typable
     {
         [SerializeField] private TMP_Text tmp;
         [SerializeField] private TypableViewStylePreset stylePreset;
-        [SerializeField] private TypableViewStyleConfig styleConfig = TypableViewStyleConfig.Default;
+        [SerializeField] public TypableViewStyleConfig StyleConfig = TypableViewStyleConfig.Default;
 
         private bool wasComplete;
         private readonly StringBuilder sb = new();
@@ -16,7 +16,7 @@ namespace TypTyp.TextSystem.Typable
         void Awake()
         {
             if (stylePreset != null)
-                styleConfig = stylePreset.Config;
+                StyleConfig = stylePreset.Config;
         }
 
         public override void UpdateView(in TypableViewDTO dto)
@@ -29,7 +29,7 @@ namespace TypTyp.TextSystem.Typable
             sb.Clear();
 
             sb.Append("<color=#");
-            sb.Append(ColorUtility.ToHtmlStringRGB(styleConfig.CorrectColor));
+            sb.Append(ColorUtility.ToHtmlStringRGB(StyleConfig.CorrectColor));
             sb.Append('>');
             if (idx > 0)
                 sb.Append(safeText, 0, idx);
@@ -41,12 +41,12 @@ namespace TypTyp.TextSystem.Typable
                 if (dto.HasMistake)
                 {
                     sb.Append("<color=#");
-                    sb.Append(ColorUtility.ToHtmlStringRGB(styleConfig.WrongColor));
+                    sb.Append(ColorUtility.ToHtmlStringRGB(StyleConfig.WrongColor));
                     sb.Append('>');
                     sb.Append(c);
                     sb.Append("</color>");
                 }
-                else if (styleConfig.UnderlineNext)
+                else if (StyleConfig.UnderlineNext)
                 {
                     sb.Append("<u>");
                     sb.Append(c);
@@ -64,9 +64,15 @@ namespace TypTyp.TextSystem.Typable
 
             tmp.text = sb.ToString();
 
-            if (!wasComplete && dto.IsComplete && styleConfig.RandomizeCorrectColorOnComplete)
+            if (!wasComplete && dto.IsComplete && StyleConfig.RandomizeCorrectColorOnComplete)
             {
-                styleConfig.CorrectColor = Utils.GetDifferentColor(styleConfig.CorrectColor);
+                StyleConfig = new TypableViewStyleConfig
+                {
+                    CorrectColor = Utils.GetDifferentColor(StyleConfig.CorrectColor),
+                    WrongColor = StyleConfig.WrongColor,
+                    UnderlineNext = StyleConfig.UnderlineNext,
+                    RandomizeCorrectColorOnComplete = StyleConfig.RandomizeCorrectColorOnComplete
+                };
             }
             wasComplete = dto.IsComplete;
         }

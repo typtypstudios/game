@@ -27,14 +27,7 @@ namespace TypTyp.TextSystem.Typable
 
         void Awake()
         {
-            input = GetComponent<TypingInputListener>();
-            if (configPreset != null)
-                config = configPreset.Config;
-            typable = new Typable(config);
-            presenter = new TypablePresenter(typable, views);
-            typable.OnComplete += HandleComplete;
-            typable.OnChanged += HandleChanged;
-            typable.OnError += HandleError;
+            InitializeIfNeeded();
         }
 
         void Reset()
@@ -44,12 +37,15 @@ namespace TypTyp.TextSystem.Typable
 
         void OnEnable()
         {
-            input.OnInputTyped += HandleInput;
+            InitializeIfNeeded();
+            if (input != null)
+                input.OnInputTyped += HandleInput;
         }
 
         void OnDisable()
         {
-            input.OnInputTyped -= HandleInput;
+            if (input != null)
+                input.OnInputTyped -= HandleInput;
         }
 
         void OnDestroy()
@@ -64,13 +60,16 @@ namespace TypTyp.TextSystem.Typable
 
         public void SetText(string text)
         {
+            InitializeIfNeeded();
+            if (typable == null) return;
             typable.SetText(text);
         }
 
         void HandleInput(char c)
         {
             char processed = InputTransform != null ? InputTransform(c) : c;
-            typable.Input(processed);
+            if (typable != null)
+                typable.Input(processed);
         }
 
         void HandleComplete()
@@ -86,6 +85,19 @@ namespace TypTyp.TextSystem.Typable
         void HandleError()
         {
             OnError?.Invoke();
+        }
+
+        private void InitializeIfNeeded()
+        {
+            if (typable != null) return;
+            input = GetComponent<TypingInputListener>();
+            if (configPreset != null)
+                config = configPreset.Config;
+            typable = new Typable(config);
+            presenter = new TypablePresenter(typable, views);
+            typable.OnComplete += HandleComplete;
+            typable.OnChanged += HandleChanged;
+            typable.OnError += HandleError;
         }
     }
 }

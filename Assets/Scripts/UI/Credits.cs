@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+using TypTyp.TextSystem.Typable;
+using TypTyp.Input;
 
 public class Credits : MonoBehaviour
 {
@@ -8,19 +9,24 @@ public class Credits : MonoBehaviour
     [SerializeField] private float finalYPos;
     private RectTransform rt;
     private Vector2 initPos;
-    private WritableButton[] buttons;
+    private TypableController[] typables;
+    private TypingInputListener[] listeners;
     private int currentButtonIdx = 0;
 
     private void Awake()
     {
         rt = GetComponent<RectTransform>();
         initPos = rt.anchoredPosition;
-        buttons = GetComponentsInChildren<WritableButton>();
-        for(int i = 0; i < buttons.Length; i++)
+        typables = GetComponentsInChildren<TypableController>(true);
+        listeners = GetComponentsInChildren<TypingInputListener>(true);
+        for (int i = 0; i < typables.Length; i++)
         {
-            buttons[i].Block = true;
-            buttons[i].GetComponent<Button>().interactable = false;
-            buttons[i].GetComponent<Button>().onClick.AddListener(OnButtonWritten);
+            typables[i].OnComplete += OnButtonWritten;
+            typables[i].enabled = false;
+        }
+        for (int i = 0; i < listeners.Length; i++)
+        {
+            listeners[i].enabled = false;
         }
     }
 
@@ -33,10 +39,13 @@ public class Credits : MonoBehaviour
     public void StopCredits()
     {
         StopAllCoroutines();
-        foreach (var b in buttons)
+        foreach (var t in typables)
         {
-            b.ResetButton(true);
-            b.Block = true;
+            t.enabled = false;
+        }
+        foreach (var l in listeners)
+        {
+            l.enabled = false;
         }
         currentButtonIdx = 0;
     }
@@ -48,14 +57,18 @@ public class Credits : MonoBehaviour
 
     private void OnButtonWritten()
     {
-        buttons[currentButtonIdx++].Block = true;
-        if (currentButtonIdx >= buttons.Length) return;
-        buttons[currentButtonIdx].Block = false;
+        typables[currentButtonIdx].enabled = false;
+        listeners[currentButtonIdx++].enabled = false;
+        if (currentButtonIdx >= typables.Length) return;
+        typables[currentButtonIdx].enabled = true;
+        listeners[currentButtonIdx].enabled = true;
     }
 
     IEnumerator PlayCreditsCoroutine()
     {
-        buttons[0].Block = false;
+        if (typables.Length == 0) yield break;
+        typables[0].enabled = true;
+        listeners[0].enabled = true;
         rt.anchoredPosition = initPos;
         float creditsSpeed = (finalYPos - initPos.y) / creditsTime;
         while (rt.anchoredPosition.y < finalYPos)

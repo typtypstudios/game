@@ -12,6 +12,7 @@ namespace TypTyp.TextSystem.Typable
         private void Start()
         {
             if (controller == null || text == null) return;
+            if (!string.IsNullOrEmpty(controller.Text)) return;
             controller.SetText(text.text ?? string.Empty);
         }
     }
