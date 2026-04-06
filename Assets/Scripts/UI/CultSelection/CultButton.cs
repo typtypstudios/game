@@ -11,6 +11,7 @@ public class CultButton : MonoBehaviour
     [SerializeField] private GameObject displayerPrefab;
     [SerializeField] private Transform deckTransform;
     [SerializeField] private WritableButton editButton;
+    [SerializeField] private string editText = "Edit <name> deck";
     private CultSelectionController selectionController;
     private readonly List<InfoDisplayer> displayers = new();
     private WritableButton writableButton;
@@ -47,8 +48,7 @@ public class CultButton : MonoBehaviour
             int cardID = cultInfo.equippedCards.Count > 0 ? cultInfo.equippedCards[i] : i;
             displayers[i].SetInfo(CardRegister.Instance.GetById(cardID));
         }
-        string editButtonText = editButton.GetComponentInChildren<TMP_Text>().text;
-        editButton.OverrideText(editButtonText.Replace("<name>", cultInfo.cult.Abbreviation));
+        editButton.OverrideText(editText.Replace("<name>", cultInfo.cult.Abbreviation));
     }
 
     public void UpdateInfo() => SetCultInfo(RuntimeVariables.Instance.CultsInfo[cultId]);

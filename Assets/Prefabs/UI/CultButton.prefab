@@ -828,6 +828,7 @@ MonoBehaviour:
   displayerPrefab: {fileID: 6197163764538069853, guid: 21e73d494f37fa94e98058fe3ffce2d1, type: 3}
   deckTransform: {fileID: 7767799537090729472}
   editButton: {fileID: 3625398546368228435}
+  editText: Edit <name> deck
 --- !u!114 &1795568092860698547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1091,11 +1092,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 333740115328695815, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
       propertyPath: m_text
-      value: Edit <name> deck
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 333740115328695815, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
       propertyPath: m_fontSize
-      value: 15.95
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2312505291243406942, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

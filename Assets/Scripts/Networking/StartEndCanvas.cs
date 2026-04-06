@@ -1,8 +1,9 @@
 using System.Collections;
 using TMPro;
+using TypTyp;
 using UnityEngine;
 
-public class GameUICanvasScript : MonoBehaviour
+public class StartEndCanvas : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
     [SerializeField] private TMP_Text resultText;
@@ -24,6 +25,11 @@ public class GameUICanvasScript : MonoBehaviour
     [SerializeField] private Vector2 leftImageCenterPos = new Vector2(-300, 0);
     [SerializeField] private Vector2 rightImageCenterPos = new Vector2(300, 0);
 
+    [Header("XP Related")]
+    [SerializeField] private TMP_Text earnedXPText;
+    [SerializeField] private ProgressionBar progressionBar;
+    [SerializeField] private float animSpeed = 1;
+
     private Coroutine slideCoroutine;
 
     private void Awake()
@@ -36,7 +42,10 @@ public class GameUICanvasScript : MonoBehaviour
 
         if (leftImage != null) leftImage.anchoredPosition = leftImageOffscreenPos;
         if (rightImage != null) rightImage.anchoredPosition = rightImageOffscreenPos;
+        XPManager.Instance.OnXPUpdated += UpdateProgressionBar;
     }
+
+    private void OnDisable() => XPManager.Instance.OnXPUpdated -= UpdateProgressionBar;
 
     public void SetCountdownActive(bool isActive)
     {
@@ -92,16 +101,38 @@ public class GameUICanvasScript : MonoBehaviour
     {
         panel.SetActive(true);
         exitButton.SetActive(false);
-
         resultText.text = isWinner ? "VICTORY" : "DEFEAT";
-
         WritableText wt = resultText.GetComponent<WritableText>();
         if (wt != null)
         {
             wt.FillColor = isWinner ? Color.cyan : Color.red;
             wt.ResetText();
         }
-
         exitButton.SetActive(true);
+        CalculateXPGain(isWinner);
+    }
+
+    private void CalculateXPGain(bool isWinner)
+    {
+        if (isWinner) XPManager.Instance.ProcessVictory();
+        else XPManager.Instance.ProcessLoss();
+    }
+
+    private void UpdateProgressionBar(float prevXP, float nextXP)
+    {
+        StopAllCoroutines();
+        StartCoroutine(GainAnimationCoroutine(prevXP, nextXP));
+    }
+
+    IEnumerator GainAnimationCoroutine(float prevXP, float nextXP)
+    {
+        int xpEarned = Mathf.RoundToInt((nextXP - prevXP) * Settings.Instance.XPPerRank);
+        earnedXPText.text = earnedXPText.text.Replace("<points>", xpEarned.ToString());
+        while (prevXP != nextXP)
+        {
+            prevXP = Mathf.MoveTowards(prevXP, nextXP, Time.deltaTime * animSpeed);
+            progressionBar.DisplayXP(prevXP);
+            yield return null;
+        }
     }
 }

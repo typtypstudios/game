@@ -37,4 +37,9 @@ public static class Utils
         }
         return null;
     }
+
+    public static float RandomInRange(Vector2 range)
+    {
+        return Random.Range(range.x, range.y);
+    }
 }

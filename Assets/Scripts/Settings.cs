@@ -55,5 +55,10 @@ namespace TypTyp
 
         [Header("ChatRelated")]
         [field: SerializeField] public bool ChatActive { get; internal set; } = true;
+
+        [Header("XPRelated")]
+        [field: SerializeField] public float XPPerRank { get; set; } = 100f;
+        [field: SerializeField] public Vector2 XPGainRange { get; set; } = new(15, 20); //Porcentaje!!
+        [field: SerializeField] public float PerformanceMult { get; set; } = 1.2f;
     }
 }
