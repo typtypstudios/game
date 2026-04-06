@@ -32,6 +32,6 @@ public class DeckSaveData
 [Serializable] 
 public class CultData
 {
-    public int level;
+    public float level;
     public DeckSaveData deck = new();
 }

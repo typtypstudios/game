@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TypTyp;
-using TypTyp.Cults;
 using UnityEngine;
 
 //?
@@ -13,6 +12,7 @@ public class DeckBuilder : MonoBehaviour
     [SerializeField] private Transform equippedLayout;
     [SerializeField] private Transform unequippedLayout;
     [SerializeField] private GameObject[] highlightPanels;
+    [SerializeField] private bool sortOnChange = true; //Ordena las cartas no equipadas siempre
     private readonly List<BuilderDisplayer> equippedCards = new();
     private readonly List<BuilderDisplayer> unequippedCards = new();
     private List<int> equippedIndexes = new();
@@ -77,39 +77,40 @@ public class DeckBuilder : MonoBehaviour
         }
     }
 
-    private void RebuildUnequippedCards(CultDefinition cult)
+    private void RebuildUnequippedCards()
     {
-        foreach (BuilderDisplayer card in unequippedCards)
+        foreach (BuilderDisplayer displayer in unequippedCards)
         {
-            if (card != null)
+            if (displayer != null)
             {
-                Destroy(card.gameObject);
+                Destroy(displayer.gameObject);
             }
         }
-
         unequippedCards.Clear();
-
-        List<CardDefinition> defaultCards = CardRegister.Instance.RegisteredItems.
-            Where((c) => c.Cult == null).
-            Distinct().
-            OrderBy((c) => c.Name).ToList();
-        AddUnequippedCardCollection(defaultCards);
-        List<CardDefinition> cultCards = cult.GetCards().
-            Distinct().
-            OrderBy((c) => c.RequiredLevel).
-            ThenBy((c) => c.Name).ToList();
-        AddUnequippedCardCollection(cultCards);
-    }
-
-    private void AddUnequippedCardCollection(List<CardDefinition> cards)
-    {
-        foreach (CardDefinition card in cards)
+        List<CardDefinition> availableCards = 
+            CardRegister.Instance.RegisteredItems.Where(c => c.Cult == null).ToList();
+        availableCards.AddRange(RuntimeVariables.Instance.CurrentCult.GetCards().ToList());
+        foreach (CardDefinition card in availableCards)
         {
             if (equippedIndexes.Contains(CardRegister.Instance.GetId(card))) continue;
             BuilderDisplayer displayer = Instantiate(cardPrefab, unequippedLayout).GetComponent<BuilderDisplayer>();
             unequippedCards.Add(displayer);
             displayer.SetInfo(card);
         }
+        SortUnequipped();
+    }
+
+    private void SortUnequipped()
+    {
+        List<CardDefinition> sortedCards = unequippedCards
+        .Select(d => d.Card)
+        .Distinct()
+        .OrderBy(c => c.Cult != null) 
+        .ThenBy(c => c.RequiredLevel)
+        .ThenBy(c => c.Name)
+        .ToList();
+        for (int i = 0; i < sortedCards.Count; i++)
+            unequippedCards[i].SetInfo(sortedCards[i]);
     }
 
     private void ProcessCardChosen(BuilderDisplayer card)
@@ -147,6 +148,7 @@ public class DeckBuilder : MonoBehaviour
             RefreshIndexesFromUI();
             RefreshCardsInDeck();
             ResetSelection();
+            if (sortOnChange) SortUnequipped();
         }
     }
 
@@ -178,7 +180,7 @@ public class DeckBuilder : MonoBehaviour
             equippedCards[i].SetInfo(CardRegister.Instance.GetById(equippedIndexes[i]));
         }
 
-        RebuildUnequippedCards(CultRegister.Instance.GetById(cultId));
+        RebuildUnequippedCards();
         RefreshCardsInDeck();
         ResetSelection();
     }

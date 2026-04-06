@@ -75,6 +75,7 @@ public class InitialTip : MonoBehaviour
 
     private void HideTip()
     {
+        if (!selfCanvas.enabled) return;
         selfCanvas.enabled = false;
         mainMenuCanvas.enabled = true;
     }
