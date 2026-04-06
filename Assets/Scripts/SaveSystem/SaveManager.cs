@@ -46,8 +46,7 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         SaveData data = NormalizeSlotData(new SaveData());
         SaveDataInternal(data);
         currentState.slot = NormalizeSlotData(data);
-        HasLoadedState = true;
-        OnAfterLoad?.Invoke(GetState());
+        InvokeAfterLoad();
     }
 
     public void SetActiveSlot(string slotId)
@@ -93,8 +92,7 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         currentState.slot = NormalizeSlotData(loadedData);
         LoadGlobalSettingsInternal();
         currentState = NormalizeState(currentState);
-        HasLoadedState = true;
-        OnAfterLoad?.Invoke(GetState());
+        InvokeAfterLoad();
     }
 
     public SaveState GetState()
@@ -152,8 +150,7 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         }
 
         currentState = NormalizeState(currentState);
-        HasLoadedState = true;
-        OnAfterLoad?.Invoke(GetState());
+        InvokeAfterLoad();
     }
 
     private void EnsureActiveSlot()
@@ -237,4 +234,11 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         }
     }
 
+    private void InvokeAfterLoad()
+    {
+        HasLoadedState = true;
+        SaveState state = GetState();
+        RuntimeVariables.Instance.UpdateVariables(state);
+        OnAfterLoad?.Invoke(state);
+    }
 }

@@ -12,19 +12,7 @@ public class RuntimeVariables : Singleton<RuntimeVariables>
     public float CurrentLevel { get; private set; }
     public List<CultRuntimeInfo> CultsInfo { get; private set; } = new();
 
-    protected override void Awake()
-    {
-        base.Awake();
-        SaveManager.Instance.OnAfterLoad += UpdateVariables;
-        UpdateVariables(SaveManager.Instance.GetState());
-    }
-
-    private void OnDestroy()
-    {
-        SaveManager.Instance.OnAfterLoad -= UpdateVariables;
-    }
-
-    private void UpdateVariables(SaveState saveState)
+    public void UpdateVariables(SaveState saveState)
     {
         int cultId = saveState.slot.cultId;
         CurrentCult = CultRegister.Instance.GetById(cultId);

@@ -1,18 +1,25 @@
-using TypTyp.Cults;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CultSelectionController : MonoBehaviour
 {
     [SerializeField] private GameObject cultButtonPrefab;
     [SerializeField] private Transform cultButtonsParent;
+    private readonly List<CultButton> buttons = new();
 
     void Start()
     {
         foreach(var cultInfo in RuntimeVariables.Instance.CultsInfo)
         {
             CultButton cultButton = Instantiate(cultButtonPrefab, cultButtonsParent).GetComponent<CultButton>();
+            buttons.Add(cultButton);
             cultButton.SetCultInfo(cultInfo);
         }
+    }
+
+    public void UpdateInfo()
+    {
+        foreach(var button in buttons) button.UpdateInfo();
     }
 
     public void SetCult(int cultId)
