@@ -9,7 +9,9 @@ namespace TypTyp.Cults
     public class CultDefinition : ScriptableObject
     {
         [field: SerializeField] public string Name { get; private set; }
+        [field: SerializeField] public string Abbreviation { get; private set; }
         [field: SerializeField] public string[] RankNames { get; private set; }
+        [field: SerializeField] public Sprite Image { get; private set; }
 
         public IEnumerable<CardDefinition> GetCards()
         {
