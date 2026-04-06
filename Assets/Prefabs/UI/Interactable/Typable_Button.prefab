@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1479598489593114245}
   - component: {fileID: 333740115328695815}
   - component: {fileID: 2295699886123020759}
+  - component: {fileID: 3836569034664091576}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -93,7 +94,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
+  m_fontSize: 20
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -151,6 +152,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
   ignoreRestriction: 0
+--- !u!114 &3836569034664091576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515442965328511894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25dd1c600de9ccf4b8c83d0d709b5b15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextAppear
+  text: {fileID: 333740115328695815}
+  duration: 2
 --- !u!1 &8185215459011606957
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,8 +319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  useDefaultColor: 0
-  useDefaultStyle: 0
   resetIfFailed: 1
   resetOnWritten: 1
   resetTime: 0.5

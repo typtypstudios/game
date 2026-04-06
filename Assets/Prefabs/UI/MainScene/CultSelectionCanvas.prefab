@@ -479,12 +479,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 0, b: 1, a: 1}
-  autoSubscribe: 1
-  useDefaultColor: 1
   resetIfFailed: 1
   resetOnWritten: 1
   resetTime: 0.5
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
 --- !u!114 &2298532980715648365
 MonoBehaviour:
   m_ObjectHideFlags: 0
