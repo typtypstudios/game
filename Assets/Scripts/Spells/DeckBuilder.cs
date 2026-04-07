@@ -30,6 +30,8 @@ public class DeckBuilder : MonoBehaviour
     {
         InitializeEquippedCards();
 
+        if (RuntimeVariables.Instance.IsLoaded) ApplyDeck();
+
         foreach (GameObject panel in highlightPanels)
         {
             // Keep highlight panels behind cards so selected cards remain visible
@@ -167,13 +169,13 @@ public class DeckBuilder : MonoBehaviour
 
     private void HandleAfterLoad(SaveState state)
     {
-        ApplyDeck(state);
+        ApplyDeck();
     }
 
-    private void ApplyDeck(SaveState state)
+    private void ApplyDeck()
     {
-        int cultId = state?.slot?.cultId ?? 0;
-        equippedIndexes = ResolveEquippedIndexes(state?.slot?.cultData[cultId]?.deck?.equippedCardIds);
+        int cultId = RuntimeVariables.Instance.CurrentCultID;
+        equippedIndexes = ResolveEquippedIndexes(RuntimeVariables.Instance.CultsInfo[cultId].equippedCards);
 
         for (int i = 0; i < equippedCards.Count; i++)
         {

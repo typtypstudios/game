@@ -9,9 +9,11 @@ using System.Collections.Generic;
 public class RuntimeVariables : Singleton<RuntimeVariables>
 {
     public CultDefinition CurrentCult { get; private set; }
+    public int CurrentCultID { get; private set; }
     public float CurrentLevel { get; private set; }
     public List<CultRuntimeInfo> CultsInfo { get; private set; } = new();
     public int MaxLevel => CurrentCult.RankNames.Length - 1;
+    public bool IsLoaded { get; private set; } = false;
 
     protected override void Awake()
     {
@@ -25,6 +27,7 @@ public class RuntimeVariables : Singleton<RuntimeVariables>
     {
         int cultId = saveState.slot.cultId;
         CurrentCult = CultRegister.Instance.GetById(cultId);
+        CurrentCultID = cultId;
         CurrentLevel = Mathf.Min(saveState.slot.cultData[cultId].level, MaxLevel);
         CultsInfo.Clear();
         for(int i = 0; i < saveState.slot.cultData.Length; i++)
@@ -37,6 +40,7 @@ public class RuntimeVariables : Singleton<RuntimeVariables>
                 equippedCards = saveState.slot.cultData[i].deck.equippedCardIds
             });
         }
+        IsLoaded = true;
     }
 }
 
