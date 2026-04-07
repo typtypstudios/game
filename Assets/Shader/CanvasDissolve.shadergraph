@@ -24,6 +24,12 @@
     "m_CategoryData": [
         {
             "m_Id": "6d08c85144a34394961143a2b81aa22e"
+        },
+        {
+            "m_Id": "0954115c5a334dafa1455e70085d6e5a"
+        },
+        {
+            "m_Id": "8105ef804b2349a8bc9029ff765a1ee6"
         }
     ],
     "m_Nodes": [
@@ -437,6 +443,18 @@
         "w": 0.0
     },
     "m_LiteralMode": false
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "0954115c5a334dafa1455e70085d6e5a",
+    "m_Name": "Logic",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "968d34fbbbd0445c861938ec6836aec7"
+        }
+    ]
 }
 
 {
@@ -1186,18 +1204,6 @@
     "m_ChildObjectList": [
         {
             "m_Id": "b20c965e054f49b1ab83b419074ce306"
-        },
-        {
-            "m_Id": "b27de007b47645e6bbb743b86f708694"
-        },
-        {
-            "m_Id": "968d34fbbbd0445c861938ec6836aec7"
-        },
-        {
-            "m_Id": "db1eee8821b3499daddd63d7eaa680d7"
-        },
-        {
-            "m_Id": "e5df1d966be64721ad0fedb46ccca1c0"
         }
     ]
 }
@@ -1363,6 +1369,24 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "8105ef804b2349a8bc9029ff765a1ee6",
+    "m_Name": "View",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "b27de007b47645e6bbb743b86f708694"
+        },
+        {
+            "m_Id": "db1eee8821b3499daddd63d7eaa680d7"
+        },
+        {
+            "m_Id": "e5df1d966be64721ad0fedb46ccca1c0"
+        }
+    ]
 }
 
 {

@@ -8,7 +8,7 @@ public class NavigationController : MonoBehaviour
 {
     [SerializeField] private NavigationEntry[] entries;
     [SerializeField] private Material transitionMat;
-    [SerializeField] private float transitionSpeed = 1;
+    [Min(0)][SerializeField] private float transitionTime = 2;
     [SerializeField] private RenderTexture transitionTexture;
     private readonly Dictionary<Screens, Canvas> screenDictionary = new();
     private readonly Stack<Screens> screenStack = new();
@@ -86,10 +86,11 @@ public class NavigationController : MonoBehaviour
         Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
         uiCam.cullingMask |= (1 << LayerMask.NameToLayer("UI"));
         origin.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        float speed = 1 / transitionTime;
         float dissolveValue = Dissolve; //Para no hacer gets constantes
         while (dissolveValue < 1)
         {
-            dissolveValue += transitionSpeed * Time.deltaTime;
+            dissolveValue += speed * Time.deltaTime;
             Dissolve = dissolveValue;
             yield return null;
         }
@@ -98,7 +99,7 @@ public class NavigationController : MonoBehaviour
         dissolveValue = 1;
         while (dissolveValue > 0)
         {
-            dissolveValue -= transitionSpeed * Time.deltaTime;
+            dissolveValue -= speed * Time.deltaTime;
             Dissolve = dissolveValue;
             yield return null;
         }
