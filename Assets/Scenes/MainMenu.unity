@@ -622,6 +622,36 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 905069982216167919, guid: d71944b0d3258a647ade4ed9b5bedd12, type: 3}
   m_PrefabInstance: {fileID: 4947804356001790012}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1037764735 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7756775444701966488, guid: e7e62ade131498c4585aa1d261c7d8bb, type: 3}
+  m_PrefabInstance: {fileID: 4449772446488058018}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1037764743 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2207450562309443301, guid: e7e62ade131498c4585aa1d261c7d8bb, type: 3}
+  m_PrefabInstance: {fileID: 4449772446488058018}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037764735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1037764745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037764735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25dd1c600de9ccf4b8c83d0d709b5b15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextAppear
+  text: {fileID: 1037764743}
+  duration: 2
 --- !u!1 &1087413769
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,7 +999,7 @@ MonoBehaviour:
   - canvas: {fileID: 697707598}
     screen: 9
   transitionMat: {fileID: 2100000, guid: e06787ac7399dac40bff16edbb7ed244, type: 2}
-  transitionSpeed: 3
+  transitionSpeed: 1
   transitionTexture: {fileID: 8400000, guid: 9d3d5549c254bf94aaea69fa20f926eb, type: 2}
 --- !u!224 &1475242808 stripped
 RectTransform:
@@ -2196,6 +2226,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainMenuCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 4032557309714765846, guid: e7e62ade131498c4585aa1d261c7d8bb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4555197438186148284, guid: e7e62ade131498c4585aa1d261c7d8bb, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2348,14 +2382,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7756775444701966488, guid: e7e62ade131498c4585aa1d261c7d8bb, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9167060087705859020, guid: e7e62ade131498c4585aa1d261c7d8bb, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 2014259145}
+    - target: {fileID: 9167060087705859020, guid: e7e62ade131498c4585aa1d261c7d8bb, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7756775444701966488, guid: e7e62ade131498c4585aa1d261c7d8bb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1037764745}
   m_SourcePrefab: {fileID: 100100000, guid: e7e62ade131498c4585aa1d261c7d8bb, type: 3}
 --- !u!1001 &4947804356001790012
 PrefabInstance:
@@ -2477,6 +2522,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 2014259145}
+    - target: {fileID: 3635463749834865548, guid: d71944b0d3258a647ade4ed9b5bedd12, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5799524009854775892, guid: d71944b0d3258a647ade4ed9b5bedd12, type: 3}
       propertyPath: m_Name
       value: DeckBuilderCanvas
@@ -3239,6 +3288,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 2014259145}
+    - target: {fileID: 5388208286788138666, guid: 359d53fc16f4984438088301891a2e3e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5512585763755765149, guid: 359d53fc16f4984438088301891a2e3e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

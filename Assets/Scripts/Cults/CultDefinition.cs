@@ -12,6 +12,8 @@ namespace TypTyp.Cults
         [field: SerializeField] public string Abbreviation { get; private set; }
         [field: SerializeField] public string[] RankNames { get; private set; }
         [field: SerializeField] public Sprite Image { get; private set; }
+        [field: SerializeField] public Color Color { get; private set; }
+
 
         public IEnumerable<CardDefinition> GetCards()
         {
