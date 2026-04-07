@@ -17,9 +17,6 @@ public class ProgressionBar : MonoBehaviour
 
     private void Awake()
     {
-        fillArea.color = UIColors.Instance.DevotionPointsColor;
-        prevLvlText.color = UIColors.Instance.DevotionPointsColor;
-        maxLevelLabel.GetComponent<TMP_Text>().color = UIColors.Instance.DevotionPointsColor;
         originalPointsLeftText = devotionPointsLeft.text;
     }
 
