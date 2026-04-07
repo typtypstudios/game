@@ -6,7 +6,8 @@ public class SaveData
 {
     public int version = 1;
     public ProfileSaveData profile = new();
-    public DeckSaveData deck = new();
+    public int cultId = 0;
+    public CultData[] cultData;
 }
 
 [Serializable]
@@ -26,4 +27,11 @@ public class ProfileSaveData
 public class DeckSaveData
 {
     public List<int> equippedCardIds = new();
+}
+
+[Serializable] 
+public class CultData
+{
+    public float level;
+    public DeckSaveData deck = new();
 }

@@ -2,6 +2,7 @@ using Unity.Netcode;
 using Unity.Collections;
 using UnityEngine;
 using TypTyp;
+using TypTyp.Input;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Player))]
@@ -60,7 +61,7 @@ public class SpellTypingTracker : NetworkBehaviour
 
             // Eventos
             InputHandler.Instance.AddListener(OnCharTyped);
-            player.PlayerInputManager.OnInputModeChangedEvent += OnInputModeChanged;
+            InputHandler.Instance.OnInputModeChanged += OnInputModeChanged;
         }
 
         if (IsServer)
@@ -76,11 +77,12 @@ public class SpellTypingTracker : NetworkBehaviour
             if (InputHandler.Instance != null)
             {
                 InputHandler.Instance.RemoveListener(OnCharTyped);
+                InputHandler.Instance.OnInputModeChanged -= OnInputModeChanged;
             }
 
             if (player != null && player.PlayerInputManager != null)
             {
-                player.PlayerInputManager.OnInputModeChangedEvent -= OnInputModeChanged;
+                // Input mode is handled by InputHandler now
             }
         }
 
@@ -90,10 +92,10 @@ public class SpellTypingTracker : NetworkBehaviour
         }
     }
 
-    private void OnInputModeChanged(InputMode mode)
+    private void OnInputModeChanged(InputModeMask mode)
     {
         bool wasCasting = isCastingSpells;
-        isCastingSpells = (mode == InputMode.CastingSpells);
+        isCastingSpells = (mode == InputModeMask.Spells);
 
         if (isCastingSpells && !wasCasting && IsOwner)
         {

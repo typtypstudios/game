@@ -1,4 +1,5 @@
 using System;
+using TypTyp.Cults;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -45,8 +46,7 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         SaveData data = NormalizeSlotData(new SaveData());
         SaveDataInternal(data);
         currentState.slot = NormalizeSlotData(data);
-        HasLoadedState = true;
-        OnAfterLoad?.Invoke(GetState());
+        InvokeAfterLoad();
     }
 
     public void SetActiveSlot(string slotId)
@@ -63,13 +63,13 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         PlayerPrefs.Save();
     }
 
-    public void Save()
+    public void Save(bool triggerEvent = true)
     {
         EnsureInitialized();
         EnsureActiveSlot();
 
         SaveState state = GetState();
-        OnBeforeSave?.Invoke(state);
+        if(triggerEvent) OnBeforeSave?.Invoke(state);
         NormalizeState(state);
 
         SaveDataInternal(state.slot);
@@ -92,8 +92,7 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         currentState.slot = NormalizeSlotData(loadedData);
         LoadGlobalSettingsInternal();
         currentState = NormalizeState(currentState);
-        HasLoadedState = true;
-        OnAfterLoad?.Invoke(GetState());
+        InvokeAfterLoad();
     }
 
     public SaveState GetState()
@@ -151,8 +150,7 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         }
 
         currentState = NormalizeState(currentState);
-        HasLoadedState = true;
-        OnAfterLoad?.Invoke(GetState());
+        InvokeAfterLoad();
     }
 
     private void EnsureActiveSlot()
@@ -213,8 +211,8 @@ public class SaveManager : ScriptableSingleton<SaveManager>
     {
         data ??= new SaveData();
         data.profile ??= new ProfileSaveData();
-        data.deck ??= new DeckSaveData();
-        data.deck.equippedCardIds ??= new System.Collections.Generic.List<int>();
+        data.cultData ??= new CultData[CultRegister.Instance.Count];
+        for (int i = 0; i < CultRegister.Instance.Count; i++) data.cultData[i] ??= new();
         return data;
     }
 
@@ -236,4 +234,11 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         }
     }
 
+    private void InvokeAfterLoad()
+    {
+        HasLoadedState = true;
+        SaveState state = GetState();
+        RuntimeVariables.Instance.UpdateVariables(state);
+        OnAfterLoad?.Invoke(state);
+    }
 }

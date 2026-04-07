@@ -12,6 +12,7 @@ public class DeckBuilder : MonoBehaviour
     [SerializeField] private Transform equippedLayout;
     [SerializeField] private Transform unequippedLayout;
     [SerializeField] private GameObject[] highlightPanels;
+    [SerializeField] private bool sortOnChange = true; //Ordena las cartas no equipadas siempre
     private readonly List<BuilderDisplayer> equippedCards = new();
     private readonly List<BuilderDisplayer> unequippedCards = new();
     private List<int> equippedIndexes = new();
@@ -29,15 +30,7 @@ public class DeckBuilder : MonoBehaviour
     {
         InitializeEquippedCards();
 
-        if (SaveManager.Instance.HasLoadedState)
-        {
-            SaveState state = SaveManager.Instance.GetState();
-            ApplyDeck(state);
-        }
-        else
-        {
-            ApplyDeck(new SaveState());
-        }
+        if (RuntimeVariables.Instance.IsLoaded) ApplyDeck();
 
         foreach (GameObject panel in highlightPanels)
         {
@@ -88,23 +81,38 @@ public class DeckBuilder : MonoBehaviour
 
     private void RebuildUnequippedCards()
     {
-        foreach (BuilderDisplayer card in unequippedCards)
+        foreach (BuilderDisplayer displayer in unequippedCards)
         {
-            if (card != null)
+            if (displayer != null)
             {
-                Destroy(card.gameObject);
+                Destroy(displayer.gameObject);
             }
         }
-
         unequippedCards.Clear();
-
-        for (int i = 0; i < CardRegister.Instance.Count; i++)
+        List<CardDefinition> availableCards = 
+            CardRegister.Instance.RegisteredItems.Where(c => c.Cult == null).ToList();
+        availableCards.AddRange(RuntimeVariables.Instance.CurrentCult.GetCards().ToList());
+        foreach (CardDefinition card in availableCards)
         {
-            if (equippedIndexes.Contains(i)) continue;
-            BuilderDisplayer card = Instantiate(cardPrefab, unequippedLayout).GetComponent<BuilderDisplayer>();
-            unequippedCards.Add(card);
-            card.SetInfo(CardRegister.Instance.GetById(i));
+            if (equippedIndexes.Contains(CardRegister.Instance.GetId(card))) continue;
+            BuilderDisplayer displayer = Instantiate(cardPrefab, unequippedLayout).GetComponent<BuilderDisplayer>();
+            unequippedCards.Add(displayer);
+            displayer.SetInfo(card);
         }
+        SortUnequipped();
+    }
+
+    private void SortUnequipped()
+    {
+        List<CardDefinition> sortedCards = unequippedCards
+        .Select(d => d.Card)
+        .Distinct()
+        .OrderBy(c => c.Cult != null) 
+        .ThenBy(c => c.RequiredLevel)
+        .ThenBy(c => c.Name)
+        .ToList();
+        for (int i = 0; i < sortedCards.Count; i++)
+            unequippedCards[i].SetInfo(sortedCards[i]);
     }
 
     private void ProcessCardChosen(BuilderDisplayer card)
@@ -142,6 +150,7 @@ public class DeckBuilder : MonoBehaviour
             RefreshIndexesFromUI();
             RefreshCardsInDeck();
             ResetSelection();
+            if (sortOnChange) SortUnequipped();
         }
     }
 
@@ -155,17 +164,18 @@ public class DeckBuilder : MonoBehaviour
     {
         RefreshIndexesFromUI();
         RefreshCardsInDeck();
-        state.slot.deck.equippedCardIds = equippedIndexes.ToList();
+        state.slot.cultData[state.slot.cultId].deck.equippedCardIds = equippedIndexes.ToList();
     }
 
     private void HandleAfterLoad(SaveState state)
     {
-        ApplyDeck(state);
+        ApplyDeck();
     }
 
-    private void ApplyDeck(SaveState state)
+    private void ApplyDeck()
     {
-        equippedIndexes = ResolveEquippedIndexes(state?.slot?.deck?.equippedCardIds);
+        int cultId = RuntimeVariables.Instance.CurrentCultID;
+        equippedIndexes = ResolveEquippedIndexes(RuntimeVariables.Instance.CultsInfo[cultId].equippedCards);
 
         for (int i = 0; i < equippedCards.Count; i++)
         {

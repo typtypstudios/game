@@ -30,18 +30,16 @@ namespace TypTyp.TextSystem
 
         private void Awake()
         {
-            ritualManager = GetComponentInChildren<RitualManager>();
-            textPipeline = GetComponentInChildren<ITextPipeline>();
+            ritualManager = GetComponentInChildren<RitualManager>(true);
+            textPipeline = GetComponentInChildren<ITextPipeline>(true);
             foreach (var t in texts)
             {
                 t.text = string.Empty;
-                t.gameObject.SetActive(false);
             }
         }
 
         public void EnableTexts()
         {
-            foreach (var t in texts) if(t) t.gameObject.SetActive(true);
             MatchManager.OnMatchStarted -= EnableTexts;
         }
 

@@ -39,7 +39,7 @@ public class MatchManager : NetworkBehaviour
     public static event Action OnMatchEnded;
 
     // Referencia al canvas de inicio y final de la partida
-    [SerializeField] private GameUICanvasScript canvasUIScript;
+    [SerializeField] private StartEndCanvas canvasUIScript;
 
 
     //De momento una lista de playerIds server side
@@ -343,7 +343,7 @@ public class MatchManager : NetworkBehaviour
                 OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
                 NetworkManager.Singleton.Shutdown();
 
-                canvasUIScript.ShowEndMatch(true);
+                canvasUIScript.ShowEndMatch(clientId != Player.User.OwnerClientId);
             }
         }
 
@@ -365,7 +365,7 @@ public class MatchManager : NetworkBehaviour
                 _ = ShutdownMatchServer();
                 NetworkManager.Singleton.Shutdown();
 
-                canvasUIScript.ShowEndMatch(true);
+                canvasUIScript.ShowEndMatch(clientId != Player.User.OwnerClientId);
             }
         }
     }

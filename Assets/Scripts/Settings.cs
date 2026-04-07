@@ -45,13 +45,6 @@ namespace TypTyp
         [Header("Settings")]
         [field: SerializeField] public TMP_FontAsset DefaultFont { get; set; }
         [field: SerializeField] public bool OnlyApplyDefaultFontOnRitual { get; set; } = true;
-        [field: SerializeField] public Color DefaultButtonColor { get; set; }
-
-        [Header("GrimoireRelated")]
-        [field: SerializeField] public Color DurationHighlightColor { get; set; } = Color.cyan;
-        [field: SerializeField] public Color PositiveHighlightColor { get; set; } = Color.green;
-        [field: SerializeField] public Color NegativeHighlightColor { get; set; } = Color.red;
-        [field: SerializeField] public Color EffectHighlightColor { get; set; } = Color.purple;
 
         [Header("ChatRelated")]
         [field: SerializeField] public bool ChatActive { get; internal set; } = true;

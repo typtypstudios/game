@@ -36,7 +36,7 @@ public class InfoDisplayer : MonoBehaviour
         {
             transform.localScale *= hoverSizeMult;
             hovered = true;
-            cardName.color = writableButton.FillColor + Color.white * highlightColorAddition; //Ligeramente mas claro
+            cardName.color = writableButton.GetButtonColor() + Color.white * highlightColorAddition; //Ligeramente mas claro
             emissiveMat.SetFloat("_EmissionForce", 1);
         }
         else if (!highlight && hovered)

@@ -6,6 +6,7 @@ public class BuilderDisplayer : InfoDisplayer
 {
     [SerializeField] private TextMeshProUGUI description;
     [SerializeField] private GrimoireInfoPanel infoPanel;
+    [SerializeField] private BuilderDisplayerBlocker blocker;
     public static event Action<BuilderDisplayer> OnCardChosen;
     public CardDefinition Card => Definition as CardDefinition;
 
@@ -37,6 +38,7 @@ public class BuilderDisplayer : InfoDisplayer
     {
         base.SetInfo(definition);
         description.text = definition.Description;
+        blocker.CheckBlock(definition as CardDefinition);
     }
 
     public override void Highlight(bool highlight)
