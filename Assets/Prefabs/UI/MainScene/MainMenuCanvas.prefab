@@ -29,7 +29,7 @@ RectTransform:
   m_GameObject: {fileID: 4032557309714765846}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.25660014, y: 0.25660014, z: 0.25660014}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3551563519169085526}
@@ -50,7 +50,7 @@ Canvas:
   m_GameObject: {fileID: 4032557309714765846}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -202,7 +202,6 @@ GameObject:
   - component: {fileID: 4386455568878613015}
   - component: {fileID: 3537746296284412922}
   - component: {fileID: 9039051102963971877}
-  - component: {fileID: 246265647503046680}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -427,20 +426,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
   controller: {fileID: 4386455568878613015}
   text: {fileID: 2207450562309443301}
---- !u!114 &246265647503046680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7756775444701966488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25dd1c600de9ccf4b8c83d0d709b5b15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TextAppear
-  text: {fileID: 2207450562309443301}
-  duration: 2
 --- !u!1001 &3957448681235788609
 PrefabInstance:
   m_ObjectHideFlags: 0

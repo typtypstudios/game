@@ -741,7 +741,7 @@ RectTransform:
   m_GameObject: {fileID: 5799524009854775892}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.25660014, y: 0.25660014, z: 0.25660014}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3233235225862730670}
@@ -762,7 +762,7 @@ Canvas:
   m_GameObject: {fileID: 5799524009854775892}
   m_Enabled: 0
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -798,7 +798,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &7643706990687521495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1291,6 +1291,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5948566552775087088, guid: 6237b2c260b39ba46aa3773616b1ad1b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -4.4000006
+      objectReference: {fileID: 0}
     - target: {fileID: 8808154255329341068, guid: 6237b2c260b39ba46aa3773616b1ad1b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1640,7 +1644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9043355480003021022, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 29.500011
+      value: 29.500015
       objectReference: {fileID: 0}
     - target: {fileID: 9043355480003021022, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
