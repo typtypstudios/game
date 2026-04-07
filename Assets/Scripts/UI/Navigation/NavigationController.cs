@@ -14,6 +14,7 @@ public class NavigationController : MonoBehaviour
     private readonly Stack<Screens> screenStack = new();
     private Screens currentScreen;
     private Camera uiCam;
+    private bool blocked = false;
     private float Dissolve
     {
         get { return transitionMat.GetFloat("_Dissolve"); }
@@ -54,6 +55,7 @@ public class NavigationController : MonoBehaviour
 
     public void GoTo(Screens screen)
     {
+        if (blocked) return;
         if(screen == Screens.GoBack)
         {
             GoBack();
@@ -65,6 +67,7 @@ public class NavigationController : MonoBehaviour
 
     public void GoBack()
     {
+        if (blocked) return;
         if (screenStack.Count == 0) return;
         NavigateToScreen(screenStack.Pop(), true);
     }
@@ -83,6 +86,7 @@ public class NavigationController : MonoBehaviour
 
     private IEnumerator TransitionCoroutine(Canvas origin, Canvas dest)
     {
+        blocked = true;
         Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
         uiCam.cullingMask |= (1 << LayerMask.NameToLayer("UI"));
         origin.GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -106,6 +110,7 @@ public class NavigationController : MonoBehaviour
         dest.GetComponent<CanvasGroup>().blocksRaycasts = true;
         Camera.main.cullingMask |= (1 << LayerMask.NameToLayer("UI"));
         uiCam.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
+        blocked = false;
     }
 }
 
