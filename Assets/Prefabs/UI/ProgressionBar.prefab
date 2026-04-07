@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eaaeed2e09d08e47bf0d1def6a76394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressionBar
+  XPSlider: {fileID: 8115503250446924742}
   bar: {fileID: 3960905326706760492}
   maxLevelLabel: {fileID: 1965360900336507610}
   prevLvlText: {fileID: 319842603744214456}
@@ -201,7 +202,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1332652210217899359
 RectTransform:
   m_ObjectHideFlags: 0

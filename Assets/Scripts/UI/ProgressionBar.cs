@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Slider))]
 public class ProgressionBar : MonoBehaviour
 {
-    private Slider XPSlider;
+    [SerializeField] private Slider XPSlider;
     [SerializeField] private GameObject bar;
     [SerializeField] private GameObject maxLevelLabel;
     [SerializeField] private TMP_Text prevLvlText;
@@ -17,7 +17,6 @@ public class ProgressionBar : MonoBehaviour
 
     private void Awake()
     {
-        XPSlider = GetComponent<Slider>();
         fillArea.color = UIColors.Instance.DevotionPointsColor;
         prevLvlText.color = UIColors.Instance.DevotionPointsColor;
         maxLevelLabel.GetComponent<TMP_Text>().color = UIColors.Instance.DevotionPointsColor;

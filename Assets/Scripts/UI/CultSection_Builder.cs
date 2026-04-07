@@ -8,7 +8,15 @@ public class CultSection_Builder : MonoBehaviour
     [SerializeField] private TMP_Text rankName;
     [SerializeField] private ProgressionBar progressionBar;
 
-    private void Awake() => SaveManager.Instance.OnAfterLoad += UpdateInfo;
+    private void Awake()
+    {
+        SaveManager.Instance.OnAfterLoad += UpdateInfo;
+    }
+
+    private void Start()
+    {
+        if (RuntimeVariables.Instance.IsLoaded) UpdateInfo(SaveManager.Instance.GetState());
+    }
 
     private void OnDestroy() => SaveManager.Instance.OnAfterLoad -= UpdateInfo;
 

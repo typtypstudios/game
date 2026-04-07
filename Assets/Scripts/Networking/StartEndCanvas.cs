@@ -109,13 +109,9 @@ public class StartEndCanvas : MonoBehaviour
             wt.ResetText();
         }
         exitButton.SetActive(true);
-        CalculateXPGain(isWinner);
-    }
-
-    private void CalculateXPGain(bool isWinner)
-    {
         if (isWinner) XPManager.Instance.ProcessVictory();
-        else XPManager.Instance.ProcessLoss();
+        earnedXPText.gameObject.SetActive(isWinner);
+        progressionBar.gameObject.SetActive(isWinner);
     }
 
     private void UpdateProgressionBar(float prevXP, float nextXP)
