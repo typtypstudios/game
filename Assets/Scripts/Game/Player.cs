@@ -60,6 +60,7 @@ public class Player : NetworkBehaviour
             InputHandler.Instance.SetMode(InputModeMask.WaitingForPlayers);
             MatchManager.OnPlayerReadyRpc(playerData);
             RitualManager.OnProgressUpdated += progress => UpdateRitualProgressRpc(progress);
+            RitualManager.OnWrongChar += ProcessMistakeRpc;
         }
 
         if (IsServer)
@@ -93,20 +94,7 @@ public class Player : NetworkBehaviour
     [Rpc(SendTo.Server)]
     private void UpdateRitualProgressRpc(float progress)
     {
-        //BUG, esto ocurre antes de iniciar partida
-        //El player manda un RPC a server cada vez que updatea progress del Ritual
-        //El progress se updatea cada vez que se actualiza el texto
-        //El texto se actualiza al conectarse el jugador, al recibir los textos iniciales
-        //En ese momento el ritual manda un RPC con progress 0, que es el valor inicial
-        //y este codigo procesa error, una genialidad
-        if (RitualProgress.Value == progress)
-        {
-            CorruptionManager.ProcessMistake();
-            return;
-        }
-
         RitualProgress.Value = progress;
-
         if (RitualProgress.Value >= 1f) MatchManager.HandlePlayerVictory(this);
     }
 
@@ -122,6 +110,9 @@ public class Player : NetworkBehaviour
             MatchManager.HandlePlayerVictory(winner);
         }
     }
+
+    [Rpc(SendTo.Server)]
+    private void ProcessMistakeRpc() => CorruptionManager.ProcessMistake();
 
     private void GetComponents()
     {

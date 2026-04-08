@@ -66,10 +66,9 @@ public class RitualManager : MonoBehaviour
         if (idx > lastIdx)
         {
             OnCorrectChar?.Invoke();
+            UpdateProgress();
         }
-
         lastIdx = idx;
-        UpdateProgress();
     }
 
     private void HandleError()
