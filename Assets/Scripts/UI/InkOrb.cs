@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InkOrb : MonoBehaviour, IFillableBar
 {
@@ -7,6 +8,7 @@ public class InkOrb : MonoBehaviour, IFillableBar
     [SerializeField] private RectTransform bar;
     [SerializeField] private RectTransform filler;
     [SerializeField] private float updateTime = 0.5f;
+    private EmissiveImageConfigurator emissionConfigurator;
     private float initHeight;
     public InkOrb PrevOrb { get; set; }
     private float FillHeight {
@@ -14,7 +16,11 @@ public class InkOrb : MonoBehaviour, IFillableBar
         set { SetHeight(filler, value); }
     }
 
-    private void Awake() => initHeight = bar.anchoredPosition.y;
+    private void Awake()
+    {
+        initHeight = bar.anchoredPosition.y;
+        emissionConfigurator = filler.GetComponent<EmissiveImageConfigurator>();
+    }
 
     public void UpdateValue(float oldValue, float newValue)
     {
@@ -27,6 +33,7 @@ public class InkOrb : MonoBehaviour, IFillableBar
         StopAllCoroutines();
         SetHeight(bar, UnNormalizeHeight(value));
         SetHeight(filler, UnNormalizeHeight(value));
+        emissionConfigurator.ToggleEmission(bar.anchoredPosition.y >= MaxValue);
     }
 
     private float UnNormalizeHeight(float t)
@@ -40,6 +47,7 @@ public class InkOrb : MonoBehaviour, IFillableBar
     IEnumerator UpdateBarCorroutine(float target)
     {
         SetHeight(bar, target);
+        emissionConfigurator.ToggleEmission(bar.anchoredPosition.y >= MaxValue);
         float speed = (target - FillHeight) / updateTime;
         while (FillHeight < target)
         {

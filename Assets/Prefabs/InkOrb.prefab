@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 7603929876670211354}
   - component: {fileID: 3372717237776834428}
   - component: {fileID: 644738011422713215}
+  - component: {fileID: 1325499070102647200}
   m_Layer: 5
   m_Name: Filler
   m_TagString: Untagged
@@ -94,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 2100000, guid: d8187784755acca438521517b01909dd, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 0, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -112,6 +113,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1.98
+--- !u!114 &1325499070102647200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2168884849939353077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3da54bb761df04782fd66d737d7657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmissiveImageConfigurator
+  emissiveMat: {fileID: 2100000, guid: bff3e68c48004a74ab9413bef5787462, type: 2}
 --- !u!1 &3743465251084062337
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,9 +252,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2acdcec2cdf33441a06dc332499d024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InkOrb
+  <MaxValue>k__BackingField: -1
   bar: {fileID: 1551330063419302997}
   filler: {fileID: 7603929876670211354}
-  targetHeight: -1
   updateTime: 0.5
 --- !u!1 &6906544501802230620
 GameObject:

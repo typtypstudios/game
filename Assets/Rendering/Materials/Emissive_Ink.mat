@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EmissiveImage
+  m_Name: Emissive_Ink
   m_Shader: {fileID: -6465566751694194690, guid: 127c4f613b934a842bb3b6a049d359c2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -97,7 +97,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EmissionForce: 0
+    - _EmissionForce: 0.2
     - _EmissionThreshold: 0.5
     - _EmitForce: 0
     - _EnvironmentReflections: 1
@@ -133,7 +133,7 @@ Material:
     - _Emission: {r: 12.737255, g: 0.3137255, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Tint: {r: 2.5193918, g: 0, b: 0, a: 2.828427}
+    - _Tint: {r: 0, g: 3.3635857, b: 3.3635857, a: 2.828427}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2115865156883479742
