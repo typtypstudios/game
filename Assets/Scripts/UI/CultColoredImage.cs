@@ -13,6 +13,8 @@ public class CultColoredImage : MonoBehaviour
         if (RuntimeVariables.Instance.IsLoaded) UpdateColor(null);
     }
 
+    private void OnDestroy() => SaveManager.Instance.OnAfterLoad -= UpdateColor;
+
     private void UpdateColor(SaveState _)
     {
         image.color = RuntimeVariables.Instance.CurrentCult.Color;
