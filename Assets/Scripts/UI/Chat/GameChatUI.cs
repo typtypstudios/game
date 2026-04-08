@@ -1,15 +1,14 @@
 using UnityEngine;
-using TMPro;
 using Unity.Collections;
 using TypTyp;
 
 public class GameChatUI : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private TMP_Text userSpellingText;
+    [SerializeField] private BubbleMaxWidth userBubble;
     [SerializeField] private CanvasGroup userChatGroup;
 
-    [SerializeField] private TMP_Text enemySpellingText;
+    [SerializeField] private BubbleMaxWidth enemyBubble;
     [SerializeField] private CanvasGroup enemyChatGroup;
 
     [Header("Fade Settings")]
@@ -21,8 +20,8 @@ public class GameChatUI : MonoBehaviour
 
     private void Awake()
     {
-        ClearTextAndAlpha(userSpellingText, userChatGroup);
-        ClearTextAndAlpha(enemySpellingText, enemyChatGroup);
+        ClearBubble(userBubble, userChatGroup);
+        ClearBubble(enemyBubble, enemyChatGroup);
     }
 
     private void OnEnable()
@@ -38,18 +37,18 @@ public class GameChatUI : MonoBehaviour
 
     private void Update()
     {
-        ProcessFading(userSpellingText, userChatGroup, ref userIdleTimer);
-        ProcessFading(enemySpellingText, enemyChatGroup, ref enemyIdleTimer);
+        ProcessFading(userBubble, userChatGroup, ref userIdleTimer);
+        ProcessFading(enemyBubble, enemyChatGroup, ref enemyIdleTimer);
     }
 
     private void UpdateEnemyText(FixedString64Bytes previous, FixedString64Bytes current)
     {
-        ApplyNewText(enemySpellingText, enemyChatGroup, current.ToString(), ref enemyIdleTimer);
+        ApplyNewText(enemyBubble, enemyChatGroup, current.ToString(), ref enemyIdleTimer);
     }
 
     private void UpdateUserTextLocal(string current)
     {
-        ApplyNewText(userSpellingText, userChatGroup, current, ref userIdleTimer);
+        ApplyNewText(userBubble, userChatGroup, current, ref userIdleTimer);
     }
 
     #region addListeners
@@ -111,11 +110,13 @@ public class GameChatUI : MonoBehaviour
 
     #region text
 
-    private void ApplyNewText(TMP_Text textComponent, CanvasGroup group, string newText, ref float timer)
+    private void ApplyNewText(BubbleMaxWidth bubble, CanvasGroup group, string newText, ref float timer)
     {
-        textComponent.text = newText;
+        if (bubble == null || group == null) return;
 
-        if (string.IsNullOrEmpty(newText))
+        bubble.SetText(newText);
+
+        if (bubble.IsEmpty)
         {
             group.alpha = 0f;
             timer = 0f;
@@ -127,9 +128,10 @@ public class GameChatUI : MonoBehaviour
         }
     }
 
-    private void ProcessFading(TMP_Text textComponent, CanvasGroup group, ref float timer)
+    private void ProcessFading(BubbleMaxWidth bubble, CanvasGroup group, ref float timer)
     {
-        if (string.IsNullOrEmpty(textComponent.text) || group.alpha <= 0f) return;
+        if (bubble == null || group == null) return;
+        if (bubble.IsEmpty || group.alpha <= 0f) return;
 
         if (timer > 0f)
         {
@@ -141,10 +143,10 @@ public class GameChatUI : MonoBehaviour
         }
     }
 
-    private void ClearTextAndAlpha(TMP_Text textComponent, CanvasGroup group)
+    private void ClearBubble(BubbleMaxWidth bubble, CanvasGroup group)
     {
-        textComponent.text = "";
-        group.alpha = 0f;
+        if (bubble != null) bubble.Clear();
+        if (group != null) group.alpha = 0f;
     }
 
     #endregion
