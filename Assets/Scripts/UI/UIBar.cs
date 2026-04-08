@@ -2,13 +2,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class UIBar : MonoBehaviour
+public class UIBar : MonoBehaviour, IFillableBar
 {
     [SerializeField] private Image filler;
-    [SerializeField] private float updateSpeed = 3f;
+    [SerializeField] private float updateTime = 0.5f;
     private Image bar;
-    public UIBar PrevBar { get; set; }
-    public float FillAmount => filler.fillAmount;
     public float MaxValue { get; set; } = 1f;
 
 
@@ -32,13 +30,13 @@ public class UIBar : MonoBehaviour
 
     IEnumerator UpdateBarCorroutine(float target)
     {
+        float speed = (target - filler.fillAmount) / updateTime;
         bar.fillAmount = target;
-        if(PrevBar != null) 
-            while (PrevBar.FillAmount != 1) yield return null;
-        while(filler.fillAmount != target)
+        while (filler.fillAmount < target)
         {
-            filler.fillAmount = Mathf.MoveTowards(filler.fillAmount, target, updateSpeed * Time.deltaTime);
+            filler.fillAmount = Mathf.MoveTowards(filler.fillAmount, target, speed * Time.deltaTime);
             yield return null;
         }
+        filler.fillAmount = target;
     }
 }
