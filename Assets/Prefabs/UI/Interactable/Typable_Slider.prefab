@@ -361,6 +361,7 @@ MonoBehaviour:
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
+    isAbleToShowSpaces: 0
 --- !u!114 &299343132466075998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -726,7 +727,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 30}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4253480179571966392
 CanvasRenderer:
@@ -783,7 +784,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.6
+  m_fontSize: 31.5
   m_fontSizeBase: 26.63
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -912,6 +913,7 @@ MonoBehaviour:
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
+    isAbleToShowSpaces: 0
 --- !u!114 &3922200496115894599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1001,7 +1003,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -45}
+  m_AnchoredPosition: {x: 250, y: -55}
   m_SizeDelta: {x: 500, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5044761040065324696
@@ -1401,6 +1403,7 @@ MonoBehaviour:
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
+    isAbleToShowSpaces: 0
 --- !u!114 &4210337468056717047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1626,7 +1629,7 @@ MonoBehaviour:
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
-  m_ChildControlHeight: 0
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
