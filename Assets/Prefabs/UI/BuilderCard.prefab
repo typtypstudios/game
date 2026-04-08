@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7783393948818697797}
   - component: {fileID: 2755524030101335599}
   - component: {fileID: 5281926146060201446}
-  - component: {fileID: 4991311075940206041}
   m_Layer: 5
   m_Name: InfoPanel
   m_TagString: Untagged
@@ -95,18 +94,6 @@ MonoBehaviour:
   emission: 0.9
   nameText: {fileID: 0}
   infoText: {fileID: 6349554052005909900}
---- !u!114 &4991311075940206041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750809755031593677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50e5e8b648f0ca14d8c06796dbc1363e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CultColoredItem
 --- !u!1 &2247746088261927468
 GameObject:
   m_ObjectHideFlags: 0
