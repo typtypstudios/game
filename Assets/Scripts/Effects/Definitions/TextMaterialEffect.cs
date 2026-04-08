@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using TypTyp;
-using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "TextMaterialEffect", menuName = "TypTyp/Effects/TextMaterialEffect")]
 public class TextMaterialEffect : StatusEffectDefinition
 {
     [SerializeField] private Material mat;
-    [SerializeField] private MonoScript textComponent;
+    [SerializeField] private string textComponentName;
     private Material defaultMat;
     private static readonly Dictionary<string, List<Material>> activeMats = new();
 
@@ -19,10 +18,11 @@ public class TextMaterialEffect : StatusEffectDefinition
         foreach(var t in target.GetComponentsInChildren<TMP_Text>(true))
         {
             AssignMaterial(t, mat);
-            if (textComponent != null)
+            if (!string.IsNullOrEmpty(textComponentName))
             {
-                var typeToAdd = textComponent.GetClass();
-                t.gameObject.AddComponent(typeToAdd);
+                Type typeToAdd = Type.GetType(textComponentName);
+                if (typeToAdd != null)
+                    t.gameObject.AddComponent(typeToAdd);
             }
         }
         if (!activeMats.ContainsKey(Settings.Instance.P1_tag))
@@ -40,9 +40,9 @@ public class TextMaterialEffect : StatusEffectDefinition
         {
             AssignMaterial(t, activeMats[target.tag].Count == 0 ? 
                 defaultMat : activeMats[target.tag][^1]);
-            if (textComponent != null)
+            if (!string.IsNullOrEmpty(textComponentName))
             {
-                Type typeToRemove = textComponent.GetClass();
+                Type typeToRemove = Type.GetType(textComponentName);
                 Component comp = t.gameObject.GetComponent(typeToRemove);
                 Destroy(comp);
             }
