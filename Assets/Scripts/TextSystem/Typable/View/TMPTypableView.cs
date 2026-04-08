@@ -62,7 +62,11 @@ namespace TypTyp.TextSystem.Typable
             if (restStart < safeText.Length)
                 sb.Append(safeText, restStart, safeText.Length - restStart);
 
-            tmp.text = sb.ToString();
+            string finalText = sb.ToString();
+            if (Settings.Instance.ShowSpaces && StyleConfig.isAbleToShowSpaces)
+                finalText = finalText.Replace(" ", Settings.Instance.SpaceReplacement);
+
+            tmp.text = finalText;
 
             if (!wasComplete && dto.IsComplete && StyleConfig.RandomizeCorrectColorOnComplete)
             {

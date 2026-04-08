@@ -9,13 +9,15 @@ namespace TypTyp.TextSystem.Typable
         public Color WrongColor;
         public bool UnderlineNext;
         public bool RandomizeCorrectColorOnComplete;
+        public bool isAbleToShowSpaces;
 
         public static TypableViewStyleConfig Default => new()
         {
             CorrectColor = Color.white,
             WrongColor = Color.red,
             UnderlineNext = true,
-            RandomizeCorrectColorOnComplete = false
-        };
+            RandomizeCorrectColorOnComplete = false,
+            isAbleToShowSpaces = false
+    };
     }
 }
