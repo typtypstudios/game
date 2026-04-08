@@ -32,6 +32,7 @@ namespace TypTyp
         //Textos a completar para el ritual
         [field: SerializeField] public int MaxTextsProvided { get; private set; } = 10;
         [field: SerializeField] public bool ShowSpaces { get; set; } = true;
+        [field: SerializeField] public string SpaceReplacement { get; private set; } = "·\u200B";
         [field: SerializeField] public bool CapsLockWarning { get; set; } = true;
 
         [Header("DECK RELATED")]

@@ -2,7 +2,6 @@ using UnityEngine;
 using System;
 using TypTyp.TextSystem;
 using TypTyp.TextSystem.Typable;
-using TypTyp;
 
 public class RitualManager : MonoBehaviour
 {
@@ -28,10 +27,6 @@ public class RitualManager : MonoBehaviour
         typableController = GetComponent<TypableController>();
         textProvider = GetComponentInParent<ITextProvider>();
         UnityEngine.Assertions.Assert.IsNotNull(typableController);
-        if (typableController != null)
-        {
-            typableController.InputTransform = TransformInput;
-        }
     }
 
     void OnEnable()
@@ -100,11 +95,5 @@ public class RitualManager : MonoBehaviour
         float progress = globalProgress + localProgress;
         Debug.Log($"Progress updated: {progress}", gameObject);
         OnProgressUpdated?.Invoke(progress);
-    }
-
-    private char TransformInput(char c)
-    {
-        if (Settings.Instance.ShowSpaces && c == ' ') return '-';
-        return c;
     }
 }
