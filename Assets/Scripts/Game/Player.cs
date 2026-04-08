@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Collections;
 using TypTyp;
 using TypTyp.TextSystem;
+using TypTyp.Input;
 
 public class Player : NetworkBehaviour
 {
@@ -56,6 +57,7 @@ public class Player : NetworkBehaviour
             int[] deck = CardRegister.Instance.GetIds(DeckBuilder.CardsInDeck);
             PlayerData playerData = new(OwnerClientId, playerName, deck);
 
+            InputHandler.Instance.SetMode(InputModeMask.WaitingForPlayers);
             MatchManager.OnPlayerReadyRpc(playerData);
             RitualManager.OnProgressUpdated += progress => UpdateRitualProgressRpc(progress);
         }
@@ -84,12 +86,19 @@ public class Player : NetworkBehaviour
         {
             Enemy = FindObjectsByType<Player>(FindObjectsSortMode.None).First(p => p != this);
             FindFirstObjectByType<MatchManager>().NotifyPlayerConfiguredServerRpc();
+            // InputHandler.Instance.SetMode(InputModeMask.Ritual);
         }
     }
 
     [Rpc(SendTo.Server)]
     private void UpdateRitualProgressRpc(float progress)
     {
+        //BUG, esto ocurre antes de iniciar partida
+        //El player manda un RPC a server cada vez que updatea progress del Ritual
+        //El progress se updatea cada vez que se actualiza el texto
+        //El texto se actualiza al conectarse el jugador, al recibir los textos iniciales
+        //En ese momento el ritual manda un RPC con progress 0, que es el valor inicial
+        //y este codigo procesa error, una genialidad
         if (RitualProgress.Value == progress)
         {
             CorruptionManager.ProcessMistake();
@@ -108,6 +117,7 @@ public class Player : NetworkBehaviour
         CurrentCorruption.Value = value;
         if (value == Settings.Instance.MaxCorruption)
         {
+            Debug.Log("Player " + name + " has reached max corruption and lost the match.", gameObject);
             Player winner = MatchManager.GetPlayerById(MatchManager.GetPlayerId(this) == 0 ? 1 : 0);
             MatchManager.HandlePlayerVictory(winner);
         }

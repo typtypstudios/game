@@ -21,9 +21,10 @@ public class CorruptionGainManager : MonoBehaviour
         timeToAutoHeal = new WaitForSeconds(Settings.Instance.TimeToAutoHeal);
         autoHealInterval = new WaitForSeconds(Settings.Instance.AutoHealInterval);
     }
-
+    
     public void ProcessMistake()
     {
+        Debug.Log("Processing mistake for player " + player.name, gameObject);
         float corruption = Settings.Instance.MistakePenalizationPercentage / 100 *
             Settings.Instance.MaxCorruption * MistakeGainMultiplier;
         AddCorruption(corruption);

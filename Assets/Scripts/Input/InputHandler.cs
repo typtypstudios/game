@@ -12,14 +12,15 @@ namespace TypTyp.Input
         Nothing = 0,
         Ritual = 1 << 0,
         Spells = 1 << 1,
-        GameEnded = 1 << 2
+        GameEnded = 1 << 2,
+        WaitingForPlayers = 1 << 3,
     }
 
     [NoAutoCreate]
     public class InputHandler : Singleton<InputHandler>
     {
         public float Lag { get; set; } = 0;
-        [field: SerializeField] public InputModeMask CurrentMode { get; private set; } = InputModeMask.Nothing;
+        [field: SerializeField] public InputModeMask CurrentMode { get; private set; } = ~InputModeMask.Nothing;
 
         public event Action<InputModeMask> OnInputModeChanged;
 
@@ -33,7 +34,7 @@ namespace TypTyp.Input
             SceneManager.sceneLoaded += (_, _) =>
             {
                 Lag = 0;
-                SetMode(InputModeMask.Nothing);
+                SetMode(InputModeMask.WaitingForPlayers);
             };
         }
 

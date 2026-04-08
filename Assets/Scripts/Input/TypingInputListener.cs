@@ -5,7 +5,7 @@ namespace TypTyp.Input
 {
     public class TypingInputListener : MonoBehaviour, ITypingInputListener
     {
-        [field: SerializeField] public InputModeMask InputMask = InputModeMask.Nothing;
+        [field: SerializeField] public InputModeMask InputMask = ~InputModeMask.Nothing;
         public event Action<char> OnInputTyped;
 
         void OnEnable()
@@ -21,8 +21,7 @@ namespace TypTyp.Input
 
         void HandleInput(char c)
         {
-            bool allowed = InputMask.HasFlag(InputHandler.Instance.CurrentMode);
-            if (allowed)
+            if ((InputMask & InputHandler.Instance.CurrentMode) != 0)
             {
                 OnInputTyped?.Invoke(c);
             }

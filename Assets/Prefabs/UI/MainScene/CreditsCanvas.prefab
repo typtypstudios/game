@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &2392436029541026035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,7 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &7238007562527455531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -821,7 +821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &4941533702345364333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -990,6 +990,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Credits
   creditsTime: 100
   finalYPos: 1435
+  OnCreditsAchieved:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1546856602522972977
 GameObject:
   m_ObjectHideFlags: 0
@@ -1242,7 +1245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &4998615522680430197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1527,7 +1530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &6458510778917166833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1834,7 +1837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &7699010090894423660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2141,7 +2144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &863202406238150153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2426,7 +2429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &7679544017718059047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2648,7 +2651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &9015491501071376192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2933,7 +2936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &3046435783147593727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3282,7 +3285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &8457741457649544337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3826,7 +3829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &96267475050019606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4111,7 +4114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &3190436409123717272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4461,7 +4464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &7465364785738358320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4809,7 +4812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &8484692860312896471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5094,7 +5097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &729203274622253775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5379,7 +5382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &5602936032707075627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5815,7 +5818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &8824579093420321615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6122,7 +6125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &8430880159729284400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6407,7 +6410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &1684993195204179330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6714,7 +6717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &1688600089674576619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7150,7 +7153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &829428838601080950
 MonoBehaviour:
   m_ObjectHideFlags: 0

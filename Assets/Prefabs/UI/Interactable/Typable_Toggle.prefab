@@ -740,8 +740,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  useDefaultColor: 1
-  useDefaultStyle: 1
   resetIfFailed: 1
   resetOnWritten: 1
   resetTime: 0.5
@@ -759,7 +757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d294962f59246bc899bda419cce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.Input.TypingInputListener
-  InputMask: 0
+  InputMask: 255
 --- !u!114 &3559658641565590132
 MonoBehaviour:
   m_ObjectHideFlags: 0

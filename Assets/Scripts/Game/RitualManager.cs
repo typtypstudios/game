@@ -10,7 +10,6 @@ public class RitualManager : MonoBehaviour
     private ITextProvider textProvider;
     private int numTextsCompleted = 0;
     private int lastIdx = 0;
-    private bool lastHasMistake = false;
     private string originalText = "";
 
     public string OriginalText
@@ -55,14 +54,14 @@ public class RitualManager : MonoBehaviour
     {
         originalText = text ?? "";
         lastIdx = 0;
-        lastHasMistake = false;
         if (typableController != null)
             typableController.SetText(originalText);
-        UpdateProgress();
+        // UpdateProgress();
     }
 
     private void HandleChanged()
     {
+        Debug.Log("Text changed: " + typableController.Text, gameObject);
         int idx = typableController.Idx;
         if (idx > lastIdx)
         {
@@ -70,17 +69,13 @@ public class RitualManager : MonoBehaviour
         }
 
         lastIdx = idx;
-        lastHasMistake = typableController.HasMistake;
         UpdateProgress();
     }
 
     private void HandleError()
     {
-        if (!lastHasMistake)
-        {
-            lastHasMistake = true;
-            OnWrongChar?.Invoke();
-        }
+        Debug.Log("Mistake made at index " + typableController.Idx, gameObject);
+        OnWrongChar?.Invoke();
     }
 
     private void HandleComplete()
@@ -104,6 +99,7 @@ public class RitualManager : MonoBehaviour
         float localProgress = originalText.Length == 0 ? 0 :
             (float)typableController.Idx / (originalText.Length * TypTyp.Settings.Instance.MaxTextsProvided);
         float progress = globalProgress + localProgress;
+        Debug.Log($"Progress updated: {progress}", gameObject);
         OnProgressUpdated?.Invoke(progress);
     }
 

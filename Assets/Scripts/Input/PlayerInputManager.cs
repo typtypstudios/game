@@ -34,6 +34,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (player.IsOwner)
         {
+            Debug.Log("Subscribing to input for player " + player.name, gameObject);
             changeModeActionReference.action.started += ChangeMode;
             SetMode(InputModeMask.Ritual);
         }
