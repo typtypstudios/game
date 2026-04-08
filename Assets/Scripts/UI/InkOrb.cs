@@ -48,8 +48,8 @@ public class InkOrb : MonoBehaviour, IFillableBar
     {
         SetHeight(bar, target);
         emissionConfigurator.ToggleEmission(bar.anchoredPosition.y >= MaxValue);
-        float speed = (target - FillHeight) / updateTime;
-        while (FillHeight < target)
+        float speed = Mathf.Abs(target - FillHeight) / updateTime;
+        while (FillHeight != target)
         {
             FillHeight = Mathf.MoveTowards(FillHeight, target, speed * Time.deltaTime);
             yield return null;

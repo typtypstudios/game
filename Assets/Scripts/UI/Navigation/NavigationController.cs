@@ -6,10 +6,10 @@ using Unity.VisualScripting;
 
 public class NavigationController : MonoBehaviour
 {
-    [SerializeField] private NavigationEntry[] entries;
+    [Min(0)][field: SerializeField] public float TransitionTime { get; private set; } = 2;
     [SerializeField] private Material transitionMat;
-    [Min(0)][SerializeField] private float transitionTime = 2;
     [SerializeField] private RenderTexture transitionTexture;
+    [SerializeField] private NavigationEntry[] entries;
     private readonly Dictionary<Screens, Canvas> screenDictionary = new();
     private readonly Stack<Screens> screenStack = new();
     private Screens currentScreen;
@@ -90,7 +90,7 @@ public class NavigationController : MonoBehaviour
         Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
         uiCam.cullingMask |= (1 << LayerMask.NameToLayer("UI"));
         origin.GetComponent<CanvasGroup>().blocksRaycasts = false;
-        float speed = 1 / transitionTime;
+        float speed = 2 / TransitionTime;
         float dissolveValue = Dissolve; //Para no hacer gets constantes
         while (dissolveValue < 1)
         {

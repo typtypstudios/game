@@ -29,10 +29,11 @@ public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
             config = new()
             {
                 labelInfo = "Choose your cult!",
-                OnCultChosen = () => 
+                OnCultChosen = () =>
                 {
-                    FindFirstObjectByType<MainMenuManager>().Play();
-                    FindFirstObjectByType<NavigationController>().GoTo(Screens.Loading);
+                    NavigationController c = FindFirstObjectByType<NavigationController>();
+                    c.GoTo(Screens.Loading);
+                    FindFirstObjectByType<MainMenuManager>().Play(c.TransitionTime);
                 },
                 showEquipmentButtons = true
             };

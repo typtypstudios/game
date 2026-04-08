@@ -1,11 +1,12 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public void Play()
+    public void Play(float timer = 0)
     {
-        SceneManager.LoadScene("MatchScene");
+        StartCoroutine(PlayAfterTimer(timer));
     }
 
     public void Exit()
@@ -14,5 +15,11 @@ public class MainMenuManager : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+
+    IEnumerator PlayAfterTimer(float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        SceneManager.LoadScene("MatchScene");
     }
 }

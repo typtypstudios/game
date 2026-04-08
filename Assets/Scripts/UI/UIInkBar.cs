@@ -23,8 +23,8 @@ public class UIInkBar : MonoBehaviour
         foreach(InkOrb bar in bars)
         {
             float barValue = normalizedValue >= perBarPercentage ? 1.0f : normalizedValue / perBarPercentage;
-            if (newValue > oldValue) bar.UpdateValue(0, barValue);
-            else bar.SetValueWithoutTransition(barValue);
+            bar.UpdateValue(0, barValue);
+            //else bar.SetValueWithoutTransition(barValue);
             normalizedValue = Mathf.Clamp01(normalizedValue - perBarPercentage);
         }
     }
