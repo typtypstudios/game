@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
-public class GameSettings : MonoBehaviour
+public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
 {
     [SerializeField] private Toggle showSpacesToggle;
     [SerializeField] private Toggle capLocksWarningToggle;
@@ -59,11 +59,8 @@ public class GameSettings : MonoBehaviour
 
     public void ToggleFilterChat() => filterChatToggle.isOn = !filterChatToggle.isOn;
 
-    public void SetFilterChat(bool value)
-    {
-        Settings.Instance.ChatActive = value;
-    }
-
+    public void SetFilterChat(bool value) => Settings.Instance.ChatActive = value;
+    
     public void AddVolume(float volumeToAdd) => volumeSlider.value += volumeToAdd;
 
     public void SetVolume(float value)
@@ -121,6 +118,7 @@ public class GameSettings : MonoBehaviour
         SetFilterChat(data.chatActive);
         if (filterChatToggle != null)
         {
+            Debug.Log("Chat active: " + data.chatActive);
             filterChatToggle.isOn = data.chatActive;
         }
 
@@ -144,5 +142,10 @@ public class GameSettings : MonoBehaviour
                 fontDropdown.SetFont(safeFontIndex);
             }
         }
+    }
+
+    public void OnLeave()
+    {
+        Save();
     }
 }

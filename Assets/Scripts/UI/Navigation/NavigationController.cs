@@ -75,6 +75,12 @@ public class NavigationController : MonoBehaviour
     private void NavigateToScreen(Screens screen, bool isGoingBack)
     {
         Canvas originCanvas = screenDictionary[currentScreen];
+
+        INavigationLeaveReceiver[] leaveReceivers = 
+            originCanvas.GetComponentsInChildren<INavigationLeaveReceiver>(true);
+        foreach (var receiver in leaveReceivers)
+            receiver.OnLeave();
+
         Canvas destinationCanvas = screenDictionary[screen];
         INavigationCtxReceiver[] receivers = 
             destinationCanvas.GetComponentsInChildren<INavigationCtxReceiver>(true);

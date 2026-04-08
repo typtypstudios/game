@@ -17,7 +17,7 @@ public class Player : NetworkBehaviour
     public StatusEffectController StatusEffectController { get; private set; }
     public CardUIManager CardUIManager { get; private set; }
     public PlayerInputManager PlayerInputManager { get; private set; }
-    public SpellTypingTracker SpellTypingTracker { get; private set; }
+    public GameChatInputFilter SpellTypingTracker { get; private set; }
     public ITextPipeline TextPipeline { get; private set; }
     public static Player User { get; private set; }
     public static Player Enemy { get; private set; }
@@ -124,7 +124,7 @@ public class Player : NetworkBehaviour
         StatusEffectController = GetComponent<StatusEffectController>();
         CardUIManager = GetComponentInChildren<CardUIManager>();
         PlayerInputManager = GetComponent<PlayerInputManager>();
-        SpellTypingTracker = GetComponent<SpellTypingTracker>();
+        SpellTypingTracker = GetComponent<GameChatInputFilter>();
         TextPipeline = GetComponent<ITextPipeline>();
 
         UnityEngine.Assertions.Assert.IsNotNull(RitualManager);

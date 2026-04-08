@@ -3,7 +3,7 @@ using TMPro;
 using Unity.Collections;
 using TypTyp;
 
-public class SpellTypingUI : MonoBehaviour
+public class GameChatUI : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private TMP_Text userSpellingText;

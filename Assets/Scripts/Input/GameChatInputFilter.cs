@@ -6,7 +6,7 @@ using TypTyp.Input;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Player))]
-public class SpellTypingTracker : NetworkBehaviour
+public class GameChatInputFilter : NetworkBehaviour
 {
     #region varaibles de texto
     // Network variable que escribe el owner
@@ -42,7 +42,7 @@ public class SpellTypingTracker : NetworkBehaviour
     private CardUIManager cardUIManager;
     private DeckController deckController;
     private bool isCastingSpells = false;
-    private const int MAX_CHARS = 20;
+    private const int MAX_CHARS = 30;
 
 
     private void Awake()
@@ -79,11 +79,6 @@ public class SpellTypingTracker : NetworkBehaviour
                 InputHandler.Instance.RemoveListener(OnCharTyped);
                 InputHandler.Instance.OnInputModeChanged -= OnInputModeChanged;
             }
-
-            if (player != null && player.PlayerInputManager != null)
-            {
-                // Input mode is handled by InputHandler now
-            }
         }
 
         if (IsServer)
@@ -110,6 +105,10 @@ public class SpellTypingTracker : NetworkBehaviour
         if (c == '\n' || c == '\r') return;
 
         string current = RawText.Value.ToString();
+
+        // Evitar escribir dos espacios seguidos y llenar innecesariamente el bocada de texto
+        if (c == ' ' && current.EndsWith("  ")) return;
+
         if (current.Length >= MAX_CHARS)
         {
             current = current.Substring(1);

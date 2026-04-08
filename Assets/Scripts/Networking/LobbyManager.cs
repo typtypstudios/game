@@ -166,6 +166,7 @@ public class LobbyManager : MonoBehaviour
                 return false; // perdió el conflicto reintentar
             }
 
+            Debug.Log("Uniendose a un lobby como host");
             InvokeRepeating(nameof(SendHeartbeatWrapper), heartbeatInterval, heartbeatInterval);
 
             return true; // éxito
@@ -236,8 +237,6 @@ public class LobbyManager : MonoBehaviour
     {
         try
         {
-            Debug.Log("Uniendose a un lobby como cliente");
-
             var playerData = new Dictionary<string, PlayerDataObject>
             {
                 {
@@ -275,6 +274,7 @@ public class LobbyManager : MonoBehaviour
                 return false;
             }
 
+            Debug.Log("Uniendose a un lobby como cliente");
             return true; // éxito
         }
         catch (LobbyServiceException e) when (e.Reason == LobbyExceptionReason.LobbyConflict)

@@ -10,6 +10,7 @@ public class PlayerFeedbackUI : MonoBehaviour
 
     private void Awake()
     {
+        feedbackText.text = "";
         feedbackText.gameObject.SetActive(false);
     }
 

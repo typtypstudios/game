@@ -79,11 +79,10 @@ public class DeckController : NetworkBehaviour
         if (shuffleCard != null)
         {
             shuffleCardId = CardRegister.Instance.GetId(shuffleCard);
-            Debug.Log("El ID de Shuffle es: " + shuffleCardId);
         }
         else
         {
-            Debug.LogError("No se ha encontrado ninguna carta llamada Shuffle en el registro.");
+            Debug.LogWarning("No se ha encontrado la carta Shuffle");
         }
     }
 

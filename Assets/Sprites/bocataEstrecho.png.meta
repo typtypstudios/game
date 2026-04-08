@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c6bc1e7319114d34ba032e1d35d2a386
+guid: fc7cd986edce31747bc5b43649a84e29
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -45,7 +45,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -110,23 +110,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: IllustrationChat_0
+      name: bocataEstrecho_0
       rect:
         serializedVersion: 2
-        x: 225
-        y: 1096
-        width: 657
-        height: 178
+        x: 361
+        y: 587
+        width: 769
+        height: 268
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 134, y: 125, z: 143, w: 60}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4a798d06e4e502c47b543a7ee2ffc4ee
-      internalID: 742792719
+      spriteID: 96f397f674c1bcb4a9b2ff0fedb3141c
+      internalID: 2098904046
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 1f15363941ebdf54cb2f410ec6d4ab40
+    spriteID: 31d38c805500fbd49835a9adef1a334f
     internalID: 0
     vertices: []
     indices: 
@@ -143,9 +143,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      IllustrationChat_0: 742792719
+      bocataEstrecho_0: 2098904046
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
