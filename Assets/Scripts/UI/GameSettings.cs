@@ -118,7 +118,6 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
         SetFilterChat(data.chatActive);
         if (filterChatToggle != null)
         {
-            Debug.Log("Chat active: " + data.chatActive);
             filterChatToggle.isOn = data.chatActive;
         }
 

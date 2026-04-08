@@ -11,13 +11,13 @@ public class GameChatInputFilter : NetworkBehaviour
     #region varaibles de texto
     // Network variable que escribe el owner
     [Tooltip("Lo que escribe el jugador.")]
-    public NetworkVariable<FixedString32Bytes> RawText = new NetworkVariable<FixedString32Bytes>(
+    public NetworkVariable<FixedString64Bytes> RawText = new NetworkVariable<FixedString64Bytes>(
         "",
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner);
 
     [Tooltip("El texto filtrado por el servidor.")]
-    public NetworkVariable<FixedString32Bytes> FilteredText = new NetworkVariable<FixedString32Bytes>(
+    public NetworkVariable<FixedString64Bytes> FilteredText = new NetworkVariable<FixedString64Bytes>(
         "",
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Server);
@@ -165,7 +165,7 @@ public class GameChatInputFilter : NetworkBehaviour
     }
 
     // Filtrado en red (Servidor)
-    private void ProcessFilteringOnServer(FixedString32Bytes previous, FixedString32Bytes current)
+    private void ProcessFilteringOnServer(FixedString64Bytes previous, FixedString64Bytes current)
     {
         // El server se encarga de filtrar el texto que le llega para solo mostrar el texto que coincida con las cartas que está escribiendo
         FilteredText.Value = CalculateFilteredTextServer(current.ToString());
