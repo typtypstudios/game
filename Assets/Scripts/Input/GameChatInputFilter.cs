@@ -3,7 +3,6 @@ using Unity.Collections;
 using UnityEngine;
 using TypTyp;
 using TypTyp.Input;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(Player))]
 public class GameChatInputFilter : NetworkBehaviour
@@ -42,7 +41,7 @@ public class GameChatInputFilter : NetworkBehaviour
     private CardUIManager cardUIManager;
     private DeckController deckController;
     private bool isCastingSpells = false;
-    private const int MAX_CHARS = 30;
+    private const int MAX_CHARS = 50;
 
 
     private void Awake()
@@ -106,18 +105,17 @@ public class GameChatInputFilter : NetworkBehaviour
 
         string current = RawText.Value.ToString();
 
-        // Evitar escribir dos espacios seguidos y llenar innecesariamente el bocada de texto
-        if (c == ' ' && current.EndsWith("  ")) return;
+        if (c == ' ' && current.EndsWith(" ")) return;
 
-        if (current.Length >= MAX_CHARS)
-        {
-            current = current.Substring(1);
-        }
+        string candidate = current + c;
 
-        current += c;
+        while (candidate.Length > MAX_CHARS)
+            candidate = candidate.Substring(1);
 
-        RawText.Value = current;
-        UpdateLocalTexts(current);
+        try { RawText.Value = candidate; }
+        catch (System.ArgumentException) { return; }
+
+        UpdateLocalTexts(candidate);
     }
 
     /// <summary>
