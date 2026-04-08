@@ -1,10 +1,11 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
+using TypTyp.Input;
+using TypTyp.TextSystem.Typable;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using TypTyp.Input;
 
 public class ProfileSettings : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class ProfileSettings : MonoBehaviour
     private string currentName = string.Empty;
     private bool isTyping;
     private WritableButton usernameButton;
+    private TypableController usernameTypCont;
     private WritableButton[] allWritableButtons;
     private readonly int minNameLength = 4;
     private readonly int maxNameLength = 15;
@@ -23,6 +25,7 @@ public class ProfileSettings : MonoBehaviour
     {
         allWritableButtons = GetComponentsInChildren<Button>().Select(b => b.GetComponent<WritableButton>()).ToArray();
         usernameButton = usernameText.GetComponentInParent<WritableButton>();
+        usernameTypCont = usernameButton.GetComponent<TypableController>();
     }
 
     private void OnEnable()
@@ -67,12 +70,18 @@ public class ProfileSettings : MonoBehaviour
         {
             SubmitName();
         }
-    }
 
+        if (isTyping)
+        {
+            for (int i = 0; i < allWritableButtons.Length; i++)
+            {
+                allWritableButtons[i].CompletelyBlock(true);
+            }
+        }
+    }
     public void ChangeName()
     {
         if (isTyping) return;
-        usernameButton.Block = true;
         isTyping = true;
         currentName = string.Empty;
         usernameButton.OverrideText(currentName);
@@ -90,6 +99,9 @@ public class ProfileSettings : MonoBehaviour
 
         currentName += c;
         usernameButton.OverrideText(currentName);
+
+        if (usernameTypCont != null)
+            usernameTypCont.enabled = false;
     }
 
     private void SubmitName()
@@ -105,6 +117,7 @@ public class ProfileSettings : MonoBehaviour
         currentName = currentName.Trim();
         if (CheckText(currentName))
         {
+            usernameText.text = currentName;
             helpText.text = "Name saved!";
             SaveManager.Instance.Save();
         }
@@ -126,8 +139,11 @@ public class ProfileSettings : MonoBehaviour
     {
         for (int i = 0; i < allWritableButtons.Length; i++)
         {
-            allWritableButtons[i].GetComponent<Button>().interactable = !blockState;
-            allWritableButtons[i].Block = blockState;
+            allWritableButtons[i].CompletelyBlock(blockState);
+            if (allWritableButtons[i].TryGetComponent<HoverEffect>(out HoverEffect he))
+            {
+                he.enabled = !blockState;
+            }
         }
     }
 
