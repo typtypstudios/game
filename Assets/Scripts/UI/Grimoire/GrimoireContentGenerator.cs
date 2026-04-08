@@ -23,15 +23,15 @@ public class GrimoireContentGenerator : MonoBehaviour
         GenerateSection(CardRegister.Instance.RegisteredItems.Where(c => c.Cult == null), basicSpellsLabel);
         //Cartas por culto:
         foreach(CultDefinition cult in CultRegister.Instance.RegisteredItems)
-            GenerateSection(cult.GetCards().Cast<ADefinition>(), cult.Name);
+            GenerateSection(cult.GetCards().Cast<ADefinition>(), cult.Name, CultRegister.Instance.GetId(cult));
         //Effectos:
         GenerateSection(StatusEffectRegister.Instance.RegisteredItems.Cast<ADefinition>(), 
             effectsSectionLabel);
     }
 
-    private void GenerateSection(IEnumerable<ADefinition> definitions, string name)
+    private void GenerateSection(IEnumerable<ADefinition> definitions, string name, int cultId = -1)
     {
-        navController.AddSection(contentManager.SectionStartPages.Count, name);
+        navController.AddSection(contentManager.SectionStartPages.Count, name, cultId);
         contentManager.SectionStartPages.Add(contentManager.Pages.Count);
         FillSection(definitions.Distinct().OrderBy(d => d.Name).ToArray());
     }

@@ -49,6 +49,8 @@ public class CultButton : MonoBehaviour
             displayers[i].SetInfo(CardRegister.Instance.GetById(cardID));
         }
         editButton.OverrideText(editText.Replace("<name>", cultInfo.cult.Abbreviation));
+        if (TryGetComponent(out CultColoredItem item))
+            item.FixCult(cultId);
     }
 
     public void UpdateInfo() => SetCultInfo(RuntimeVariables.Instance.CultsInfo[cultId]);

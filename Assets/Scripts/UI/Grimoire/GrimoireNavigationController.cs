@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,12 +25,17 @@ public class GrimoireNavigationController : MonoBehaviour
         contentManager.OnSectionChanged -= CheckCurrentSection;
     }
 
-    public void AddSection(int index, string name)
+    public void AddSection(int index, string name, int cultId)
     {
         WritableButton s = Instantiate(sectionButtonPrefab, sectionsTransform).GetComponent<WritableButton>();
         s.GetComponent<Button>().onClick.AddListener(() => contentManager.GoToSection(index));
         sections.Add(s);
         s.OverrideText(name);
+        if (cultId != -1)
+        {
+            CultColoredItem item = s.AddComponent<CultColoredItem>();
+            item.FixCult(cultId);
+        }
     }
 
     public void CheckCurrentSection(int newIdx, int prevIdx)
