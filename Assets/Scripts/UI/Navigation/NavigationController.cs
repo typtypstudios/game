@@ -40,17 +40,8 @@ public class NavigationController : MonoBehaviour
             canvasGroup.blocksRaycasts = false;
         }
         if (enabledCount != 1) Debug.LogError("Error: solo un canvas debe estar activo al inicio.");
-        InitRT();
         Dissolve = 1;
         StartCoroutine(TransitionCoroutine(initCanvas, initCanvas));
-    }
-
-    private void InitRT()
-    {
-        transitionTexture.Release();
-        transitionTexture.width = Screen.width;
-        transitionTexture.height = Screen.height;
-        transitionTexture.Create();
     }
 
     public void GoTo(Screens screen)
