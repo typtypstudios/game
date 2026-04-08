@@ -242,6 +242,7 @@ GameObject:
   - component: {fileID: 361916979829646426}
   - component: {fileID: 5504965229645880488}
   - component: {fileID: 2200380979262519848}
+  - component: {fileID: 1300731043232809447}
   m_Layer: 5
   m_Name: LeftPage
   m_TagString: Untagged
@@ -310,6 +311,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.98
+--- !u!114 &1300731043232809447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2370599664784681507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e5e8b648f0ca14d8c06796dbc1363e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CultColoredImage
 --- !u!1 &3443077462465526267
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,6 +335,8 @@ GameObject:
   - component: {fileID: 3176893796026010251}
   - component: {fileID: 4981608086403444276}
   - component: {fileID: 2919667564829358119}
+  - component: {fileID: 6933935811615698525}
+  - component: {fileID: 6821226497793765518}
   m_Layer: 5
   m_Name: EquippedCards
   m_TagString: Untagged
@@ -410,6 +425,30 @@ MonoBehaviour:
   centerIncompleteRows: 1
   excludedObjects:
   - {fileID: 7342539688253116266}
+--- !u!114 &6933935811615698525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3443077462465526267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e5e8b648f0ca14d8c06796dbc1363e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CultColoredImage
+--- !u!114 &6821226497793765518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3443077462465526267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e5e8b648f0ca14d8c06796dbc1363e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CultColoredImage
 --- !u!1 &5267568433930744409
 GameObject:
   m_ObjectHideFlags: 0
@@ -798,7 +837,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &7643706990687521495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -883,6 +922,7 @@ GameObject:
   - component: {fileID: 5783134062856310248}
   - component: {fileID: 7907036466854937930}
   - component: {fileID: 2766217459402187126}
+  - component: {fileID: 2819939181239434844}
   m_Layer: 5
   m_Name: RightPage
   m_TagString: Untagged
@@ -948,6 +988,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2819939181239434844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6602532748811199299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e5e8b648f0ca14d8c06796dbc1363e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CultColoredImage
 --- !u!1 &6675740576616769722
 GameObject:
   m_ObjectHideFlags: 0
