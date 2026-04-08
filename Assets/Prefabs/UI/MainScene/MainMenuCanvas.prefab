@@ -86,7 +86,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &5296587310162282743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +202,7 @@ GameObject:
   - component: {fileID: 4386455568878613015}
   - component: {fileID: 3537746296284412922}
   - component: {fileID: 9039051102963971877}
+  - component: {fileID: 8779482552429147730}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -412,6 +413,7 @@ MonoBehaviour:
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
+    isAbleToShowSpaces: 0
 --- !u!114 &9039051102963971877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,6 +428,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
   controller: {fileID: 4386455568878613015}
   text: {fileID: 2207450562309443301}
+--- !u!114 &8779482552429147730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756775444701966488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be81b81565e4bc74c80ba4c201c660b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TitleLeveler
+  numInteractionsRequired: 5
 --- !u!1001 &3957448681235788609
 PrefabInstance:
   m_ObjectHideFlags: 0
