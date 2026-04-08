@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TypTyp.TextSystem.Typable;
 using TypTyp.Input;
+using UnityEngine.Events;
 
 public class Credits : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Credits : MonoBehaviour
     private TypableController[] typables;
     private TypingInputListener[] listeners;
     private int currentButtonIdx = 0;
+
+    public UnityEvent OnCreditsAchieved;
 
     private void Awake()
     {
@@ -32,6 +35,7 @@ public class Credits : MonoBehaviour
 
     public void PlayCredits()
     {
+        StopCredits();
         StopAllCoroutines();
         StartCoroutine(PlayCreditsCoroutine());
     }
@@ -42,6 +46,7 @@ public class Credits : MonoBehaviour
         foreach (var t in typables)
         {
             t.enabled = false;
+            t.ResetText();
         }
         foreach (var l in listeners)
         {
@@ -59,7 +64,11 @@ public class Credits : MonoBehaviour
     {
         typables[currentButtonIdx].enabled = false;
         listeners[currentButtonIdx++].enabled = false;
-        if (currentButtonIdx >= typables.Length) return;
+        if (currentButtonIdx >= typables.Length)
+        {
+            LastButtonWritten();
+            return;
+        }
         typables[currentButtonIdx].enabled = true;
         listeners[currentButtonIdx].enabled = true;
     }
@@ -77,5 +86,10 @@ public class Credits : MonoBehaviour
             yield return null;
         }
         StopCredits();
+    }
+
+    void LastButtonWritten()
+    {
+        OnCreditsAchieved?.Invoke();
     }
 }

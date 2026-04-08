@@ -65,6 +65,8 @@ namespace TypTyp.TextSystem.Typable
             typable.SetText(text);
         }
 
+        public void ResetText() => SetText(Text);
+
         void HandleInput(char c)
         {
             char processed = InputTransform != null ? InputTransform(c) : c;
