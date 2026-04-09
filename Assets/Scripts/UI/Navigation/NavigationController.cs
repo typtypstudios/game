@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.VisualScripting;
 
 public class NavigationController : MonoBehaviour
 {
@@ -21,7 +20,7 @@ public class NavigationController : MonoBehaviour
         {
             screenDictionary[entry.screen] = entry.canvas;
             if (!entry.canvas.TryGetComponent(out CanvasGroup canvasGroup))
-                canvasGroup = entry.canvas.AddComponent<CanvasGroup>();
+                canvasGroup = entry.canvas.gameObject.AddComponent<CanvasGroup>();
             canvasGroup.blocksRaycasts = false;
         }
         transitionManager.SubscribeOnStarted(this, () => blocked = true);
