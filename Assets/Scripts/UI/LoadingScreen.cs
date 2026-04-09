@@ -8,6 +8,7 @@ public class LoadingScreen : MonoBehaviour
     
     void Awake()
     {
+        GetComponent<Canvas>().enabled = true;
         canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.alpha = 1.0f;
         GameUIConfigurator.OnUIConfigurated += StartFade;

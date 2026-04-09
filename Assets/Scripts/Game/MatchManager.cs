@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 public enum MatchState
@@ -39,7 +40,7 @@ public class MatchManager : NetworkBehaviour
     public static event Action OnMatchEnded;
 
     // Referencia al canvas de inicio y final de la partida
-    [SerializeField] private StartEndCanvas canvasUIScript;
+    [SerializeField] private StartEndCanvas startEndCanvas;
 
 
     //De momento una lista de playerIds server side
@@ -49,6 +50,9 @@ public class MatchManager : NetworkBehaviour
 
     //Cambiar esto mas adelante para mas jugadores
     int MaxPlayers => 2;
+
+    private bool lobbyShutdownRequested = false;
+
 
     public override void OnNetworkSpawn()
     {
@@ -203,8 +207,8 @@ public class MatchManager : NetworkBehaviour
         string enemyPlayerName = isClient1 ? client2Name : client1Name;
         Player.User.name = localPlayerName;
         Player.Enemy.name = enemyPlayerName;
-        canvasUIScript.ConfigureUsernames(localPlayerName, enemyPlayerName);
-        canvasUIScript.AnimateImagesIn();
+        startEndCanvas.ConfigureUsernames(localPlayerName, enemyPlayerName);
+        startEndCanvas.AnimateImagesIn();
 
         StartCoroutine(WaitForStart(startTime));
     }
@@ -213,7 +217,7 @@ public class MatchManager : NetworkBehaviour
     {
         int lastSecond = -1;
 
-        canvasUIScript.SetCountdownActive(true);
+        startEndCanvas.SetCountdownActive(true);
 
         while (true)
         {
@@ -227,18 +231,18 @@ public class MatchManager : NetworkBehaviour
             if (currentSecond != lastSecond)
             {
                 lastSecond = currentSecond;
-                canvasUIScript.UpdateCountdownText(currentSecond.ToString());
+                startEndCanvas.UpdateCountdownText(currentSecond.ToString());
             }
 
             yield return null;
         }
 
-        canvasUIScript.UpdateCountdownText("GO!");
-        canvasUIScript.AnimateImagesOut();
+        startEndCanvas.UpdateCountdownText("GO!");
+        startEndCanvas.AnimateImagesOut();
 
         yield return new WaitForSeconds(0.5f);
 
-        canvasUIScript.SetCountdownActive(false);
+        startEndCanvas.SetCountdownActive(false);
         BeginMatchClient();
     }
 
@@ -287,7 +291,7 @@ public class MatchManager : NetworkBehaviour
         OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
-        canvasUIScript.ShowEndMatch(isWinner);
+        startEndCanvas.ShowEndMatch(isWinner);
 
         // Handshake de finalización
         NotifyEndHandledServerRpc();
@@ -307,7 +311,7 @@ public class MatchManager : NetworkBehaviour
 
         if (endMatchConfirmedClients.Count == MaxPlayers)
         {
-            _ = ShutdownMatchServer();
+            RequestLobbyShutdown();
         }
     }
 
@@ -320,56 +324,136 @@ public class MatchManager : NetworkBehaviour
         }
     }
 
-    // Llamado desde el botón
+    private void OnClientDisconnected(ulong clientId)
+    {
+        // Host side
+        if (IsServer)
+        {
+            if (clientId == NetworkManager.ServerClientId)
+            {
+                if (matchState == MatchState.InGame)
+                {
+                    matchState = MatchState.Finished;
+                    OnMatchEnded?.Invoke();
+                    startEndCanvas.ShowEndMatch(false);
+                }
+                RequestLobbyShutdown();
+                return;
+            }
+
+            switch (matchState)
+            {
+                case MatchState.WaitingPlayers:
+                case MatchState.ConfiguringPlayers:
+                    RequestLobbyShutdown();
+                    NetworkManager.Singleton.Shutdown();
+                    SceneManager.LoadScene("MainMenu");
+                    return;
+
+                case MatchState.InGame:
+                    StartCoroutine(ResolveHostDisconnect(clientId));
+                    return;
+
+                case MatchState.Finished:
+                    RequestLobbyShutdown();
+                    return;
+            }
+            return;
+        }
+
+        // Client side
+        switch (matchState)
+        {
+            case MatchState.InGame:
+                StartCoroutine(ResolveClientDisconnect());
+                return;
+
+            case MatchState.WaitingPlayers:
+            case MatchState.ConfiguringPlayers:
+                NetworkManager.Singleton.Shutdown();
+                SceneManager.LoadScene("MainMenu");
+                return;
+
+            case MatchState.Finished:
+                NetworkManager.Singleton.Shutdown();
+                return;
+        }
+    }
+
+    private IEnumerator ResolveHostDisconnect(ulong disconnectedClientId)
+    {
+        if (matchState == MatchState.Finished) yield break;
+        matchState = MatchState.Finished;
+
+        using var req = UnityWebRequest.Head("https://clients3.google.com/generate_204");
+        req.timeout = 3;
+        yield return req.SendWebRequest();
+
+        bool haveInternet = req.result == UnityWebRequest.Result.Success;
+
+        if (haveInternet)
+        {
+            Player winner = null;
+            foreach (var kvp in playersById)
+            {
+                if (kvp.Value != null && kvp.Value.OwnerClientId != disconnectedClientId)
+                {
+                    winner = kvp.Value;
+                    break;
+                }
+            }
+
+            if (winner != null)
+            {
+                EndMatchClientRpc(winner.OwnerClientId);
+            }
+
+            StartCoroutine(DelayedLobbyShutdown(3f));
+        }
+        else
+        {
+            OnMatchEnded?.Invoke();
+            startEndCanvas.ShowEndMatch(false);
+
+            RequestLobbyShutdown();
+
+            NetworkManager.Singleton.Shutdown();
+        }
+    }
+
+    private IEnumerator ResolveClientDisconnect()
+    {
+        matchState = MatchState.Finished;
+        OnMatchEnded?.Invoke();
+
+        using var req = UnityWebRequest.Head("https://clients3.google.com/generate_204");
+        req.timeout = 3;
+        yield return req.SendWebRequest();
+
+        bool haveInternet = req.result == UnityWebRequest.Result.Success;
+
+        NetworkManager.Singleton.Shutdown();
+
+        startEndCanvas.ShowEndMatch(haveInternet);
+    }
+
+    private IEnumerator DelayedLobbyShutdown(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        RequestLobbyShutdown();
+    }
+
+    private void RequestLobbyShutdown()
+    {
+        if (lobbyShutdownRequested) return;
+        lobbyShutdownRequested = true;
+        _ = ShutdownMatchServer();
+    }
+
     public void ReturnToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
     }
-
-    private void OnClientDisconnected(ulong clientId)
-    {
-        if (!IsServer && (clientId == NetworkManager.ServerClientId || clientId == NetworkManager.Singleton.LocalClientId))
-        {
-            if (matchState == MatchState.ConfiguringPlayers || matchState == MatchState.WaitingPlayers)
-            {
-                // Salir de la partida
-                NetworkManager.Singleton.Shutdown();
-                SceneManager.LoadScene("MainMenu");
-            }
-            else if (matchState == MatchState.InGame)
-            {
-                // Terminar la partida
-                matchState = MatchState.Finished;
-                OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
-                NetworkManager.Singleton.Shutdown();
-
-                canvasUIScript.ShowEndMatch(clientId != Player.User.OwnerClientId);
-            }
-        }
-
-        // Caso del host sigue vivo
-        if (clientId != NetworkManager.ServerClientId)
-        {
-            if (matchState == MatchState.ConfiguringPlayers || matchState == MatchState.WaitingPlayers)
-            {
-                // Salir de la partida
-                _ = ShutdownMatchServer();
-                NetworkManager.Singleton.Shutdown();
-                SceneManager.LoadScene("MainMenu");
-            }
-            else if (matchState == MatchState.InGame)
-            {
-                // Terminar la partida
-                matchState = MatchState.Finished;
-                OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
-                _ = ShutdownMatchServer();
-                NetworkManager.Singleton.Shutdown();
-
-                canvasUIScript.ShowEndMatch(clientId != Player.User.OwnerClientId);
-            }
-        }
-    }
-
 
 
     public override void OnDestroy()

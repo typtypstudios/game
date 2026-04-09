@@ -1,6 +1,5 @@
 using System.Collections;
 using TMPro;
-using TypTyp;
 using UnityEngine;
 
 public class StartEndCanvas : MonoBehaviour
