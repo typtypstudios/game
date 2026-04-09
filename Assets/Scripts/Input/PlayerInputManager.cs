@@ -68,7 +68,7 @@ public class PlayerInputManager : MonoBehaviour
     private void SetMode(InputModeMask mode)
     {
         anim.SetBool("CastingSpells", mode == InputModeMask.Spells);
-        InputHandler.Instance.SetMode(mode);
+        if(player.IsOwner) InputHandler.Instance.SetMode(mode);
     }
 
     #region SpellEffects
