@@ -1,8 +1,9 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class BuilderDisplayer : InfoDisplayer
+public class BuilderDisplayer : InfoDisplayer, ISelectHandler
 {
     [SerializeField] private TextMeshProUGUI description;
     [SerializeField] private GrimoireInfoPanel infoPanel;
@@ -96,5 +97,18 @@ public class BuilderDisplayer : InfoDisplayer
         }
     }
 
-    public void OnButtonClicked() => OnCardChosen?.Invoke(this);
+    public void OnButtonClicked()
+    {
+        // Seleccionar esta carta
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(gameObject);
+
+        OnCardChosen?.Invoke(this);
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        // Por implementar para que se pueda navegar entre cartas con las flechas del teclado
+        //OnCardChosen?.Invoke(this);
+    }
 }

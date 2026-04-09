@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TypTyp;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 //?
 
@@ -149,8 +150,16 @@ public class DeckBuilder : MonoBehaviour
             selectedEquipped.SetInfo(card);
             RefreshIndexesFromUI();
             RefreshCardsInDeck();
+
+            // Codigo para poder seleccionar y deseleccionar una carta con el enter
+            BuilderDisplayer newlyEquipped = selectedEquipped;
+
             ResetSelection();
+
             if (sortOnChange) SortUnequipped();
+
+            if (EventSystem.current != null)
+                EventSystem.current.SetSelectedGameObject(newlyEquipped.gameObject);
         }
     }
 
