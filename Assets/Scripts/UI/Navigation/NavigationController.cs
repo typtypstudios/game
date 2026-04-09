@@ -38,7 +38,6 @@ public class NavigationController : MonoBehaviour
             if (!entry.canvas.TryGetComponent(out CanvasGroup canvasGroup))
                 canvasGroup = entry.canvas.AddComponent<CanvasGroup>();
             canvasGroup.blocksRaycasts = false;
-            canvasGroup.interactable = false;
         }
         if (enabledCount != 1) Debug.LogError("Error: solo un canvas debe estar activo al inicio.");
         Dissolve = 1;
@@ -87,11 +86,7 @@ public class NavigationController : MonoBehaviour
         blocked = true;
         Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
         uiCam.cullingMask |= (1 << LayerMask.NameToLayer("UI"));
-
-        CanvasGroup originGroup = origin.GetComponent<CanvasGroup>();
-        originGroup.blocksRaycasts = false;
-        originGroup.interactable = false;
-
+        origin.GetComponent<CanvasGroup>().blocksRaycasts = false;
         float speed = 2 / TransitionTime;
         float dissolveValue = Dissolve; //Para no hacer gets constantes
         while (dissolveValue < 1)
@@ -109,10 +104,7 @@ public class NavigationController : MonoBehaviour
             Dissolve = dissolveValue;
             yield return null;
         }
-        CanvasGroup destGroup = dest.GetComponent<CanvasGroup>();
-        destGroup.blocksRaycasts = true;
-        destGroup.interactable = true;
-
+        dest.GetComponent<CanvasGroup>().blocksRaycasts = true;
         Camera.main.cullingMask |= (1 << LayerMask.NameToLayer("UI"));
         uiCam.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
         blocked = false;
