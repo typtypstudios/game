@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 
 public class NavigationController : MonoBehaviour
 {
+    [SerializeField] private Screens initialScreen = Screens.MainMenu;
     [SerializeField] private NavigationEntry[] entries;
     private CanvasTransitionManager transitionManager;
     private readonly Dictionary<Screens, Canvas> screenDictionary = new();
@@ -16,24 +17,20 @@ public class NavigationController : MonoBehaviour
     {
         if(!TryGetComponent(out transitionManager))
             Debug.LogError("Error: no hay transition manager asociado al gameObject.");
-        int enabledCount = 0;
-        Canvas initCanvas = null;
         foreach(var entry in entries)
         {
             screenDictionary[entry.screen] = entry.canvas;
-            if (entry.canvas.enabled)
-            {
-                enabledCount++;
-                currentScreen = entry.screen;
-                initCanvas = entry.canvas;
-            }
             if (!entry.canvas.TryGetComponent(out CanvasGroup canvasGroup))
                 canvasGroup = entry.canvas.AddComponent<CanvasGroup>();
             canvasGroup.blocksRaycasts = false;
         }
-        if (enabledCount != 1) Debug.LogError("Error: solo un canvas debe estar activo al inicio.");
         transitionManager.SubscribeOnStarted(this, () => blocked = true);
         transitionManager.SubscribeOnEnded(this, () => blocked = false);
+    }
+
+    void Start()
+    {
+        var initCanvas = screenDictionary[initialScreen];
         transitionManager.PerformTransition(initCanvas, initCanvas, this);
     }
 
