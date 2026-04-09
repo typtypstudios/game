@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using System.Collections;
+using TypTyp.TextSystem.Typable;
 
 public class FontDropdownOption : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class FontDropdownOption : MonoBehaviour
     private WritableButton writableButton;
     private int fontIdx;
     private bool activated = false;
+    private bool completedByText = false;
 
     private void Awake()
     {
@@ -21,6 +23,7 @@ public class FontDropdownOption : MonoBehaviour
         initPos = rt.anchoredPosition;
         rt.anchoredPosition = Vector2.zero;
         transitionSpeed = initPos.magnitude / transitionTime;
+        GetComponent<TypableController>().OnComplete += () => completedByText = true;
     }
 
     public void Initialize(TMP_FontAsset font, int idx)
@@ -46,7 +49,8 @@ public class FontDropdownOption : MonoBehaviour
     {
         dropdown.SetFont(fontIdx);
         transform.SetAsLastSibling();
-        dropdown.ToggleSelection();
+        if(completedByText) dropdown.ToggleSelection();
+        completedByText = false;
     }
 
     IEnumerator TransitionCoroutine(Vector2 targetPos, bool hiding = false)

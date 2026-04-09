@@ -1413,6 +1413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bb30e319547c6949927e8a0dcdd3b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FontDropdown
+  clickReference: {fileID: -8619944142541535279, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   fonts:
   - {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   - {fileID: 11400000, guid: 6a39ba496dd72064f839bc3dc2f9089f, type: 2}
@@ -2574,6 +2575,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2385568246174943060, guid: 1942477e0ea5050419fa93fea78ad1a3, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2385568246174943060, guid: 1942477e0ea5050419fa93fea78ad1a3, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -2863,7 +2868,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8879462994637363853, guid: 1942477e0ea5050419fa93fea78ad1a3, type: 3}
       propertyPath: m_fontSize
-      value: 15
+      value: 31.5
       objectReference: {fileID: 0}
     - target: {fileID: 8879462994637363853, guid: 1942477e0ea5050419fa93fea78ad1a3, type: 3}
       propertyPath: m_fontColor.b
