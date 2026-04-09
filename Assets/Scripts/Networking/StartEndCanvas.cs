@@ -6,6 +6,7 @@ public class StartEndCanvas : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
     [SerializeField] private TMP_Text resultText;
+    [SerializeField] private TMP_Text resultReasonText;
     [SerializeField] private GameObject exitButton;
 
     [Header("Countdown UI")]
@@ -35,6 +36,8 @@ public class StartEndCanvas : MonoBehaviour
     {
         panel.SetActive(false);
         exitButton.SetActive(false);
+
+        resultReasonText.text = "";
 
         if (countdownText != null)
             countdownText.gameObject.SetActive(false);
@@ -96,7 +99,7 @@ public class StartEndCanvas : MonoBehaviour
             enemyNameText.text = enemy;
     }
 
-    public void ShowEndMatch(bool isWinner)
+    public void ShowEndMatch(bool isWinner, MatchEndReason reason)
     {
         panel.SetActive(true);
         exitButton.SetActive(false);
@@ -107,10 +110,38 @@ public class StartEndCanvas : MonoBehaviour
             wt.FillColor = isWinner ? Color.cyan : Color.red;
             wt.ResetText();
         }
+
+        if (resultReasonText != null)
+            resultReasonText.text = GetReasonText(isWinner, reason);
+
         exitButton.SetActive(true);
         if (isWinner) XPManager.Instance.ProcessVictory();
         earnedXPText.gameObject.SetActive(isWinner);
         progressionBar.gameObject.SetActive(isWinner);
+    }
+
+    private string GetReasonText(bool isWinner, MatchEndReason reason)
+    {
+        switch (reason)
+        {
+            case MatchEndReason.RitualCompleted:
+                return isWinner
+                    ? "You completed the ritual!"
+                    : "Your opponent completed the ritual";
+
+            case MatchEndReason.CorruptionOverflow:
+                return isWinner
+                    ? "Your opponent succumbed to corruption"
+                    : "You succumbed to corruption";
+
+            case MatchEndReason.Disconnection:
+                return isWinner
+                    ? "Your opponent disconnected"
+                    : "You lost connection";
+
+            default:
+                return string.Empty;
+        }
     }
 
     private void UpdateProgressionBar(float prevXP, float nextXP)
@@ -123,7 +154,7 @@ public class StartEndCanvas : MonoBehaviour
     {
         int xpEarned = Mathf.RoundToInt((nextXP - prevXP) * XPManager.Instance.XPPerRank);
         Color pointsColor = RuntimeVariables.Instance.CurrentCult.Color;
-        earnedXPText.text = earnedXPText.text.Replace("<points>", 
+        earnedXPText.text = earnedXPText.text.Replace("<points>",
             Utils.ApplyColorToText(xpEarned.ToString() + " Devotion Points", pointsColor));
         while (prevXP != nextXP)
         {

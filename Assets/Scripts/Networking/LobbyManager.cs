@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
@@ -26,25 +27,39 @@ public class LobbyManager : MonoBehaviour
     // Referencia a la lobby actual (si somos host o cliente)
     Lobby currentLobby;
     bool isMatching;
+    private CancellationTokenSource lifetimeCts;
 
     // Se ejecuta al iniciar el objeto
     async void Awake()
     {
+        lifetimeCts = new CancellationTokenSource();
+
         await InitializeServices();
+        if (lifetimeCts.IsCancellationRequested) return;
+
         _ = SearchLobby();
     }
 
     async Task InitializeServices()
     {
-        if (UnityServices.State != ServicesInitializationState.Initialized)
+        try
         {
-            await UnityServices.InitializeAsync();
-        }
+            if (UnityServices.State != ServicesInitializationState.Initialized)
+            {
+                await UnityServices.InitializeAsync();
+            }
 
-        if (!AuthenticationService.Instance.IsSignedIn)
+            if (!AuthenticationService.Instance.IsSignedIn)
+            {
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                Debug.Log("Signed in as: " + AuthenticationService.Instance.PlayerId);
+            }
+        }
+        catch (Exception e)
         {
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-            Debug.Log("Signed in as: " + AuthenticationService.Instance.PlayerId);
+            Debug.LogError("Failed to initialize Unity Services: " + e.Message);
+            if (Application.isPlaying)
+                SceneManager.LoadScene("MainMenu");
         }
     }
 
@@ -52,18 +67,23 @@ public class LobbyManager : MonoBehaviour
     // Busca una lobby existente o crea una nueva si no hay ninguna
     public async Task SearchLobby()
     {
-        if (!AuthenticationService.Instance.IsSignedIn)
-        {
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        }
-
         if (isMatching) return;
         isMatching = true;
 
+        var token = lifetimeCts?.Token ?? CancellationToken.None;
+
         try
         {
+            if (!AuthenticationService.Instance.IsSignedIn)
+            {
+                Debug.LogWarning("Not signed in, aborting lobby search");
+                return;
+            }
+
             for (int i = 0; i < 5; ++i)
             {
+                if (token.IsCancellationRequested) return;
+
                 try
                 {
                     QueryResponse query = await LobbyService.Instance.QueryLobbiesAsync(
@@ -75,13 +95,14 @@ public class LobbyManager : MonoBehaviour
                                 QueryFilter.FieldOptions.AvailableSlots,
                                 "0",
                                 QueryFilter.OpOptions.GT),
-
                             new QueryFilter(
                                 QueryFilter.FieldOptions.S1,
                                 "waiting",
                                 QueryFilter.OpOptions.EQ)
                             }
                         });
+
+                    if (token.IsCancellationRequested) return;
 
                     // Intentar unirse
                     if (query.Results.Count > 0)
@@ -90,6 +111,8 @@ public class LobbyManager : MonoBehaviour
                             return;
                     }
 
+                    if (token.IsCancellationRequested) return;
+
                     // Intentar crear
                     if (await CreateLobby())
                         return;
@@ -97,18 +120,28 @@ public class LobbyManager : MonoBehaviour
                 catch (LobbyServiceException e) when (e.Reason == LobbyExceptionReason.RateLimited)
                 {
                     Debug.Log("Rate limited. Waiting before retry...");
-                    await Task.Delay(1000);
+                    try { await Task.Delay(1000, token); }
+                    catch (OperationCanceledException) { return; }
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
                 }
                 catch (Exception e)
                 {
+                    if (token.IsCancellationRequested) return;
                     Debug.LogError("Matchmaking failed: " + e);
-                    await Task.Delay(1000);
+                    try { await Task.Delay(1000, token); }
+                    catch (OperationCanceledException) { return; }
                 }
             }// End for
 
+            if (token.IsCancellationRequested) return;
+
             Debug.LogWarning("Matchmaking exhausted. Returning to main menu.");
             await CloseLobyAndShutdown();
-            SceneManager.LoadScene("MainMenu");
+            if (Application.isPlaying)
+                SceneManager.LoadScene("MainMenu");
         }
         finally
         {
@@ -332,7 +365,7 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    public async Task UpdateLobbyState(string newState)
+    public async Task UpdateLobbyState(string newState, bool locked = false)
     {
         if (currentLobby == null) return;
 
@@ -341,6 +374,7 @@ public class LobbyManager : MonoBehaviour
             await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id,
                 new UpdateLobbyOptions
                 {
+                    IsLocked = locked,
                     Data = new Dictionary<string, DataObject>
                     {
                     {
@@ -392,6 +426,16 @@ public class LobbyManager : MonoBehaviour
             }
 
             currentLobby = null;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (lifetimeCts != null)
+        {
+            lifetimeCts.Cancel();
+            lifetimeCts.Dispose();
+            lifetimeCts = null;
         }
     }
 }

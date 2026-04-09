@@ -95,7 +95,7 @@ public class Player : NetworkBehaviour
     private void UpdateRitualProgressRpc(float progress)
     {
         RitualProgress.Value = progress;
-        if (RitualProgress.Value >= 1f) MatchManager.HandlePlayerVictory(this);
+        if (RitualProgress.Value >= 1f) MatchManager.HandlePlayerVictory(this, MatchEndReason.RitualCompleted);
     }
 
     private void UpdateCurrentMana(float value) => CurrentMana.Value = value;
@@ -107,7 +107,7 @@ public class Player : NetworkBehaviour
         {
             Debug.Log("Player " + name + " has reached max corruption and lost the match.", gameObject);
             Player winner = MatchManager.GetPlayerById(MatchManager.GetPlayerId(this) == 0 ? 1 : 0);
-            MatchManager.HandlePlayerVictory(winner);
+            MatchManager.HandlePlayerVictory(winner, MatchEndReason.CorruptionOverflow);
         }
     }
 

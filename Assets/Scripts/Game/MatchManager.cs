@@ -17,6 +17,13 @@ public enum MatchState
     Finished
 }
 
+public enum MatchEndReason : byte
+{
+    RitualCompleted,
+    CorruptionOverflow,
+    Disconnection
+}
+
 public class MatchManager : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI countdownText;
@@ -78,6 +85,11 @@ public class MatchManager : NetworkBehaviour
 
         var player = Instantiate(playerPrefab);
         player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
+
+        if (NetworkManager.Singleton.ConnectedClients.Count >= MaxPlayers)
+        {
+            _ = FindFirstObjectByType<LobbyManager>().UpdateLobbyState("full", locked: true);
+        }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -271,18 +283,18 @@ public class MatchManager : NetworkBehaviour
     /// System to end the game
     /// </summary>
     /// <param name="winner"></param>
-    public void HandlePlayerVictory(Player winner)
+    public void HandlePlayerVictory(Player winner, MatchEndReason reason)
     {
         if (!IsServer || matchState == MatchState.Finished)
             return;
 
         matchState = MatchState.Finished;
 
-        EndMatchClientRpc(winner.OwnerClientId);
+        EndMatchClientRpc(winner.OwnerClientId, reason);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    private void EndMatchClientRpc(ulong winnerClientId)
+    private void EndMatchClientRpc(ulong winnerClientId, MatchEndReason reason)
     {
         // Muestra el mensaje de victoria.
 
@@ -291,7 +303,7 @@ public class MatchManager : NetworkBehaviour
         OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
-        startEndCanvas.ShowEndMatch(isWinner);
+        startEndCanvas.ShowEndMatch(isWinner, reason);
 
         // Handshake de finalización
         NotifyEndHandledServerRpc();
@@ -335,7 +347,7 @@ public class MatchManager : NetworkBehaviour
                 {
                     matchState = MatchState.Finished;
                     OnMatchEnded?.Invoke();
-                    startEndCanvas.ShowEndMatch(false);
+                    startEndCanvas.ShowEndMatch(false, MatchEndReason.Disconnection);
                 }
                 RequestLobbyShutdown();
                 return;
@@ -405,7 +417,7 @@ public class MatchManager : NetworkBehaviour
 
             if (winner != null)
             {
-                EndMatchClientRpc(winner.OwnerClientId);
+                EndMatchClientRpc(winner.OwnerClientId, MatchEndReason.Disconnection);
             }
 
             StartCoroutine(DelayedLobbyShutdown(3f));
@@ -413,10 +425,9 @@ public class MatchManager : NetworkBehaviour
         else
         {
             OnMatchEnded?.Invoke();
-            startEndCanvas.ShowEndMatch(false);
+            startEndCanvas.ShowEndMatch(false, MatchEndReason.Disconnection);
 
             RequestLobbyShutdown();
-
             NetworkManager.Singleton.Shutdown();
         }
     }
@@ -434,7 +445,7 @@ public class MatchManager : NetworkBehaviour
 
         NetworkManager.Singleton.Shutdown();
 
-        startEndCanvas.ShowEndMatch(haveInternet);
+        startEndCanvas.ShowEndMatch(haveInternet, MatchEndReason.Disconnection);
     }
 
     private IEnumerator DelayedLobbyShutdown(float delay)
