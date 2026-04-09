@@ -10,11 +10,39 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 333740115328695815, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
       propertyPath: m_fontSize
-      value: 20
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 333740115328695815, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.21568628
+      objectReference: {fileID: 0}
+    - target: {fileID: 333740115328695815, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.18039216
+      objectReference: {fileID: 0}
+    - target: {fileID: 333740115328695815, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.1254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 333740115328695815, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4281806368
       objectReference: {fileID: 0}
     - target: {fileID: 2312505291243406942, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4418920618483214434, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4418920618483214434, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4418920618483214434, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7848238026137113552, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
       propertyPath: m_AnchorMax.y
@@ -42,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185215459011606957, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
       propertyPath: m_Name
-      value: PlayButton Variant
+      value: MainMenuButton
       objectReference: {fileID: 0}
     - target: {fileID: 9043355480003021022, guid: 719ff1ef62c63c8459f3041a14dc75f8, type: 3}
       propertyPath: m_Pivot.x

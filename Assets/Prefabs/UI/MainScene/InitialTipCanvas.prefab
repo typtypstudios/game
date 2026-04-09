@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.0627451, g: 0.078431375, b: 0.12156863, a: 1}
+  m_Color: {r: 0.1254902, g: 0.18039216, b: 0.21568628, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.21698111, g: 0.21698111, b: 0.21698111, a: 0.74509805}
+  m_Color: {r: 0.10817906, g: 0.11698229, b: 0.122641504, a: 0.74509805}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -505,6 +505,7 @@ MonoBehaviour:
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
+    isAbleToShowSpaces: 0
 --- !u!114 &3082612864866132495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,6 +536,30 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 3340920267916284345}
+    - target: {fileID: 5590775828627560194, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5590775828627560194, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5590775828627560194, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5590775828627560194, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5590775828627560194, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5590775828627560194, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7425783995269280065, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
