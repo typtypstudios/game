@@ -1390,6 +1390,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1396010323}
   - component: {fileID: 1396010324}
+  - component: {fileID: 1396010325}
   m_Layer: 0
   m_Name: NavigationController
   m_TagString: Untagged
@@ -1433,9 +1434,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a61ccf8ccaf2a5c47b60e3f4a983b956, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NavigationController
-  <TransitionTime>k__BackingField: 1
-  transitionMat: {fileID: 2100000, guid: e06787ac7399dac40bff16edbb7ed244, type: 2}
-  transitionTexture: {fileID: 8400000, guid: 9d3d5549c254bf94aaea69fa20f926eb, type: 2}
   entries:
   - canvas: {fileID: 1902940370}
     screen: 0
@@ -1455,6 +1453,21 @@ MonoBehaviour:
     screen: 7
   - canvas: {fileID: 697707598}
     screen: 9
+--- !u!114 &1396010325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396010322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 945b9f7ecc58b8b499f5bd364649dd6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CanvasTransitionManager
+  <TransitionTime>k__BackingField: 1
+  transitionMat: {fileID: 2100000, guid: e06787ac7399dac40bff16edbb7ed244, type: 2}
+  transitionTexture: {fileID: 8400000, guid: 9d3d5549c254bf94aaea69fa20f926eb, type: 2}
 --- !u!224 &1475242808 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4276665625011457407, guid: 34fea484fed45f24aae9fa1851050e1a, type: 3}

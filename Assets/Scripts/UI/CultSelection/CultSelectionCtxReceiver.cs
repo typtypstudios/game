@@ -32,8 +32,9 @@ public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
                 OnCultChosen = () =>
                 {
                     NavigationController c = FindFirstObjectByType<NavigationController>();
+                    CanvasTransitionManager t = c.GetComponent<CanvasTransitionManager>();
                     c.GoTo(Screens.Loading);
-                    FindFirstObjectByType<MainMenuManager>().Play(c.TransitionTime);
+                    FindFirstObjectByType<MainMenuManager>().Play(t.TransitionTime);
                 },
                 showEquipmentButtons = true
             };
