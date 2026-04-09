@@ -36,6 +36,12 @@ public class InkOrb : MonoBehaviour, IFillableBar
         emissionConfigurator.ToggleEmission(bar.anchoredPosition.y >= MaxValue);
     }
 
+    public void CompletelyFill(bool includesFiller)
+    {
+        SetHeight(bar, MaxValue);
+        SetHeight(filler, includesFiller ? MaxValue : initHeight);
+    }
+
     private float UnNormalizeHeight(float t)
     {
         return Mathf.Lerp(initHeight, MaxValue, t);
