@@ -9,10 +9,12 @@ public class CanvasTransitionManager : MonoBehaviour
     [SerializeField] private Material transitionMat;
     [SerializeField] private RenderTexture transitionTexture;
     private Camera uiCam;
-    private bool performingTransition = false;
+    private bool blocked = false;
     private readonly Dictionary<object, Action> onStartedActions = new();
     private readonly Dictionary<object, Action> onDissolvedActions = new();
     private readonly Dictionary<object, Action> onEndedActions = new();
+    private readonly Dictionary<object, Action> onCanceledActions = new();
+    private object activeSender;
     private float Dissolve
     {
         get { return transitionMat.GetFloat("_Dissolve"); }
@@ -40,20 +42,31 @@ public class CanvasTransitionManager : MonoBehaviour
         onEndedActions[sender] = action;
     }
 
-    public void PerformTransition(Canvas origin, Canvas dest, object sender)
+    public void SubscribeOnCanceled(object sender, Action action)
     {
-        if (performingTransition) return;
-        StopAllCoroutines();
-        StartCoroutine(TransitionCoroutine(origin, dest, sender));
+        onCanceledActions[sender] = action;
     }
 
-    private IEnumerator TransitionCoroutine(Canvas origin, Canvas dest, object sender)
+    public void PerformTransition(Canvas origin, Canvas dest, object sender, bool blockTransitioner = true)
     {
-        performingTransition = true;
+        if (blocked) return;
+        if (activeSender != null && activeSender != sender && onCanceledActions.ContainsKey(activeSender))
+            onCanceledActions[activeSender]?.Invoke();
+        activeSender = sender;
+        StopAllCoroutines();
+        StartCoroutine(TransitionCoroutine(origin, dest, sender, blockTransitioner));
+    }
+
+    private IEnumerator TransitionCoroutine(Canvas origin, Canvas dest, object sender, bool block)
+    {
+        if (block)
+        {
+            blocked = true;
+            origin.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        }
         if (onStartedActions.ContainsKey(sender)) onStartedActions[sender]?.Invoke();
         Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
         uiCam.cullingMask |= (1 << LayerMask.NameToLayer("UI"));
-        origin.GetComponent<CanvasGroup>().blocksRaycasts = false;
         float speed = 2 / TransitionTime;
         float dissolveValue = Dissolve; //Para no hacer gets constantes
         while (dissolveValue < 1)
@@ -72,10 +85,14 @@ public class CanvasTransitionManager : MonoBehaviour
             Dissolve = dissolveValue;
             yield return null;
         }
-        dest.GetComponent<CanvasGroup>().blocksRaycasts = true;
         Camera.main.cullingMask |= (1 << LayerMask.NameToLayer("UI"));
         uiCam.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
         if (onEndedActions.ContainsKey(sender)) onEndedActions[sender]?.Invoke();
-        performingTransition = false;
+        if (block)
+        {
+            dest.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            blocked = false;
+        }
+        activeSender = null;
     }
 }

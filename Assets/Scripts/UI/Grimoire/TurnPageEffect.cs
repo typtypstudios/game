@@ -16,9 +16,9 @@ public class TurnPageEffect : MonoBehaviour
         if (!transitionManager) Debug.LogError("Error: no hay CanvasTransitionManager en la escena.");
         transitionManager.SubscribeOnDissolved(this, () => OnBlankPage?.Invoke());
         transitionManager.SubscribeOnEnded(this, OnTurnEnded);
+        transitionManager.SubscribeOnCanceled(this, OnCanceled);
     }
 
-    //Cuidado con interacciones mientras trasnición, con cartas y otra interfaz.
     public void TurnPage()
     {
         parentCanvas.gameObject.layer = 0;
@@ -27,7 +27,7 @@ public class TurnPageEffect : MonoBehaviour
             page.gameObject.AddComponent<Canvas>();
             page.gameObject.layer = LayerMask.NameToLayer("UI");
         }
-        transitionManager.PerformTransition(parentCanvas, parentCanvas, this);
+        transitionManager.PerformTransition(parentCanvas, parentCanvas, this, false);
     }
 
     private void OnTurnEnded()
@@ -36,5 +36,11 @@ public class TurnPageEffect : MonoBehaviour
         OnTurnFinished?.Invoke();
         foreach (var page in pagesTransform)
             Destroy(page.gameObject.GetComponent<Canvas>());
+    }
+
+    private void OnCanceled()
+    {
+        OnBlankPage?.Invoke(); //Para aplicar cambios
+        OnTurnEnded();
     }
 }
