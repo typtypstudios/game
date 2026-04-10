@@ -7012,6 +7012,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5c84180edc0ed8447963663007592609, type: 3}
+    - target: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6637130119963485329, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -7063,13 +7083,60 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 980592802894338914, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3185397174392700945}
   m_SourcePrefab: {fileID: 100100000, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+--- !u!114 &1992298762244080436 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8695843122930293960, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+  m_PrefabInstance: {fileID: 7137015824888029180}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &2473768212523898193 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+  m_PrefabInstance: {fileID: 7137015824888029180}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7966874205601432734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!224 &7099867722843764205 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 111475118149462545, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
   m_PrefabInstance: {fileID: 7137015824888029180}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7966874205601432734 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 980592802894338914, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+  m_PrefabInstance: {fileID: 7137015824888029180}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3185397174392700945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7966874205601432734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c11951af6fe234896595e45c30e620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverEffect
+  hoverImage: {fileID: 2473768212523898193}
+  text: {fileID: 1992298762244080436}
+  normalColor: {r: 0.87058824, g: 0.61960787, b: 0.25490198, a: 1}
+  hoverColor: {r: 0.92156863, g: 0.92941177, b: 0.9137255, a: 1}
+  speed: 5
 --- !u!1001 &7401266149873896409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7128,7 +7195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_Transition
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_Colors.m_NormalColor.a
@@ -7302,13 +7369,88 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5c84180edc0ed8447963663007592609, type: 3}
+    - target: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_FillMethod
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 602452911307741091, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3215968444897182016}
   m_SourcePrefab: {fileID: 100100000, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
 --- !u!224 &124758744483838616 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7425783995269280065, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
   m_PrefabInstance: {fileID: 7401266149873896409}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1857028597554688482 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+  m_PrefabInstance: {fileID: 7401266149873896409}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7992415866756963450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!1 &7992415866756963450 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 602452911307741091, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+  m_PrefabInstance: {fileID: 7401266149873896409}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3215968444897182016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7992415866756963450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c11951af6fe234896595e45c30e620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverEffect
+  hoverImage: {fileID: 1857028597554688482}
+  text: {fileID: 8848252624376116084}
+  normalColor: {r: 0.87058824, g: 0.61960787, b: 0.25490198, a: 1}
+  hoverColor: {r: 0.92156863, g: 0.92941177, b: 0.9137255, a: 1}
+  speed: 5
+--- !u!114 &8848252624376116084 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2053037489924372653, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+  m_PrefabInstance: {fileID: 7401266149873896409}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI

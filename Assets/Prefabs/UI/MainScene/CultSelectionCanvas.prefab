@@ -488,6 +488,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5c84180edc0ed8447963663007592609, type: 3}
+    - target: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8695843122930293960, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
       propertyPath: m_fontSize
       value: 18.9
@@ -511,8 +531,55 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 980592802894338914, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3429234307139367593}
   m_SourcePrefab: {fileID: 100100000, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+--- !u!114 &1725357836868207434 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8695843122930293960, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+  m_PrefabInstance: {fileID: 8024399621717483394}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &3315553062945740079 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4710572801783302829, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+  m_PrefabInstance: {fileID: 8024399621717483394}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7117841378849948896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!1 &7117841378849948896 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 980592802894338914, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+  m_PrefabInstance: {fileID: 8024399621717483394}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3429234307139367593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7117841378849948896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c11951af6fe234896595e45c30e620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverEffect
+  hoverImage: {fileID: 3315553062945740079}
+  text: {fileID: 1725357836868207434}
+  normalColor: {r: 0.87058824, g: 0.61960787, b: 0.25490198, a: 1}
+  hoverColor: {r: 0.92156863, g: 0.92941177, b: 0.9137255, a: 1}
+  speed: 5
 --- !u!224 &7985004148051948947 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 111475118149462545, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
