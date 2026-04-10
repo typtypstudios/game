@@ -109,6 +109,11 @@ public class GameChatInputFilter : NetworkBehaviour
 
         string candidate = current + c;
 
+        // Solo envolvemos con espacios si el chat sin filtrar está activo,
+        // que es cuando el texto "raw" se ve realmente en pantalla.
+        if (Settings.Instance.ChatActive)
+            candidate = TryWrapSpellWithSpaces(candidate);
+
         while (candidate.Length > MAX_CHARS)
             candidate = candidate.Substring(1);
 
@@ -116,6 +121,37 @@ public class GameChatInputFilter : NetworkBehaviour
         catch (System.ArgumentException) { return; }
 
         UpdateLocalTexts(candidate);
+    }
+
+    /// <summary>
+    /// Si el final del texto coincide con el nombre completo de un spell de la mano,
+    /// añade un espacio a la izquierda (solo si hay algo antes y no es ya un espacio)
+    /// y un espacio a la derecha. Nunca genera dos espacios seguidos.
+    /// </summary>
+    private string TryWrapSpellWithSpaces(string candidate)
+    {
+        if (cardUIManager == null || string.IsNullOrEmpty(candidate))
+            return candidate;
+
+        foreach (string spellName in cardUIManager.GetHandSpellNames())
+        {
+            if (string.IsNullOrEmpty(spellName)) continue;
+            if (!candidate.EndsWith(spellName, System.StringComparison.Ordinal)) continue;
+
+            int spellStart = candidate.Length - spellName.Length;
+            string before = candidate.Substring(0, spellStart);
+
+            // Espacio izquierdo: solo si hay texto antes y no termina ya en espacio
+            if (before.Length > 0 && !before.EndsWith(" "))
+                candidate = before + " " + spellName;
+
+            // Espacio derecho: siempre (la regla de "no dos espacios seguidos"
+            // en OnCharTyped impedirá que el usuario meta otro espacio detrás).
+            candidate += " ";
+            break;
+        }
+
+        return candidate;
     }
 
     /// <summary>
@@ -139,27 +175,22 @@ public class GameChatInputFilter : NetworkBehaviour
     private string CalculateFilteredTextLocal(string rawString)
     {
         if (string.IsNullOrEmpty(rawString)) return "";
-
-        string matchedText = "";
         if (cardUIManager == null) return "";
 
         for (int i = 0; i < rawString.Length; i++)
         {
-            string possiblePrefix = rawString.Substring(i);
-            bool matchFound = false;
+            if (rawString[i] == ' ') continue; // ignorar espacios a la izquierda
+
+            string possiblePrefix = rawString.Substring(i).TrimEnd(' '); // ignorar espacio derecho
+            if (possiblePrefix.Length == 0) continue;
 
             foreach (string spellName in cardUIManager.GetHandSpellNames())
             {
                 if (spellName.StartsWith(possiblePrefix, System.StringComparison.Ordinal))
-                {
-                    matchedText = possiblePrefix;
-                    matchFound = true;
-                    break;
-                }
+                    return possiblePrefix;
             }
-            if (matchFound) break;
         }
-        return matchedText;
+        return "";
     }
 
     // Filtrado en red (Servidor)
@@ -172,28 +203,22 @@ public class GameChatInputFilter : NetworkBehaviour
     private string CalculateFilteredTextServer(string rawString)
     {
         if (string.IsNullOrEmpty(rawString)) return "";
-
-        string matchedText = "";
         if (deckController == null || deckController.CurrentHand == null) return "";
 
         for (int i = 0; i < rawString.Length; i++)
         {
-            string possiblePrefix = rawString.Substring(i);
-            bool matchFound = false;
+            if (rawString[i] == ' ') continue;
 
-            // Obtener cartas desde el DeckController en el servidor y filtrar
+            string possiblePrefix = rawString.Substring(i).TrimEnd(' ');
+            if (possiblePrefix.Length == 0) continue;
+
             foreach (int cardId in deckController.CurrentHand)
             {
                 var cardDef = CardRegister.Instance.GetById(cardId);
                 if (cardDef != null && cardDef.name.StartsWith(possiblePrefix, System.StringComparison.Ordinal))
-                {
-                    matchedText = possiblePrefix;
-                    matchFound = true;
-                    break;
-                }
+                    return possiblePrefix;
             }
-            if (matchFound) break;
         }
-        return matchedText;
+        return "";
     }
 }
