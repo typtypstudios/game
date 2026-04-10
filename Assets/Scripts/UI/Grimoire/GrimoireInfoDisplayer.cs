@@ -6,9 +6,9 @@ public class GrimoireInfoDisplayer : InfoDisplayer
     private static GrimoireInfoDisplayer highlightedDisplayer;
     private GrimoireInfoPanel infoPanel;
 
-    private void OnEnable()
+    public void Initialize(GrimoireInfoPanel infoPanel)
     {
-        infoPanel = GetComponentInParent<Canvas>().GetComponentInChildren<GrimoireInfoPanel>();
+        this.infoPanel = infoPanel;
     }
 
     public void PerformClick() => GetComponent<Button>().onClick?.Invoke();

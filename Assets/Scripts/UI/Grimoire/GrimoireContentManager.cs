@@ -1,14 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GrimoireContentManager : MonoBehaviour
 {
-    [SerializeField] private float transitionSpeed = 1;
+    [SerializeField] private GrimoireInfoPanel infoPanel;
     private GrimoireInfoDisplayer[] displayers;
-    private GrimoireInfoPanel infoPanel;
-    private CanvasGroup canvasGroup;
+    private TurnPageEffect turnPageEffect;
     public List<GrimoirePage> Pages { get; set; } = new();
     private int currentPage = 0;
     public List<int> SectionStartPages { get; set; } = new();
@@ -18,14 +16,17 @@ public class GrimoireContentManager : MonoBehaviour
 
     private void Start()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
-        infoPanel = GetComponentInParent<Canvas>().GetComponentInChildren<GrimoireInfoPanel>();
+        if (!TryGetComponent(out turnPageEffect))
+            Debug.LogError("Error: no hay efecto de cambio de página (componente Turn Page Effect)");
+        turnPageEffect.OnBlankPage += UpdateContent;
+        turnPageEffect.OnTurnFinished += () => BlockDisplayers(false);
         displayers = GetComponentsInChildren<GrimoireInfoDisplayer>();
-        GoToPage(0, true);
+        foreach (var displayer in displayers) displayer.Initialize(infoPanel);
+        GoToPage(0, false);
         displayers[0].PerformClick();
     }
 
-    public void GoToPage(int idx, bool directTransition = false)
+    public void GoToPage(int idx, bool performTransition = true)
     {
         idx = Mathf.Clamp(idx, 0, Pages.Count - 1);
         int prevSection = currentSection;
@@ -33,8 +34,12 @@ public class GrimoireContentManager : MonoBehaviour
         OnSectionChanged?.Invoke(currentSection, prevSection);
         currentPage = idx;
         OnPageChanged?.Invoke(currentPage, Pages.Count);
-        StopAllCoroutines();
-        StartCoroutine(TurnPageCoroutine(directTransition));
+        if (performTransition)
+        {
+            BlockDisplayers(true);
+            turnPageEffect.TurnPage();
+        }
+        else UpdateContent();
     }
 
     public void TurnPage(int pages) => GoToPage(currentPage + pages);
@@ -53,7 +58,7 @@ public class GrimoireContentManager : MonoBehaviour
             {
                 if(def.Name.Equals(definitionName))
                 {
-                    GoToPage(page.pageIndex, true);
+                    GoToPage(page.pageIndex, false);
                     displayers[page.definitions.IndexOf(def)].PerformClick();
                     return;
                 }
@@ -76,14 +81,8 @@ public class GrimoireContentManager : MonoBehaviour
             displayer.GetComponent<WritableButton>().CompletelyBlock(block);
     }
 
-    IEnumerator TurnPageCoroutine(bool directTransition)
+    private void UpdateContent()
     {
-        BlockDisplayers(true);
-        while(canvasGroup.alpha > 0 && !directTransition)
-        {
-            canvasGroup.alpha -= transitionSpeed * Time.deltaTime;
-            yield return null;
-        }
         ResetDisplayers();
         for (int i = 0; i < displayers.Length; i++)
         {
@@ -91,16 +90,10 @@ public class GrimoireContentManager : MonoBehaviour
             {
                 displayers[i].gameObject.SetActive(true);
                 displayers[i].SetInfo(Pages[currentPage].definitions[i]);
-                if (displayers[i].Definition.Name.Equals(infoPanel.DisplayedName)) 
+                if (displayers[i].Definition.Name.Equals(infoPanel.DisplayedName))
                     displayers[i].Highlight(true);
             }
             else displayers[i].gameObject.SetActive(false);
         }
-        while (canvasGroup.alpha < 1 && !directTransition)
-        {
-            canvasGroup.alpha += transitionSpeed * Time.deltaTime;
-            yield return null;
-        }
-        BlockDisplayers(false);
     }
 }
