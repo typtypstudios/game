@@ -6,6 +6,7 @@ public class CameraNavigation : MonoBehaviour
     [SerializeField] private float interpolationTime = 1f;
     private Transform cam;
 
+
     void Awake()
     {
         cam = Camera.main.transform;
