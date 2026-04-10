@@ -25,7 +25,7 @@ public class CastedSpellPanel : ACardInfoPanel
     public void DisplayInfo(CardDefinition card, CastedSpellInfoType type)
     {
         nextType = type;
-        StartCoroutine(ShowCardCoroutine(card.Image));
+        ShowCard(card.Image);
     }
 
     protected override void OnImageSet() 
@@ -33,8 +33,6 @@ public class CastedSpellPanel : ACardInfoPanel
         discountAppliedImage.SetActive(nextType == CastedSpellInfoType.Discount);
         sealedImage.SetActive(nextType == CastedSpellInfoType.Seal);
     }
-
-    protected override void OnCoroutineEnded() { }
 }
 
 public enum CastedSpellInfoType

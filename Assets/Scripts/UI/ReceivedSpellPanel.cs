@@ -28,7 +28,7 @@ public class ReceivedSpellPanel : ACardInfoPanel
         if (args.PlayerId == Player.User.OwnerClientId) return;
         var cardDef = CardRegister.Instance.GetById(args.CardId);
         StopAllCoroutines();
-        StartCoroutine(ShowCardCoroutine(cardDef.Image));
+        ShowCard(cardDef.Image);
     }
 
     protected override void OnImageSet() 
@@ -36,6 +36,4 @@ public class ReceivedSpellPanel : ACardInfoPanel
         sealCross.SetActive(nextIsSealed);
         if (nextIsSealed) nextIsSealed = false;
     }
-
-    protected override void OnCoroutineEnded() { }
 }

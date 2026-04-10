@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,15 +6,14 @@ public abstract class ACardInfoPanel : MonoBehaviour
 {
     [Min(0.01f)][SerializeField] private float fadeTime = 0.5f;
     [Min(0)][SerializeField] private float showTime;
-    private CanvasGroup canvasGroup;
+    private CardDissolveEffect dissolveEffect;
     private Image image;
-    private WaitForSeconds showTimer;
 
     protected virtual void Awake()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
+        if(!TryGetComponent(out dissolveEffect)) 
+            Debug.LogError("Error: no hay efecto dissolve asociado");
         image = GetComponent<Image>();
-        showTimer = new(showTime);
         GameUIConfigurator.OnUIConfigurated += PerformSubscriptions;
     }
 
@@ -24,28 +23,13 @@ public abstract class ACardInfoPanel : MonoBehaviour
 
     protected abstract void OnImageSet();
 
-    protected abstract void OnCoroutineEnded();
-
-    protected IEnumerator ShowCardCoroutine(Sprite cardImage)
+    protected void ShowCard(Sprite cardImage)
     {
-        while (canvasGroup.alpha > 0) //Por si acaso hab�a alguna carta lanzada ya desplegada
+        Action onStart = () =>
         {
-            canvasGroup.alpha -= Time.deltaTime / fadeTime;
-            yield return null;
-        }
-        image.sprite = cardImage;
-        OnImageSet();
-        while (canvasGroup.alpha < 1)
-        {
-            canvasGroup.alpha += Time.deltaTime / fadeTime;
-            yield return null;
-        }
-        yield return showTimer;
-        while (canvasGroup.alpha > 0)
-        {
-            canvasGroup.alpha -= Time.deltaTime / fadeTime;
-            yield return null;
-        }
-        OnCoroutineEnded();
+            image.sprite = cardImage;
+            OnImageSet();
+        };
+        dissolveEffect.FadeInAndOut(fadeTime, showTime, onStart);
     }
 }
