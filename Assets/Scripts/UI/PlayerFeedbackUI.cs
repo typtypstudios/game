@@ -19,10 +19,16 @@ public class PlayerFeedbackUI : MonoBehaviour
         ShowMessage("You are silenced!");
     }
 
+    public void ShowBackspaceWarning()
+    {
+        ShowMessage("No backspace allowed!");
+    }
+
     public void ShowNotEnoughInkWarning()
     {
         ShowMessage("Not enough ink!");
     }
+
 
     private void ShowMessage(string message)
     {

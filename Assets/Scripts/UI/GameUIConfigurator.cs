@@ -1,4 +1,5 @@
 using System;
+using TypTyp.Input;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,6 +40,7 @@ public class GameUIConfigurator : MonoBehaviour
         skulls[1].BindPlayerAndColor(Player.Enemy, corruptionBars[1].GetComponent<Image>().color);
         statusEffectUIs[0].BindToPlayer(Player.User);
         statusEffectUIs[1].BindToPlayer(Player.Enemy);
+        InputHandler.Instance.OnBackspaceDuringGame += playerFeedbackUI.ShowBackspaceWarning;
         PlayerInputManager userInput = Player.User.GetComponent<PlayerInputManager>();
         if (userInput != null)
         {
@@ -51,4 +53,10 @@ public class GameUIConfigurator : MonoBehaviour
         canvasGroup.alpha = 1.0f;
         OnUIConfigurated?.Invoke();
     }
+    private void OnDestroy()
+    {
+        if (InputHandler.Instance != null && playerFeedbackUI != null)
+            InputHandler.Instance.OnBackspaceDuringGame -= playerFeedbackUI.ShowBackspaceWarning;
+    }
+
 }

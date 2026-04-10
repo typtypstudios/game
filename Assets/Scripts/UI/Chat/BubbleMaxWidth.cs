@@ -8,58 +8,67 @@ public class BubbleMaxWidth : MonoBehaviour
     public float maxWidth = 250f;
     public int maxLines = 2;
 
-    private RectTransform rectTransform;
-    private TextMeshProUGUI textComponent;
+    private RectTransform parentRectTransform;
+    private RectTransform visibleTextRectTransform;
+    private TextMeshProUGUI invisibleText;
+    [SerializeField] private TextMeshProUGUI visibleText;
 
     public bool IsEmpty { get; private set; } = true;
 
     void Awake()
     {
-        rectTransform = GetComponent<RectTransform>();
-        textComponent = GetComponent<TextMeshProUGUI>();
-        textComponent.textWrappingMode = TextWrappingModes.Normal;
+        parentRectTransform = GetComponent<RectTransform>();
+        invisibleText = GetComponent<TextMeshProUGUI>();
+        invisibleText.textWrappingMode = TextWrappingModes.Normal;
+
+        if (visibleText != null)
+            visibleTextRectTransform = visibleText.rectTransform;
     }
 
     public void SetText(string fullText)
     {
-        if (textComponent == null) return;
+        string invisible = ComputeVisibleTail(fullText);
+        invisibleText.text = invisible;
+        IsEmpty = string.IsNullOrEmpty(invisible);
 
-        string visible = ComputeVisibleTail(fullText);
-        textComponent.text = visible;
-        IsEmpty = string.IsNullOrEmpty(visible);
+        float natural = invisibleText.GetPreferredValues(invisible, Mathf.Infinity, 0f).x;
+        float targetW = Mathf.Clamp(natural, minWidth, maxWidth);
+        parentRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetW);
 
-        float natural = textComponent.GetPreferredValues(visible, Mathf.Infinity, 0f).x;
-        float target = Mathf.Clamp(natural, minWidth, maxWidth);
-        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, target);
+        // Ajustar el tamaño del visible rect transform a exacatmente el del padre
+        // El vertical es adaptativo y debe ser igual al del padre, que es el que se adapta automáticamente
+        visibleTextRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetW);
+        visibleText.text = invisible;
     }
 
     public void Clear()
     {
-        if (textComponent == null) return;
-        textComponent.text = "";
+        if (invisibleText == null) return;
+        invisibleText.text = "";
         IsEmpty = true;
-        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, minWidth);
+        parentRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, minWidth);
+
+        if (visibleText != null)
+        {
+            visibleText.text = "";
+            visibleTextRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, minWidth);
+        }
     }
 
     private string ComputeVisibleTail(string fullText)
     {
         if (string.IsNullOrEmpty(fullText)) return "";
 
-        // Fijar el ancho al máximo para que TMP haga el wrap real
-        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, maxWidth);
+        parentRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, maxWidth);
 
-        // Asignar el texto completo y forzar el layout
-        textComponent.text = fullText;
-        textComponent.ForceMeshUpdate();
+        invisibleText.text = fullText;
+        invisibleText.ForceMeshUpdate();
 
-        var info = textComponent.textInfo;
+        var info = invisibleText.textInfo;
         int lineCount = info.lineCount;
 
-        // Si ya cabe, devolver tal cual
         if (lineCount <= maxLines) return fullText;
 
-        // Queremos quedarnos con las últimas `maxLines` líneas.
-        // La línea a partir de la cual empieza lo visible:
         int firstVisibleLine = lineCount - maxLines;
         int startCharIndex = info.lineInfo[firstVisibleLine].firstCharacterIndex;
 
