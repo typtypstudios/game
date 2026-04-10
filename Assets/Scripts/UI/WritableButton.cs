@@ -18,7 +18,7 @@ public class WritableButton : MonoBehaviour
     private string originalText;
     private WaitForSeconds resetTimer;
     private Coroutine resetCoroutine;
-    private Canvas canvas;
+    private Canvas parentCanvas;
     public bool Block { get; set; } = false;
     private static event Action<WritableButton> OnButtonWritten;
 
@@ -27,7 +27,7 @@ public class WritableButton : MonoBehaviour
         button = GetComponent<Button>();
         var tmp = button.GetComponentInChildren<TextMeshProUGUI>();
         originalText = tmp != null ? tmp.text.Trim() : string.Empty;
-        canvas = GetComponentInParent<Canvas>();
+        parentCanvas = GetComponentInParent<Canvas>();
         resetTimer = new(resetTime);
         OnButtonWritten += OnOtherButtonWritten;
         if (typableController == null)
@@ -57,6 +57,16 @@ public class WritableButton : MonoBehaviour
             typableController.OnError -= HandleError;
         }
         ResetButton();
+    }
+
+    private bool InteractionEnabled()
+    {
+        bool canvasEnabled = parentCanvas.enabled;
+        //Algunos canvas group son asignados en tiempo de ejecución
+        CanvasGroup parentCanvasGroup = GetComponentInParent<CanvasGroup>();
+        bool groupEnabled = parentCanvasGroup == null || 
+            parentCanvasGroup.blocksRaycasts && parentCanvasGroup.interactable;
+        return !Block && canvasEnabled && groupEnabled;
     }
 
     private void OnOtherButtonWritten(WritableButton b)
@@ -89,7 +99,7 @@ public class WritableButton : MonoBehaviour
 
     private void HandleComplete()
     {
-        if (!canvas.enabled || Block) return;
+        if(!InteractionEnabled()) return;
 
         if (resetCoroutine != null)
         {
@@ -104,7 +114,7 @@ public class WritableButton : MonoBehaviour
 
     private void HandleError()
     {
-        if (!canvas.enabled || Block) return;
+        if (!InteractionEnabled()) return;
         if (resetIfFailed) ResetButton();
     }
 
