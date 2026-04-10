@@ -7228,7 +7228,11 @@ PrefabInstance:
     - target: {fileID: 3639636182419979670, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: tmp
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8848252624376116084}
+    - target: {fileID: 3639636182419979670, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: stylePreset
+      value: 
+      objectReference: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
     - target: {fileID: 3639636182419979670, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: StyleConfig.CorrectColor.a
       value: 0
@@ -7248,19 +7252,19 @@ PrefabInstance:
     - target: {fileID: 3957774390538253453, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: tmpView
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6067476292399691343}
     - target: {fileID: 3957774390538253453, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: typableController
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3366972129069809355}
     - target: {fileID: 5192499833877034258, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: configPreset
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 89c27b9427a55e44691afec7c134c59e, type: 2}
     - target: {fileID: 5210376738775108712, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: text
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8848252624376116084}
     - target: {fileID: 5590775828627560194, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -7421,6 +7425,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!114 &3366972129069809355 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5192499833877034258, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+  m_PrefabInstance: {fileID: 7401266149873896409}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7992415866756963450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2587c7245ac0ea944833ee4510171a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableController
+--- !u!114 &6067476292399691343 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3639636182419979670, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+  m_PrefabInstance: {fileID: 7401266149873896409}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7992415866756963450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9974ba9140d6382459a1eff4a52b03be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
 --- !u!1 &7992415866756963450 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 602452911307741091, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
