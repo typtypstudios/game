@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class NavigationController : MonoBehaviour
 {
+    [SerializeField] private InputActionReference goBackAction;
     [SerializeField] private Screens initialScreen = Screens.MainMenu;
     [SerializeField] private NavigationEntry[] entries;
     private CanvasTransitionManager transitionManager;
@@ -28,6 +30,7 @@ public class NavigationController : MonoBehaviour
         }
         transitionManager.SubscribeOnStarted(this, () => blocked = true);
         transitionManager.SubscribeOnEnded(this, () => blocked = false);
+        goBackAction.action.started += GoBackAction;
     }
 
     void Start()
@@ -35,6 +38,8 @@ public class NavigationController : MonoBehaviour
         var initCanvas = screenDictionary[initialScreen].canvas;
         transitionManager.PerformTransition(initCanvas, initCanvas, this);
     }
+
+    private void OnDestroy() => goBackAction.action.started -= GoBackAction;
 
     public void GoTo(Screens screen)
     {
@@ -47,6 +52,8 @@ public class NavigationController : MonoBehaviour
         screenStack.Push(currentScreen);
         NavigateToScreen(screen, false);
     }
+
+    private void GoBackAction(InputAction.CallbackContext _) => GoBack();
 
     public void GoBack()
     {
