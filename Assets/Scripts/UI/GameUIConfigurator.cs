@@ -40,11 +40,11 @@ public class GameUIConfigurator : MonoBehaviour
         skulls[1].BindPlayerAndColor(Player.Enemy, corruptionBars[1].GetComponent<Image>().color);
         statusEffectUIs[0].BindToPlayer(Player.User);
         statusEffectUIs[1].BindToPlayer(Player.Enemy);
-        InputHandler.Instance.OnBackspaceDuringGame += playerFeedbackUI.ShowBackspaceWarning;
         PlayerInputManager userInput = Player.User.GetComponent<PlayerInputManager>();
         if (userInput != null)
         {
             userInput.OnSilencedAttempt += playerFeedbackUI.ShowSilencedWarning;
+            userInput.OnBackspaceAttempt += playerFeedbackUI.ShowBackspaceWarning;
         }
         if (Player.User.DeckController != null)
         {
@@ -52,11 +52,6 @@ public class GameUIConfigurator : MonoBehaviour
         }
         canvasGroup.alpha = 1.0f;
         OnUIConfigurated?.Invoke();
-    }
-    private void OnDestroy()
-    {
-        if (InputHandler.Instance != null && playerFeedbackUI != null)
-            InputHandler.Instance.OnBackspaceDuringGame -= playerFeedbackUI.ShowBackspaceWarning;
     }
 
 }

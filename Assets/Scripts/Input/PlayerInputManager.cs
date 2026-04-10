@@ -11,6 +11,8 @@ public class PlayerInputManager : MonoBehaviour
     Player player;
 
     public event System.Action OnSilencedAttempt;
+    public event System.Action OnBackspaceAttempt;
+    private bool matchActive;
 
     // Bool para el efecto de silenciado
     private bool isSilenced = false;
@@ -30,10 +32,11 @@ public class PlayerInputManager : MonoBehaviour
         changeModeActionReference.action.started -= ChangeMode;
     }
 
-    private void SubscribeToInput() 
+    private void SubscribeToInput()
     {
         if (player.IsOwner)
         {
+            matchActive = true;
             Debug.Log("Subscribing to input for player " + player.name, gameObject);
             changeModeActionReference.action.started += ChangeMode;
             SetMode(InputModeMask.Ritual);
@@ -44,6 +47,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (player.IsOwner)
         {
+            matchActive = false;
             changeModeActionReference.action.started -= ChangeMode;
             SetMode(InputModeMask.GameEnded);
         }
@@ -68,7 +72,17 @@ public class PlayerInputManager : MonoBehaviour
     private void SetMode(InputModeMask mode)
     {
         anim.SetBool("CastingSpells", mode == InputModeMask.Spells);
-        if(player.IsOwner) InputHandler.Instance.SetMode(mode);
+        if (player.IsOwner) InputHandler.Instance.SetMode(mode);
+    }
+
+    private void Update()
+    {
+        if (!player.IsOwner || !matchActive || Keyboard.current == null) return;
+
+        if (Keyboard.current.backspaceKey.wasPressedThisFrame)
+        {
+            OnBackspaceAttempt?.Invoke();
+        }
     }
 
     #region SpellEffects
