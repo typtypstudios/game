@@ -9,7 +9,7 @@ public class GrimoireNavigationController : MonoBehaviour
     [SerializeField] private Transform sectionsTransform;
     [SerializeField] private WritableButton button_prev;
     [SerializeField] private WritableButton button_next;
-    private readonly List<WritableButton> sections = new();
+    private readonly List<SectionButton> sections = new();
     private GrimoireContentManager contentManager;
 
     private void Awake()
@@ -27,10 +27,10 @@ public class GrimoireNavigationController : MonoBehaviour
 
     public void AddSection(int index, string name, int cultId)
     {
-        WritableButton s = Instantiate(sectionButtonPrefab, sectionsTransform).GetComponent<WritableButton>();
+        SectionButton s = Instantiate(sectionButtonPrefab, sectionsTransform).GetComponent<SectionButton>();
         s.GetComponent<Button>().onClick.AddListener(() => contentManager.GoToSection(index));
         sections.Add(s);
-        s.OverrideText(name);
+        s.Configurate(name, cultId);
         if (cultId != -1)
         {
             CultColoredItem item = s.AddComponent<CultColoredItem>();
@@ -40,9 +40,8 @@ public class GrimoireNavigationController : MonoBehaviour
 
     public void CheckCurrentSection(int newIdx, int prevIdx)
     {
-        foreach(var section in sections) section.ResetButton();
-        sections[prevIdx].CompletelyBlock(false);
-        sections[newIdx].CompletelyBlock(true);
+        sections[prevIdx].Hide();
+        sections[newIdx].Deploy();
     }
 
     private void CheckCurrentPage(int pageIdx, int pageCount)
