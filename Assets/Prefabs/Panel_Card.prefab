@@ -306,6 +306,7 @@ MonoBehaviour:
   cardName: {fileID: 5583102903411735483}
   cardCostLayout: {fileID: 1160001132287062445}
   inkOrbPrefab: {fileID: 3743465251084062337, guid: f672860edc324884f8374a30e7022699, type: 3}
+  blockedColor: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 0.5882353}
   OnCardWritten:
     m_PersistentCalls:
       m_Calls: []
@@ -320,6 +321,7 @@ GameObject:
   - component: {fileID: 3700417325710285650}
   - component: {fileID: 1400919720458628854}
   - component: {fileID: 6905356337233834659}
+  - component: {fileID: 6169443820725184028}
   m_Layer: 0
   m_Name: Image_Card
   m_TagString: Untagged
@@ -384,6 +386,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6169443820725184028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6457666924906113449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3da54bb761df04782fd66d737d7657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmissiveImageConfigurator
+  emissiveMat: {fileID: 2100000, guid: 14d92732f0dbb5d45a31f701aae87552, type: 2}
+  emitOnStart: 0
 --- !u!1 &7050558370395902119
 GameObject:
   m_ObjectHideFlags: 0

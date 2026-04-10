@@ -15,17 +15,21 @@ public class CardUI : MonoBehaviour
     [SerializeField] private TMP_Text cardName;
     [SerializeField] private Transform cardCostLayout;
     [SerializeField] private GameObject inkOrbPrefab;
+    [SerializeField] private Color blockedColor = Color.grey;
     private TypableController typableController;
     private DeckController deckController;
     public UnityEvent<CardUI> OnCardWritten = new();
     private readonly List<InkOrb> orbs = new();
+    private int manaCost;
+    private Player player;
 
     void Awake()
     {
         typableController = GetComponentInChildren<TypableController>();
         deckController = GetComponentInParent<Player>().DeckController;
         UnityEngine.Assertions.Assert.IsNotNull(typableController);
-        GetComponentInParent<Player>().CurrentMana.OnValueChanged += HandleManaChange;
+        player = GetComponentInParent<Player>();
+        player.CurrentMana.OnValueChanged += HandleManaChange;
         for (int i = 0; i <= Settings.Instance.NumManaBars; i++)
         {
             orbs.Add(Instantiate(inkOrbPrefab, cardCostLayout).GetComponent<InkOrb>());
@@ -50,6 +54,7 @@ public class CardUI : MonoBehaviour
         cardImage.sprite = def.Image;
         UpdateCardName(pipeline);
         UpdateManaCostModifier(costModifier);
+        UpdateImageColor(player.CurrentMana.Value);
     }
 
     public void UpdateCardName(ITextPipeline pipeline)
@@ -61,9 +66,10 @@ public class CardUI : MonoBehaviour
 
     public void UpdateManaCostModifier(int costModifier)
     {
-        int manaCost = CardDefinition.ManaCost - deckController.GetDiscount(CardDefinition) + costModifier;
+        manaCost = CardDefinition.ManaCost - deckController.GetDiscount(CardDefinition) + costModifier;
         for(int i = 0; i < orbs.Count; i++)
             orbs[i].gameObject.SetActive(i + 1 <= manaCost);
+        UpdateImageColor(player.CurrentMana.Value);
     }
 
     private void HandleManaChange(float prevMana, float newMana)
@@ -73,6 +79,12 @@ public class CardUI : MonoBehaviour
             bool isFilled = newMana >= i + 1;
             orbs[i].CompletelyFill(isFilled);
         }
+        UpdateImageColor(newMana);
+    }
+
+    private void UpdateImageColor(float currentMana)
+    {
+        cardImage.color = (currentMana >= manaCost) ? Color.white : blockedColor;
     }
 
     public void Clear()

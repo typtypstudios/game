@@ -15,7 +15,7 @@ public class EmissiveImageConfigurator : MonoBehaviour
         emissiveMat = new(emissiveMat);
         initIntensity = emissiveMat.GetFloat("_EmissionForce");
         image = GetComponent<Image>();
-        if (emitOnStart) ToggleEmission(true);
+        ToggleEmission(emitOnStart);
     }
 
     public void ToggleEmission(bool activate)
