@@ -24,7 +24,7 @@ public class TurnPageEffect : MonoBehaviour
         parentCanvas.gameObject.layer = 0;
         foreach (var page in pagesTransform)
         {
-            page.gameObject.AddComponent<Canvas>();
+            if(!page.gameObject.TryGetComponent(out Canvas _)) page.gameObject.AddComponent<Canvas>();
             page.gameObject.layer = LayerMask.NameToLayer("UI");
         }
         transitionManager.PerformTransition(parentCanvas, parentCanvas, this, false);
