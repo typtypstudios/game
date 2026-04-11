@@ -34,10 +34,11 @@ public class GameChatInputFilter : NetworkBehaviour
     public string CurrentLocalRawText { get; private set; } = "";
     public string CurrentLocalFilteredText { get; private set; } = "";
 
+    private string FilteredTextOnServer = "";
+
     #endregion
 
     // Other varaibles
-    private Player player;
     private CardUIManager cardUIManager;
     private DeckController deckController;
     private bool isCastingSpells = false;
@@ -47,7 +48,6 @@ public class GameChatInputFilter : NetworkBehaviour
 
     private void Awake()
     {
-        player = GetComponent<Player>();
         cardUIManager = GetComponentInChildren<CardUIManager>();
         deckController = GetComponent<DeckController>();
         marker = new ChatMarkerFormatter();
@@ -92,12 +92,6 @@ public class GameChatInputFilter : NetworkBehaviour
     {
         bool wasCasting = isCastingSpells;
         isCastingSpells = (mode == InputModeMask.Spells);
-
-        if (isCastingSpells && !wasCasting && IsOwner)
-        {
-            RawText.Value = "";
-            UpdateLocalTexts("");
-        }
     }
 
     private void OnCharTyped(char c)
@@ -105,19 +99,18 @@ public class GameChatInputFilter : NetworkBehaviour
         if (!isCastingSpells) return;
         if (c == '\n' || c == '\r') return;
 
-        string current = RawText.Value.ToString();
+        string current = marker.Strip(RawText.Value.ToString());
 
         if (c == ' ' && current.EndsWith(" ")) return;
 
         string candidate = current + c;
 
-        // Solo envolvemos con espacios si el chat sin filtrar está activo,
-        // que es cuando el texto "raw" se ve realmente en pantalla.
-        if (Settings.Instance.ChatActive)
-            candidate = TryWrapSpellWithSpaces(candidate);
+        candidate = TryWrapSpellWithSpaces(candidate);
 
         while (candidate.Length > MAX_CHARS)
             candidate = candidate.Substring(1);
+
+        candidate = ApplyMarkersToClosedSpells(candidate);
 
         try { RawText.Value = candidate; }
         catch (System.ArgumentException) { return; }
@@ -127,23 +120,24 @@ public class GameChatInputFilter : NetworkBehaviour
 
     private string TryWrapSpellWithSpaces(string candidate)
     {
-        if (cardUIManager == null || string.IsNullOrEmpty(candidate))
+        if (deckController == null || deckController.Cards == null || string.IsNullOrEmpty(candidate))
             return candidate;
 
-        foreach (string spellName in cardUIManager.GetHandSpellNames())
+        foreach (CardDefinition cardDef in deckController.Cards)
         {
+            if (cardDef == null) continue;
+            string spellName = cardDef.name;
             if (string.IsNullOrEmpty(spellName)) continue;
             if (!candidate.EndsWith(spellName, System.StringComparison.Ordinal)) continue;
 
             int spellStart = candidate.Length - spellName.Length;
             string before = candidate.Substring(0, spellStart);
 
-            // Espacio izquierdo: solo si hay texto antes y no termina ya en espacio
             if (before.Length > 0 && !before.EndsWith(" "))
+            {
                 candidate = before + " " + spellName;
+            }
 
-            // Espacio derecho: siempre (la regla de "no dos espacios seguidos"
-            // en OnCharTyped impedirá que el usuario meta otro espacio detrás).
             candidate += " ";
             break;
         }
@@ -151,7 +145,41 @@ public class GameChatInputFilter : NetworkBehaviour
         return candidate;
     }
 
-    /// <param name="rawString">New text</param>
+    private string ApplyMarkersToClosedSpells(string plain)
+    {
+        if (string.IsNullOrEmpty(plain)) return plain ?? "";
+        if (deckController == null || deckController.Cards == null) return plain;
+
+        var sb = new System.Text.StringBuilder(plain.Length + 16);
+        int i = 0;
+        while (i < plain.Length)
+        {
+            if (plain[i] == ' ') { sb.Append(' '); i++; continue; }
+
+            int spaceIdx = plain.IndexOf(' ', i);
+            bool isClosed = spaceIdx >= 0;
+            int end = isClosed ? spaceIdx : plain.Length;
+            string word = plain.Substring(i, end - i);
+
+            bool matched = false;
+            if (isClosed)
+            {
+                foreach (CardDefinition cardDef in deckController.Cards)
+                {
+                    if (cardDef != null && cardDef.name == word) { matched = true; break; }
+                }
+            }
+
+            if (matched)
+                sb.Append(marker.SpellMarker).Append(word).Append(marker.SpellMarker);
+            else
+                sb.Append(word);
+
+            i = end;
+        }
+        return sb.ToString();
+    }
+
     private void UpdateLocalTexts(string rawString)
     {
         // El cliente filtra en local para, en todo momento,
@@ -167,23 +195,7 @@ public class GameChatInputFilter : NetworkBehaviour
     // Función de filtrado local (Cliente)
     private string CalculateFilteredTextLocal(string rawString)
     {
-        if (string.IsNullOrEmpty(rawString)) return "";
-        if (cardUIManager == null) return "";
-
-        for (int i = 0; i < rawString.Length; i++)
-        {
-            if (rawString[i] == ' ') continue; // ignorar espacios a la izquierda
-
-            string possiblePrefix = rawString.Substring(i).TrimEnd(' '); // ignorar espacio derecho
-            if (possiblePrefix.Length == 0) continue;
-
-            foreach (string spellName in cardUIManager.GetHandSpellNames())
-            {
-                if (spellName.StartsWith(possiblePrefix, System.StringComparison.Ordinal))
-                    return possiblePrefix;
-            }
-        }
-        return "";
+        return BuildFilteredText(rawString);
     }
 
     // Filtrado en red (Servidor)
@@ -195,23 +207,87 @@ public class GameChatInputFilter : NetworkBehaviour
 
     private string CalculateFilteredTextServer(string rawString)
     {
+        return BuildFilteredText(rawString);
+    }
+
+    private string BuildFilteredText(string rawString)
+    {
         if (string.IsNullOrEmpty(rawString)) return "";
-        if (deckController == null || deckController.CurrentHand == null) return "";
+        if (deckController == null || deckController.Cards == null) return "";
 
-        for (int i = 0; i < rawString.Length; i++)
+        string clean = marker.Strip(rawString);
+        var sb = new System.Text.StringBuilder();
+
+        int i = 0;
+        while (i < clean.Length)
         {
-            if (rawString[i] == ' ') continue;
+            if (clean[i] == ' ') { i++; continue; }
 
-            string possiblePrefix = rawString.Substring(i).TrimEnd(' ');
-            if (possiblePrefix.Length == 0) continue;
+            string bestMatch = null;
+            bool bestIsExact = false;
 
-            foreach (int cardId in deckController.CurrentHand)
+            foreach (CardDefinition cardDef in deckController.Cards)
             {
-                var cardDef = CardRegister.Instance.GetById(cardId);
-                if (cardDef != null && cardDef.name.StartsWith(possiblePrefix, System.StringComparison.Ordinal))
-                    return possiblePrefix;
+                if (cardDef == null) continue;
+                string name = cardDef.name;
+                if (string.IsNullOrEmpty(name)) continue;
+
+                if (i + name.Length <= clean.Length &&
+                    string.CompareOrdinal(clean, i, name, 0, name.Length) == 0)
+                {
+                    if (bestMatch == null || name.Length > bestMatch.Length)
+                    {
+                        bestMatch = name;
+                        bestIsExact = true;
+                    }
+                }
+            }
+
+            if (bestMatch == null)
+            {
+                int maxLen = 0;
+                int j = i;
+                while (j < clean.Length && clean[j] != ' ')
+                {
+                    string attempt = clean.Substring(i, j - i + 1);
+                    if (IsCardPrefix(attempt))
+                    {
+                        maxLen = attempt.Length;
+                    }
+                    else if (maxLen > 0)
+                    {
+                        break;
+                    }
+                    j++;
+                }
+
+                if (maxLen > 0)
+                {
+                    bestMatch = clean.Substring(i, maxLen);
+                    bestIsExact = false;
+                }
+            }
+
+            if (bestMatch != null)
+            {
+                if (sb.Length > 0) sb.Append(' ');
+                sb.Append(bestIsExact ? marker.Wrap(bestMatch) : bestMatch);
+                i += bestMatch.Length;
+            }
+            else
+            {
+                i++;
             }
         }
-        return "";
+
+        return sb.ToString();
+    }
+
+    private bool IsCardPrefix(string partial)
+    {
+        if (string.IsNullOrEmpty(partial)) return false;
+        foreach (CardDefinition cardDef in deckController.Cards)
+            if (cardDef != null && cardDef.name.StartsWith(partial, System.StringComparison.Ordinal)) return true;
+        return false;
     }
 }

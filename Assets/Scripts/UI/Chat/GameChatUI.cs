@@ -18,10 +18,15 @@ public class GameChatUI : MonoBehaviour
     private float userIdleTimer;
     private float enemyIdleTimer;
 
+    private string lastUserText = "";
+    private string lastEnemyText = "";
+
     private void Awake()
     {
         ClearBubble(userBubble, userChatGroup);
         ClearBubble(enemyBubble, enemyChatGroup);
+        lastUserText = "";
+        lastEnemyText = "";
     }
 
     private void OnEnable()
@@ -43,11 +48,16 @@ public class GameChatUI : MonoBehaviour
 
     private void UpdateEnemyText(FixedString64Bytes previous, FixedString64Bytes current)
     {
-        ApplyNewText(enemyBubble, enemyChatGroup, current.ToString(), ref enemyIdleTimer);
+        string s = current.ToString();
+        if (s == lastEnemyText) return;
+        lastEnemyText = s;
+        ApplyNewText(enemyBubble, enemyChatGroup, s, ref enemyIdleTimer);
     }
 
     private void UpdateUserTextLocal(string current)
     {
+        if (current == lastUserText) return;
+        lastUserText = current;
         ApplyNewText(userBubble, userChatGroup, current, ref userIdleTimer);
     }
 
