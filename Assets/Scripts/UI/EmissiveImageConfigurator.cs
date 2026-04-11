@@ -30,4 +30,9 @@ public class EmissiveImageConfigurator : MonoBehaviour
         intensity = Mathf.Clamp01(intensity);
         emissiveMat.SetFloat("_EmissionForce", initIntensity * intensity);
     }
+
+    public void SetTint(Color tint, float intensity)
+    {
+        emissiveMat.SetColor("_Tint", Utils.ColorToHDR(tint, intensity));
+    }
 }

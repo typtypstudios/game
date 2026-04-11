@@ -47,4 +47,9 @@ public static class Utils
     {
         return $"{ColorToTag(color)}{text}</color>";
     }
+
+    public static Color ColorToHDR(Color color, float intensity)
+    {
+        return color * Mathf.Pow(2, intensity);
+    }
 }

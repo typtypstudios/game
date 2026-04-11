@@ -6,15 +6,15 @@ using UnityEngine.UI;
 public class SkullSprite : MonoBehaviour
 {
     [SerializeField] private EmissiveImageConfigurator configurator;
-    private Image image;
+    [SerializeField] private bool overrideEmissionColor = true;
+    [SerializeField] private float emissionIntensity = 2;
     private Color fillColor;
     private Color initColor;
     private Player player;
 
     private void Awake()
     {
-        image = GetComponent<Image>();
-        initColor = image.color;
+        initColor = GetComponent<Image>().color;
     }
 
     private void OnDestroy()
@@ -24,7 +24,7 @@ public class SkullSprite : MonoBehaviour
 
     public void BindPlayerAndColor(Player player, Color color)
     {
-        fillColor = color;
+        fillColor = color;            
         this.player = player;
         player.CurrentCorruption.OnValueChanged += UpdateColor;
         UpdateColor(0, 0);
@@ -34,6 +34,7 @@ public class SkullSprite : MonoBehaviour
     {
         float value = newCorr / Settings.Instance.MaxCorruption;
         configurator.SetIntensityPercentage(value);
-        image.color = Color.Lerp(initColor, fillColor, value);
+        if(overrideEmissionColor) 
+            configurator.SetTint(Color.Lerp(initColor, fillColor, value), emissionIntensity);
     }
 }
