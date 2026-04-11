@@ -64,7 +64,8 @@ public class StatusEffectController : MonoBehaviour
         }
 
         // Addition and activation
-        if (effectDef.DurationType != EffectDurationType.Immediate)
+        if (effectDef.DurationType != EffectDurationType.Immediate && 
+            effectDef.DurationType != EffectDurationType.Permanent)
             activeEffects.Add(statusEffect);
         statusEffect.Activate();
         OnEffectApplied?.Invoke(statusEffect);

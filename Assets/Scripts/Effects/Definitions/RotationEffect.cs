@@ -10,6 +10,7 @@ public class RotationEffect : StatusEffectDefinition
         if (!target.IsServer) return;
         Transform rotTransform = Utils.FindChildrenWithTag(target.transform, "RotEffectPivot");
         float rot = Random.Range(-maxRotation, maxRotation);
+        rotTransform.localRotation = Quaternion.identity;
         rotTransform.Rotate(Vector3.forward, rot, Space.Self);
     }
 
