@@ -25,7 +25,7 @@ public class CultSection_Builder : MonoBehaviour
         CultDefinition cult = RuntimeVariables.Instance.CurrentCult;
         cultName.text = cult.Name;
         int lvl = Mathf.FloorToInt(RuntimeVariables.Instance.CurrentLevel);
-        rankName.text = cult.RankNames[lvl];
+        rankName.text = "Rank " + lvl + ": " + cult.RankNames[lvl];
         progressionBar.DisplayXP(RuntimeVariables.Instance.CurrentLevel);
     }
 }
