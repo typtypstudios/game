@@ -171,6 +171,7 @@ GameObject:
   - component: {fileID: 3719711298999432268}
   - component: {fileID: 7832431037478768269}
   - component: {fileID: 8149310951738062369}
+  - component: {fileID: 4137491621116228761}
   m_Layer: 5
   m_Name: Typable_Button
   m_TagString: Untagged
@@ -440,3 +441,16 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &4137491621116228761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8185215459011606957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9a0700befef624419bdca5419f735d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonClickSound
+  sound: 1

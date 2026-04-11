@@ -42,6 +42,7 @@ public class GameChatInputFilter : NetworkBehaviour
     private DeckController deckController;
     private bool isCastingSpells = false;
     private const int MAX_CHARS = 50;
+    private ChatMarkerFormatter marker;
 
 
     private void Awake()
@@ -49,6 +50,7 @@ public class GameChatInputFilter : NetworkBehaviour
         player = GetComponent<Player>();
         cardUIManager = GetComponentInChildren<CardUIManager>();
         deckController = GetComponent<DeckController>();
+        marker = new ChatMarkerFormatter();
     }
 
     public override void OnNetworkSpawn()
@@ -123,11 +125,6 @@ public class GameChatInputFilter : NetworkBehaviour
         UpdateLocalTexts(candidate);
     }
 
-    /// <summary>
-    /// Si el final del texto coincide con el nombre completo de un spell de la mano,
-    /// añade un espacio a la izquierda (solo si hay algo antes y no es ya un espacio)
-    /// y un espacio a la derecha. Nunca genera dos espacios seguidos.
-    /// </summary>
     private string TryWrapSpellWithSpaces(string candidate)
     {
         if (cardUIManager == null || string.IsNullOrEmpty(candidate))
@@ -154,10 +151,6 @@ public class GameChatInputFilter : NetworkBehaviour
         return candidate;
     }
 
-    /// <summary>
-    /// Updates User's chat, locally. If they have the chat setting off, it 
-    /// filters their chats locally looking at the cardUIManager cards.
-    /// </summary>
     /// <param name="rawString">New text</param>
     private void UpdateLocalTexts(string rawString)
     {

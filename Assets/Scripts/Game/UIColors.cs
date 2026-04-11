@@ -8,4 +8,5 @@ public class UIColors : ScriptableSingleton<UIColors>
     [field: SerializeField] public Color PositiveHighlightColor { get; set; } = Color.green;
     [field: SerializeField] public Color NegativeHighlightColor { get; set; } = Color.red;
     [field: SerializeField] public Color EffectHighlightColor { get; set; } = Color.purple;
+    [field: SerializeField] public Color SpellHighlightColor { get; set; } = Color.yellow;
 }
