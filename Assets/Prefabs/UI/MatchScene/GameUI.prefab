@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8784314, g: 0.54901963, b: 1, a: 0.47058824}
+  m_Color: {r: 0.45882353, g: 0.14117648, b: 0.21960784, a: 0.47058824}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1896,7 +1896,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.99607843, g: 1, b: 0.6627451, a: 0.47058824}
+  m_Color: {r: 0.87058824, g: 0.61960787, b: 0.25490198, a: 0.47058824}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2199,17 +2199,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: RivalHud
       objectReference: {fileID: 0}
-    - target: {fileID: 1865009518795791201, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
-      propertyPath: m_FillAmount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5927882333607377527, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 2100000, guid: da083b978faeb224f86cd1f3fb29ae4e, type: 2}
-    - target: {fileID: 5927882333607377527, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
-      propertyPath: m_FillAmount
-      value: 0
+    - target: {fileID: 2380937624927419469, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6112463150117661989, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
       propertyPath: m_Pivot.x
@@ -2306,6 +2298,14 @@ PrefabInstance:
     - target: {fileID: 6283059389393722238, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
       propertyPath: m_Color.r
       value: 0.87058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 7359521108139374489, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_ChildAlignment
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7359521108139374489, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_ReverseArrangement
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
