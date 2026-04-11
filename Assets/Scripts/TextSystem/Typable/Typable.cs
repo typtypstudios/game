@@ -20,6 +20,8 @@ namespace TypTyp.TextSystem.Typable
             this.config = config;
         }
 
+        public void SetConfig(TypableConfig config) => this.config = config;
+
         public void SetText(string text)
         {
             Text = text;

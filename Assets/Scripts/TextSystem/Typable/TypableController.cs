@@ -28,6 +28,13 @@ namespace TypTyp.TextSystem.Typable
         void Awake()
         {
             InitializeIfNeeded();
+            if(configPreset != null) configPreset.OnChange += ResetPreset;
+        }
+
+        private void ResetPreset()
+        {
+            config = configPreset.Config;
+            typable.SetConfig(config);
         }
 
         void Reset()
@@ -56,6 +63,7 @@ namespace TypTyp.TextSystem.Typable
                 typable.OnChanged -= HandleChanged;
                 typable.OnError -= HandleError;
             }
+            if (configPreset != null) configPreset.OnChange -= ResetPreset;
         }
 
         public void SetText(string text)

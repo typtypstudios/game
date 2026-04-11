@@ -1,13 +1,16 @@
 using TypTyp;
+using TypTyp.TextSystem.Typable;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
 {
+    [SerializeField] private TypableConfigPreset menuPreset;
     [SerializeField] private Toggle showSpacesToggle;
     [SerializeField] private Toggle capLocksWarningToggle;
     [SerializeField] private Toggle filterChatToggle;
+    [SerializeField] private Toggle ignoreCaseToggle;
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private AudioMixer mixer;
     private FontDropdown fontDropdown;
@@ -49,19 +52,13 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
         SaveManager.Instance.Save();
     }
 
-    public void ToggleShowSpaces() => showSpacesToggle.isOn = !showSpacesToggle.isOn;
-
     public void SetShowSpaces(bool value) => Settings.Instance.ShowSpaces = value;
-
-    public void ToggleCapsWarning() => capLocksWarningToggle.isOn = !capLocksWarningToggle.isOn;
 
     public void SetCapsWarning(bool value) => Settings.Instance.CapsLockWarning = value;
 
-    public void ToggleFilterChat() => filterChatToggle.isOn = !filterChatToggle.isOn;
-
     public void SetFilterChat(bool value) => Settings.Instance.ChatActive = value;
-    
-    public void AddVolume(float volumeToAdd) => volumeSlider.value += volumeToAdd;
+
+    public void SetIgnoreCase(bool value) => menuPreset.SetCaseSensitive(!value);
 
     public void SetVolume(float value)
     {
@@ -82,6 +79,11 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
         if (filterChatToggle != null)
         {
             state.global.chatActive = filterChatToggle.isOn;
+        }
+
+        if (ignoreCaseToggle != null)
+        {
+            state.global.ignoreCaseMenus = ignoreCaseToggle.isOn;
         }
 
         if (capLocksWarningToggle != null)
@@ -119,6 +121,12 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
         if (filterChatToggle != null)
         {
             filterChatToggle.isOn = data.chatActive;
+        }
+
+        SetIgnoreCase(data.ignoreCaseMenus);
+        if (ignoreCaseToggle != null)
+        {
+            ignoreCaseToggle.isOn = data.ignoreCaseMenus;
         }
 
         SetCapsWarning(data.capsLockWarning);
