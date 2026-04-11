@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,24 +35,29 @@ public class CardDissolveEffect : MonoBehaviour
         }
     }
 
-    public void FadeInAndOut(float transitionTime, float showTime, Action onStart)
+    public void FadeInAndOut(float transitionTime, float showTime, Action onStart, Action onEnd,
+        bool dissolvePrevContent = true)
     {
         StopAllCoroutines();
-        StartCoroutine(FadeCoroutine(transitionTime, showTime, onStart));
+        StartCoroutine(FadeCoroutine(transitionTime, showTime, onStart, onEnd, dissolvePrevContent));
     }
         
-    IEnumerator FadeCoroutine(float transitionTime, float showTime, Action onStart)
+    IEnumerator FadeCoroutine(float transitionTime, float showTime, Action onStart,
+        Action onEnd, bool initialDissolve)
     {
         float speed = 1 / transitionTime;
         float dissolve = Dissolve;
-        while (dissolve < 1) //Por si había una carta ya enseñándose
+        if (initialDissolve)
         {
-            dissolve += speed * Time.deltaTime;
-            Dissolve = dissolve;
-            yield return null;
+            while (dissolve < 1) //Por si había una carta ya enseñándose
+            {
+                dissolve += speed * Time.deltaTime;
+                Dissolve = dissolve;
+                yield return null;
+            }
+            dissolve = 1;
         }
         onStart?.Invoke();
-        dissolve = 1;
         while(dissolve > 0)
         {
             dissolve -= speed * Time.deltaTime;
@@ -66,6 +72,7 @@ public class CardDissolveEffect : MonoBehaviour
             Dissolve = dissolve;
             yield return null;
         }
+        onEnd?.Invoke();
     }
 
     IEnumerator InterpolateToValue(float targetDissolve, float speed)

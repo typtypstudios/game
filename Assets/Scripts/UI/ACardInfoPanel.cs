@@ -30,6 +30,6 @@ public abstract class ACardInfoPanel : MonoBehaviour
             image.sprite = cardImage;
             OnImageSet();
         };
-        dissolveEffect.FadeInAndOut(fadeTime, showTime, onStart);
+        dissolveEffect.FadeInAndOut(fadeTime, showTime, onStart, null);
     }
 }
