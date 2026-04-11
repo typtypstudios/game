@@ -38,10 +38,6 @@ public class CardUIManager : MonoBehaviour
             textPipeline,
             $"CardUIManager requires a reference to {nameof(ITextPipeline)}"
         );
-    }
-
-    void Start()
-    {
         CreateSlots(TypTyp.Settings.Instance.HandSize);
     }
 

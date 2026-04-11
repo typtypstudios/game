@@ -6,6 +6,7 @@ using TypTyp.TextSystem;
 using TypTyp.TextSystem.Typable;
 using System.Collections.Generic;
 using TypTyp;
+using System;
 
 public class CardUI : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class CardUI : MonoBehaviour
     private readonly List<InkOrb> orbs = new();
     private int manaCost;
     private Player player;
+    public event Action<CardUI, float, bool> OnIdxChanged;
 
     void Awake()
     {
@@ -40,11 +42,13 @@ public class CardUI : MonoBehaviour
     void OnEnable()
     {
         typableController.OnComplete += OnSpellWritten;
+        typableController.OnChanged += OnChanged;
     }
 
     void OnDisable()
     {
         typableController.OnComplete -= OnSpellWritten;
+        typableController.OnChanged -= OnChanged;
     }
 
     public void BindCardDefinition(CardDefinition def, ITextPipeline pipeline, int costModifier = 0)
@@ -100,5 +104,10 @@ public class CardUI : MonoBehaviour
         OnCardWritten?.Invoke(this);
     }
 
+    private void OnChanged()
+    {
+        float progress = (float)typableController.Idx / typableController.Text.Length;
+        OnIdxChanged?.Invoke(this, progress, player.CurrentMana.Value >= manaCost);
+    }
     // El modo de input se gestiona via TypingInputListener en el propio objeto.
 }

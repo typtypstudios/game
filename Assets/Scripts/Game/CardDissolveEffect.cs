@@ -22,7 +22,17 @@ public class CardDissolveEffect : MonoBehaviour
         Dissolve = 1;
     }
 
-    public void SetDissolve(float dissolve) => Dissolve = Mathf.Clamp01(dissolve);
+    public void SetDissolve(float dissolve, bool interpolate = false, float interpolateSpeed = 1)
+    {
+        dissolve = Mathf.Clamp01(dissolve);
+        if (Dissolve == dissolve) return;
+        if (!interpolate) Dissolve = dissolve;
+        else
+        {
+            StopAllCoroutines();
+            StartCoroutine(InterpolateToValue(dissolve, interpolateSpeed));
+        }
+    }
 
     public void FadeInAndOut(float transitionTime, float showTime, Action onStart)
     {
@@ -53,6 +63,17 @@ public class CardDissolveEffect : MonoBehaviour
         while(dissolve < 1)
         {
             dissolve += speed * Time.deltaTime;
+            Dissolve = dissolve;
+            yield return null;
+        }
+    }
+
+    IEnumerator InterpolateToValue(float targetDissolve, float speed)
+    {
+        float dissolve = Dissolve;
+        while(dissolve != targetDissolve)
+        {
+            dissolve = Mathf.MoveTowards(dissolve, targetDissolve, speed * Time.deltaTime);
             Dissolve = dissolve;
             yield return null;
         }
