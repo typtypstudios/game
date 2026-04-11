@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TypTyp.Input;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ public class CastingCard : MonoBehaviour
     [SerializeField] private CardUIManager cardUIManager;
     [SerializeField] private float showTime = 0.5f;
     [SerializeField] private float disappearTime = 0.5f;
-    [SerializeField] private float appearSpeed = 1;
+    [SerializeField] private float appearTime = 1;
     private Animator anim;
     private bool showingCard = false;
     private readonly Dictionary<CardUI, float> progressDictionary = new();
@@ -24,6 +25,7 @@ public class CastingCard : MonoBehaviour
         image = GetComponent<Image>();
         image.sprite = placeholderSprite;
         anim = GetComponent<Animator>();
+        InputHandler.Instance.OnInputModeChanged += HandleModeChange;
     }
 
     private void Start()
@@ -40,6 +42,13 @@ public class CastingCard : MonoBehaviour
         {
             card.OnIdxChanged -= OnCardUpdated;
         }
+        InputHandler.Instance.OnInputModeChanged -= HandleModeChange;
+    }
+
+    private void HandleModeChange(InputModeMask mask)
+    {
+        if (mask != InputModeMask.Spells && !showingCard)
+            dissolveEffect.SetDissolve(1, true, disappearTime);
     }
 
     private void OnCardUpdated(CardUI card, float progress, bool canBeCasted)
@@ -52,7 +61,7 @@ public class CastingCard : MonoBehaviour
         image.sprite = placeholderSprite;
         progressDictionary[card] = progress;
         float max = progressDictionary.Values.Max();
-        dissolveEffect.SetDissolve(1 - max, true, appearSpeed);
+        dissolveEffect.SetDissolve(1 - max, true, appearTime);
         if (Mathf.Approximately(progressDictionary[card], 1))
         {
             image.sprite = card.CardDefinition.Image;
@@ -64,6 +73,8 @@ public class CastingCard : MonoBehaviour
     public void OnAnimEnded()
     {
         dissolveEffect.FadeInAndOut(disappearTime, showTime, null, OnCardDisappear, false);
+        foreach (var key in progressDictionary.Keys.ToList())
+            progressDictionary[key] = 0;
     }
 
     private void OnCardDisappear()

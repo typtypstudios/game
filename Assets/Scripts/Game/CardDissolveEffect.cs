@@ -23,7 +23,7 @@ public class CardDissolveEffect : MonoBehaviour
         Dissolve = 1;
     }
 
-    public void SetDissolve(float dissolve, bool interpolate = false, float interpolateSpeed = 1)
+    public void SetDissolve(float dissolve, bool interpolate = false, float interpolateTime = 1)
     {
         dissolve = Mathf.Clamp01(dissolve);
         if (Dissolve == dissolve) return;
@@ -31,7 +31,7 @@ public class CardDissolveEffect : MonoBehaviour
         else
         {
             StopAllCoroutines();
-            StartCoroutine(InterpolateToValue(dissolve, interpolateSpeed));
+            StartCoroutine(InterpolateToValue(dissolve, interpolateTime));
         }
     }
 
@@ -75,10 +75,11 @@ public class CardDissolveEffect : MonoBehaviour
         onEnd?.Invoke();
     }
 
-    IEnumerator InterpolateToValue(float targetDissolve, float speed)
+    IEnumerator InterpolateToValue(float targetDissolve, float time)
     {
         float dissolve = Dissolve;
-        while(dissolve != targetDissolve)
+        float speed = Mathf.Abs(targetDissolve - dissolve) / time;
+        while (dissolve != targetDissolve)
         {
             dissolve = Mathf.MoveTowards(dissolve, targetDissolve, speed * Time.deltaTime);
             Dissolve = dissolve;
