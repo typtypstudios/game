@@ -21,6 +21,8 @@ public class SaveState
 public class ProfileSaveData
 {
     public string username = string.Empty;
+    public int numGames = 0;
+    public int gamesWon = 0;
 }
 
 [Serializable]

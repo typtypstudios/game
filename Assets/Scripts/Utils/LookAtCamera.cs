@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class LookAtCamera : MonoBehaviour
@@ -16,13 +15,23 @@ public class LookAtCamera : MonoBehaviour
             this.enabled = false;
         }
         else if (type == ConfigurationType.OnUIConfig)
-            StartCoroutine(UpdateAfterCoroutine());
+        {
+            GameUIConfigurator.OnUIConfigurated += UpdateLookAt;
+            this.enabled = false;
+        }
+        else if (type == ConfigurationType.MatchStarted)
+        {
+            MatchManager.OnMatchStarted += UpdateLookAt;
+            this.enabled = false;
+        }
     }
 
     private void OnDestroy()
     {
         if (type == ConfigurationType.OnUIConfig)
             GameUIConfigurator.OnUIConfigurated -= UpdateLookAt;
+        else if (type == ConfigurationType.MatchStarted)
+            MatchManager.OnMatchStarted -= UpdateLookAt;
     }
 
     private void Update()
@@ -35,12 +44,5 @@ public class LookAtCamera : MonoBehaviour
         transform.forward = (invert ? -1 : 1) * transform.position - cam.position;
     }
 
-    IEnumerator UpdateAfterCoroutine()
-    {
-        yield return null;
-        GameUIConfigurator.OnUIConfigurated += UpdateLookAt;
-        this.enabled = false;
-    }
-
-    private enum ConfigurationType{ Awake, OnUIConfig, Always };
+    private enum ConfigurationType{ Awake, OnUIConfig, MatchStarted, Always };
 }

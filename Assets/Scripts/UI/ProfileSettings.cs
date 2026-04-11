@@ -11,6 +11,8 @@ public class ProfileSettings : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI usernameText;
     [SerializeField] private TextMeshProUGUI helpText;
+    [SerializeField] private TMP_Text numGames;
+    [SerializeField] private TMP_Text numVictories;
     private readonly string defaultUsername = "AverageCultist";
 
     private string currentName = string.Empty;
@@ -206,6 +208,9 @@ public class ProfileSettings : MonoBehaviour
         {
             usernameButton.OverrideText(currentName);
         }
+
+        numGames.text = numGames.text.Replace("<value>", state.slot.profile.numGames.ToString());
+        numVictories.text = numVictories.text.Replace("<value>", state.slot.profile.gamesWon.ToString());
     }
 
     private string GenerateDisplayName(string candidate)

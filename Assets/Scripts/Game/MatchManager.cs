@@ -276,6 +276,10 @@ public class MatchManager : NetworkBehaviour
             $"Drift:{drift * 1000:F2} ms"
         );
 
+        SaveState saveState = SaveManager.Instance.GetState();
+        saveState.slot.profile.numGames += 1;
+        SaveManager.Instance.Save();
+
         OnMatchStarted?.Invoke();
     }
 

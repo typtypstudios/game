@@ -23,6 +23,7 @@ public class XPManager : ScriptableSingleton<XPManager>
         float newXP = prevXP + normalizedValue;
         currentState.slot.cultData[currentState.slot.cultId].level = 
             Mathf.Min(newXP, RuntimeVariables.Instance.MaxLevel);
+        currentState.slot.profile.gamesWon += 1;
         SaveManager.Instance.Save();
         OnXPUpdated?.Invoke(prevXP, newXP);
     }
