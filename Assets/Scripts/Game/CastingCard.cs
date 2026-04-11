@@ -17,6 +17,7 @@ public class CastingCard : MonoBehaviour
     private readonly Dictionary<CardUI, float> progressDictionary = new();
     private Image image;
     private CardDissolveEffect dissolveEffect;
+    private readonly Queue<Sprite> completedQueue = new();
 
     private void Awake()
     {
@@ -53,21 +54,21 @@ public class CastingCard : MonoBehaviour
 
     private void OnCardUpdated(CardUI card, float progress, bool canBeCasted)
     {
-        //if (progress == 1 && showingCard)
-        //{
-
-        //}
+        if (canBeCasted && showingCard && Mathf.Approximately(progress, 1))
+            completedQueue.Enqueue(card.CardDefinition.Image);
         if (!canBeCasted || showingCard) return;
-        image.sprite = placeholderSprite;
         progressDictionary[card] = progress;
         float max = progressDictionary.Values.Max();
         dissolveEffect.SetDissolve(1 - max, true, appearTime);
         if (Mathf.Approximately(progressDictionary[card], 1))
-        {
-            image.sprite = card.CardDefinition.Image;
-            anim.SetTrigger("ShowCard");
-            showingCard = true;
-        }
+            ShowCard(card.CardDefinition.Image);
+    }
+
+    private void ShowCard(Sprite sprite)
+    {
+        image.sprite = sprite;
+        anim.SetTrigger("ShowCard");
+        showingCard = true;
     }
 
     public void OnAnimEnded()
@@ -80,5 +81,11 @@ public class CastingCard : MonoBehaviour
     private void OnCardDisappear()
     {
         showingCard = false;
+        image.sprite = placeholderSprite;
+        if (completedQueue.Count > 0)
+        {
+            dissolveEffect.SetDissolve(0);
+            ShowCard(completedQueue.Dequeue());
+        }
     }
 }
