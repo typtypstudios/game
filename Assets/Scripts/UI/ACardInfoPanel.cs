@@ -56,8 +56,6 @@ public abstract class ACardInfoPanel : MonoBehaviour
         {
             if (image.gameObject == gameObject)
                 image.enabled = !usePresenter;
-            else
-                image.gameObject.SetActive(!usePresenter);
         }
 
         if (cardVisualPresenter)
