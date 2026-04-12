@@ -6,8 +6,13 @@ using UnityEngine.UI;
 
 public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigationLeaveReceiver
 {
+    [Header("Legacy")]
     [SerializeField] private Image image;
     [SerializeField] private float emission = 0.9f;
+
+    [Header("Card Presenter")]
+    [SerializeField] private CardVisualPresenter cardVisualPresenter;
+
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text infoText;
     private string durationTag;
@@ -19,7 +24,7 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
 
     private void Awake()
     {
-        if(image != null)
+        if (image != null)
         {
             image.material = new(image.material);
             image.material.SetFloat("_EmissionForce", emission);
@@ -38,27 +43,56 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
     public void OnLeave()
     {
         isActive = false;
+        cardVisualPresenter?.Clear();
     }
 
     public void SetInfo(ADefinition definition)
     {
-        if(image != null) image.sprite = definition.Image;
-        if(nameText != null) nameText.text = definition.Name;
-        infoText.text = definition is CardDefinition ? FillCardInfo(definition as CardDefinition) : 
+        bool usePresenter = definition is CardDefinition && cardVisualPresenter;
+        SetVisualMode(usePresenter);
+
+        if (usePresenter)
+        {
+            var cardDefinition = definition as CardDefinition;
+            int resolvedManaCost = Mathf.Max(0, cardDefinition.ManaCost);
+            cardVisualPresenter.SetCard(cardDefinition, resolvedManaCost, resolvedManaCost);
+        }
+        else
+        {
+            cardVisualPresenter?.Clear();
+            if (image != null) image.sprite = definition.Image;
+        }
+
+        if (nameText != null) nameText.text = definition.Name;
+        infoText.text = definition is CardDefinition ? FillCardInfo(definition as CardDefinition) :
             FillStatusInfo(definition as StatusEffectDefinition);
         if (isActive && AudioManager.Instance != null)
             AudioManager.Instance.PlayUI(UISound.SelectCard);
+    }
+
+    private void SetVisualMode(bool usePresenter)
+    {
+        if (image != null)
+        {
+            // image.gameObject.SetActive(!usePresenter);
+            image.enabled = !usePresenter;
+        }
+
+        if (cardVisualPresenter)
+        {
+            cardVisualPresenter.gameObject.SetActive(usePresenter);
+        }
     }
 
     private string FillCardInfo(CardDefinition card)
     {
         string desc = card.Description;
         MatchCollection matches = Regex.Matches(desc, @"<effect([a-zA-Z0-9]+)_(\d+)>");
-        foreach (Match m in matches) 
+        foreach (Match m in matches)
         {
             if (m.Groups[1].Value.Contains("Desc")) continue;
             int idx = int.Parse(m.Groups[2].Value);
-            string effectName = m.Groups[1].Value.Equals("Self") ? 
+            string effectName = m.Groups[1].Value.Equals("Self") ?
                 card.Spell.OnSelfEffects[idx].Name : card.Spell.OnEnemyEffects[idx].Name;
             desc = desc.Replace(m.Groups[0].Value, effectTag + effectName + "</color>");
         }
@@ -78,10 +112,10 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
     private string FillStatusInfo(StatusEffectDefinition effect)
     {
         string desc = effect.Description;
-        desc = desc.Replace("<duration>", durationTag + effect.DurationValue + 
+        desc = desc.Replace("<duration>", durationTag + effect.DurationValue +
             (effect.DurationType == EffectDurationType.Lines ? " lines" : " seconds") + "</color>");
         if (effect.DurationValue == 1) desc = desc.Replace("seconds", "second").Replace("lines", "line");
-        string polarityColor = effect.EffectPolarityType == EffectPolarityType.Bad ? 
+        string polarityColor = effect.EffectPolarityType == EffectPolarityType.Bad ?
             negativeTag : positiveTag;
         desc = desc.Replace("<value>", polarityColor + effect.GetDefaultValue() + "</color>");
         return desc;
