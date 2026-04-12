@@ -74,13 +74,18 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
     {
         if (image != null)
         {
-            // image.gameObject.SetActive(!usePresenter);
-            image.enabled = !usePresenter;
+            if (image.gameObject == gameObject)
+                image.enabled = !usePresenter;
+            else
+                image.gameObject.SetActive(!usePresenter);
         }
 
         if (cardVisualPresenter)
         {
-            cardVisualPresenter.gameObject.SetActive(usePresenter);
+            if (cardVisualPresenter.gameObject == gameObject)
+                cardVisualPresenter.enabled = usePresenter;
+            else
+                cardVisualPresenter.gameObject.SetActive(usePresenter);
         }
     }
 

@@ -28,7 +28,7 @@ public class ReceivedSpellPanel : ACardInfoPanel
         if (args.PlayerId == Player.User.OwnerClientId) return;
         var cardDef = CardRegister.Instance.GetById(args.CardId);
         StopAllCoroutines();
-        ShowCard(cardDef.Image);
+        ShowCard(cardDef);
     }
 
     protected override void OnImageSet() 

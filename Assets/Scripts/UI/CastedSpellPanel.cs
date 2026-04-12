@@ -25,7 +25,7 @@ public class CastedSpellPanel : ACardInfoPanel
     public void DisplayInfo(CardDefinition card, CastedSpellInfoType type)
     {
         nextType = type;
-        ShowCard(card.Image);
+        ShowCard(card);
     }
 
     protected override void OnImageSet() 

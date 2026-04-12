@@ -92,7 +92,10 @@ public class InfoDisplayer : MonoBehaviour
 
         if (cardVisualPresenter)
         {
-            cardVisualPresenter.gameObject.SetActive(usePresenter);
+            if (cardVisualPresenter.gameObject == gameObject)
+                cardVisualPresenter.enabled = usePresenter;
+            else
+                cardVisualPresenter.gameObject.SetActive(usePresenter);
         }
     }
 
