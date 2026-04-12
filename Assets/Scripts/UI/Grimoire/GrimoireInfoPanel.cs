@@ -43,7 +43,7 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
     public void OnLeave()
     {
         isActive = false;
-        cardVisualPresenter?.Clear();
+        //cardVisualPresenter?.Clear();
     }
 
     public void SetInfo(ADefinition definition)

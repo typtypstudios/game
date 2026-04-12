@@ -401,7 +401,7 @@ MonoBehaviour:
   highlightColorAddition: 0.3
   cardVisualPresenter: {fileID: 5289384808464458214}
   presenterBorderImage: {fileID: 9156264922992707511}
-  presenterBorderHighlightAddition: 0.2
+  presenterBorderEmissionForce: 1
 --- !u!114 &6762483248211376429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -657,6 +657,10 @@ PrefabInstance:
     - target: {fileID: 6647496421658257454, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7460670100496519077, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
