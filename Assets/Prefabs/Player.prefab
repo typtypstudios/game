@@ -369,7 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2605432542
+  GlobalObjectIdHash: 1277958203
   InScenePlacedSourceGlobalObjectIdHash: 1277958203
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1379,7 +1379,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 50
     m_Right: 50
-    m_Top: 50
+    m_Top: 30
     m_Bottom: 50
   m_ChildAlignment: 1
   m_Spacing: 50
@@ -1414,10 +1414,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6369835554039472312}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.031, z: 2.816}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 475196011070251930}
   - {fileID: 4912304462605362050}
@@ -2657,8 +2657,8 @@ MonoBehaviour:
   TransitionStateInfoList: []
   AnimatorParameterEntries:
     ParameterEntries:
-    - name: changeStance
-      NameHash: 1404639195
+    - name: CastingSpells
+      NameHash: 1638913603
       Synchronize: 1
       ParameterType: 4
   AnimatorParametersExpanded: 0
