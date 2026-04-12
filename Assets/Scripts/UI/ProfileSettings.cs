@@ -28,6 +28,7 @@ public class ProfileSettings : MonoBehaviour
         allWritableButtons = GetComponentsInChildren<Button>().Select(b => b.GetComponent<WritableButton>()).ToArray();
         usernameButton = usernameText.GetComponentInParent<WritableButton>();
         usernameTypCont = usernameButton.GetComponent<TypableController>();
+        if (RuntimeVariables.Instance.IsLoaded) ApplyProfile(SaveManager.Instance.GetState());
     }
 
     private void OnEnable()

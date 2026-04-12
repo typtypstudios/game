@@ -4,9 +4,9 @@ using System.Collections;
 
 public class UIBar : MonoBehaviour, IFillableBar
 {
-    [SerializeField] private Image filler;
-    [SerializeField] private float updateTime = 0.5f;
-    private Image bar;
+    [SerializeField] protected Image filler;
+    [SerializeField] protected float updateTime = 0.5f;
+    protected Image bar;
     public float MaxValue { get; set; } = 1f;
 
 
@@ -15,13 +15,13 @@ public class UIBar : MonoBehaviour, IFillableBar
         bar = GetComponent<Image>();
     }
 
-    public void UpdateValue(float oldValue, float newValue)
+    public virtual void UpdateValue(float oldValue, float newValue)
     {
         StopAllCoroutines();
         StartCoroutine(UpdateBarCorroutine(newValue / MaxValue));
     }
 
-    public void SetValueWithoutTransition(float value)
+    public virtual void SetValueWithoutTransition(float value)
     {
         StopAllCoroutines();
         bar.fillAmount = value;
