@@ -86,8 +86,11 @@ public class Player : NetworkBehaviour
         if (IsOwner)
         {
             Enemy = FindObjectsByType<Player>(FindObjectsSortMode.None).First(p => p != this);
+
+            RitualChoirPlayer choir = FindFirstObjectByType<RitualChoirPlayer>();
+            if (choir != null) choir.Bind(RitualManager);
+
             FindFirstObjectByType<MatchManager>().NotifyPlayerConfiguredServerRpc();
-            // InputHandler.Instance.SetMode(InputModeMask.Ritual);
         }
     }
 

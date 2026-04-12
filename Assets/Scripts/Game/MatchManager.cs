@@ -43,8 +43,11 @@ public class MatchManager : NetworkBehaviour
 
     private double matchStartTime;
     private MatchState matchState;
+
+    // Eventos
     public static event Action OnMatchStarted;
     public static event Action OnMatchEnded;
+    public static event Action OnCountdownStarted;
 
     // Referencia al canvas de inicio y final de la partida
     [SerializeField] private StartEndCanvas startEndCanvas;
@@ -230,6 +233,7 @@ public class MatchManager : NetworkBehaviour
         int lastSecond = -1;
 
         startEndCanvas.SetCountdownActive(true);
+        OnCountdownStarted?.Invoke();
 
         while (true)
         {
@@ -244,12 +248,14 @@ public class MatchManager : NetworkBehaviour
             {
                 lastSecond = currentSecond;
                 startEndCanvas.UpdateCountdownText(currentSecond.ToString());
+                startEndCanvas.NotifyCountdownTick(currentSecond);
             }
 
             yield return null;
         }
 
         startEndCanvas.UpdateCountdownText("GO!");
+        startEndCanvas.NotifyCountdownGo();
         startEndCanvas.AnimateImagesOut();
 
         yield return new WaitForSeconds(0.5f);

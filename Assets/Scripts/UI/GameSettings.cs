@@ -12,7 +12,6 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
     [SerializeField] private Toggle filterChatToggle;
     [SerializeField] private Toggle ignoreCaseToggle;
     [SerializeField] private Slider volumeSlider;
-    [SerializeField] private AudioMixer mixer;
     private FontDropdown fontDropdown;
 
     private void Awake()
@@ -62,11 +61,7 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
 
     public void SetVolume(float value)
     {
-        value = Mathf.Clamp01(value);
-        float minDB = -80f;
-        float maxDB = 20f;
-        float logValue = Mathf.Log10(1f + value * 9f) / Mathf.Log10(10f);
-        mixer.SetFloat("MasterVolume", Mathf.Lerp(minDB, maxDB, logValue));
+        AudioManager.Instance.SetBusVolume("MasterVolume", Mathf.Clamp01(value));
     }
 
     private void HandleBeforeSave(SaveState state)

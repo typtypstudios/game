@@ -11,6 +11,31 @@ public class UISoundEntry
     [Range(0f, 1f)] public float volume = 1f;
 }
 
+[Serializable]
+public class MusicEntry
+{
+    public MusicTrack id;
+    public AudioClip clip;
+    [Range(0f, 1f)] public float volume = 1f;
+    public float fadeDuration = 1.5f;
+}
+
+[Serializable]
+public class CountdownSoundEntry
+{
+    public CountdownSound id;
+    public AudioClip clip;
+    [Range(0f, 1f)] public float volume = 1f;
+}
+
+[Serializable]
+public class CultSoundEntry
+{
+    public CultSound id;
+    public AudioClip clip;
+    [Range(0f, 1f)] public float volume = 1f;
+}
+
 public class AudioManager : Singleton<AudioManager>
 {
     [Header("Mixer")]
@@ -29,10 +54,22 @@ public class AudioManager : Singleton<AudioManager>
     [Header("UI Sounds")]
     [SerializeField] private UISoundEntry[] uiSounds;
 
+    [Header("Music Tracks")]
+    [SerializeField] private MusicEntry[] musicTracks;
+
+    [Header("Countdown Sounds")]
+    [SerializeField] private CountdownSoundEntry[] countdownSounds;
+
+    [Header("Cult Sounds")]
+    [SerializeField] private CultSoundEntry[] cultSounds;
+
     private SFXPool sfxPool;
     private SFXPool uiPool;
     private MusicPlayer music;
     private Dictionary<UISound, UISoundEntry> uiMap;
+    private Dictionary<MusicTrack, MusicEntry> musicMap;
+    private Dictionary<CountdownSound, CountdownSoundEntry> countdownMap;
+    private Dictionary<CultSound, CultSoundEntry> cultMap;
 
     protected override void Awake()
     {
@@ -44,6 +81,9 @@ public class AudioManager : Singleton<AudioManager>
         music = new MusicPlayer(transform, this, musicGroup);
 
         BuildUiMap();
+        BuildMusicMap();
+        BuildCountdownMap();
+        BuildCultMap();
     }
 
     private void BuildUiMap()
@@ -57,10 +97,49 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
+    private void BuildMusicMap()
+    {
+        musicMap = new Dictionary<MusicTrack, MusicEntry>();
+        if (musicTracks == null) return;
+        foreach (var entry in musicTracks)
+        {
+            if (entry == null || entry.clip == null) continue;
+            musicMap[entry.id] = entry;
+        }
+    }
+
+    private void BuildCountdownMap()
+    {
+        countdownMap = new Dictionary<CountdownSound, CountdownSoundEntry>();
+        if (countdownSounds == null) return;
+        foreach (var entry in countdownSounds)
+        {
+            if (entry == null || entry.clip == null) continue;
+            countdownMap[entry.id] = entry;
+        }
+    }
+
+    private void BuildCultMap()
+    {
+        cultMap = new Dictionary<CultSound, CultSoundEntry>();
+        if (cultSounds == null) return;
+        foreach (var entry in cultSounds)
+        {
+            if (entry == null || entry.clip == null) continue;
+            cultMap[entry.id] = entry;
+        }
+    }
+
     #region Music
 
-    public void PlayMusic(AudioClip clip, float fadeDuration = 1f, float volume = 1f)
-        => music.Play(clip, fadeDuration, volume);
+    public void PlayMusic(MusicTrack track)
+    {
+        if (track == MusicTrack.None) { StopMusic(); return; }
+        if (musicMap.TryGetValue(track, out var entry))
+            music.Play(entry.clip, entry.fadeDuration, entry.volume);
+        else
+            Debug.LogWarning($"[AudioManager] MusicTrack '{track}' no está mapeado.");
+    }
 
     public void StopMusic(float fadeDuration = 1f)
         => music.Stop(fadeDuration);
@@ -79,6 +158,24 @@ public class AudioManager : Singleton<AudioManager>
             uiPool.PlayOneShot(entry.clip, entry.volume);
         else
             Debug.LogWarning($"[AudioManager] UISound '{id}' no está mapeado.");
+    }
+
+    public void PlayCountdown(CountdownSound id)
+    {
+        if (id == CountdownSound.None) return;
+        if (countdownMap.TryGetValue(id, out var entry))
+            uiPool.PlayOneShot(entry.clip, entry.volume);
+        else
+            Debug.LogWarning($"[AudioManager] CountdownSound '{id}' no está mapeado.");
+    }
+
+    public void PlayCult(CultSound id)
+    {
+        if (id == CultSound.None) return;
+        if (cultMap.TryGetValue(id, out var entry))
+            sfxPool.PlayOneShot(entry.clip, entry.volume);
+        else
+            Debug.LogWarning($"[AudioManager] CultSound '{id}' no está mapeado.");
     }
 
     public void StopAllSFX()

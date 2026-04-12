@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -32,6 +33,9 @@ public class StartEndCanvas : MonoBehaviour
 
     private Coroutine slideCoroutine;
 
+    public event Action<int> OnCountdownTick;
+    public event Action OnCountdownGo;
+
     private void Awake()
     {
         panel.SetActive(false);
@@ -57,6 +61,16 @@ public class StartEndCanvas : MonoBehaviour
     public void UpdateCountdownText(string text)
     {
         countdownText.text = text;
+    }
+
+    public void NotifyCountdownTick(int second)
+    {
+        OnCountdownTick?.Invoke(second);
+    }
+
+    public void NotifyCountdownGo()
+    {
+        OnCountdownGo?.Invoke();
     }
 
     public void AnimateImagesIn()

@@ -55,7 +55,11 @@ public class CultButton : MonoBehaviour
 
     public void UpdateInfo() => SetCultInfo(RuntimeVariables.Instance.CultsInfo[cultId]);
 
-    public void OnClick() => selectionController.SetCult(cultId);
+    public void OnClick()
+    {
+        AudioManager.Instance.PlayCult((CultSound)cultId);
+        selectionController.SetCult(cultId);
+    }
 
     public void OnEdit() => selectionController.SetCult(cultId, false);
 

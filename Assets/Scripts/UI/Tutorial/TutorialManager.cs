@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TutorialManager : MonoBehaviour
+public class TutorialManager : MonoBehaviour, INavigationCtxReceiver, INavigationLeaveReceiver
 {
     [SerializeField] private Transform contentParent;
     [SerializeField] private WritableButton prevButton;
@@ -10,6 +10,7 @@ public class TutorialManager : MonoBehaviour
     private readonly List<GameObject> content = new();
     private int currentIdx = 0;
     private TurnPageEffect turnPageEffect;
+    private bool isActive;
 
     void Start()
     {
@@ -31,11 +32,23 @@ public class TutorialManager : MonoBehaviour
         turnPageEffect.OnBlankPage -= UpdateContent;
     }
 
+    public void ReceiveContext(Screens previousScreen, bool isGoingBack)
+    {
+        isActive = true;
+    }
+
+    public void OnLeave()
+    {
+        isActive = false;
+    }
+
     public void TurnPage(int dir)
     {
         currentIdx = Mathf.Clamp(currentIdx + dir, 0, content.Count - 1);
         turnPageEffect.TurnPage();
         UpdateButtons();
+        if (isActive && AudioManager.Instance != null)
+            AudioManager.Instance.PlayUI(UISound.FlipPage);
     }
 
     private void UpdateContent()

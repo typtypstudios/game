@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GrimoireNavigationController : MonoBehaviour
+public class GrimoireNavigationController : MonoBehaviour, INavigationCtxReceiver, INavigationLeaveReceiver
 {
     [SerializeField] private GameObject sectionButtonPrefab;
     [SerializeField] private Transform sectionsTransform;
@@ -11,6 +11,7 @@ public class GrimoireNavigationController : MonoBehaviour
     [SerializeField] private WritableButton button_next;
     private readonly List<SectionButton> sections = new();
     private GrimoireContentManager contentManager;
+    private bool isActive = false;
 
     private void Awake()
     {
@@ -23,6 +24,16 @@ public class GrimoireNavigationController : MonoBehaviour
     {
         contentManager.OnPageChanged -= CheckCurrentPage;
         contentManager.OnSectionChanged -= CheckCurrentSection;
+    }
+
+    public void ReceiveContext(Screens previousScreen, bool isGoingBack)
+    {
+        isActive = true;
+    }
+
+    public void OnLeave()
+    {
+        isActive = false;
     }
 
     public void AddSection(int index, string name, int cultId)
@@ -42,6 +53,8 @@ public class GrimoireNavigationController : MonoBehaviour
     {
         sections[prevIdx].Hide();
         sections[newIdx].Deploy();
+        if (isActive && AudioManager.Instance != null)
+            AudioManager.Instance.PlayUI(UISound.FlipPage);
     }
 
     private void CheckCurrentPage(int pageIdx, int pageCount)

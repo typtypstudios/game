@@ -4,7 +4,7 @@ using TypTyp;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GrimoireInfoPanel : MonoBehaviour
+public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigationLeaveReceiver
 {
     [SerializeField] private Image image;
     [SerializeField] private float emission = 0.9f;
@@ -14,6 +14,7 @@ public class GrimoireInfoPanel : MonoBehaviour
     private string positiveTag;
     private string negativeTag;
     private string effectTag;
+    private bool isActive = false;
     public string DisplayedName => nameText.text;
 
     private void Awake()
@@ -29,12 +30,24 @@ public class GrimoireInfoPanel : MonoBehaviour
         effectTag = Utils.ColorToTag(UIColors.Instance.EffectHighlightColor);
     }
 
+    public void ReceiveContext(Screens previousScreen, bool isGoingBack)
+    {
+        isActive = true;
+    }
+
+    public void OnLeave()
+    {
+        isActive = false;
+    }
+
     public void SetInfo(ADefinition definition)
     {
         if(image != null) image.sprite = definition.Image;
         if(nameText != null) nameText.text = definition.Name;
         infoText.text = definition is CardDefinition ? FillCardInfo(definition as CardDefinition) : 
             FillStatusInfo(definition as StatusEffectDefinition);
+        if (isActive && AudioManager.Instance != null)
+            AudioManager.Instance.PlayUI(UISound.SelectCard);
     }
 
     private string FillCardInfo(CardDefinition card)

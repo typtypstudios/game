@@ -136,6 +136,7 @@ public class DeckBuilder : MonoBehaviour
         }
 
         card.Highlight(true);
+        AudioManager.Instance.PlayUI(UISound.SelectCard);
         CheckCardChange();
         UpdateHighlightPanelsVisibility();
     }
@@ -149,6 +150,7 @@ public class DeckBuilder : MonoBehaviour
             selectedEquipped.SetInfo(card);
             RefreshIndexesFromUI();
             RefreshCardsInDeck();
+            AudioManager.Instance.PlayUI(UISound.ExchangeCards);
             ResetSelection();
             if (sortOnChange) SortUnequipped();
         }
