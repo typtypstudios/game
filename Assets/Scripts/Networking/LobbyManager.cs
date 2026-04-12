@@ -29,6 +29,17 @@ public class LobbyManager : MonoBehaviour
     bool isMatching;
     private CancellationTokenSource lifetimeCts;
 
+    public bool CanCancel
+    {
+        get
+        {
+            if (currentLobby == null) return true;
+            if (currentLobby.IsLocked) return false;
+            if (currentLobby.Players != null && currentLobby.Players.Count >= MaxPlayers) return false;
+            return true;
+        }
+    }
+
     // Se ejecuta al iniciar el objeto
     async void Awake()
     {
@@ -371,7 +382,7 @@ public class LobbyManager : MonoBehaviour
 
         try
         {
-            await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id,
+            currentLobby = await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id,
                 new UpdateLobbyOptions
                 {
                     IsLocked = locked,
@@ -392,7 +403,6 @@ public class LobbyManager : MonoBehaviour
             Debug.LogWarning("Failed to update lobby state: " + e.Message);
         }
     }
-
 
     public async Task CloseLobyAndShutdown()
     {
@@ -427,6 +437,24 @@ public class LobbyManager : MonoBehaviour
 
             currentLobby = null;
         }
+    }
+
+    public async Task<bool> CancelSearchAndLeave()
+    {
+        // Intentar cancelar
+        if (!CanCancel)
+        {
+            Debug.Log("Cannot cancel: lobby is full or locked.");
+            return false;
+        }
+
+        if (lifetimeCts != null && !lifetimeCts.IsCancellationRequested)
+        {
+            lifetimeCts.Cancel();
+        }
+
+        await CloseLobyAndShutdown();
+        return true;
     }
 
     private void OnDestroy()

@@ -33,7 +33,8 @@ public class CorruptionIndicator : MonoBehaviour
     private void OnDestroy()
     {
         GameUIConfigurator.OnUIConfigurated -= Subscribe;
-        Player.User.CurrentCorruption.OnValueChanged -= HandleCorruption;
+        if(Player.User != null)
+            Player.User.CurrentCorruption.OnValueChanged -= HandleCorruption;
     }
 
     private void Subscribe()
