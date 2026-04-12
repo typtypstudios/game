@@ -39,15 +39,27 @@ public class AdaptiveGridLayout : MonoBehaviour
     {
         RefreshChildren();
         lastChildCount = transform.childCount;
+        SaveManager.Instance.OnAfterLoad += RefreshAfterLoad;
     }
+
+    private void OnDestroy()
+    {
+        SaveManager.Instance.OnAfterLoad -= RefreshAfterLoad;
+    }
+
+    private void RefreshAfterLoad(SaveState _) => RefreshChildren();
 
     private void LateUpdate()
     {
         if (rectTransform == null)
             rectTransform = GetComponent<RectTransform>();
 
-        RefreshChildren();
-        lastChildCount = transform.childCount;
+        //Solo refrescar si cambia el número de hijos (no el orden)
+        if (transform.childCount != lastChildCount)
+        {
+            RefreshChildren();
+            lastChildCount = transform.childCount;
+        }
 
         children.RemoveAll(child => child == null);
 
