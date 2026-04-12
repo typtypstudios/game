@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
 using TypTyp.TextSystem;
 using TypTyp.TextSystem.Typable;
@@ -12,12 +11,12 @@ public class CardUI : MonoBehaviour
 {
     [field: SerializeField] public CardDefinition CardDefinition { get; private set; }
 
-    [Header("Legacy UI")]
-    [SerializeField] private Image cardImage;
+    [Header("Text UI")]
     [SerializeField] private TMP_Text cardName;
+
+    [Header("Legacy Orbs UI")]
     [SerializeField] private Transform cardCostLayout;
     [SerializeField] private GameObject inkOrbPrefab;
-    [SerializeField] private Color blockedColor = Color.grey;
 
     [Header("Runtime Visuals")]
     [SerializeField] private CardVisualPresenter visualPresenter;
@@ -41,13 +40,10 @@ public class CardUI : MonoBehaviour
         useVisualPresenter = visualPresenter != null;
 
         player.CurrentMana.OnValueChanged += HandleManaChange;
-        if (!useVisualPresenter)
+        for (int i = 0; i <= Settings.Instance.NumManaBars; i++)
         {
-            for (int i = 0; i <= Settings.Instance.NumManaBars; i++)
-            {
-                orbs.Add(Instantiate(inkOrbPrefab, cardCostLayout).GetComponent<InkOrb>());
-                orbs[i].CompletelyFill(false);
-            }
+            orbs.Add(Instantiate(inkOrbPrefab, cardCostLayout).GetComponent<InkOrb>());
+            orbs[i].CompletelyFill(false);
         }
     }
 
@@ -66,21 +62,11 @@ public class CardUI : MonoBehaviour
     public void BindCardDefinition(CardDefinition def, ITextPipeline pipeline, int costModifier = 0)
     {
         CardDefinition = def;
-
-        if (!useVisualPresenter && cardImage)
-        {
-            cardImage.sprite = def.Image;
-        }
-
         UpdateCardName(pipeline);
         UpdateManaCostModifier(costModifier);
         if (useVisualPresenter)
         {
             visualPresenter.SetCard(def, manaCost, Mathf.FloorToInt(player.CurrentMana.Value));
-        }
-        else
-        {
-            UpdateImageColor(player.CurrentMana.Value);
         }
     }
 
@@ -95,42 +81,36 @@ public class CardUI : MonoBehaviour
     {
         manaCost = Mathf.Max(0, CardDefinition.ManaCost - deckController.GetDiscount(CardDefinition) + costModifier);
 
+        for (int i = 0; i < orbs.Count; i++)
+        {
+            bool isActive = i + 1 <= manaCost;
+            orbs[i].gameObject.SetActive(isActive);
+            if (!isActive)
+            {
+                continue;
+            }
+
+            bool isFilled = player.CurrentMana.Value >= i + 1;
+            orbs[i].CompletelyFill(isFilled);
+        }
+
         if (useVisualPresenter)
         {
             visualPresenter.SetResolvedCost(manaCost);
-            return;
         }
-
-        for (int i = 0; i < orbs.Count; i++)
-        {
-            orbs[i].gameObject.SetActive(i + 1 <= manaCost);
-        }
-
-        UpdateImageColor(player.CurrentMana.Value);
     }
 
     private void HandleManaChange(float prevMana, float newMana)
     {
-        if (useVisualPresenter)
-        {
-            visualPresenter.SetMana(Mathf.FloorToInt(newMana));
-            return;
-        }
-
         for (int i = 0; i < orbs.Count; i++)
         {
             bool isFilled = newMana >= i + 1;
             orbs[i].CompletelyFill(isFilled);
         }
-
-        UpdateImageColor(newMana);
-    }
-
-    private void UpdateImageColor(float currentMana)
-    {
-        if (cardImage)
+        
+        if (useVisualPresenter)
         {
-            cardImage.color = (currentMana >= manaCost) ? Color.white : blockedColor;
+            visualPresenter.SetMana(Mathf.FloorToInt(newMana));
         }
     }
 
@@ -138,21 +118,14 @@ public class CardUI : MonoBehaviour
     {
         CardDefinition = null;
 
+        foreach (var orb in orbs)
+        {
+            orb.gameObject.SetActive(false);
+        }
+
         if (useVisualPresenter)
         {
             visualPresenter.Clear();
-        }
-        else
-        {
-            if (cardImage)
-            {
-                cardImage.sprite = null;
-            }
-
-            foreach (var orb in orbs)
-            {
-                orb.gameObject.SetActive(false);
-            }
         }
 
         cardName.text = string.Empty;
