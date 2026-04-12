@@ -10,9 +10,16 @@ using UnityEngine;
 public class PracticeRitual : MonoBehaviour
 {
     [SerializeField] private string text;
+    private Canvas parentCanvas;
+
+    private void Awake()
+    {
+        parentCanvas = GetComponentInParent<Canvas>();
+    }
 
     void Update() //No sé si ponerlo en Start dará problemas, ni quiero saberlo
     {
+        if (!parentCanvas.enabled) return;
         GetComponent<TypableController>().SetText(text);
         this.enabled = false;
     }
