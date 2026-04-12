@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class UIBar : MonoBehaviour, IFillableBar
 {
@@ -8,7 +9,7 @@ public class UIBar : MonoBehaviour, IFillableBar
     [SerializeField] protected float updateTime = 0.5f;
     protected Image bar;
     public float MaxValue { get; set; } = 1f;
-
+    public event Action<float> OnValueUpdated;
 
     private void Awake()
     {
@@ -18,7 +19,9 @@ public class UIBar : MonoBehaviour, IFillableBar
     public virtual void UpdateValue(float oldValue, float newValue)
     {
         StopAllCoroutines();
-        StartCoroutine(UpdateBarCorroutine(newValue / MaxValue));
+        float normalizedValue = newValue / MaxValue;
+        StartCoroutine(UpdateBarCorroutine(normalizedValue));
+        OnValueUpdated?.Invoke(normalizedValue);
     }
 
     public virtual void SetValueWithoutTransition(float value)
@@ -26,6 +29,7 @@ public class UIBar : MonoBehaviour, IFillableBar
         StopAllCoroutines();
         bar.fillAmount = value;
         filler.fillAmount = value;
+        OnValueUpdated?.Invoke(value);
     }
 
     IEnumerator UpdateBarCorroutine(float target)

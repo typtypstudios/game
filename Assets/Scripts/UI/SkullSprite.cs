@@ -8,31 +8,25 @@ public class SkullSprite : MonoBehaviour
     [SerializeField] private EmissiveImageConfigurator configurator;
     [SerializeField] private bool overrideEmissionColor = true;
     [SerializeField] private float emissionIntensity = 2;
+    [SerializeField] private UIBar bar;
     private Color fillColor;
     private Color initColor;
-    private Player player;
 
     private void Awake()
     {
         initColor = GetComponent<Image>().color;
+        fillColor = bar.GetComponent<Image>().color;
+        bar.OnValueUpdated += UpdateColor;
+        UpdateColor(0);
     }
 
     private void OnDestroy()
     {
-        if(player) player.CurrentCorruption.OnValueChanged -= UpdateColor;
+        bar.OnValueUpdated -= UpdateColor;
     }
 
-    public void BindPlayerAndColor(Player player, Color color)
+    private void UpdateColor(float value)
     {
-        fillColor = color;            
-        this.player = player;
-        player.CurrentCorruption.OnValueChanged += UpdateColor;
-        UpdateColor(0, 0);
-    }
-
-    private void UpdateColor(float prevCorr, float newCorr)
-    {
-        float value = newCorr / Settings.Instance.MaxCorruption;
         configurator.SetIntensityPercentage(value);
         if(overrideEmissionColor) 
             configurator.SetTint(Color.Lerp(initColor, fillColor, value), emissionIntensity);

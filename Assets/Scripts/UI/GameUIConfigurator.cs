@@ -14,8 +14,6 @@ public class GameUIConfigurator : MonoBehaviour
     [SerializeField] private UIBar[] corruptionBars;
     [Tooltip("UI de efectos de estados de cada jugador.")]
     [SerializeField] private StatusEffectUI[] statusEffectUIs;
-    [Tooltip("Calavera al lado de la barra de corrupción.")]
-    [SerializeField] private SkullSprite[] skulls;
     [Tooltip("Reminder text para los efectos")]
     [SerializeField] private PlayerFeedbackUI playerFeedbackUI;
     public static event Action OnUIConfigurated;
@@ -36,8 +34,6 @@ public class GameUIConfigurator : MonoBehaviour
         Player.User.CurrentCorruption.OnValueChanged += corruptionBars[0].UpdateValue;
         Player.Enemy.CurrentCorruption.OnValueChanged += corruptionBars[1].UpdateValue;
         foreach (UIBar bar in corruptionBars) bar.MaxValue = TypTyp.Settings.Instance.MaxCorruption;
-        skulls[0].BindPlayerAndColor(Player.User, corruptionBars[0].GetComponent<Image>().color);
-        skulls[1].BindPlayerAndColor(Player.Enemy, corruptionBars[1].GetComponent<Image>().color);
         statusEffectUIs[0].BindToPlayer(Player.User);
         statusEffectUIs[1].BindToPlayer(Player.Enemy);
         PlayerInputManager userInput = Player.User.GetComponent<PlayerInputManager>();
