@@ -10,6 +10,7 @@ public class CastingCard : MonoBehaviour
     [SerializeField] private PlayerInputManager inputManager;
     [SerializeField] private Sprite backSprite;
     [SerializeField] private Sprite placeholderSprite;
+    [SerializeField] private CardVisualPresenter cardVisualPresenter;
     [SerializeField] private CardUIManager cardUIManager;
     [SerializeField] private Material enemyMat;
     [Header("Animation")]
@@ -21,14 +22,14 @@ public class CastingCard : MonoBehaviour
     private readonly Dictionary<CardUI, float> progressDictionary = new();
     private Image image;
     private CardDissolveEffect dissolveEffect;
-    private readonly Queue<Sprite> completedQueue = new();
+    private readonly Queue<CardDefinition> completedQueue = new();
 
     private void Awake()
     {
         if (!TryGetComponent(out dissolveEffect)) 
             Debug.LogError("Error: falta el componente CardDissolveEffect");
         image = GetComponent<Image>();
-        image.sprite = placeholderSprite;
+        ShowSprite(placeholderSprite);
         anim = GetComponent<Animator>();
         inputManager.OnAnimChanged += HandleAnimChange;
     }
@@ -56,7 +57,7 @@ public class CastingCard : MonoBehaviour
             dissolveEffect.SetDissolve(1, true, disappearTime);
         else if (state == AnimState.Spell && !inputManager.Player.IsOwner)
         {
-            image.sprite = backSprite;
+            ShowSprite(backSprite);
             dissolveEffect.SetDissolve(0, true, appearTime);
             dissolveEffect.OverrideMaterial(enemyMat);
         }
@@ -65,20 +66,65 @@ public class CastingCard : MonoBehaviour
     private void OnCardUpdated(CardUI card, float progress, bool canBeCasted)
     {
         if (canBeCasted && showingCard && Mathf.Approximately(progress, 1))
-            completedQueue.Enqueue(card.CardDefinition.Image);
+            completedQueue.Enqueue(card.CardDefinition);
         if (!canBeCasted || showingCard) return;
         progressDictionary[card] = progress;
         float max = progressDictionary.Values.Max();
         dissolveEffect.SetDissolve(1 - max, true, appearTime);
         if (Mathf.Approximately(progressDictionary[card], 1))
-            ShowCard(card.CardDefinition.Image);
+            ShowCard(card.CardDefinition);
     }
 
-    private void ShowCard(Sprite sprite)
+    private void ShowCard(CardDefinition cardDefinition)
     {
-        image.sprite = sprite;
+        bool usePresenter = cardDefinition != null && cardVisualPresenter;
+        SetVisualMode(usePresenter);
+
+        if (usePresenter)
+        {
+            int resolvedManaCost = Mathf.Max(0, cardDefinition.ManaCost);
+            cardVisualPresenter.SetCard(cardDefinition, resolvedManaCost, resolvedManaCost);
+        }
+        else
+        {
+            cardVisualPresenter?.Clear();
+            if (image)
+            {
+                image.sprite = cardDefinition ? cardDefinition.Image : null;
+            }
+        }
+
         anim.SetTrigger("ShowCard");
         showingCard = true;
+    }
+
+    private void ShowSprite(Sprite sprite)
+    {
+        SetVisualMode(false);
+        cardVisualPresenter?.Clear();
+        if (image)
+        {
+            image.sprite = sprite;
+        }
+    }
+
+    private void SetVisualMode(bool usePresenter)
+    {
+        if (image)
+        {
+            if (image.gameObject == gameObject)
+                image.enabled = !usePresenter;
+            else
+                image.gameObject.SetActive(!usePresenter);
+        }
+
+        if (cardVisualPresenter)
+        {
+            if (cardVisualPresenter.gameObject == gameObject)
+                cardVisualPresenter.enabled = usePresenter;
+            else
+                cardVisualPresenter.gameObject.SetActive(usePresenter);
+        }
     }
 
     public void OnAnimEnded()
@@ -91,7 +137,7 @@ public class CastingCard : MonoBehaviour
     private void OnCardDisappear()
     {
         showingCard = false;
-        image.sprite = placeholderSprite;
+        ShowSprite(placeholderSprite);
         if (completedQueue.Count > 0)
         {
             dissolveEffect.SetDissolve(0);

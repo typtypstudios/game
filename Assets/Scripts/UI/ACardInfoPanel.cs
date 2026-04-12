@@ -6,6 +6,7 @@ public abstract class ACardInfoPanel : MonoBehaviour
 {
     [Min(0.01f)][SerializeField] private float fadeTime = 0.5f;
     [Min(0)][SerializeField] private float showTime;
+    [SerializeField] private CardVisualPresenter cardVisualPresenter;
     private CardDissolveEffect dissolveEffect;
     private Image image;
 
@@ -23,13 +24,48 @@ public abstract class ACardInfoPanel : MonoBehaviour
 
     protected abstract void OnImageSet();
 
-    protected void ShowCard(Sprite cardImage)
+    protected void ShowCard(CardDefinition cardDefinition)
     {
         Action onStart = () =>
         {
-            image.sprite = cardImage;
+            bool usePresenter = cardDefinition != null && cardVisualPresenter;
+            SetVisualMode(usePresenter);
+
+            if (usePresenter)
+            {
+                int resolvedManaCost = Mathf.Max(0, cardDefinition.ManaCost);
+                cardVisualPresenter.SetCard(cardDefinition, resolvedManaCost, resolvedManaCost);
+            }
+            else
+            {
+                cardVisualPresenter?.Clear();
+                if (image)
+                {
+                    image.sprite = cardDefinition ? cardDefinition.Image : null;
+                }
+            }
+
             OnImageSet();
         };
         dissolveEffect.FadeInAndOut(fadeTime, showTime, onStart, null);
+    }
+
+    private void SetVisualMode(bool usePresenter)
+    {
+        if (image)
+        {
+            if (image.gameObject == gameObject)
+                image.enabled = !usePresenter;
+            else
+                image.gameObject.SetActive(!usePresenter);
+        }
+
+        if (cardVisualPresenter)
+        {
+            if (cardVisualPresenter.gameObject == gameObject)
+                cardVisualPresenter.enabled = usePresenter;
+            else
+                cardVisualPresenter.gameObject.SetActive(usePresenter);
+        }
     }
 }

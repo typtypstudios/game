@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +7,9 @@ using UnityEngine.UI;
 public class CardDissolveEffect : MonoBehaviour
 {
     [SerializeField] private Image[] linkedImages;
+    [SerializeField] private Transform[] linkedImageContainers;
     [SerializeField] private Material dissolveMat;
+
     private float Dissolve
     {
         get { return dissolveMat.GetFloat("_Dissolve"); }
@@ -24,6 +25,7 @@ public class CardDissolveEffect : MonoBehaviour
 
     public void SetDissolve(float dissolve, bool interpolate = false, float interpolateTime = 1)
     {
+        UpdateMaterials();
         dissolve = Mathf.Clamp01(dissolve);
         if (Dissolve == dissolve) return;
         if (!interpolate) Dissolve = dissolve;
@@ -37,6 +39,7 @@ public class CardDissolveEffect : MonoBehaviour
     public void FadeInAndOut(float transitionTime, float showTime, Action onStart, Action onEnd,
         bool dissolvePrevContent = true)
     {
+        UpdateMaterials();
         StopAllCoroutines();
         StartCoroutine(FadeCoroutine(transitionTime, showTime, onStart, onEnd, dissolvePrevContent));
     }
@@ -50,9 +53,23 @@ public class CardDissolveEffect : MonoBehaviour
     private void UpdateMaterials()
     {
         GetComponent<Image>().material = dissolveMat;
-        foreach (var image in linkedImages) image.material = dissolveMat;
+
+        foreach (var image in linkedImages)
+        {
+            if (image == null) continue;
+            image.material = dissolveMat;
+        }
+
+        foreach (var container in linkedImageContainers)
+        {
+            if (container == null) continue;
+            foreach (var image in container.GetComponentsInChildren<Image>(true))
+            {
+                image.material = dissolveMat;
+            }
+        }
     }
-        
+
     IEnumerator FadeCoroutine(float transitionTime, float showTime, Action onStart,
         Action onEnd, bool initialDissolve)
     {
@@ -60,7 +77,7 @@ public class CardDissolveEffect : MonoBehaviour
         float dissolve = Dissolve;
         if (initialDissolve)
         {
-            while (dissolve < 1) //Por si había una carta ya enseñándose
+            while (dissolve < 1) //Por si habia una carta ya ensenandose
             {
                 dissolve += speed * Time.deltaTime;
                 Dissolve = dissolve;
@@ -68,21 +85,24 @@ public class CardDissolveEffect : MonoBehaviour
             }
             dissolve = 1;
         }
+
         onStart?.Invoke();
-        while(dissolve > 0)
+        while (dissolve > 0)
         {
             dissolve -= speed * Time.deltaTime;
             Dissolve = dissolve;
             yield return null;
         }
+
         yield return new WaitForSeconds(showTime);
         dissolve = 0;
-        while(dissolve < 1)
+        while (dissolve < 1)
         {
             dissolve += speed * Time.deltaTime;
             Dissolve = dissolve;
             yield return null;
         }
+
         onEnd?.Invoke();
     }
 
