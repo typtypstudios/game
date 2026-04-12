@@ -390,7 +390,7 @@ MonoBehaviour:
   cardCostLayout: {fileID: 1160001132287062445}
   inkOrbPrefab: {fileID: 3743465251084062337, guid: f672860edc324884f8374a30e7022699, type: 3}
   blockedColor: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 0.5882353}
-  visualPresenter: {fileID: 0}
+  visualPresenter: {fileID: 1428800930278557241}
   OnCardWritten:
     m_PersistentCalls:
       m_Calls: []
@@ -582,6 +582,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8145543108445574829}
   m_SourcePrefab: {fileID: 100100000, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
+--- !u!114 &1428800930278557241 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3947416148774324232, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
+  m_PrefabInstance: {fileID: 2674035312398028337}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5190124374961725949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26e309bd79a46fa4ab2c4445b3b336d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardVisualPresenter
 --- !u!1 &5190124374961725949 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7861897830341111756, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
