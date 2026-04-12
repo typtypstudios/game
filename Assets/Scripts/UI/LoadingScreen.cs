@@ -10,6 +10,7 @@ public class LoadingScreen : MonoBehaviour
     private LobbyManager lobbyManager;
     private CanvasGroup canvasGroup;
     private bool isReturning;
+    private bool lobbyLostSubscribed;
 
     void Awake()
     {
@@ -22,6 +23,7 @@ public class LoadingScreen : MonoBehaviour
     private void Start()
     {
         lobbyManager = FindFirstObjectByType<LobbyManager>();
+        TrySubscribeLobbyLost();
     }
 
     void Update()
@@ -29,7 +31,10 @@ public class LoadingScreen : MonoBehaviour
         if (returnButton == null || isReturning) return;
 
         if (lobbyManager == null)
+        {
             lobbyManager = FindFirstObjectByType<LobbyManager>();
+            TrySubscribeLobbyLost();
+        }
 
         if (lobbyManager != null)
         {
@@ -39,9 +44,55 @@ public class LoadingScreen : MonoBehaviour
         }
     }
 
+    private void TrySubscribeLobbyLost()
+    {
+        if (lobbyLostSubscribed || lobbyManager == null) return;
+        lobbyManager.OnLobbyLost += OnLobbyLost;
+        lobbyLostSubscribed = true;
+    }
+
+    private void OnLobbyLost()
+    {
+        Debug.Log("LoadingScreen: lobby perdido. Forzando salida.");
+        ForceReturnToMainMenu();
+    }
+
+    private async void ForceReturnToMainMenu()
+    {
+        if (isReturning) return;
+        isReturning = true;
+
+        if (returnButton != null) returnButton.interactable = false;
+        if (canvasGroup != null)
+        {
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+        }
+
+        if (lobbyManager != null)
+        {
+            try
+            {
+                await lobbyManager.CloseLobyAndShutdown();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("Error during forced shutdown: " + e.Message);
+            }
+        }
+
+        if (SceneManager.GetActiveScene().name != "MainMenu")
+            SceneManager.LoadScene("MainMenu");
+    }
+
     private void OnDestroy()
     {
         GameUIConfigurator.OnUIConfigurated -= StartFade;
+
+        if (lobbyLostSubscribed && lobbyManager != null)
+        {
+            lobbyManager.OnLobbyLost -= OnLobbyLost;
+        }
     }
 
     private void StartFade() => StartCoroutine(FadeCoroutine());
@@ -60,7 +111,6 @@ public class LoadingScreen : MonoBehaviour
     {
         if (isReturning) return;
 
-        // Si no se puede cancelar se ignora
         if (lobbyManager != null && !lobbyManager.CanCancel)
         {
             Debug.Log("Return ignorado: la partida ya está empezando.");
@@ -69,18 +119,13 @@ public class LoadingScreen : MonoBehaviour
 
         isReturning = true;
 
-        // Inhibir todo por si acaso
-        if (returnButton != null)
-        {
-            returnButton.interactable = false;
-        }
+        if (returnButton != null) returnButton.interactable = false;
         if (canvasGroup != null)
         {
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
         }
 
-        // Aceder al lobbyManager, cerrar todo, esperar, y salir de la escena
         if (lobbyManager != null)
         {
             try
@@ -88,7 +133,6 @@ public class LoadingScreen : MonoBehaviour
                 bool cancelled = await lobbyManager.CancelSearchAndLeave();
                 if (!cancelled)
                 {
-                    // Revertir por si acaso
                     isReturning = false;
                     if (returnButton != null) returnButton.interactable = true;
                     if (canvasGroup != null)

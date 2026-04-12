@@ -29,6 +29,9 @@ public class LobbyManager : MonoBehaviour
     bool isMatching;
     private CancellationTokenSource lifetimeCts;
 
+    public event Action OnLobbyLost;
+    private CancellationTokenSource clientPollCts;
+
     public bool CanCancel
     {
         get
@@ -318,6 +321,7 @@ public class LobbyManager : MonoBehaviour
                 return false;
             }
 
+            StartClientLobbyPolling();
             Debug.Log("Uniendose a un lobby como cliente");
             return true; // éxito
         }
@@ -407,6 +411,7 @@ public class LobbyManager : MonoBehaviour
     public async Task CloseLobyAndShutdown()
     {
         CancelInvoke(nameof(SendHeartbeatWrapper));
+        StopClientPolling();
 
         bool wasHost = NetworkManager.Singleton != null && NetworkManager.Singleton.IsHost;
 
@@ -457,8 +462,57 @@ public class LobbyManager : MonoBehaviour
         return true;
     }
 
+    private void StartClientLobbyPolling()
+    {
+        clientPollCts?.Cancel();
+        clientPollCts?.Dispose();
+        clientPollCts = new CancellationTokenSource();
+        _ = PollLobbyAsClient(clientPollCts.Token);
+    }
+
+    private async Task PollLobbyAsClient(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested && currentLobby != null)
+        {
+            try
+            {
+                await Task.Delay(3000, token);
+                if (token.IsCancellationRequested || currentLobby == null) return;
+
+                currentLobby = await LobbyService.Instance.GetLobbyAsync(currentLobby.Id);
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+            catch (LobbyServiceException e) when (e.Reason == LobbyExceptionReason.LobbyNotFound)
+            {
+                Debug.LogWarning("[Client] LobbyNotFound. Host left. Firing OnLobbyLost.");
+                currentLobby = null;
+                OnLobbyLost?.Invoke();
+                return;
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[Client] Poll error: {e.Message}");
+            }
+        }
+    }
+
+    public void StopClientPolling()
+    {
+        if (clientPollCts != null)
+        {
+            clientPollCts.Cancel();
+            clientPollCts.Dispose();
+            clientPollCts = null;
+        }
+    }
+
     private void OnDestroy()
     {
+        StopClientPolling();
+
         if (lifetimeCts != null)
         {
             lifetimeCts.Cancel();

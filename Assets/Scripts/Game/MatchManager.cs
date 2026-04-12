@@ -215,6 +215,10 @@ public class MatchManager : NetworkBehaviour
         matchState = MatchState.InGame;
         matchStartTime = startTime;
 
+        LobbyManager lobbyManager = FindFirstObjectByType<LobbyManager>();
+        if (lobbyManager != null)
+            lobbyManager.StopClientPolling();
+
         Debug.Log($"CLIENT {NetworkManager.Singleton.LocalClientId}: Received StartMatchClientRpc");
 
         bool isClient1 = NetworkManager.Singleton.LocalClientId == client1Id;
