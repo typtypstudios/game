@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InitialTip : MonoBehaviour
 {
-    [SerializeField] private Canvas mainMenuCanvas;
+    [SerializeField] private GameObject mainMenu;
     private Canvas selfCanvas;
     private bool hasBeenUnderstood;
 
@@ -41,7 +41,6 @@ public class InitialTip : MonoBehaviour
     public void Understood()
     {
         hasBeenUnderstood = true;
-        HideTip();
         SaveManager.Instance.Save();
     }
 
@@ -70,13 +69,13 @@ public class InitialTip : MonoBehaviour
     private void ShowTip()
     {
         selfCanvas.enabled = true;
-        mainMenuCanvas.enabled = false;
+        mainMenu.SetActive(false);
     }
 
-    private void HideTip()
+    public void HideTip()
     {
         if (!selfCanvas.enabled) return;
         selfCanvas.enabled = false;
-        mainMenuCanvas.enabled = true;
+        mainMenu.SetActive(true);
     }
 }
