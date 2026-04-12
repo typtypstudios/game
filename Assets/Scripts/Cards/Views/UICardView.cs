@@ -14,6 +14,11 @@ public class UICardView : MonoBehaviour, ICardView
     [SerializeField] private Image orbPrefab;
     [SerializeField] private List<Image> orbs = new();
 
+    void Awake()
+    {
+        EnsureOrbPool(4);
+    }
+
     public void Apply(CardVisualState state)
     {
         if (illustrationImage)
