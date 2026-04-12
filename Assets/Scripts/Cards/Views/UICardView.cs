@@ -25,7 +25,7 @@ public class UICardView : MonoBehaviour, ICardView
         if (frameImage)
         {
             frameImage.sprite = state.FrameSprite;
-            frameImage.color = state.FrameColor;
+            frameImage.color = state.FrameColor * state.CardTint;
         }
 
         if (levelDetailImage)
@@ -34,7 +34,7 @@ public class UICardView : MonoBehaviour, ICardView
             levelDetailImage.gameObject.SetActive(state.LevelDetailSprite);
             if (state.LevelDetailSprite)
             {
-                levelDetailImage.color = Color.white;
+                levelDetailImage.color = state.CardTint;
             }
         }
 
@@ -95,7 +95,7 @@ public class UICardView : MonoBehaviour, ICardView
 
             bool isFilled = i < state.FilledOrbCount;
             orb.sprite = isFilled ? state.FilledOrbSprite : state.EmptyOrbSprite;
-            orb.color = Color.white;
+            orb.color = state.CardTint;
         }
     }
 
