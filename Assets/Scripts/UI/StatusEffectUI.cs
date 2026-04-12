@@ -30,7 +30,8 @@ public class StatusEffectUI : MonoBehaviour
 
     private void AddStatusEffect(StatusEffect effect)
     {
-        if (effect.Definition.DurationType == EffectDurationType.Immediate) return;
+        if (effect.Definition.DurationType == EffectDurationType.Immediate
+            || effect.Definition.DurationType == EffectDurationType.Permanent) return;
         Sprite effectSprite = effect.Definition.Image;
         foreach (var status in addedStatus)
         {

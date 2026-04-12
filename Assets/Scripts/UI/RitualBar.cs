@@ -16,7 +16,7 @@ public class RitualBar : UIBar
     public override void SetValueWithoutTransition(float value)
     {
         base.SetValueWithoutTransition(value);
-        int percentaje = Mathf.RoundToInt(value * 100);
+        int percentaje = Mathf.FloorToInt(value * 100);
         percentajeText.text = $"{percentaje}%";
     }
 }
