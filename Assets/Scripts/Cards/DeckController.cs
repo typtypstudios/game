@@ -265,12 +265,16 @@ public class DeckController : NetworkBehaviour
         PlayCardClient(playedCard);
     }
 
-    void PlayCardClient(int playedCard)//And server/host
+    void PlayCardClient(int playedCard)
     {
         var cardDef = GetCardDefinitionById(playedCard);
         player.SpellCaster.CastSpell(cardDef);
 
-        //Events
+        if (IsOwner)
+            AudioManager.Instance.PlayGame(GameSound.SpellCast);
+        else
+            AudioManager.Instance.PlayGame(GameSound.EnemySpell);
+
         CardEventArgs eventArgs = new(OwnerClientId, playedCard);
         OnCardPlayedEvent?.Invoke(eventArgs);
         OnCardPlayed?.Invoke(cardDef);

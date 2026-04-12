@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TypTyp.Input;
+using System;
 
 [RequireComponent(typeof(Player))]
 public class PlayerInputManager : MonoBehaviour
@@ -9,11 +10,12 @@ public class PlayerInputManager : MonoBehaviour
     private Animator anim;
     [SerializeField] private Animator diverAnim;
 
-    Player player;
+    public Player Player { get; private set; }
 
-    public event System.Action OnSilencedAttempt;
-    public event System.Action OnBackspaceAttempt;
+    public event Action OnSilencedAttempt;
+    public event Action OnBackspaceAttempt;
     private bool matchActive;
+    public event Action<AnimState> OnAnimChanged;
 
     // Bool para el efecto de silenciado
     private bool isSilenced = false;
@@ -23,7 +25,7 @@ public class PlayerInputManager : MonoBehaviour
         MatchManager.OnMatchStarted += SubscribeToInput;
         MatchManager.OnMatchEnded += UnsubscribeToInput;
         anim = GetComponent<Animator>();
-        player = GetComponent<Player>();
+        Player = GetComponent<Player>();
     }
 
     void OnDestroy()
@@ -35,10 +37,10 @@ public class PlayerInputManager : MonoBehaviour
 
     private void SubscribeToInput()
     {
-        if (player.IsOwner)
+        if (Player.IsOwner)
         {
             matchActive = true;
-            Debug.Log("Subscribing to input for player " + player.name, gameObject);
+            Debug.Log("Subscribing to input for player " + Player.name, gameObject);
             changeModeActionReference.action.started += ChangeMode;
             SetMode(InputModeMask.Ritual);
         }
@@ -46,7 +48,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void UnsubscribeToInput()
     {
-        if (player.IsOwner)
+        if (Player.IsOwner)
         {
             matchActive = false;
             changeModeActionReference.action.started -= ChangeMode;
@@ -74,17 +76,22 @@ public class PlayerInputManager : MonoBehaviour
     {
         anim.SetBool("CastingSpells", mode == InputModeMask.Spells);
         diverAnim.SetBool("CastingSpells", mode == InputModeMask.Spells);
-        if (player.IsOwner) InputHandler.Instance.SetMode(mode);
+        if (Player.IsOwner) InputHandler.Instance.SetMode(mode);
     }
 
     private void Update()
     {
-        if (!player.IsOwner || !matchActive || Keyboard.current == null) return;
+        if (!Player.IsOwner || !matchActive || Keyboard.current == null) return;
 
         if (Keyboard.current.backspaceKey.wasPressedThisFrame)
         {
             OnBackspaceAttempt?.Invoke();
         }
+    }
+
+    public void OnAnimationChange()
+    {
+        OnAnimChanged?.Invoke(anim.GetBool("CastingSpells") ? AnimState.Spell : AnimState.Ritual);
     }
 
     #region SpellEffects
@@ -103,3 +110,5 @@ public class PlayerInputManager : MonoBehaviour
 
     #endregion
 }
+
+public enum AnimState { Ritual, Spell };

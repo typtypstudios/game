@@ -7,8 +7,12 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class CastingCard : MonoBehaviour
 {
+    [SerializeField] private PlayerInputManager inputManager;
+    [SerializeField] private Sprite backSprite;
     [SerializeField] private Sprite placeholderSprite;
     [SerializeField] private CardUIManager cardUIManager;
+    [SerializeField] private Material enemyMat;
+    [Header("Animation")]
     [SerializeField] private float showTime = 0.5f;
     [SerializeField] private float disappearTime = 0.5f;
     [SerializeField] private float appearTime = 1;
@@ -26,7 +30,7 @@ public class CastingCard : MonoBehaviour
         image = GetComponent<Image>();
         image.sprite = placeholderSprite;
         anim = GetComponent<Animator>();
-        InputHandler.Instance.OnInputModeChanged += HandleModeChange;
+        inputManager.OnAnimChanged += HandleAnimChange;
     }
 
     private void Start()
@@ -43,13 +47,19 @@ public class CastingCard : MonoBehaviour
         {
             card.OnIdxChanged -= OnCardUpdated;
         }
-        InputHandler.Instance.OnInputModeChanged -= HandleModeChange;
+        inputManager.OnAnimChanged -= HandleAnimChange;
     }
 
-    private void HandleModeChange(InputModeMask mask)
+    private void HandleAnimChange(AnimState state)
     {
-        if (mask != InputModeMask.Spells && !showingCard)
+        if (state != AnimState.Spell && !showingCard)
             dissolveEffect.SetDissolve(1, true, disappearTime);
+        else if (state == AnimState.Spell && !inputManager.Player.IsOwner)
+        {
+            image.sprite = backSprite;
+            dissolveEffect.SetDissolve(0, true, appearTime);
+            dissolveEffect.OverrideMaterial(enemyMat);
+        }
     }
 
     private void OnCardUpdated(CardUI card, float progress, bool canBeCasted)

@@ -36,8 +36,10 @@ public class InfoDisplayer : MonoBehaviour
         {
             transform.localScale *= hoverSizeMult;
             hovered = true;
-            cardName.color = writableButton.GetButtonColor() + Color.white * highlightColorAddition; //Ligeramente mas claro
+            cardName.color = writableButton.GetButtonColor() + Color.white * highlightColorAddition;
             emissiveMat.SetFloat("_EmissionForce", 1);
+
+            transform.SetAsLastSibling();
         }
         else if (!highlight && hovered)
         {
@@ -45,6 +47,8 @@ public class InfoDisplayer : MonoBehaviour
             hovered = false;
             cardName.color = originalNameColor;
             emissiveMat.SetFloat("_EmissionForce", 0);
+
+            transform.SetAsFirstSibling();
         }
     }
 }

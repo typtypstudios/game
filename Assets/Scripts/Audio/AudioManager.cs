@@ -36,6 +36,14 @@ public class CultSoundEntry
     [Range(0f, 1f)] public float volume = 1f;
 }
 
+[Serializable]
+public class GameSoundEntry
+{
+    public GameSound id;
+    public AudioClip clip;
+    [Range(0f, 1f)] public float volume = 1f;
+}
+
 public class AudioManager : Singleton<AudioManager>
 {
     [Header("Mixer")]
@@ -43,6 +51,8 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioMixerGroup musicGroup;
     [SerializeField] private AudioMixerGroup sfxGroup;
     [SerializeField] private AudioMixerGroup uiGroup;
+    [SerializeField] private AudioMixerGroup choirGroup;
+    [SerializeField] private AudioMixerGroup keyGroup;
 
     [Header("Snapshots")]
     [SerializeField] private AudioMixerSnapshot menuSnapshot;
@@ -63,6 +73,9 @@ public class AudioManager : Singleton<AudioManager>
     [Header("Cult Sounds")]
     [SerializeField] private CultSoundEntry[] cultSounds;
 
+    [Header("Game Sounds")]
+    [SerializeField] private GameSoundEntry[] gameSounds;
+
     private SFXPool sfxPool;
     private SFXPool uiPool;
     private MusicPlayer music;
@@ -70,6 +83,10 @@ public class AudioManager : Singleton<AudioManager>
     private Dictionary<MusicTrack, MusicEntry> musicMap;
     private Dictionary<CountdownSound, CountdownSoundEntry> countdownMap;
     private Dictionary<CultSound, CultSoundEntry> cultMap;
+    private Dictionary<GameSound, GameSoundEntry> gameMap;
+
+    public AudioMixerGroup ChoirGroup => choirGroup;
+    public AudioMixerGroup KeyGroup => keyGroup;
 
     protected override void Awake()
     {
@@ -84,6 +101,7 @@ public class AudioManager : Singleton<AudioManager>
         BuildMusicMap();
         BuildCountdownMap();
         BuildCultMap();
+        BuildGameMap();
     }
 
     private void BuildUiMap()
@@ -127,6 +145,17 @@ public class AudioManager : Singleton<AudioManager>
         {
             if (entry == null || entry.clip == null) continue;
             cultMap[entry.id] = entry;
+        }
+    }
+
+    private void BuildGameMap()
+    {
+        gameMap = new Dictionary<GameSound, GameSoundEntry>();
+        if (gameSounds == null) return;
+        foreach (var entry in gameSounds)
+        {
+            if (entry == null || entry.clip == null) continue;
+            gameMap[entry.id] = entry;
         }
     }
 
@@ -178,6 +207,15 @@ public class AudioManager : Singleton<AudioManager>
             Debug.LogWarning($"[AudioManager] CultSound '{id}' no está mapeado.");
     }
 
+    public void PlayGame(GameSound id)
+    {
+        if (id == GameSound.None) return;
+        if (gameMap.TryGetValue(id, out var entry))
+            sfxPool.PlayOneShot(entry.clip, entry.volume);
+        else
+            Debug.LogWarning($"[AudioManager] GameSound '{id}' no está mapeado.");
+    }
+
     public void StopAllSFX()
     {
         sfxPool.StopAll();
@@ -222,6 +260,12 @@ public class AudioManager : Singleton<AudioManager>
         if (mixer == null || string.IsNullOrEmpty(exposedParam)) return;
         float db = normalized01 <= 0.0001f ? -80f : Mathf.Log10(normalized01) * 20f;
         mixer.SetFloat(exposedParam, db);
+    }
+
+    public void SetMixerParam(string exposedParam, float value)
+    {
+        if (mixer == null || string.IsNullOrEmpty(exposedParam)) return;
+        mixer.SetFloat(exposedParam, value);
     }
 
     #endregion

@@ -45,6 +45,8 @@ public class BuilderDisplayer : InfoDisplayer
     {
         base.Highlight(highlight);
         EnableInfoPanel(highlight);
+        if (highlight)
+            transform.parent.SetAsLastSibling();
     }
 
     private void EnableInfoPanel(bool enable)

@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: Slipperslap
   m_EditorClassIdentifier: Assembly-CSharp::CardDefinition
   <Name>k__BackingField: Slipperslap
-  <Description>k__BackingField: <effectEnemyDesc_0c> to rival and removes <effectEnemyDesc_1c>
-    ink bar from him.
+  <Description>k__BackingField: <effectEnemyDesc_0c> to the opponent and removes
+    <effectEnemyDesc_1c> ink bar from him.
   <Image>k__BackingField: {fileID: 8209484984893358528, guid: 6206b5e7c788c414d86c02d58bc79ad0, type: 3}
   <Cult>k__BackingField: {fileID: 11400000, guid: 3dc63e919ba61a8488ace268f88c7454, type: 2}
   <RequiredLevel>k__BackingField: 4
   <Spell>k__BackingField: {fileID: 11400000, guid: 9f56b6942483f9b4a9aa220f77817899, type: 2}
   <ManaCost>k__BackingField: 3
+  <CastSound>k__BackingField: {fileID: 0}
+  <CastVolume>k__BackingField: 1

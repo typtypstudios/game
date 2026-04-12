@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Embers
   m_EditorClassIdentifier: Assembly-CSharp::CardDefinition
   <Name>k__BackingField: Embers
-  <Description>k__BackingField: Applies <effectEnemy_0> to rival.
-  <Image>k__BackingField: {fileID: -4396177142121392990, guid: 48432bb40a3ce694499796c49b1e536c, type: 3}
+  <Description>k__BackingField: Applies <effectEnemy_0> to the opponent.
+  <Image>k__BackingField: {fileID: 3705032194824374982, guid: 11cc2366e2fe4d7bca54124935ab42d9, type: 3}
   <Cult>k__BackingField: {fileID: 11400000, guid: b4e557786e124bb4598489234bdc1a67, type: 2}
   <RequiredLevel>k__BackingField: 1
   <Spell>k__BackingField: {fileID: 11400000, guid: 51dca40a7dfc4874b99b150c44f8db6c, type: 2}
   <ManaCost>k__BackingField: 1
+  <CastSound>k__BackingField: {fileID: 0}
+  <CastVolume>k__BackingField: 1
