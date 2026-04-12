@@ -109,6 +109,7 @@ public class UICardView : MonoBehaviour, ICardView
         while (orbs.Count < count)
         {
             var newOrb = Instantiate(orbPrefab, orbContainer);
+            newOrb.gameObject.SetActive(false);
             orbs.Add(newOrb);
         }
     }
