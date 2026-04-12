@@ -36,7 +36,8 @@ public class DeckBuilder : MonoBehaviour
         {
             // Keep highlight panels behind cards so selected cards remain visible
             // without reordering card siblings.
-            panel.transform.SetAsFirstSibling();
+            // panel.transform.SetAsFirstSibling();
+            panel.transform.SetAsLastSibling();
         }
 
         BuilderDisplayer.OnCardChosen += ProcessCardChosen;
