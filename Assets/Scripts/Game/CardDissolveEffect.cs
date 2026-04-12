@@ -18,8 +18,7 @@ public class CardDissolveEffect : MonoBehaviour
     private void Awake()
     {
         dissolveMat = new(dissolveMat);
-        GetComponent<Image>().material = dissolveMat;
-        foreach (var image in linkedImages) image.material = dissolveMat;
+        UpdateMaterials();
         Dissolve = 1;
     }
 
@@ -40,6 +39,18 @@ public class CardDissolveEffect : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(FadeCoroutine(transitionTime, showTime, onStart, onEnd, dissolvePrevContent));
+    }
+
+    public void OverrideMaterial(Material mat)
+    {
+        dissolveMat = new(mat);
+        UpdateMaterials();
+    }
+
+    private void UpdateMaterials()
+    {
+        GetComponent<Image>().material = dissolveMat;
+        foreach (var image in linkedImages) image.material = dissolveMat;
     }
         
     IEnumerator FadeCoroutine(float transitionTime, float showTime, Action onStart,
