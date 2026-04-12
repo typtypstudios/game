@@ -9,10 +9,12 @@ public class EmissiveImageConfigurator : MonoBehaviour
     private Image image;
     private bool activated = false;
     private float initIntensity;
+    bool materialCoppied = false;
 
     private void Awake()
     {
         emissiveMat = new(emissiveMat);
+        materialCoppied = true;
         initIntensity = emissiveMat.GetFloat("_EmissionForce");
         image = GetComponent<Image>();
         ToggleEmission(emitOnStart);
@@ -27,12 +29,14 @@ public class EmissiveImageConfigurator : MonoBehaviour
 
     public void SetIntensityPercentage(float intensity)
     {
+        if (!materialCoppied) return;
         intensity = Mathf.Clamp01(intensity);
         emissiveMat.SetFloat("_EmissionForce", initIntensity * intensity);
     }
 
     public void SetTint(Color tint, float intensity)
     {
+        if (!materialCoppied) return;
         emissiveMat.SetColor("_Tint", Utils.ColorToHDR(tint, intensity));
     }
 }
