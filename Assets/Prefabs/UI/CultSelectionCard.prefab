@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5444201230092891386}
   - component: {fileID: 3200426923702408713}
   - component: {fileID: 2103941742095161135}
+  - component: {fileID: 4053700815582005098}
   m_Layer: 5
   m_Name: NameBackground
   m_TagString: Untagged
@@ -76,6 +77,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &4053700815582005098
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3078238527381871560}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &6197163764538069853
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,12 +236,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  fillColor: {r: 1, g: 0, b: 0.8533139, a: 1}
-  autoSubscribe: 1
-  useDefaultColor: 1
   resetIfFailed: 1
   resetOnWritten: 1
   resetTime: 0
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
 --- !u!114 &2501573664067777313
 MonoBehaviour:
   m_ObjectHideFlags: 0
