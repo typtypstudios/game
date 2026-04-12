@@ -1586,9 +1586,6 @@ MonoBehaviour:
   statusEffectUIs:
   - {fileID: 7282463060855335517}
   - {fileID: 8329022803878753998}
-  skulls:
-  - {fileID: 4495328669735401636}
-  - {fileID: 2946689058631885879}
   playerFeedbackUI: {fileID: 4933083756156831855}
 --- !u!114 &5666264262975135636
 MonoBehaviour:
@@ -2293,15 +2290,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6283059389393722238, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
       propertyPath: m_Color.b
-      value: 0.25490198
+      value: 0.9137255
       objectReference: {fileID: 0}
     - target: {fileID: 6283059389393722238, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
       propertyPath: m_Color.g
-      value: 0.61960787
+      value: 0.92941177
       objectReference: {fileID: 0}
     - target: {fileID: 6283059389393722238, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
       propertyPath: m_Color.r
-      value: 0.87058824
+      value: 0.92156863
       objectReference: {fileID: 0}
     - target: {fileID: 7359521108139374489, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
       propertyPath: m_ChildAlignment
@@ -2321,17 +2318,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6112463150117661989, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
   m_PrefabInstance: {fileID: 5043772730242220879}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2946689058631885879 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7862065063025928056, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
-  m_PrefabInstance: {fileID: 5043772730242220879}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c7a9615fa10f44438886aec1f0f91f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SkullSprite
 --- !u!114 &3730353185371658319 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8519672389002386176, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
@@ -2384,9 +2370,101 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2770225757356184580}
     m_Modifications:
+    - target: {fileID: 561073357102488555, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 561073357102488555, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 660937819721259089, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.0000012516975
+      objectReference: {fileID: 0}
+    - target: {fileID: 660937819721259089, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 660937819721259089, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 788866946157088364, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
       propertyPath: m_Name
       value: PlayerHUD
+      objectReference: {fileID: 0}
+    - target: {fileID: 1742426796695871674, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5ddf4ebf5e7242741825e572333cff00, type: 3}
+    - target: {fileID: 1742426796695871674, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.21960784
+      objectReference: {fileID: 0}
+    - target: {fileID: 1742426796695871674, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.14117648
+      objectReference: {fileID: 0}
+    - target: {fileID: 1742426796695871674, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.45882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 1742426796695871674, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2572466677138957841, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745109606188021229, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5291738583203933639, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 5291738583203933639, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 5291738583203933639, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 75.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5291738583203933639, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -37.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5291738583203933639, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5769763431872916897, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5769763431872916897, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5769763431872916897, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5927882333607377527, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6083468405559063158, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6083468405559063158, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -19.9
       objectReference: {fileID: 0}
     - target: {fileID: 6112463150117661989, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
       propertyPath: m_Pivot.x
@@ -2468,10 +2546,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6283059389393722238, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.9137255
+      objectReference: {fileID: 0}
+    - target: {fileID: 6283059389393722238, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6283059389393722238, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 7337863784275564509, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5ddf4ebf5e7242741825e572333cff00, type: 3}
+    - target: {fileID: 7337863784275564509, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7337863784275564509, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7337863784275564509, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2745109606188021229, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6623210006246271159}
   m_SourcePrefab: {fileID: 100100000, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
 --- !u!224 &552504348210623225 stripped
 RectTransform:
@@ -2489,17 +2598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab0a5799e70317546a5eb00b2aee2fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIBar
---- !u!114 &4495328669735401636 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7862065063025928056, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
-  m_PrefabInstance: {fileID: 6014899381711298524}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c7a9615fa10f44438886aec1f0f91f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SkullSprite
 --- !u!114 &5184179603392711093 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1479662273081513577, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
@@ -2522,6 +2620,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef1f382ead0364b4a96c786c20b4ebc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectUI
+--- !u!1 &8458219395628870193 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2745109606188021229, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
+  m_PrefabInstance: {fileID: 6014899381711298524}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6623210006246271159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8458219395628870193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e5e8b648f0ca14d8c06796dbc1363e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CultColoredItem
 --- !u!114 &9180370478166877543 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3178993032389262011, guid: 2cfb87b03cdaf05419d994d67821ee6f, type: 3}
