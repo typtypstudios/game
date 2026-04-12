@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5171786726315388943}
   - component: {fileID: 8859590590699805270}
   - component: {fileID: 6243728336409207940}
+  - component: {fileID: 1964084521426550645}
   m_Layer: 0
   m_Name: MatchSceneMusicAudio
   m_TagString: Untagged
@@ -74,17 +75,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RitualChoirPlayer
   choirClip: {fileID: 8300000, guid: 5283406897efe984b8eb1588f7439186, type: 3}
   coughClip: {fileID: 8300000, guid: 924999bf06cf56b4fa906e5bbab3b495, type: 3}
-  minVolume: 0.7
-  maxVolume: 1
-  minPitch: 0.8
-  maxPitch: 1.1
+  minVolume: 0.4
+  maxVolume: 0.6
+  minPitch: 0.85
+  maxPitch: 1
   crossfadeDuration: 1.5
   pauseFadeDuration: 0.3
   resumeFadeDuration: 0.4
   matchEndFadeDuration: 1.5
-  idleTimeout: 3
+  idleTimeout: 1.5
   idleFadeDuration: 0.6
   reverbParam: ChoirReverb
   minReverb: -10000
-  maxReverb: 500
+  maxReverb: 800
   coughVolume: 0.55
+--- !u!114 &1964084521426550645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958256566298068354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b02d24f697bd3c44af63586454171bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CorruptionAudioPlayer
+  damageDelay: 0.7
+  healDelay: 0.7

@@ -8,6 +8,8 @@ public class CorruptionGainManager : MonoBehaviour
 {
     private Player player;
     public event Action<float> OnCorruptionGain;
+    public event Action OnDamageReceived;
+    public event Action OnHealReceived;
     private WaitForSeconds timeToAutoHeal;
     private WaitForSeconds autoHealInterval;
     public event Action<float, Player> OnMistake;
@@ -21,37 +23,47 @@ public class CorruptionGainManager : MonoBehaviour
         timeToAutoHeal = new WaitForSeconds(Settings.Instance.TimeToAutoHeal);
         autoHealInterval = new WaitForSeconds(Settings.Instance.AutoHealInterval);
     }
-    
+
     public void ProcessMistake()
     {
         Debug.Log("Processing mistake for player " + player.name, gameObject);
         float corruption = Settings.Instance.MistakePenalizationPercentage / 100 *
             Settings.Instance.MaxCorruption * MistakeGainMultiplier;
-        AddCorruption(corruption);
+        AddCorruption(corruption, true);
         OnMistake?.Invoke(corruption, player);
     }
 
-    public void AddCorruption(float corruptionToAdd)
+    public void AddCorruption(float corruptionToAdd, bool isPassive = false)
     {
-        if(corruptionToAdd > 0)
+        if (corruptionToAdd > 0)
         {
             StopAllCoroutines();
             StartCoroutine(AutoHealCoroutine());
+            if(!isPassive)
+                player.NotifyCorruptionAudioRpc(true);
         }
+        else if (corruptionToAdd < 0 && !isPassive)
+        {
+            player.NotifyCorruptionAudioRpc(false);
+        }
+
         float multiplier = corruptionToAdd > 0 ? HurtGainMultiplier : HealGainMultiplier;
         corruptionToAdd *= multiplier;
         float currentCorruption = player.CurrentCorruption.Value;
-        currentCorruption = Mathf.Clamp(currentCorruption + corruptionToAdd, 0, 
+        currentCorruption = Mathf.Clamp(currentCorruption + corruptionToAdd, 0,
             Settings.Instance.MaxCorruption);
         OnCorruptionGain?.Invoke(currentCorruption);
     }
+
+    public void TriggerDamageEvent() => OnDamageReceived?.Invoke();
+    public void TriggerHealEvent() => OnHealReceived?.Invoke();
 
     IEnumerator AutoHealCoroutine()
     {
         yield return timeToAutoHeal;
         while (true)
         {
-            AddCorruption(-Settings.Instance.AutoHealPercentage / 100 * Settings.Instance.MaxCorruption);
+            AddCorruption(-Settings.Instance.AutoHealPercentage / 100 * Settings.Instance.MaxCorruption, isPassive: true);
             yield return autoHealInterval;
         }
     }

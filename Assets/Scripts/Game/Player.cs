@@ -80,15 +80,16 @@ public class Player : NetworkBehaviour
     public void ConfigurePlayerRpc(int playerIdx)
     {
         this.tag = playerIdx == 0 ? Settings.Instance.P1_tag : Settings.Instance.P2_tag;
-
         FindFirstObjectByType<PlayerPositioner>().PositionPlayer(this, playerIdx, IsOwner);
-
         if (IsOwner)
         {
             Enemy = FindObjectsByType<Player>(FindObjectsSortMode.None).First(p => p != this);
 
             RitualChoirPlayer choir = FindFirstObjectByType<RitualChoirPlayer>();
             if (choir != null) choir.Bind(RitualManager);
+
+            CorruptionAudioPlayer corruptionAudio = FindFirstObjectByType<CorruptionAudioPlayer>();
+            if (corruptionAudio != null) corruptionAudio.Bind(CorruptionManager);
 
             FindFirstObjectByType<MatchManager>().NotifyPlayerConfiguredServerRpc();
         }
@@ -116,6 +117,15 @@ public class Player : NetworkBehaviour
 
     [Rpc(SendTo.Server)]
     private void ProcessMistakeRpc() => CorruptionManager.ProcessMistake();
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void NotifyCorruptionAudioRpc(bool isDamage)
+    {
+        if (isDamage)
+            CorruptionManager.TriggerDamageEvent();
+        else
+            CorruptionManager.TriggerHealEvent();
+    }
 
     private void GetComponents()
     {

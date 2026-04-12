@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -214,6 +215,19 @@ public class AudioManager : Singleton<AudioManager>
             sfxPool.PlayOneShot(entry.clip, entry.volume);
         else
             Debug.LogWarning($"[AudioManager] GameSound '{id}' no está mapeado.");
+    }
+
+    public void PlayGame(GameSound id, float delay)
+    {
+        if (id == GameSound.None) return;
+        if (delay <= 0f) { PlayGame(id); return; }
+        StartCoroutine(PlayGameDelayed(id, delay));
+    }
+
+    private IEnumerator PlayGameDelayed(GameSound id, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        PlayGame(id);
     }
 
     public void StopAllSFX()

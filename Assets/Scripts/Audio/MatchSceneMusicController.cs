@@ -20,7 +20,8 @@ public class MatchSceneMusicController : MonoBehaviour
 
     private void HandleMatchEnded()
     {
-        AudioManager.Instance.PlayMusic(endGameTrack);
+        // Se va la musica de Geometry Dash :(
+        //AudioManager.Instance.PlayMusic(endGameTrack);
     }
 
 

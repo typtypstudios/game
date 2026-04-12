@@ -743,6 +743,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: c425b7be-c2b9-4af2-b618-dcfd7ad0eb1b
     m_ActionName: 'Player/Click[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ad3f41be-369d-4a63-96af-4b7f00176a3b
+    m_ActionName: 'Player/GoBack[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -1155,14 +1159,6 @@ PrefabInstance:
     - target: {fileID: 1897847320388412049, guid: 84269d2c2fdd3d5469a4787161bb50ad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6243728336409207940, guid: 84269d2c2fdd3d5469a4787161bb50ad, type: 3}
-      propertyPath: maxVolume
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6243728336409207940, guid: 84269d2c2fdd3d5469a4787161bb50ad, type: 3}
-      propertyPath: minVolume
-      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

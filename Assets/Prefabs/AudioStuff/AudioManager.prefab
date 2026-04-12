@@ -78,7 +78,7 @@ MonoBehaviour:
     fadeDuration: 1.5
   - id: 2
     clip: {fileID: 8300000, guid: b11b67a9b0992d84b985a2dbe0b2eddb, type: 3}
-    volume: 0.15
+    volume: 0.12
     fadeDuration: 1.5
   - id: 3
     clip: {fileID: 8300000, guid: 0fefdc9721e9533438872b7ce5873900, type: 3}
@@ -117,6 +117,12 @@ MonoBehaviour:
   - id: 3
     clip: {fileID: 8300000, guid: 9316e7f9f99a2094aadceb7c772e59ff, type: 3}
     volume: 0.476
+  - id: 4
+    clip: {fileID: 8300000, guid: 9fc0e9fa1c83c134483cdd8d15c71622, type: 3}
+    volume: 0.7
+  - id: 5
+    clip: {fileID: 8300000, guid: fd7cf53f3543ca541a5ee959ca5a0771, type: 3}
+    volume: 0.5
 --- !u!114 &9054697067088249900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +153,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7616d70270d04ff4c9fa473d9f4a2558, type: 3}
   minVolume: 0.5
   maxVolume: 0.7
-  minPitch: 1
+  minPitch: 0.8
   maxPitch: 1.2
   menuSceneName: MainMenu

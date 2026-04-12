@@ -30,7 +30,9 @@ public enum GameSound
     None = 0,
     SpellCast,
     EnemySpell,
-    Damage
+    FailRitual, // No se usa, el sonido de tos está en RitualChoirPlayer en el MatchSceneMusicAudio
+    Damage,
+    Heal
 }
 
 public enum CultSound
