@@ -19,6 +19,8 @@ public class TurnPageEffect : MonoBehaviour
         transitionManager.SubscribeOnCanceled(this, OnCanceled);
     }
 
+    public void InitializePages(Transform[] pages) => pagesTransform = pages;
+
     public void TurnPage()
     {
         parentCanvas.gameObject.layer = 0;

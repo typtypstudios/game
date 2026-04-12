@@ -102,5 +102,6 @@ public enum Screens
     Credits,
     CultSelection,
     GoBack,
-    Loading
+    Loading,
+    Tutorial
 }
