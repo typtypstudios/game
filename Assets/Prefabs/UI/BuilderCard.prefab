@@ -966,8 +966,8 @@ MonoBehaviour:
   hoverSizeMult: 1.2
   highlightColorAddition: 0.3
   cardVisualPresenter: {fileID: 4862490076434750496}
-  presenterBorderImage: {fileID: 8404427417791913671}
-  presenterBorderHighlightAddition: 0.2
+  presenterBorderImage: {fileID: 8434456965958597233}
+  presenterBorderEmissionForce: 2
   description: {fileID: 6088852649907448704}
   infoPanel: {fileID: 5281926146060201446}
   blocker: {fileID: 8884408791867094795}
@@ -1282,6 +1282,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7460670100496519077, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: eb6299107d24c2c41b06566b5b1dc5b9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1303,6 +1307,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e309bd79a46fa4ab2c4445b3b336d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardVisualPresenter
+--- !u!114 &8434456965958597233 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7460670100496519077, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
+  m_PrefabInstance: {fileID: 1334378314491426260}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1001 &1550245940938003553
 PrefabInstance:
   m_ObjectHideFlags: 0

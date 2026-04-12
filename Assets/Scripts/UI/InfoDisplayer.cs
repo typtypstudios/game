@@ -11,15 +11,15 @@ public class InfoDisplayer : MonoBehaviour
     [Header("Card Presenter")]
     [SerializeField] private CardVisualPresenter cardVisualPresenter;
     [SerializeField] private Image presenterBorderImage;
-    [SerializeField] private float presenterBorderHighlightAddition = 0.2f;
+    [SerializeField] private float presenterBorderEmissionForce = 1f;
 
     private Image image;
     private bool hovered = false;
     private bool usingCardPresenter = false;
     private WritableButton writableButton;
     private Color originalNameColor = Color.white;
-    private Color presenterBorderBaseColor = Color.white;
     private Material emissiveMat;
+    private Material presenterBorderEmissiveMat;
     public ADefinition Definition { get; private set; }
 
     private void Awake()
@@ -35,7 +35,9 @@ public class InfoDisplayer : MonoBehaviour
         originalNameColor = cardName.color;
         if (presenterBorderImage)
         {
-            presenterBorderBaseColor = presenterBorderImage.color;
+            presenterBorderEmissiveMat = new(presenterBorderImage.material);
+            presenterBorderImage.material = presenterBorderEmissiveMat;
+            SetPresenterBorderEmission(false);
         }
     }
 
@@ -51,14 +53,7 @@ public class InfoDisplayer : MonoBehaviour
             cardVisualPresenter.SetCard(cardDefinition, resolvedManaCost, resolvedManaCost);
             usingCardPresenter = true;
 
-            if (presenterBorderImage)
-            {
-                // El color base del borde depende de la carta actual, no del Awake.
-                presenterBorderBaseColor = presenterBorderImage.color;
-                presenterBorderImage.color = hovered
-                    ? GetHighlightedBorderColor(presenterBorderBaseColor)
-                    : presenterBorderBaseColor;
-            }
+            SetPresenterBorderEmission(hovered);
 
             writableButton.OverrideText(definition.Name);
             Definition = definition;
@@ -76,10 +71,7 @@ public class InfoDisplayer : MonoBehaviour
         writableButton.OverrideText(definition.Name);
         Definition = definition;
 
-        if (presenterBorderImage)
-        {
-            presenterBorderImage.color = presenterBorderBaseColor;
-        }
+        SetPresenterBorderEmission(false);
     }
 
     private void SetVisualMode(bool usePresenter)
@@ -109,8 +101,7 @@ public class InfoDisplayer : MonoBehaviour
 
             if (usingCardPresenter && presenterBorderImage)
             {
-                presenterBorderBaseColor = presenterBorderImage.color;
-                presenterBorderImage.color = GetHighlightedBorderColor(presenterBorderBaseColor);
+                SetPresenterBorderEmission(true);
             }
             else
             {
@@ -128,7 +119,7 @@ public class InfoDisplayer : MonoBehaviour
 
             if (usingCardPresenter && presenterBorderImage)
             {
-                presenterBorderImage.color = presenterBorderBaseColor;
+                SetPresenterBorderEmission(false);
             }
             else
             {
@@ -140,8 +131,16 @@ public class InfoDisplayer : MonoBehaviour
         }
     }
 
-    private Color GetHighlightedBorderColor(Color baseColor)
+    private void SetPresenterBorderEmission(bool enabled)
     {
-        return baseColor + Color.white * presenterBorderHighlightAddition;
+        if (!presenterBorderEmissiveMat)
+        {
+            return;
+        }
+
+        if (presenterBorderEmissiveMat.HasProperty("_EmissionForce"))
+        {
+            presenterBorderEmissiveMat.SetFloat("_EmissionForce", enabled ? presenterBorderEmissionForce : 0f);
+        }
     }
 }
