@@ -2,7 +2,12 @@ using UnityEngine;
 
 public class CountdownAudioController : MonoBehaviour
 {
-    [SerializeField] private StartEndCanvas startEndCanvas;
+    private StartEndCanvas startEndCanvas;
+
+    private void Awake()
+    {
+        startEndCanvas = FindFirstObjectByType<StartEndCanvas>();
+    }
 
     private void OnEnable()
     {

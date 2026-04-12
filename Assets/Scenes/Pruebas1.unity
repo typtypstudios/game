@@ -119,6 +119,128 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &564087073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 564087076}
+  - component: {fileID: 564087075}
+  - component: {fileID: 564087074}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &564087074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564087073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb83b17a22fbeec4287a096cbbdb4783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardAudioPlayer
+--- !u!114 &564087075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564087073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a1e9864b1c3a284ba0f5f245750d0ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  mixer: {fileID: 24100000, guid: eb40da1aa6e534a44986281bde0b9f47, type: 2}
+  musicGroup: {fileID: 8885334355090949641, guid: eb40da1aa6e534a44986281bde0b9f47, type: 2}
+  sfxGroup: {fileID: 1171339841656591, guid: eb40da1aa6e534a44986281bde0b9f47, type: 2}
+  uiGroup: {fileID: -1026440343970952301, guid: eb40da1aa6e534a44986281bde0b9f47, type: 2}
+  menuSnapshot: {fileID: 24500006, guid: eb40da1aa6e534a44986281bde0b9f47, type: 2}
+  gameSnapshot: {fileID: 1880269790833531560, guid: eb40da1aa6e534a44986281bde0b9f47, type: 2}
+  sfxPoolSize: 12
+  uiSounds:
+  - id: 1
+    clip: {fileID: 8300000, guid: d04894814e31b954494de087702ab73b, type: 3}
+    volume: 0.3
+  - id: 4
+    clip: {fileID: 8300000, guid: 6bcb12a46f055f84f8f5ecf95e4435b7, type: 3}
+    volume: 0.4
+  - id: 2
+    clip: {fileID: 8300000, guid: 81cc9a962c8940e458e39c45740f377e, type: 3}
+    volume: 0.6
+  - id: 3
+    clip: {fileID: 8300000, guid: 945cd60bcf1b89847af2c42617c116ec, type: 3}
+    volume: 0.6
+  - id: 5
+    clip: {fileID: 8300000, guid: 6bcb12a46f055f84f8f5ecf95e4435b7, type: 3}
+    volume: 0.6
+  musicTracks:
+  - id: 1
+    clip: {fileID: 8300000, guid: 750986aaa4c118341a7a1755eca8335c, type: 3}
+    volume: 0.5
+    fadeDuration: 1.5
+  - id: 2
+    clip: {fileID: 8300000, guid: b11b67a9b0992d84b985a2dbe0b2eddb, type: 3}
+    volume: 0.3
+    fadeDuration: 1.5
+  countdownSounds:
+  - id: 1
+    clip: {fileID: 8300000, guid: c6e81d615a689824eaf80132ab241acb, type: 3}
+    volume: 1
+  - id: 2
+    clip: {fileID: 8300000, guid: 24d942bd8e5b65542a4c62eeee4d1398, type: 3}
+    volume: 1
+  - id: 3
+    clip: {fileID: 8300000, guid: c6e81d615a689824eaf80132ab241acb, type: 3}
+    volume: 1
+  - id: 4
+    clip: {fileID: 8300000, guid: 5150d2c2d61773343b98a415abc8445e, type: 3}
+    volume: 1
+  cultSounds:
+  - id: 0
+    clip: {fileID: 8300000, guid: 54005fd6fb0923b468ab2a9ddb78d091, type: 3}
+    volume: 0.5
+  - id: 1
+    clip: {fileID: 8300000, guid: ef45ed8141ada164580c5d0d05b7fd85, type: 3}
+    volume: 0.5
+  - id: 2
+    clip: {fileID: 8300000, guid: 3d47f9997dee52e4292aff1480d6770d, type: 3}
+    volume: 0.5
+  gameSounds:
+  - id: 1
+    clip: {fileID: 8300000, guid: edd5be78dfea66644a97ed25c98f34fa, type: 3}
+    volume: 1
+  - id: 2
+    clip: {fileID: 8300000, guid: e36de7fc12a63b04f94af667b8d86011, type: 3}
+    volume: 1
+  - id: 3
+    clip: {fileID: 8300000, guid: 9316e7f9f99a2094aadceb7c772e59ff, type: 3}
+    volume: 0.476
+--- !u!4 &564087076
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564087073}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -13.16025, y: -10.81786, z: 34.97924}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &785148765
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,6 +333,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &862398012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 862398015}
+  - component: {fileID: 862398014}
+  - component: {fileID: 862398013}
+  m_Layer: 0
+  m_Name: MatchSceneMusicAudio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &862398013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862398012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5611495cfbe82df45ae0c2afb12ccb94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CountdownAudioController
+  startEndCanvas: {fileID: 0}
+--- !u!114 &862398014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862398012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40cf8126f243af2478ccaebf59f65abf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MatchSceneMusicController
+  track: 2
+--- !u!4 &862398015
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862398012}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -39.6, z: 152.95001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1410055906
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,6 +402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1410055908}
   - component: {fileID: 1410055907}
+  - component: {fileID: 1410055909}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -308,9 +490,40 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1410055909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410055906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 785148768}
   - {fileID: 1410055908}
+  - {fileID: 564087076}
+  - {fileID: 862398015}

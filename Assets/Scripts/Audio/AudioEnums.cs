@@ -2,7 +2,8 @@ public enum MusicTrack
 {
     None = 0,
     MainMenu,
-    Match
+    Match,
+    GameEnd
 }
 
 public enum CountdownSound
