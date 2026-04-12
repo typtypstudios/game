@@ -7,6 +7,7 @@ public class PlayerInputManager : MonoBehaviour
 {
     [SerializeField] private InputActionReference changeModeActionReference;
     private Animator anim;
+    [SerializeField] private Animator diverAnim;
 
     Player player;
 
@@ -72,6 +73,7 @@ public class PlayerInputManager : MonoBehaviour
     private void SetMode(InputModeMask mode)
     {
         anim.SetBool("CastingSpells", mode == InputModeMask.Spells);
+        diverAnim.SetBool("CastingSpells", mode == InputModeMask.Spells);
         if (player.IsOwner) InputHandler.Instance.SetMode(mode);
     }
 
