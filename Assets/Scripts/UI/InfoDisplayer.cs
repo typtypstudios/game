@@ -18,7 +18,7 @@ public class InfoDisplayer : MonoBehaviour
     private bool usingCardPresenter = false;
     private WritableButton writableButton;
     private Color originalNameColor = Color.white;
-    private Color originalPresenterBorderColor = Color.white;
+    private Color presenterBorderBaseColor = Color.white;
     private Material emissiveMat;
     public ADefinition Definition { get; private set; }
 
@@ -35,7 +35,7 @@ public class InfoDisplayer : MonoBehaviour
         originalNameColor = cardName.color;
         if (presenterBorderImage)
         {
-            originalPresenterBorderColor = presenterBorderImage.color;
+            presenterBorderBaseColor = presenterBorderImage.color;
         }
     }
 
@@ -50,6 +50,16 @@ public class InfoDisplayer : MonoBehaviour
             int resolvedManaCost = Mathf.Max(0, cardDefinition.ManaCost);
             cardVisualPresenter.SetCard(cardDefinition, resolvedManaCost, resolvedManaCost);
             usingCardPresenter = true;
+
+            if (presenterBorderImage)
+            {
+                // El color base del borde depende de la carta actual, no del Awake.
+                presenterBorderBaseColor = presenterBorderImage.color;
+                presenterBorderImage.color = hovered
+                    ? GetHighlightedBorderColor(presenterBorderBaseColor)
+                    : presenterBorderBaseColor;
+            }
+
             writableButton.OverrideText(definition.Name);
             Definition = definition;
             return;
@@ -68,7 +78,7 @@ public class InfoDisplayer : MonoBehaviour
 
         if (presenterBorderImage)
         {
-            presenterBorderImage.color = originalPresenterBorderColor;
+            presenterBorderImage.color = presenterBorderBaseColor;
         }
     }
 
@@ -96,8 +106,8 @@ public class InfoDisplayer : MonoBehaviour
 
             if (usingCardPresenter && presenterBorderImage)
             {
-                originalPresenterBorderColor = presenterBorderImage.color;
-                presenterBorderImage.color = originalPresenterBorderColor + Color.white * presenterBorderHighlightAddition;
+                presenterBorderBaseColor = presenterBorderImage.color;
+                presenterBorderImage.color = GetHighlightedBorderColor(presenterBorderBaseColor);
             }
             else
             {
@@ -115,7 +125,7 @@ public class InfoDisplayer : MonoBehaviour
 
             if (usingCardPresenter && presenterBorderImage)
             {
-                presenterBorderImage.color = originalPresenterBorderColor;
+                presenterBorderImage.color = presenterBorderBaseColor;
             }
             else
             {
@@ -125,5 +135,10 @@ public class InfoDisplayer : MonoBehaviour
 
             transform.SetAsFirstSibling();
         }
+    }
+
+    private Color GetHighlightedBorderColor(Color baseColor)
+    {
+        return baseColor + Color.white * presenterBorderHighlightAddition;
     }
 }
