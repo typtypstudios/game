@@ -74,10 +74,7 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
     {
         if (image != null)
         {
-            if (image.gameObject == gameObject)
-                image.enabled = !usePresenter;
-            else
-                image.gameObject.SetActive(!usePresenter);
+            image.enabled = !usePresenter;
         }
 
         if (cardVisualPresenter)
