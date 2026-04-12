@@ -1194,7 +1194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineThirdPersonFollow
   Damping: {x: 0, y: 0, z: 0}
-  ShoulderOffset: {x: 0, y: 0.62, z: 0.12}
+  ShoulderOffset: {x: 0, y: 0.81, z: 0.12}
   VerticalArmLength: 0
   CameraSide: 1
   CameraDistance: 0
@@ -1808,9 +1808,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 552504348210623225, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 189.3125
+      objectReference: {fileID: 0}
+    - target: {fileID: 552504348210623225, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -49.84375
+      objectReference: {fileID: 0}
     - target: {fileID: 1237575424709389930, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -189.29999
+      value: -189.3125
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237575424709389930, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -49.84375
       objectReference: {fileID: 0}
     - target: {fileID: 1279541436397048518, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
       propertyPath: m_Pivot.x
@@ -1918,15 +1930,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2575606074467071873, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -207.73456
+      value: -207.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2631500773506721380, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2858859824358517174, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3342914509968876445, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -81.3125
+      objectReference: {fileID: 0}
     - target: {fileID: 3754203508880975753, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -135.93457
+      value: -135.9375
       objectReference: {fileID: 0}
     - target: {fileID: 4756451783232791606, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
       propertyPath: m_Name
@@ -1944,6 +1964,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 163894804}
+    - target: {fileID: 6051889710150153178, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
+      propertyPath: m_PlaneDistance
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 6102485386034529335, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -1966,15 +1990,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7485037284619029561, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -262.3346
+      value: -262.34375
       objectReference: {fileID: 0}
     - target: {fileID: 7811860901718826971, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -319.60004
+      value: -319.59375
       objectReference: {fileID: 0}
     - target: {fileID: 7831122660871528755, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8092932596342109497, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -75
       objectReference: {fileID: 0}
     - target: {fileID: 8092932596342109497, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
       propertyPath: m_AnchoredPosition.y
