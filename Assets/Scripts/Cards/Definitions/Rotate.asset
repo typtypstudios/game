@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: Rotate
   m_EditorClassIdentifier: Assembly-CSharp::CardDefinition
   <Name>k__BackingField: Rotate
-  <Description>k__BackingField: Randomly rotates rival's grimoire up to <effectEnemyDesc_0c>
+  <Description>k__BackingField: Randomly rotates opponent's grimoire up to <effectEnemyDesc_0c>
     degrees.
   <Image>k__BackingField: {fileID: 233269856450521929, guid: 02275949483ab0478aaa197e17395f53, type: 3}
   <Cult>k__BackingField: {fileID: 11400000, guid: f1972ca031333684abe859f850da2124, type: 2}
   <RequiredLevel>k__BackingField: 2
   <Spell>k__BackingField: {fileID: 11400000, guid: 885faae667660fb4eb83a6bf50cd51c6, type: 2}
   <ManaCost>k__BackingField: 3
+  <CastSound>k__BackingField: {fileID: 0}
+  <CastVolume>k__BackingField: 1

@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Shuffle
   m_EditorClassIdentifier: Assembly-CSharp::CardDefinition
   <Name>k__BackingField: Shuffle
-  <Description>k__BackingField: Shuffle your available cards
+  <Description>k__BackingField: Shuffles own deck.
   <Image>k__BackingField: {fileID: 782833152449081047, guid: 30acca4bd971c7dd890b058e4c75fe05, type: 3}
   <Cult>k__BackingField: {fileID: 0}
   <RequiredLevel>k__BackingField: 0
   <Spell>k__BackingField: {fileID: 11400000, guid: 8542df671aaadba40b49d14b8618cd45, type: 2}
   <ManaCost>k__BackingField: 1
+  <CastSound>k__BackingField: {fileID: 0}
+  <CastVolume>k__BackingField: 1
