@@ -46,12 +46,8 @@ public class AdaptiveGridLayout : MonoBehaviour
         if (rectTransform == null)
             rectTransform = GetComponent<RectTransform>();
 
-        //Solo refrescar si cambia el número de hijos (no el orden)
-        if (transform.childCount != lastChildCount)
-        {
-            RefreshChildren();
-            lastChildCount = transform.childCount;
-        }
+        RefreshChildren();
+        lastChildCount = transform.childCount;
 
         children.RemoveAll(child => child == null);
 
