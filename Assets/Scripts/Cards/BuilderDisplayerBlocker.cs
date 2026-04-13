@@ -11,8 +11,9 @@ public class BuilderDisplayerBlocker : MonoBehaviour
     {
         defaultText ??= tmp.text;
         bool block = card.Cult != null && card.RequiredLevel > RuntimeVariables.Instance.CurrentLevel;
-        tmp.text = defaultText.Replace("<level>", Utils.ApplyColorToText(card.RequiredLevel.ToString(), 
-            RuntimeVariables.Instance.CurrentCult.Color));
+        //tmp.text = defaultText.Replace("<level>", Utils.ApplyColorToText(card.RequiredLevel.ToString(), 
+        //    RuntimeVariables.Instance.CurrentCult.Color));
+        tmp.text = defaultText.Replace("<level>", card.RequiredLevel.ToString());
         cardButton.CompletelyBlock(block);
         this.gameObject.SetActive(block);
     }
