@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Text;
+using System.Collections;
 
 namespace TypTyp.TextSystem.Typable
 {
@@ -21,8 +22,10 @@ namespace TypTyp.TextSystem.Typable
 
         public override void UpdateView(in TypableViewDTO dto)
         {
-            if (tmp == null) return;
-
+            //Si fue completado y no se comienza a escribir de nuevo, el reseteo lo hace la corrutina
+            if (tmp == null || (wasComplete && dto.Idx == 0)) 
+                return;
+            StopAllCoroutines();
             string safeText = dto.Text ?? "";
             int idx = dto.Idx;
 
@@ -78,7 +81,20 @@ namespace TypTyp.TextSystem.Typable
                     RandomizeCorrectColorOnComplete = StyleConfig.RandomizeCorrectColorOnComplete
                 };
             }
-            wasComplete = dto.IsComplete;
+            if (dto.IsComplete)
+            {
+                wasComplete = true;
+                StartCoroutine(ResetAfterTimer(dto));
+            }
+            
+        }
+
+        IEnumerator ResetAfterTimer(TypableViewDTO dto)
+        {
+            yield return new WaitForSeconds(StyleConfig.resetTime);
+            wasComplete = false;
+            TypableViewDTO resetDto = new TypableViewDTO(dto.Text, 0, false, false);
+            UpdateView(resetDto);
         }
     }
 }

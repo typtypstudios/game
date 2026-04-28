@@ -55,16 +55,15 @@ namespace TypTyp.TextSystem.Typable
                 HasMistake = false;
                 Idx++;
 
-                OnChanged?.Invoke();
-
                 if (Idx >= Text.Length)
                 {
                     IsComplete = true;
+                    OnChanged?.Invoke();
                     OnComplete?.Invoke();
-
                     if (config.ResetOnComplete)
                         Reset();
                 }
+                else OnChanged?.Invoke();
             }
             else
             {

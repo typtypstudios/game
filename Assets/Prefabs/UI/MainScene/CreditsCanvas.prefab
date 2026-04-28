@@ -215,7 +215,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &6390517851620403179
@@ -272,6 +271,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &2195776658267963408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,7 +522,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &4657476087654620446
@@ -579,6 +578,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &6702634505139139448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -808,7 +808,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &912696707811017999
@@ -865,6 +864,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &824297028998198847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1233,7 +1233,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &5135820491549309763
@@ -1290,6 +1289,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &4796827866678182614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1519,7 +1519,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &6940473196067552105
@@ -1576,6 +1575,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &4644487407088898649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1827,7 +1827,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &4331582357683919798
@@ -1884,6 +1883,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &3264801008125427563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2135,7 +2135,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &2917387264169878839
@@ -2192,6 +2191,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &783890030609112727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2421,7 +2421,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &652608029196949158
@@ -2478,6 +2477,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &4514486488431869153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2707,7 +2707,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &2644977515161070926
@@ -2764,6 +2763,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &8280106202521621501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3057,7 +3057,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &5656278556943177380
@@ -3114,6 +3113,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &6617615105504148783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3349,7 +3349,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3815539966792406689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3642,7 +3642,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &2779019255193196376
@@ -3699,6 +3698,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &5617168304578444652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3928,7 +3928,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &8219503603143295397
@@ -3985,6 +3984,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &1635804456170280754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4279,7 +4279,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &3818279395772753641
@@ -4336,6 +4335,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &5351368515122311849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4628,7 +4628,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &4970290796622761164
@@ -4685,6 +4684,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &3362948599576414486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4914,7 +4914,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &1475490780072806378
@@ -4971,6 +4970,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &4580373229686664016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5200,7 +5200,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &8489601970998834074
@@ -5257,6 +5256,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &1882979608238450195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5637,7 +5637,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &389815612786985452
@@ -5694,6 +5693,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &5496705133791187111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5945,7 +5945,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &518582010346323269
@@ -6002,6 +6001,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &4674341656386425126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6231,7 +6231,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &824261707102619076
@@ -6288,6 +6287,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &602360946892657914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6539,7 +6539,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &3541275883286545501
@@ -6596,6 +6595,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &7779144623916289262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6825,7 +6825,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 0
   resetOnWritten: 0
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &6372024113733813686
@@ -6882,6 +6881,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &3148499899732134154
 MonoBehaviour:
   m_ObjectHideFlags: 0

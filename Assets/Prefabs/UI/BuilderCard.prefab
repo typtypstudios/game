@@ -947,7 +947,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 1
   resetOnWritten: 1
-  resetTime: 0
   typableController: {fileID: 9127650118209620795}
   tmpView: {fileID: 1715020413400113848}
 --- !u!114 &3717271149658651939
@@ -1018,13 +1017,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 6166446474006947420}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: cf1432c075824b746accc1ffdaf5f3c5, type: 2}
   StyleConfig:
     CorrectColor: {r: 1, g: 1, b: 1, a: 1}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &1882707166813036125
 MonoBehaviour:
   m_ObjectHideFlags: 0
