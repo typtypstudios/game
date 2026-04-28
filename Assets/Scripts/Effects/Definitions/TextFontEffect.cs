@@ -2,12 +2,26 @@ using System.Collections.Generic;
 using TMPro;
 using TypTyp;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "TextFontEffect", menuName = "TypTyp/Effects/TextFontEffect")]
 public class TextFontEffect : StatusEffectDefinition
 {
     [SerializeField] private TMP_FontAsset font;
     private static readonly Dictionary<string, List<TMP_FontAsset>> activeFonts = new();
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void Init()
+    {
+        activeFonts.Clear();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        activeFonts.Clear();
+    }
 
     public override void OnActivate(Player target)
     {

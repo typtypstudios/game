@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using TypTyp;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "TextMaterialEffect", menuName = "TypTyp/Effects/TextMaterialEffect")]
 public class TextMaterialEffect : StatusEffectDefinition
@@ -11,6 +12,19 @@ public class TextMaterialEffect : StatusEffectDefinition
     [SerializeField] private string textComponentName;
     private Material defaultMat;
     private static readonly Dictionary<string, List<Material>> activeMats = new();
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void Init()
+    {
+        activeMats.Clear();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        activeMats.Clear();
+    }
 
     public override void OnActivate(Player target)
     {
