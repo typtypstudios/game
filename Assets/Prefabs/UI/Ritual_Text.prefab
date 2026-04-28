@@ -98,7 +98,7 @@ MonoBehaviour:
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 0
-  m_fontSizeMax: 60
+  m_fontSizeMax: 100
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -150,3 +150,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cb11719237efce4294072235cdf0c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
+  ignoreRestriction: 0
