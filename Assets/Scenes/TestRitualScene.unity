@@ -163,6 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ce11359202a234591a96d4e86f345b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputHandler
+  <CurrentMode>k__BackingField: 255
 --- !u!1 &149557297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,7 +1217,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad7adeb88a227d48ac6113834445b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
-  highlightColor: {r: 1, g: 0.5949937, b: 0, a: 1}
+  resetIfFailed: 1
+  resetOnWritten: 1
+  resetTime: 0.5
+  typableController: {fileID: 0}
+  tmpView: {fileID: 0}
 --- !u!1 &1644483848
 GameObject:
   m_ObjectHideFlags: 0
@@ -1289,8 +1294,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Hola buenas, soy un texto de prueba. Borren Metodolog\xEDa Aplicada. Paenitendum
-    juego de mierda."
+  m_text: Texto de prueba
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1535,6 +1539,7 @@ GameObject:
   - component: {fileID: 1949086168}
   - component: {fileID: 1949086167}
   - component: {fileID: 1949086169}
+  - component: {fileID: 1949086170}
   m_Layer: 0
   m_Name: ProgressBarSystems
   m_TagString: Untagged
@@ -1581,6 +1586,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f3e1c45a2774f4fa081fa5d25fa034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ManaSystem
+--- !u!114 &1949086170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949086166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdd6cc953d9c57841bccea7641452f8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

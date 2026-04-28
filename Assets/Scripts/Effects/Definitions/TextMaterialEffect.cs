@@ -17,7 +17,7 @@ public class TextMaterialEffect : StatusEffectDefinition
         if (defaultMat == null) defaultMat = target.GetComponentInChildren<TMP_Text>(true).fontMaterial;
         foreach(var t in target.GetComponentsInChildren<TMP_Text>(true))
         {
-            AssignMaterial(t, mat);
+            Utils.SetMaterialTMP(t, mat);
             if (!string.IsNullOrEmpty(textComponentName))
             {
                 Type typeToAdd = Type.GetType(textComponentName);
@@ -38,7 +38,7 @@ public class TextMaterialEffect : StatusEffectDefinition
         activeMats[target.tag].Remove(mat);
         foreach (var t in target.GetComponentsInChildren<TMP_Text>(true))
         {
-            AssignMaterial(t, activeMats[target.tag].Count == 0 ? 
+            Utils.SetMaterialTMP(t, activeMats[target.tag].Count == 0 ? 
                 defaultMat : activeMats[target.tag][^1]);
             if (!string.IsNullOrEmpty(textComponentName))
             {
@@ -52,16 +52,5 @@ public class TextMaterialEffect : StatusEffectDefinition
     public override string GetDefaultValue()
     {
         return "";
-    }
-
-    private void AssignMaterial(TMP_Text t, Material mat)
-    {
-        Material matInstance = new(mat);
-        Texture2D atlas = t.fontMaterial.GetTexture("_MainTex") as Texture2D;
-        matInstance.SetTexture("_MainTex", atlas);
-        matInstance.SetColor("_FaceColor", t.fontMaterial.GetColor("_FaceColor"));
-        //matInstance.SetColor("_OutlineColor", t.fontMaterial.GetColor("_OutlineColor"));
-        //matInstance.SetFloat("_OutlineWidth", t.fontMaterial.GetFloat("_OutlineWidth"));
-        t.fontMaterial = matInstance;
     }
 }

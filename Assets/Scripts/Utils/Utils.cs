@@ -1,3 +1,4 @@
+using TMPro;
 using TypTyp;
 using UnityEngine;
 
@@ -57,5 +58,16 @@ public static class Utils
     {
         return System.Text.RegularExpressions.Regex.Replace(input, @"\\u([0-9a-fA-F]{4})",
             m => ((char)System.Convert.ToInt32(m.Groups[1].Value, 16)).ToString());
+    }
+
+    public static void SetMaterialTMP(TMP_Text t, Material mat)
+    {
+        Material matInstance = new(mat);
+        Texture2D atlas = t.fontMaterial.GetTexture("_MainTex") as Texture2D;
+        matInstance.SetTexture("_MainTex", atlas);
+        matInstance.SetColor("_FaceColor", t.fontMaterial.GetColor("_FaceColor"));
+        //matInstance.SetColor("_OutlineColor", t.fontMaterial.GetColor("_OutlineColor"));
+        //matInstance.SetFloat("_OutlineWidth", t.fontMaterial.GetFloat("_OutlineWidth"));
+        t.fontMaterial = matInstance;
     }
 }

@@ -13,7 +13,7 @@ public class TextFontEffect : StatusEffectDefinition
     {
         foreach(var t in target.GetComponentsInChildren<TMP_Text>(true))
         {
-            t.font = font;
+            SafelyChangeFont(t, font);
         }
         if (!activeFonts.ContainsKey(Settings.Instance.P1_tag))
         {
@@ -28,9 +28,16 @@ public class TextFontEffect : StatusEffectDefinition
         activeFonts[target.tag].Remove(font);
         foreach (var t in target.GetComponentsInChildren<TMP_Text>(true))
         {
-            t.font = activeFonts[target.tag].Count == 0 ? 
-                Settings.Instance.DefaultFont : activeFonts[target.tag][^1];
+            SafelyChangeFont(t, activeFonts[target.tag].Count == 0 ?
+                Settings.Instance.DefaultFont : activeFonts[target.tag][^1]);
         }
+    }
+
+    private void SafelyChangeFont(TMP_Text tmp, TMP_FontAsset font)
+    {
+        Material initMat = tmp.fontMaterial;
+        tmp.font = font;
+        Utils.SetMaterialTMP(tmp, initMat);
     }
 
     public override string GetDefaultValue()
