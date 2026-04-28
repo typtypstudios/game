@@ -41,7 +41,7 @@ public class NavigationController : MonoBehaviour
 
     private void OnDestroy() => goBackAction.action.started -= GoBackAction;
 
-    public void GoTo(Screens screen)
+    public void GoTo(Screens screen, GameObject sender)
     {
         if (blocked) return;
         if(screen == Screens.GoBack)
@@ -50,7 +50,7 @@ public class NavigationController : MonoBehaviour
             return;
         }
         screenStack.Push(currentScreen);
-        NavigateToScreen(screen, false);
+        NavigateToScreen(screen, false, sender);
     }
 
     private void GoBackAction(InputAction.CallbackContext _) => GoBack();
@@ -61,7 +61,7 @@ public class NavigationController : MonoBehaviour
         NavigateToScreen(screenStack.Pop(), true);
     }
 
-    private void NavigateToScreen(Screens screen, bool isGoingBack)
+    private void NavigateToScreen(Screens screen, bool isGoingBack, GameObject sender = null)
     {
         Canvas originCanvas = screenDictionary[currentScreen].canvas;
 
@@ -74,7 +74,7 @@ public class NavigationController : MonoBehaviour
         INavigationCtxReceiver[] receivers = 
             destinationCanvas.GetComponentsInChildren<INavigationCtxReceiver>(true);
         foreach (var receiver in receivers)
-            receiver.ReceiveContext(currentScreen, isGoingBack);
+            receiver.ReceiveContext(currentScreen, isGoingBack, sender);
         currentScreen = screen;
         blocked = true;
         transitionManager.PerformTransition(originCanvas, destinationCanvas, this);

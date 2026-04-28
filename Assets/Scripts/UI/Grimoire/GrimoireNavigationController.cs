@@ -26,7 +26,7 @@ public class GrimoireNavigationController : MonoBehaviour, INavigationCtxReceive
         contentManager.OnSectionChanged -= CheckCurrentSection;
     }
 
-    public void ReceiveContext(Screens previousScreen, bool isGoingBack)
+    public void ReceiveContext(Screens previousScreen, bool isGoingBack, GameObject sender = null)
     {
         isActive = true;
     }

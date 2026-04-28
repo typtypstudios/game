@@ -14,5 +14,5 @@ public class NavigationButton : MonoBehaviour
         GetComponent<Button>().onClick.AddListener(Navigate);
     }
 
-    public void Navigate() => controller.GoTo(destination);
+    public void Navigate() => controller.GoTo(destination, this.gameObject);
 }

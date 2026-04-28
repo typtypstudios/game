@@ -35,7 +35,7 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
         effectTag = Utils.ColorToTag(UIColors.Instance.EffectHighlightColor);
     }
 
-    public void ReceiveContext(Screens previousScreen, bool isGoingBack)
+    public void ReceiveContext(Screens previousScreen, bool isGoingBack, GameObject sender = null)
     {
         isActive = true;
     }

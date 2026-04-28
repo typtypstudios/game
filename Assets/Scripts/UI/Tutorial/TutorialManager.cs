@@ -32,7 +32,7 @@ public class TutorialManager : MonoBehaviour, INavigationCtxReceiver, INavigatio
         turnPageEffect.OnBlankPage -= UpdateContent;
     }
 
-    public void ReceiveContext(Screens previousScreen, bool isGoingBack)
+    public void ReceiveContext(Screens previousScreen, bool isGoingBack, GameObject sender = null)
     {
         isActive = true;
     }
