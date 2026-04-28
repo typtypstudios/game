@@ -13,7 +13,10 @@ namespace TypTyp.TextSystem.Typable
 
         Typable typable;
         TypablePresenter presenter;
-        TypingInputListener input; 
+        TypingInputListener input;
+
+        private Canvas parentCanvas;
+        private CanvasGroup parentCanvasGroup;
 
         public event Action OnComplete;
         public event Action OnChanged;
@@ -29,6 +32,8 @@ namespace TypTyp.TextSystem.Typable
         {
             InitializeIfNeeded();
             if(configPreset != null) configPreset.OnChange += ResetPreset;
+            parentCanvas = GetComponentInParent<Canvas>();
+            parentCanvasGroup = GetComponentInParent<CanvasGroup>();
         }
 
         private void ResetPreset()
@@ -77,9 +82,18 @@ namespace TypTyp.TextSystem.Typable
 
         void HandleInput(char c)
         {
+            if (!InteractionEnabled()) return;
             char processed = InputTransform != null ? InputTransform(c) : c;
             if (typable != null)
                 typable.Input(processed);
+        }
+
+        private bool InteractionEnabled()
+        {
+            bool canvasEnabled = parentCanvas == null || parentCanvas.enabled;
+            bool groupEnabled = parentCanvasGroup == null ||
+                (parentCanvasGroup.blocksRaycasts && parentCanvasGroup.interactable);
+            return canvasEnabled && groupEnabled;
         }
 
         void HandleComplete()
