@@ -52,4 +52,10 @@ public static class Utils
     {
         return color * Mathf.Pow(2, intensity);
     }
+
+    public static string ParseUnicodeEscapes(string input)
+    {
+        return System.Text.RegularExpressions.Regex.Replace(input, @"\\u([0-9a-fA-F]{4})",
+            m => ((char)System.Convert.ToInt32(m.Groups[1].Value, 16)).ToString());
+    }
 }

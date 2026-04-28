@@ -9,9 +9,9 @@ namespace TypTyp.TextSystem.Typable
         [SerializeField] private TMP_Text tmp;
         [SerializeField] private TypableViewStylePreset stylePreset;
         [SerializeField] public TypableViewStyleConfig StyleConfig = TypableViewStyleConfig.Default;
-
         private bool wasComplete;
         private readonly StringBuilder sb = new();
+        public TypableViewStyleConfig Config => StyleConfig;
 
         void Awake()
         {

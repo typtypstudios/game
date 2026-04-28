@@ -60,8 +60,8 @@ public class TextMaterialEffect : StatusEffectDefinition
         Texture2D atlas = t.fontMaterial.GetTexture("_MainTex") as Texture2D;
         matInstance.SetTexture("_MainTex", atlas);
         matInstance.SetColor("_FaceColor", t.fontMaterial.GetColor("_FaceColor"));
-        matInstance.SetColor("_OutlineColor", t.fontMaterial.GetColor("_OutlineColor"));
-        matInstance.SetFloat("_OutlineWidth", t.fontMaterial.GetFloat("_OutlineWidth"));
+        //matInstance.SetColor("_OutlineColor", t.fontMaterial.GetColor("_OutlineColor"));
+        //matInstance.SetFloat("_OutlineWidth", t.fontMaterial.GetFloat("_OutlineWidth"));
         t.fontMaterial = matInstance;
     }
 }
