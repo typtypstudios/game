@@ -11,12 +11,10 @@ public class WritableButton : MonoBehaviour
 {
     [SerializeField] private bool resetIfFailed = true;
     [SerializeField] private bool resetOnWritten = true;
-    [SerializeField] private float resetTime = 0.5f;
     [SerializeField] private TypableController typableController;
     [SerializeField] private TMPTypableView tmpView;
     private Button button;
     private string originalText;
-    private WaitForSeconds resetTimer;
     private Coroutine resetCoroutine;
     private Canvas parentCanvas;
     public bool Block { get; set; } = false;
@@ -28,7 +26,6 @@ public class WritableButton : MonoBehaviour
         var tmp = button.GetComponentInChildren<TextMeshProUGUI>();
         originalText = tmp != null ? tmp.text.Trim() : string.Empty;
         parentCanvas = GetComponentInParent<Canvas>();
-        resetTimer = new(resetTime);
         OnButtonWritten += OnOtherButtonWritten;
         if (typableController == null)
             typableController = GetComponent<TypableController>();
@@ -106,8 +103,6 @@ public class WritableButton : MonoBehaviour
             StopCoroutine(resetCoroutine);
             ResetButton();
         }
-
-        resetCoroutine = StartCoroutine(ResetButtonCoroutine());
         button.onClick?.Invoke();
         OnButtonWritten?.Invoke(this);
     }
@@ -131,11 +126,5 @@ public class WritableButton : MonoBehaviour
         if (tmpView != null)
             return tmpView.StyleConfig.CorrectColor;
         return Color.white;
-    }
-
-    IEnumerator ResetButtonCoroutine()
-    {
-        yield return resetTimer;
-        ResetButton();
     }
 }
