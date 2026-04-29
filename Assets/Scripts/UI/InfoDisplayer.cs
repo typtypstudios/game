@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class InfoDisplayer : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class InfoDisplayer : MonoBehaviour
     [SerializeField] private CardVisualPresenter cardVisualPresenter;
     [SerializeField] private Image presenterBorderImage;
     [SerializeField] private float presenterBorderEmissionForce = 1f;
+
+    [Header("Selection Animation")]
+    [SerializeField] private float interpolationTime = 0.1f;
+    private Vector3 initScale;
 
     private Image image;
     private bool hovered = false;
@@ -30,7 +35,7 @@ public class InfoDisplayer : MonoBehaviour
             emissiveMat = new(image.material);
             image.material = emissiveMat; //Una copia para cada uno, ya que no hay mat prop block para UI
         }
-
+        initScale = transform.localScale;
         writableButton = GetComponent<WritableButton>();
         originalNameColor = cardName.color;
         if (presenterBorderImage)
@@ -95,7 +100,8 @@ public class InfoDisplayer : MonoBehaviour
     {
         if (highlight && !hovered)
         {
-            transform.localScale *= hoverSizeMult;
+            StopAllCoroutines();
+            StartCoroutine(InterpolateScale(initScale * hoverSizeMult));
             hovered = true;
             cardName.color = writableButton.GetButtonColor() + Color.white * highlightColorAddition;
 
@@ -113,7 +119,8 @@ public class InfoDisplayer : MonoBehaviour
         }
         else if (!highlight && hovered)
         {
-            transform.localScale /= hoverSizeMult;
+            StopAllCoroutines();
+            StartCoroutine(InterpolateScale(initScale));
             hovered = false;
             cardName.color = originalNameColor;
 
@@ -141,6 +148,17 @@ public class InfoDisplayer : MonoBehaviour
         if (presenterBorderEmissiveMat.HasProperty("_EmissionForce"))
         {
             presenterBorderEmissiveMat.SetFloat("_EmissionForce", enabled ? presenterBorderEmissionForce : 0f);
+        }
+    }
+
+    IEnumerator InterpolateScale(Vector3 targetScale)
+    {
+        float dist = Vector3.Distance(transform.localScale, targetScale);
+        float speed = dist / interpolationTime;
+        while(transform.localScale != targetScale)
+        {
+            transform.localScale = Vector3.MoveTowards(transform.localScale, targetScale, speed * Time.deltaTime);
+            yield return null;
         }
     }
 }
