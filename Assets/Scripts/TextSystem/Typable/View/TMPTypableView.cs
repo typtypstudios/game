@@ -23,7 +23,7 @@ namespace TypTyp.TextSystem.Typable
         public override void UpdateView(in TypableViewDTO dto)
         {
             //Si fue completado y no se comienza a escribir de nuevo, el reseteo lo hace la corrutina
-            if (tmp == null || (wasComplete && dto.Idx == 0)) 
+            if (tmp == null || (StyleConfig.resetTime > 0 && wasComplete && dto.Idx == 0)) 
                 return;
             StopAllCoroutines();
             wasComplete = false;
@@ -86,7 +86,7 @@ namespace TypTyp.TextSystem.Typable
             if (dto.IsComplete)
             {
                 wasComplete = true;
-                StartCoroutine(ResetAfterTimer(dto));
+                if(StyleConfig.resetTime > 0) StartCoroutine(ResetAfterTimer(dto));
             }
             
         }
