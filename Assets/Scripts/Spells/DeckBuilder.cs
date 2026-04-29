@@ -18,6 +18,7 @@ public class DeckBuilder : MonoBehaviour
     private List<int> equippedIndexes = new();
     private BuilderDisplayer selectedEquipped;
     private BuilderDisplayer selectedUnequipped;
+    private DeckBuilderSorter sorter;
     public static CardDefinition[] CardsInDeck { get; private set; }
 
     private void OnEnable()
@@ -39,7 +40,7 @@ public class DeckBuilder : MonoBehaviour
             // panel.transform.SetAsFirstSibling();
             panel.transform.SetAsLastSibling();
         }
-
+        if (!TryGetComponent(out sorter)) Debug.LogError("Error: no hay sorter en el deck builder");
         BuilderDisplayer.OnCardChosen += ProcessCardChosen;
     }
 
@@ -100,20 +101,7 @@ public class DeckBuilder : MonoBehaviour
             unequippedCards.Add(displayer);
             displayer.SetInfo(card);
         }
-        SortUnequipped();
-    }
-
-    private void SortUnequipped()
-    {
-        List<CardDefinition> sortedCards = unequippedCards
-        .Select(d => d.Card)
-        .Distinct()
-        .OrderBy(c => c.Cult != null) 
-        .ThenBy(c => c.RequiredLevel)
-        .ThenBy(c => c.Name)
-        .ToList();
-        for (int i = 0; i < sortedCards.Count; i++)
-            unequippedCards[i].SetInfo(sortedCards[i]);
+        sorter.SortCards(unequippedCards, false);
     }
 
     private void ProcessCardChosen(BuilderDisplayer card)
@@ -153,7 +141,7 @@ public class DeckBuilder : MonoBehaviour
             RefreshCardsInDeck();
             AudioManager.Instance.PlayUI(UISound.ExchangeCards);
             ResetSelection();
-            if (sortOnChange) SortUnequipped();
+            if (sortOnChange) sorter.SortCards(unequippedCards);
         }
     }
 

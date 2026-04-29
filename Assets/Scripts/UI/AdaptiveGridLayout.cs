@@ -27,13 +27,13 @@ public class AdaptiveGridLayout : MonoBehaviour
     // 🔑 Nuevo: control de cambios reales en hijos
     private int lastChildCount = -1;
 
-#if UNITY_EDITOR
-    private void OnEnable()
-    {
-        RefreshChildren();
-        lastChildCount = transform.childCount;
-    }
-#endif
+//#if UNITY_EDITOR
+//    private void OnEnable()
+//    {
+//        RefreshChildren();
+//        lastChildCount = transform.childCount;
+//    }
+//#endif
 
     private void Start()
     {
