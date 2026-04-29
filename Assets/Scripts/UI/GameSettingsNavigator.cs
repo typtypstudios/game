@@ -17,12 +17,21 @@ public class GameSettingsNavigator : MonoBehaviour
         changeEffect.InitializePages(sections.Select(s => s.transform).ToArray());
     }
 
-    private void Start() => HandleChange();
+    private void Start()
+    {
+        HandleChange();
+        CheckButtonsState();
+    }
 
     public void SetSection(int sectionIdx)
     {
         currentSection = sectionIdx;
         changeEffect.TurnPage();
+        CheckButtonsState();
+    }
+
+    private void CheckButtonsState()
+    {
         for (int i = 0; i < navigationButtons.Length; i++)
         {
             navigationButtons[i].CompletelyBlock(i == currentSection);

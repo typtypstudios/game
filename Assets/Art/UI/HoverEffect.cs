@@ -9,14 +9,26 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private TextMeshProUGUI text;
 
     [SerializeField] private Color normalColor = Color.white;
-    [SerializeField] private Color hoverColor = new Color(0.6f, 0.1f, 0.2f); // tu rojo
+    [SerializeField] private Color hoverColor = new Color(0.6f, 0.1f, 0.2f);
 
     [SerializeField] private float speed = 5f;
 
+    private WritableButton writableButton;
     private float targetFill = 0f;
+    private bool InteractionEnabled => writableButton == null || !writableButton.Block;
+
+    private void Awake()
+    {
+        TryGetComponent(out writableButton);
+    }
 
     private void Update()
     {
+        if (!InteractionEnabled)
+        {
+            targetFill = 0;
+            text.color = normalColor;
+        }
         hoverImage.fillAmount = Mathf.MoveTowards(
             hoverImage.fillAmount,
             targetFill,
