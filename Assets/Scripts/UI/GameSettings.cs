@@ -2,6 +2,8 @@ using TypTyp;
 using TypTyp.TextSystem.Typable;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
@@ -11,6 +13,8 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
     [SerializeField] private Toggle capLocksWarningToggle;
     [SerializeField] private Toggle filterChatToggle;
     [SerializeField] private Toggle ignoreCaseToggle;
+    [SerializeField] private Toggle vsyncToggle;
+    [SerializeField] private Toggle antialiasingToggle;
     [SerializeField] private Slider volumeSlider;
     private FontDropdown fontDropdown;
 
@@ -64,6 +68,15 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
         AudioManager.Instance.SetBusVolume("MasterVolume", Mathf.Clamp01(value));
     }
 
+    public void SetVsync(bool value) => QualitySettings.vSyncCount = value ? 1 : 0;
+
+    public void SetAntialiasing(bool value) 
+    {
+        var renderAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+        renderAsset.msaaSampleCount = value ? 4 : 0;
+        GraphicsSettings.defaultRenderPipeline = GraphicsSettings.defaultRenderPipeline;
+    }
+
     private void HandleBeforeSave(SaveState state)
     {
         if (showSpacesToggle != null)
@@ -94,6 +107,16 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
         if (fontDropdown != null)
         {
             state.global.fontIndex = fontDropdown.CurrentFontIdx;
+        }
+
+        if (vsyncToggle != null)
+        {
+            state.global.vsync = vsyncToggle.isOn;
+        }
+
+        if (antialiasingToggle != null)
+        {
+            state.global.antialiasing = antialiasingToggle.isOn;
         }
     }
 
@@ -143,6 +166,18 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
                 int safeFontIndex = Mathf.Clamp(data.fontIndex, 0, fontDropdown.Options.Length - 1);
                 fontDropdown.SetFont(safeFontIndex);
             }
+        }
+
+        SetVsync(data.vsync);
+        if (vsyncToggle != null)
+        {
+            vsyncToggle.isOn = data.vsync;
+        }
+
+        SetAntialiasing(data.antialiasing);
+        if (antialiasingToggle != null)
+        {
+            antialiasingToggle.isOn = data.antialiasing;
         }
     }
 

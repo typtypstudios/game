@@ -11,5 +11,7 @@ public class GlobalSettingsData
     public float volume = 0.75f;
     public int fontIndex;
     public bool initialTipUnderstood;
+    public bool vsync = true;
+    public bool antialiasing = true;
     public VideoSettingsData videoSettings = VideoSettingsData.CreateDefault();
 }
