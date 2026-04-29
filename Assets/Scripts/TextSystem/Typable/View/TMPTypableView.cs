@@ -26,6 +26,8 @@ namespace TypTyp.TextSystem.Typable
             if (tmp == null || (wasComplete && dto.Idx == 0)) 
                 return;
             StopAllCoroutines();
+            wasComplete = false;
+
             string safeText = dto.Text ?? "";
             int idx = dto.Idx;
 
