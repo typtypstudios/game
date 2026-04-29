@@ -899,7 +899,7 @@ MonoBehaviour:
   highlightPanels:
   - {fileID: 848280371557389826}
   - {fileID: 1395083161477490768}
-  sortOnChange: 1
+  sortOnChange: 0
 --- !u!114 &42810081414988978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -912,7 +912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff77ddf53a24574cae2099524d3f341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeckBuilderSorter
-  sortTime: 0.2
+  interpolationTime: 0.2
 --- !u!1 &6424882591234634349
 GameObject:
   m_ObjectHideFlags: 0

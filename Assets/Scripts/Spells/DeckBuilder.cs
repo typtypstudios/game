@@ -4,8 +4,6 @@ using System.Linq;
 using TypTyp;
 using UnityEngine;
 
-//?
-
 public class DeckBuilder : MonoBehaviour
 {
     [SerializeField] private GameObject cardPrefab;
@@ -134,9 +132,7 @@ public class DeckBuilder : MonoBehaviour
     {
         if (selectedUnequipped && selectedEquipped)
         {
-            CardDefinition card = selectedUnequipped.Card;
-            selectedUnequipped.SetInfo(selectedEquipped.Card);
-            selectedEquipped.SetInfo(card);
+            sorter.ReplaceCards(selectedEquipped, selectedUnequipped);
             RefreshIndexesFromUI();
             RefreshCardsInDeck();
             AudioManager.Instance.PlayUI(UISound.ExchangeCards);

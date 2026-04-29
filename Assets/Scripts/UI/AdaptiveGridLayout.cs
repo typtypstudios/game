@@ -114,7 +114,7 @@ public class AdaptiveGridLayout : MonoBehaviour
                 RectTransform child = children[idx];
                 if (child == null) continue;
 
-                child.anchoredPosition = new Vector2(offsetX, offsetY);
+                child.anchoredPosition3D = new Vector3(offsetX, offsetY, 0);
                 child.sizeDelta = new Vector2(targetWidth, targetHeight);
             }
         }
@@ -134,7 +134,7 @@ public class AdaptiveGridLayout : MonoBehaviour
             RectTransform child = children[^idx];
             if (child == null) continue;
 
-            child.anchoredPosition = new Vector2(offsetX, child.anchoredPosition.y);
+            child.anchoredPosition3D = new Vector3(offsetX, child.anchoredPosition.y, 0);
         }
     }
 
