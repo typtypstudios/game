@@ -20,7 +20,7 @@ public class AdaptiveGridLayout : MonoBehaviour
 
     [Header("Other: ")]
     [SerializeField] private Transform[] excludedObjects;
-    [SerializeField] private bool refreshAfterLoad = true;
+    [SerializeField] private bool isDynamic = false;
 
     private RectTransform rectTransform;
     private readonly List<RectTransform> children = new();
@@ -40,12 +40,12 @@ public class AdaptiveGridLayout : MonoBehaviour
     {
         RefreshChildren();
         lastChildCount = transform.childCount;
-        if(refreshAfterLoad) SaveManager.Instance.OnAfterLoad += RefreshAfterLoad;
+        if(isDynamic) SaveManager.Instance.OnAfterLoad += RefreshAfterLoad;
     }
 
     private void OnDestroy()
     {
-        if (refreshAfterLoad) SaveManager.Instance.OnAfterLoad -= RefreshAfterLoad;
+        if (isDynamic) SaveManager.Instance.OnAfterLoad -= RefreshAfterLoad;
     }
 
     private void RefreshAfterLoad(SaveState _) => RefreshChildren();
@@ -137,6 +137,7 @@ public class AdaptiveGridLayout : MonoBehaviour
 
             child.anchoredPosition3D = new Vector3(offsetX, child.anchoredPosition.y, 0);
         }
+        if (!isDynamic) this.enabled = false;
     }
 
     private void RefreshChildren()

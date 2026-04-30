@@ -37,7 +37,7 @@ public class StatusEffectUI : MonoBehaviour
         {
             if (status.sprite == effectSprite) return; //Cada efecto �nicamente sale una vez
         }
-        Image newEffect = Instantiate(statusImagePrefab, this.transform).GetComponent<Image>();
+        Image newEffect = Instantiate(statusImagePrefab, this.transform).GetComponentInChildren<Image>();
         newEffect.sprite = effectSprite;
         addedStatus.Add(newEffect);
         //Efectos buenos a la izquierda, malos a la derecha:
@@ -55,7 +55,7 @@ public class StatusEffectUI : MonoBehaviour
             {
                 Image statusToRemove = addedStatus[i];
                 addedStatus.Remove(statusToRemove);
-                Destroy(statusToRemove.gameObject);
+                Destroy(statusToRemove.transform.parent.gameObject);
                 return;
             }
         }
