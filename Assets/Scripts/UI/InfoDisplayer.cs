@@ -134,7 +134,7 @@ public class InfoDisplayer : MonoBehaviour
                     emissiveMat.SetFloat("_EmissionForce", 0);
             }
 
-            transform.SetAsFirstSibling();
+            //transform.SetAsFirstSibling();
         }
     }
 

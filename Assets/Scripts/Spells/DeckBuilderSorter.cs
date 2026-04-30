@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ public class DeckBuilderSorter : MonoBehaviour
     private AdaptiveGridLayout[] layouts;
     private readonly Dictionary<BuilderDisplayer, BuilderInitPos> initPositions = new();
     private readonly HashSet<BuilderDisplayer> displayersToReset = new();
+    private readonly Dictionary<BuilderDisplayer, Transform> initParents = new();
 
     private struct BuilderInitPos
     {
@@ -29,7 +31,7 @@ public class DeckBuilderSorter : MonoBehaviour
 
     public void ReplaceCards(BuilderDisplayer card_1, BuilderDisplayer card_2)
     {
-        RegisterBuilders(new[]{ card_1, card_2});
+        RegisterBuilders(new[]{ card_1, card_2}, true);
         card_1.transform.SetPositionAndRotation(initPositions[card_2].pos, initPositions[card_2].rot);
         card_2.transform.SetPositionAndRotation(initPositions[card_1].pos, initPositions[card_1].rot);
         displayersToReset.Add(card_1);
@@ -37,6 +39,11 @@ public class DeckBuilderSorter : MonoBehaviour
         CardDefinition c = card_1.Card;
         card_1.SetInfo(card_2.Card);
         card_2.SetInfo(c);
+        Transform parentCanvas = GetComponentInParent<Canvas>().transform;
+        card_1.transform.SetParent(parentCanvas, true);
+        card_1.transform.SetAsLastSibling();
+        card_2.transform.SetParent(parentCanvas, true);
+        card_2.transform.SetAsLastSibling();
         StopAllCoroutines();
         StartCoroutine(ResetPositionsCoroutine());
     }
@@ -81,12 +88,16 @@ public class DeckBuilderSorter : MonoBehaviour
         StartCoroutine(ResetPositionsCoroutine());
     }
 
-    private void RegisterBuilders(IEnumerable<BuilderDisplayer> displayers)
+    private void RegisterBuilders(IEnumerable<BuilderDisplayer> displayers, bool registerParents = false)
     {
         foreach(var b in displayers)
         {
             if (!initPositions.ContainsKey(b))
                 initPositions.Add(b, new BuilderInitPos(b));
+            if(registerParents && !initParents.ContainsKey(b))
+            {
+                initParents.Add(b, b.transform.parent);
+            }
         }
     }
 
@@ -104,6 +115,14 @@ public class DeckBuilderSorter : MonoBehaviour
         displayer.transform.position = Vector3.MoveTowards(displayer.transform.position, init.pos, speed * Time.deltaTime);
         displayer.transform.rotation = Quaternion.RotateTowards(displayer.transform.rotation, init.rot, rotSpeed * Time.deltaTime);
         return displayer.transform.position == init.pos && displayer.transform.rotation == init.rot;
+    }
+
+    private void ResetParents()
+    {
+        foreach(var displayer in initParents.Keys)
+        {
+            displayer.transform.SetParent(initParents[displayer], true);
+        }
     }
 
     IEnumerator ResetPositionsCoroutine()
@@ -127,6 +146,7 @@ public class DeckBuilderSorter : MonoBehaviour
             yield return null;
         }
         displayersToReset.Clear();
+        ResetParents();
         foreach (var layout in layouts) layout.enabled = true;
     }
 }
