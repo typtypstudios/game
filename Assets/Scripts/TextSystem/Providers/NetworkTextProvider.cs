@@ -4,6 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Cinemachine;
 
 namespace TypTyp.TextSystem
 {
@@ -19,7 +20,7 @@ namespace TypTyp.TextSystem
 
         public override void OnNetworkSpawn()
         {
-            if (IsServer) LoadSource();
+            if (IsServer && IsOwner) LoadSource();
             if (IsOwner)
             {
                 for (int i = 0; i < texts.Length; i++) RequestNextTextRpc(textIdx++);
@@ -45,7 +46,7 @@ namespace TypTyp.TextSystem
 
         private void LoadSource()
         {
-            if (phrases.Count > 0) return;
+            phrases.Clear();
             List<string> allPhrases = textSource != null
                 ? textSource.text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList()
                 : new();
