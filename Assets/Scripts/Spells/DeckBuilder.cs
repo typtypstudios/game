@@ -179,6 +179,7 @@ public class DeckBuilder : MonoBehaviour
 
         for (int i = 0; i < EquippedCards.Count; i++)
         {
+            EquippedCards[i].transform.SetSiblingIndex(i);
             EquippedCards[i].SetInfo(CardRegister.Instance.GetById(equippedIndexes[i]));
         }
 

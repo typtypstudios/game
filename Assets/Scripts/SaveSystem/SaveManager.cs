@@ -75,6 +75,8 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         SaveDataInternal(state.slot);
         SaveGlobalSettingsInternal(state.global);
         HasLoadedState = true;
+
+        RuntimeVariables.Instance.UpdateVariables(state);
     }
 
     public void Load()

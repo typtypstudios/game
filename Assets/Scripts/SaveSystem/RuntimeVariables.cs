@@ -1,6 +1,7 @@
 using TypTyp.Cults;
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// Este script está pensado para hacer accesibles variables runtime que podrían serlo desde 
@@ -14,14 +15,7 @@ public class RuntimeVariables : Singleton<RuntimeVariables>
     public List<CultRuntimeInfo> CultsInfo { get; private set; } = new();
     public int MaxLevel => CurrentCult.RankNames.Length - 1;
     public bool IsLoaded { get; private set; } = false;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        SaveManager.Instance.OnBeforeSave += UpdateVariables;
-        //No se hace aquí el OnAfterLoad ya que UpdateVariables se llama primero por el SaveManager,
-        //Garantizando que los datos están actualizados antes de que se ejecute el AfterLoad en otros scripts
-    }
+    public event Action OnUpdated;
 
     public void UpdateVariables(SaveState saveState)
     {
@@ -41,6 +35,7 @@ public class RuntimeVariables : Singleton<RuntimeVariables>
             });
         }
         IsLoaded = true;
+        OnUpdated?.Invoke();
     }
 }
 

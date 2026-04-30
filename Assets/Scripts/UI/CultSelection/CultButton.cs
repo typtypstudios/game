@@ -24,6 +24,12 @@ public class CultButton : MonoBehaviour
         writableButton = GetComponent<WritableButton>();
         defaultLevelText = levelTMP.text;
         InstantiateDisplayers();
+        RuntimeVariables.Instance.OnUpdated += UpdateInfo;
+    }
+
+    private void OnDestroy()
+    {
+        RuntimeVariables.Instance.OnUpdated -= UpdateInfo;
     }
 
     private void InstantiateDisplayers()
