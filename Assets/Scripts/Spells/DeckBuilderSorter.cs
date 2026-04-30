@@ -1,13 +1,15 @@
-using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(DeckBuilder))]
 public class DeckBuilderSorter : MonoBehaviour
 { 
     [SerializeField] private float interpolationTime = 0.2f;
+    [SerializeField] private Toggle keepSortedToggle;
+    private DeckBuilder deckBuilder;
     private AdaptiveGridLayout[] layouts;
     private readonly Dictionary<BuilderDisplayer, BuilderInitPos> initPositions = new();
     private readonly HashSet<BuilderDisplayer> displayersToReset = new();
@@ -27,6 +29,17 @@ public class DeckBuilderSorter : MonoBehaviour
     private void Awake()
     {
         layouts = GetComponentsInChildren<AdaptiveGridLayout>();
+        deckBuilder = GetComponent<DeckBuilder>();
+        bool keepSorted = PlayerPrefs.GetInt("keepSorted", 1) == 1;
+        keepSortedToggle.SetIsOnWithoutNotify(keepSorted);
+        deckBuilder.SortOnChange = keepSorted;
+    }
+
+    public void OnToggleChanged(bool isOn)
+    {
+        PlayerPrefs.SetInt("keepSorted", isOn ? 1 : 0);
+        deckBuilder.SortOnChange = isOn;
+        if (isOn) SortCards(deckBuilder.UnequippedCards);
     }
 
     public void ReplaceCards(BuilderDisplayer card_1, BuilderDisplayer card_2)
