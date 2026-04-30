@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using TypTyp;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class DeckBuilder : MonoBehaviour
 {
+    [SerializeField] private InputActionReference clickAction;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Transform equippedLayout;
     [SerializeField] private Transform unequippedLayout;
@@ -40,6 +42,7 @@ public class DeckBuilder : MonoBehaviour
         }
         if (!TryGetComponent(out sorter)) Debug.LogError("Error: no hay sorter en el deck builder");
         BuilderDisplayer.OnCardChosen += ProcessCardChosen;
+        clickAction.action.canceled += OnAnyClick;
     }
 
     private void OnDisable()
@@ -53,6 +56,13 @@ public class DeckBuilder : MonoBehaviour
     private void OnDestroy()
     {
         BuilderDisplayer.OnCardChosen -= ProcessCardChosen;
+        clickAction.action.canceled -= OnAnyClick;
+    }
+
+    //Si tras un click el estado es el mismo, la carta seleccionada se deselecciona
+    private void OnAnyClick(InputAction.CallbackContext ctx)
+    {
+        StartCoroutine(ResetSelectionAfterFrame(selectedEquipped, selectedUnequipped));
     }
 
     public void SaveEquippedCards()
@@ -218,5 +228,12 @@ public class DeckBuilder : MonoBehaviour
         {
             panel.SetActive(hasSelection);
         }
+    }
+
+    IEnumerator ResetSelectionAfterFrame(BuilderDisplayer prevEquipped, BuilderDisplayer prevUnequipped)
+    {
+        yield return null;
+        if(selectedEquipped == prevEquipped && selectedUnequipped == prevUnequipped)
+            ResetSelection();
     }
 }
