@@ -26,7 +26,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848280371557389826}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000021908736}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -899,7 +899,7 @@ MonoBehaviour:
   highlightPanels:
   - {fileID: 848280371557389826}
   - {fileID: 1395083161477490768}
-  sortOnChange: 0
+  sortOnChange: 1
 --- !u!114 &42810081414988978
 MonoBehaviour:
   m_ObjectHideFlags: 0

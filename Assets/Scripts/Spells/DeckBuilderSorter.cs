@@ -5,9 +5,22 @@ using UnityEngine;
 
 [RequireComponent(typeof(DeckBuilder))]
 public class DeckBuilderSorter : MonoBehaviour
-{
+{ 
     [SerializeField] private float interpolationTime = 0.2f;
     private AdaptiveGridLayout[] layouts;
+    private readonly Dictionary<BuilderDisplayer, BuilderInitPos> initPositions = new();
+    private readonly HashSet<BuilderDisplayer> displayersToReset = new();
+
+    private struct BuilderInitPos
+    {
+        public BuilderInitPos(BuilderDisplayer displayer)
+        {
+            pos = displayer.transform.position;
+            rot = displayer.transform.rotation;
+        }
+        public Vector3 pos;
+        public Quaternion rot;
+    };
 
     private void Awake()
     {
@@ -16,13 +29,21 @@ public class DeckBuilderSorter : MonoBehaviour
 
     public void ReplaceCards(BuilderDisplayer card_1, BuilderDisplayer card_2)
     {
+        RegisterBuilders(new[]{ card_1, card_2});
+        card_1.transform.SetPositionAndRotation(initPositions[card_2].pos, initPositions[card_2].rot);
+        card_2.transform.SetPositionAndRotation(initPositions[card_1].pos, initPositions[card_1].rot);
+        displayersToReset.Add(card_1);
+        displayersToReset.Add(card_2);
+        CardDefinition c = card_1.Card;
+        card_1.SetInfo(card_2.Card);
+        card_2.SetInfo(c);
         StopAllCoroutines();
-        StartCoroutine(ReplaceCardsCoroutine(card_1, card_2));
+        StartCoroutine(ResetPositionsCoroutine());
     }
         
-    public void SortCards(List<BuilderDisplayer> cards, bool displayAnimation = true)
+    public void SortCards(List<BuilderDisplayer> displayers, bool displayAnimation = true)
     {
-        List<CardDefinition> sortedCards = cards
+        List<CardDefinition> sortedCards = displayers
             .Select(d => d.Card)
             .Distinct()
             .OrderBy(c => c.Cult != null)
@@ -32,87 +53,80 @@ public class DeckBuilderSorter : MonoBehaviour
 
         if (!displayAnimation)
         {
-            ApplySort(cards, sortedCards);
+            ApplySort(displayers, sortedCards);
             return;
         }
 
-        Dictionary<CardDefinition, int> indexDictionary = sortedCards
-            .Select((card, index) => new { card, index })
-            .ToDictionary(x => x.card, x => x.index);
+        RegisterBuilders(displayers);
 
-        List<Vector2> destinations = cards
-            .Select(c => cards[indexDictionary[c.Card]].GetComponent<RectTransform>().anchoredPosition)
+        Dictionary<CardDefinition, int> indexDictionary = displayers
+            .Select((displayer, index) => new { displayer, index })
+            .ToDictionary(x => x.displayer.Card, x => x.index);
+
+        List<(Vector3 pos, Quaternion rot)> startPositions = sortedCards
+            .Select(c => (displayers[indexDictionary[c]].transform.position,
+                          displayers[indexDictionary[c]].transform.rotation))
             .ToList();
 
+        ApplySort(displayers, sortedCards);
+
+        for(int i = 0;  i < displayers.Count; i++)
+        {
+            (Vector3 pos, Quaternion rot) = startPositions[i];
+            displayers[i].transform.SetPositionAndRotation(pos, rot);
+            displayersToReset.Add(displayers[i]);
+        }
+
         StopAllCoroutines();
-        StartCoroutine(SortCardsCoroutine(cards, sortedCards, destinations));
+        StartCoroutine(ResetPositionsCoroutine());
     }
 
-    private void ApplySort(List<BuilderDisplayer> cards, List<CardDefinition> sortedCards)
+    private void RegisterBuilders(IEnumerable<BuilderDisplayer> displayers)
     {
-        for (int i = 0; i < cards.Count; i++)
+        foreach(var b in displayers)
         {
-            cards[i].SetInfo(sortedCards[i]);
+            if (!initPositions.ContainsKey(b))
+                initPositions.Add(b, new BuilderInitPos(b));
         }
     }
 
-    //Código muy mejorable, pero funciona. Si tengo tiempo en algún momento lo cambio
-    IEnumerator SortCardsCoroutine(List<BuilderDisplayer> cards, List<CardDefinition> sortedCards, 
-        List<Vector2> destinations)
+    private void ApplySort(List<BuilderDisplayer> displayers, List<CardDefinition> sortedCards)
+    {
+        for (int i = 0; i < displayers.Count; i++)
+        {
+            displayers[i].SetInfo(sortedCards[i]);
+        }
+    }
+
+    private bool MoveTowardsInitPos(BuilderDisplayer displayer, float speed, float rotSpeed)
+    {
+        BuilderInitPos init = initPositions[displayer];
+        displayer.transform.position = Vector3.MoveTowards(displayer.transform.position, init.pos, speed * Time.deltaTime);
+        displayer.transform.rotation = Quaternion.RotateTowards(displayer.transform.rotation, init.rot, rotSpeed * Time.deltaTime);
+        return displayer.transform.position == init.pos && displayer.transform.rotation == init.rot;
+    }
+
+    IEnumerator ResetPositionsCoroutine()
     {
         foreach (var layout in layouts) layout.enabled = false;
-        List<RectTransform> rts = new();
-        List<float> speeds = new();
-        for (int i = 0; i < cards.Count; i++)
+        Dictionary<BuilderDisplayer, float> speeds = new();
+        Dictionary<BuilderDisplayer, float> rotSpeeds = new();
+        foreach(var displayer in displayersToReset)
         {
-            RectTransform rt = cards[i].GetComponent<RectTransform>();
-            speeds.Add(Vector2.Distance(rt.anchoredPosition, destinations[i]) / interpolationTime);
-            rts.Add(rt);
+            speeds[displayer] = Vector3.Distance(displayer.transform.position, initPositions[displayer].pos) / interpolationTime;
+            rotSpeeds[displayer] = Quaternion.Angle(displayer.transform.rotation, initPositions[displayer].rot) / interpolationTime;
         }
-        HashSet<int> finishedList = new();
-        while (finishedList.Count < cards.Count)
+        int placedCount = 0;
+        while(placedCount < displayersToReset.Count)
         {
-            for(int i = 0; i < cards.Count; i++)
+            placedCount = 0;
+            foreach(var displayer in displayersToReset)
             {
-                if (rts[i].anchoredPosition == destinations[i])
-                {
-                    finishedList.Add(i);
-                    continue;
-                }
-                rts[i].anchoredPosition = Vector2.MoveTowards(rts[i].anchoredPosition, destinations[i], speeds[i] * Time.deltaTime);
+                if (MoveTowardsInitPos(displayer, speeds[displayer], rotSpeeds[displayer])) placedCount++;
             }
             yield return null;
         }
-        ApplySort(cards, sortedCards);
-        foreach (var layout in layouts) layout.enabled = true;
-    }
-
-    IEnumerator ReplaceCardsCoroutine(BuilderDisplayer card_1, BuilderDisplayer card_2)
-    {
-        foreach (var layout in layouts) layout.enabled = false;
-        RectTransform rt_1 = card_1.GetComponent<RectTransform>();
-        RectTransform rt_2 = card_2.GetComponent<RectTransform>();
-        Vector3 dest_1 = rt_2.position;
-        Quaternion dest_rot_1 = rt_2.rotation;
-        Quaternion init_rot_1 = rt_1.rotation;
-        Vector3 dest_2 = rt_1.position;
-        Quaternion dest_rot_2 = rt_1.rotation;
-        Quaternion init_rot_2 = rt_2.rotation;
-        float speed = Vector3.Distance(rt_1.position, rt_2.position) / interpolationTime;
-        float rotSpeed = Quaternion.Angle(rt_1.rotation, rt_2.rotation) / interpolationTime;
-        while (rt_1.position != dest_1 && rt_2.position != dest_2)
-        {
-            rt_1.position = Vector3.MoveTowards(rt_1.position, dest_1, speed * Time.deltaTime);
-            rt_1.rotation = Quaternion.RotateTowards(rt_1.rotation, dest_rot_1, rotSpeed * Time.deltaTime);
-            rt_2.position = Vector3.MoveTowards(rt_2.position, dest_2, speed * Time.deltaTime);
-            rt_2.rotation = Quaternion.RotateTowards(rt_2.rotation, dest_rot_2, rotSpeed * Time.deltaTime);
-            yield return null;
-        }
-        CardDefinition c = card_1.Card;
-        card_1.SetInfo(card_2.Card);
-        card_2.SetInfo(c);
-        rt_1.rotation = init_rot_1;
-        rt_2.rotation = init_rot_2;
+        displayersToReset.Clear();
         foreach (var layout in layouts) layout.enabled = true;
     }
 }
