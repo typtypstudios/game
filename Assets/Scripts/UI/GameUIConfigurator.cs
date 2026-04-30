@@ -13,7 +13,7 @@ public class GameUIConfigurator : MonoBehaviour
     [Tooltip("Barras de corrupci�n. La primera ha de ser la del cliente.")]
     [SerializeField] private UIBar[] corruptionBars;
     [Tooltip("UI de efectos de estados de cada jugador.")]
-    [SerializeField] private StatusEffectUI[] statusEffectUIs;
+    [SerializeField] private StatusEffectUIBar[] statusEffectUIs;
     [Tooltip("Reminder text para los efectos")]
     [SerializeField] private PlayerFeedbackUI playerFeedbackUI;
     public static event Action OnUIConfigurated;
