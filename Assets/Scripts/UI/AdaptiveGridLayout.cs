@@ -18,8 +18,9 @@ public class AdaptiveGridLayout : MonoBehaviour
     [SerializeField] private float cellRatio = 1.3333333f;
     [SerializeField] private bool centerIncompleteRows = true;
 
-    [Header("Excluded objects")]
+    [Header("Other: ")]
     [SerializeField] private Transform[] excludedObjects;
+    [SerializeField] private bool refreshAfterLoad = true;
 
     private RectTransform rectTransform;
     private readonly List<RectTransform> children = new();
@@ -39,12 +40,12 @@ public class AdaptiveGridLayout : MonoBehaviour
     {
         RefreshChildren();
         lastChildCount = transform.childCount;
-        SaveManager.Instance.OnAfterLoad += RefreshAfterLoad;
+        if(refreshAfterLoad) SaveManager.Instance.OnAfterLoad += RefreshAfterLoad;
     }
 
     private void OnDestroy()
     {
-        SaveManager.Instance.OnAfterLoad -= RefreshAfterLoad;
+        if (refreshAfterLoad) SaveManager.Instance.OnAfterLoad -= RefreshAfterLoad;
     }
 
     private void RefreshAfterLoad(SaveState _) => RefreshChildren();
