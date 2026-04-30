@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ public class DeckBuilder : MonoBehaviour
     public List<BuilderDisplayer> UnequippedCards { get; private set; } = new();
     public bool SortOnChange { get; set; } = true; //Ordena las cartas no equipadas siempre
     public static CardDefinition[] CardsInDeck { get; private set; }
+    public event Action OnRebuild;
 
     private void OnEnable()
     {
@@ -109,6 +111,7 @@ public class DeckBuilder : MonoBehaviour
             UnequippedCards.Add(displayer);
             displayer.SetInfo(card);
         }
+        OnRebuild?.Invoke();
         sorter.SortCards(UnequippedCards, false);
     }
 

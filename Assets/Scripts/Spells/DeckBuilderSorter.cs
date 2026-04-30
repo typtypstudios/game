@@ -33,6 +33,12 @@ public class DeckBuilderSorter : MonoBehaviour
         bool keepSorted = PlayerPrefs.GetInt("keepSorted", 1) == 1;
         keepSortedToggle.SetIsOnWithoutNotify(keepSorted);
         deckBuilder.SortOnChange = keepSorted;
+        deckBuilder.OnRebuild += () =>
+        {
+            initPositions.Clear();
+            displayersToReset.Clear();
+            initParents.Clear();
+        };
     }
 
     public void OnToggleChanged(bool isOn)
