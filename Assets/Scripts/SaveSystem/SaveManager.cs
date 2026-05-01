@@ -76,7 +76,7 @@ public class SaveManager : ScriptableSingleton<SaveManager>
         SaveGlobalSettingsInternal(state.global);
         HasLoadedState = true;
 
-        RuntimeVariables.Instance.UpdateVariables(state);
+        if(RuntimeVariables.Instance != null) RuntimeVariables.Instance.UpdateVariables(state);
     }
 
     public void Load()
@@ -240,7 +240,7 @@ public class SaveManager : ScriptableSingleton<SaveManager>
     {
         HasLoadedState = true;
         SaveState state = GetState();
-        RuntimeVariables.Instance.UpdateVariables(state);
+        if(RuntimeVariables.Instance != null) RuntimeVariables.Instance.UpdateVariables(state);
         OnAfterLoad?.Invoke(state);
     }
 }
