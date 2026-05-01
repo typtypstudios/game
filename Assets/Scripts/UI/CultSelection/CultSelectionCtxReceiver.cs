@@ -15,7 +15,8 @@ public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
     public void ReceiveContext(Screens prevScreen, bool isGoingBack, GameObject sender = null)
     {
         CultSelectionConfig config = new();
-        if (prevScreen == Screens.DeckBuilder && !isGoingBack)
+        if ((prevScreen == Screens.DeckBuilder && !isGoingBack)
+            || (prevScreen == Screens.MainMenu && sender.TryGetComponent(out NavigationObject _)))
         {
             config = new()
             {
@@ -24,11 +25,11 @@ public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
                 showEquipmentButtons = false
             };
         }
-        else if(prevScreen == Screens.MainMenu && sender.TryGetComponent(out NavigationButton _))
+        else 
         {
             config = new()
             {
-                labelInfo = "Choose your cult!",
+                labelInfo = "Choose a cult to battle with!",
                 OnCultChosen = () =>
                 {
                     NavigationController c = FindFirstObjectByType<NavigationController>();
@@ -36,15 +37,6 @@ public class CultSelectionCtxReceiver : MonoBehaviour, INavigationCtxReceiver
                     c.GoTo(Screens.Loading, this.gameObject);
                     FindFirstObjectByType<MainMenuManager>().Play(t.TransitionTime);
                 },
-                showEquipmentButtons = true
-            };
-        }
-        else //Viene de pulsar el cultista
-        {
-            config = new()
-            {
-                labelInfo = "Choose your new cult!",
-                OnCultChosen = () => FindFirstObjectByType<NavigationController>().GoBack(),
                 showEquipmentButtons = true
             };
         }
