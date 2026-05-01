@@ -1988,6 +1988,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
+      propertyPath: m_fontColor.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       propertyPath: m_fontColor.b
       value: 0
       objectReference: {fileID: 0}
@@ -2005,7 +2009,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4278190080
+      value: 2147483648
       objectReference: {fileID: 0}
     - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       propertyPath: m_VerticalAlignment
@@ -2188,6 +2192,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
+      propertyPath: m_fontColor.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       propertyPath: m_fontColor.b
       value: 0
       objectReference: {fileID: 0}
@@ -2205,7 +2213,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1111144082493350281, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4278190080
+      value: 2147483648
       objectReference: {fileID: 0}
     - target: {fileID: 5522567699397296562, guid: 9ea51989502a5da42b167c9c4e7cd698, type: 3}
       propertyPath: m_Pivot.x
@@ -2516,6 +2524,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &7082801598199352939
 MonoBehaviour:
   m_ObjectHideFlags: 0
