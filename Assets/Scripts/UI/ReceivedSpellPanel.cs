@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class ReceivedSpellPanel : ACardInfoPanel
 {
-    [SerializeField] private GameObject sealCross;
+    [SerializeField] private ScratchAnimation scratchAnim;
     private bool nextIsSealed = false;
 
     protected override void Awake()
     {
         base.Awake();
-        sealCross.SetActive(false);
+        scratchAnim.SetScratchAmount(0);
         DeckController.OnAnyCardPlayedEvent += ManageCardApplied;
     }
 
@@ -33,7 +33,10 @@ public class ReceivedSpellPanel : ACardInfoPanel
 
     protected override void OnImageSet() 
     {
-        sealCross.SetActive(nextIsSealed);
-        if (nextIsSealed) nextIsSealed = false;
+        if (nextIsSealed)
+        {
+            scratchAnim.ScratchAndRemove(showTime, Mathf.Max(fadeTime - scratchAnim.AnimTime, 0));
+            nextIsSealed = false;
+        }
     }
 }

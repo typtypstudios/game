@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public abstract class ACardInfoPanel : MonoBehaviour
 {
-    [Min(0.01f)][SerializeField] private float fadeTime = 0.5f;
-    [Min(0)][SerializeField] private float showTime;
+    [Min(0.01f)][SerializeField] protected float fadeTime = 0.5f;
+    [Min(0)][SerializeField] protected float showTime;
     [SerializeField] private CardVisualPresenter cardVisualPresenter;
     private CardDissolveEffect dissolveEffect;
     private Image image;

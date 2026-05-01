@@ -6,32 +6,41 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Mask))]
 public class ScratchAnimation : MonoBehaviour
 {
-    [Min(0.01f)][SerializeField] private float animTime;
+    [Min(0.01f)][field: SerializeField] public float AnimTime { get; private set; } = 0.3f;
     [SerializeField] private ScratchOrigin appearOrigin;
     [SerializeField] private ScratchOrigin disappearOrigin;
     private Image image;
     public event Action OnScratch;
     public event Action OnScratchRemoved;
+    private Coroutine scratchCoroutine;
 
     void Awake()
     {
         image = GetComponent<Image>();
     }
 
+    public void SetScratchAmount(int value) => image.fillAmount = value;
+
     public void Scratch(bool resetValue = true)
     {
         if(resetValue) image.fillAmount = 0;
         image.fillOrigin = GetFillOrigin(appearOrigin);
-        StopAllCoroutines();
-        StartCoroutine(ScratchCoroutine());
+        if(scratchCoroutine != null) StopCoroutine(scratchCoroutine);
+        scratchCoroutine = StartCoroutine(ScratchCoroutine());
     }
 
     public void RemoveScratch(bool resetValue = true)
     {
         if (resetValue) image.fillAmount = 1;
         image.fillOrigin = GetFillOrigin(disappearOrigin);
+        if (scratchCoroutine != null) StopCoroutine(scratchCoroutine);
+        scratchCoroutine = StartCoroutine(RemoveScratchCoroutine());
+    }
+
+    public void ScratchAndRemove(float timeInterval, float waitTime = 0)
+    {
         StopAllCoroutines();
-        StartCoroutine(RemoveScratchCoroutine());
+        StartCoroutine(ScratchAndRemoveCoroutine(timeInterval, waitTime));
     }
 
     private int GetFillOrigin(ScratchOrigin origin)
@@ -42,7 +51,7 @@ public class ScratchAnimation : MonoBehaviour
 
     IEnumerator ScratchCoroutine()
     {
-        float speed = (1 - image.fillAmount) / animTime;
+        float speed = (1 - image.fillAmount) / AnimTime;
         while(image.fillAmount < 1)
         {
             image.fillAmount += speed * Time.deltaTime;
@@ -53,13 +62,21 @@ public class ScratchAnimation : MonoBehaviour
 
     IEnumerator RemoveScratchCoroutine()
     {
-        float speed = image.fillAmount / animTime;
+        float speed = image.fillAmount / AnimTime;
         while (image.fillAmount > 0)
         {
             image.fillAmount -= speed * Time.deltaTime;
             yield return null;
         }
         OnScratchRemoved?.Invoke();
+    }
+
+    IEnumerator ScratchAndRemoveCoroutine(float intervalTime, float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        Scratch();
+        yield return new WaitForSeconds(intervalTime + AnimTime);
+        RemoveScratch();
     }
 }
 

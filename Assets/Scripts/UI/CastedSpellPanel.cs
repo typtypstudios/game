@@ -3,14 +3,14 @@ using UnityEngine;
 public class CastedSpellPanel : ACardInfoPanel
 {
     [SerializeField] private GameObject discountAppliedImage;
-    [SerializeField] private GameObject sealedImage;
+    [SerializeField] private ScratchAnimation scratchAnim;
     private CastedSpellInfoType nextType;
 
     protected override void Awake()
     {
         base.Awake();
         discountAppliedImage.SetActive(false);
-        sealedImage.SetActive(false);
+        scratchAnim.SetScratchAmount(0);
     }
 
     protected override void PerformSubscriptions()
@@ -31,7 +31,9 @@ public class CastedSpellPanel : ACardInfoPanel
     protected override void OnImageSet() 
     {
         discountAppliedImage.SetActive(nextType == CastedSpellInfoType.Discount);
-        sealedImage.SetActive(nextType == CastedSpellInfoType.Seal);
+        if (nextType == CastedSpellInfoType.Seal)
+            scratchAnim.ScratchAndRemove(showTime, Mathf.Max(fadeTime - scratchAnim.AnimTime, 0));
+        else scratchAnim.SetScratchAmount(0);
     }
 }
 
