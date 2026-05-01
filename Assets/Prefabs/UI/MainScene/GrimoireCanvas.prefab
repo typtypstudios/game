@@ -667,7 +667,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8246875684626232015}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
@@ -705,7 +705,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &3602176564305831657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1160,7 +1160,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 602452911307741091, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_Name
-      value: RegularButton
+      value: NextButton
       objectReference: {fileID: 0}
     - target: {fileID: 2053037489924372653, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_text
@@ -1445,7 +1445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111475118149462545, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -26
+      value: -23.1
       objectReference: {fileID: 0}
     - target: {fileID: 111475118149462545, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1519,7 +1519,20 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4287935959
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8977301899769110024, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: hoverScale.x
+      value: 1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8977301899769110024, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: hoverScale.y
+      value: 1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8977301899769110024, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
+      propertyPath: hoverScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8977301899769110024, guid: 6b3c75e5f9c5d0d4a92291feeb998b9e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1579,6 +1592,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
       value: 0.78431374
       objectReference: {fileID: 0}
     - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}

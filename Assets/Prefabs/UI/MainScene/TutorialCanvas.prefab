@@ -1317,7 +1317,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -1365,7 +1365,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 1
   resetOnWritten: 1
-  resetTime: 0.5
   typableController: {fileID: 1544016512725240275}
   tmpView: {fileID: 6083847883235635511}
 --- !u!114 &3509294013067908260
@@ -1422,6 +1421,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &8448921517466536945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1874,7 +1874,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -1922,7 +1922,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 1
   resetOnWritten: 1
-  resetTime: 0.5
   typableController: {fileID: 2484987732439381914}
   tmpView: {fileID: 6446468067896759314}
 --- !u!114 &6248478273544869005
@@ -1979,6 +1978,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &5460187355590224381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2065,7 +2065,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6812265263315183931}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
@@ -2103,7 +2103,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &3827501643030803143
 MonoBehaviour:
   m_ObjectHideFlags: 0
