@@ -4,26 +4,26 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Cinemachine;
 
 namespace TypTyp.TextSystem
 {
     public class NetworkTextProvider : NetworkBehaviour, ITextProvider
     {
-        [SerializeField] private TMP_Text[] texts;
+        [field: SerializeField] public TMP_Text[] Texts { get; private set; }
         [SerializeField] TextAsset textSource;
         private static List<string> phrases = new();
         private int textIdx = 0;
         private RitualManager ritualManager; //Referencia circular
         private ITextPipeline textPipeline;
         public event Action OnLineRequested;
+        public event Action OnNextText;
 
         public override void OnNetworkSpawn()
         {
             if (IsServer && IsOwner) LoadSource();
             if (IsOwner)
             {
-                for (int i = 0; i < texts.Length; i++) RequestNextTextRpc(textIdx++);
+                for (int i = 0; i < Texts.Length; i++) RequestNextTextRpc(textIdx++);
                 MatchManager.OnMatchStarted += EnableTexts;
             }
         }
@@ -33,7 +33,7 @@ namespace TypTyp.TextSystem
         {
             ritualManager = GetComponentInChildren<RitualManager>(true);
             textPipeline = GetComponentInChildren<ITextPipeline>(true);
-            foreach (var t in texts)
+            foreach (var t in Texts)
             {
                 t.text = string.Empty;
             }
@@ -60,10 +60,11 @@ namespace TypTyp.TextSystem
 
         public string GetNextText()
         {
-            for (int i = 0; i < texts.Length - 1; i++) texts[i].text = texts[i + 1].text;
-            texts[texts.Count() - 1].text = string.Empty;
+            for (int i = 0; i < Texts.Length - 1; i++) Texts[i].text = Texts[i + 1].text;
+            Texts[Texts.Count() - 1].text = string.Empty;
             RequestNextTextRpc(textIdx++);
-            return texts[0].text;
+            OnNextText?.Invoke();
+            return Texts[0].text;
         }
 
         [Rpc(SendTo.Server)]
@@ -80,11 +81,11 @@ namespace TypTyp.TextSystem
         [Rpc(SendTo.ClientsAndHost)]
         private void ReceiveTextRpc(string text)
         {
-            for (int i = 0; i < texts.Length; i++)
+            for (int i = 0; i < Texts.Length; i++)
             {
-                if (texts[i].text.Equals(string.Empty))
+                if (Texts[i].text.Equals(string.Empty))
                 {
-                    texts[i].text = text;
+                    Texts[i].text = text;
                     if (i == 0) ritualManager.OriginalText = text;
                     break;
                 }
