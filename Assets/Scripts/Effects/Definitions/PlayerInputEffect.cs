@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerInputEffect", menuName = "TypTyp/Effects/PlayerInputEffect")]
 public class PlayerInputEffect : StatusEffectDefinition
 {
+    public static event Action<Player, bool> OnSealedChanged;
+
     public override string GetDefaultValue()
     {
         return "";
@@ -19,6 +22,7 @@ public class PlayerInputEffect : StatusEffectDefinition
                     break;
 
                 case EffectDurationType.Time:
+                    OnSealedChanged?.Invoke(target, true);
                     inputManager.SilenceSpellEffect(true);
                     break;
             }
@@ -35,6 +39,7 @@ public class PlayerInputEffect : StatusEffectDefinition
                     break;
 
                 case EffectDurationType.Time:
+                    OnSealedChanged?.Invoke(target, false);
                     inputManager.SilenceSpellEffect(false);
                     break;
             }

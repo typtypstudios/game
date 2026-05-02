@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ScratchAnimation : MonoBehaviour
 {
     [Min(0.01f)][field: SerializeField] public float AnimTime { get; private set; } = 0.3f;
+    [SerializeField] private float delayTime = 0f;
     [SerializeField] private ScratchOrigin appearOrigin;
     [SerializeField] private ScratchOrigin disappearOrigin;
     private Image image;
@@ -17,6 +18,7 @@ public class ScratchAnimation : MonoBehaviour
     void Awake()
     {
         image = GetComponent<Image>();
+        image.fillAmount = 0;
     }
 
     public void SetScratchAmount(int value) => image.fillAmount = value;
@@ -51,6 +53,7 @@ public class ScratchAnimation : MonoBehaviour
 
     IEnumerator ScratchCoroutine()
     {
+        yield return new WaitForSeconds(delayTime);
         float speed = (1 - image.fillAmount) / AnimTime;
         while(image.fillAmount < 1)
         {
@@ -73,7 +76,7 @@ public class ScratchAnimation : MonoBehaviour
 
     IEnumerator ScratchAndRemoveCoroutine(float intervalTime, float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(waitTime + delayTime);
         Scratch();
         yield return new WaitForSeconds(intervalTime + AnimTime);
         RemoveScratch();

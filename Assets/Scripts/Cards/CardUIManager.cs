@@ -10,7 +10,9 @@ public class CardUIManager : MonoBehaviour
     private ITextPipeline textPipeline;
     [SerializeField] private CardUI cardUIPrefab;
     [SerializeField] private Transform cardUIParent;
-
+    [SerializeField] private ScratchAnimation[] scratchs;
+    [SerializeField] private CanvasGroup cardsCanvasGroup;
+    private Player player;
     private Dictionary<int, CardUI> cardUIById = new();
     private Queue<CardUI> emptySlots = new();
 
@@ -38,6 +40,7 @@ public class CardUIManager : MonoBehaviour
             textPipeline,
             $"CardUIManager requires a reference to {nameof(ITextPipeline)}"
         );
+        player = manaManager.GetComponent<Player>();
         CreateSlots(TypTyp.Settings.Instance.HandSize);
     }
 
@@ -49,6 +52,7 @@ public class CardUIManager : MonoBehaviour
         deckController.OnShuffledEvent += HandleHandShuffled;
 
         manaManager.OnCostModifierChangedEvent += ManaCostModifierChanged;
+        PlayerInputEffect.OnSealedChanged += HandleSeal;
 
         textPipeline.ProcessorAdded += TextPipelineModified;
         textPipeline.ProcessorRemoved += TextPipelineModified;
@@ -62,9 +66,21 @@ public class CardUIManager : MonoBehaviour
         deckController.OnShuffledEvent -= HandleHandShuffled;
 
         manaManager.OnCostModifierChangedEvent -= ManaCostModifierChanged;
+        PlayerInputEffect.OnSealedChanged -= HandleSeal;
 
         textPipeline.ProcessorAdded -= TextPipelineModified;
         textPipeline.ProcessorRemoved -= TextPipelineModified;
+    }
+
+    private void HandleSeal(Player target, bool applied)
+    {
+        if (target != player) return;
+        foreach (var s in scratchs)
+        {
+            if (applied) s.Scratch();
+            else s.RemoveScratch();
+            cardsCanvasGroup.alpha = applied ? 0.5f : 1.0f;
+        }
     }
 
     void CreateSlots(int count)
