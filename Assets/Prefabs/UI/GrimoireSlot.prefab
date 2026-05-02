@@ -401,7 +401,8 @@ MonoBehaviour:
   cardVisualPresenter: {fileID: 5289384808464458214}
   presenterBorderImage: {fileID: 9156264922992707511}
   presenterBorderEmissionForce: 1
-  scaleInterpolationTime: 0.1
+  interpolationTime: 0.1
+  lastSiblingIfSelected: 0
 --- !u!114 &6762483248211376429
 MonoBehaviour:
   m_ObjectHideFlags: 0

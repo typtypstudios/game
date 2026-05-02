@@ -16,6 +16,7 @@ public class InfoDisplayer : MonoBehaviour
 
     [Header("Selection Animation")]
     [SerializeField] private float interpolationTime = 0.1f;
+    [SerializeField] private bool lastSiblingIfSelected = true;
     private Vector3 initScale;
 
     private Image image;
@@ -115,7 +116,7 @@ public class InfoDisplayer : MonoBehaviour
                     emissiveMat.SetFloat("_EmissionForce", 1);
             }
 
-            transform.SetAsLastSibling();
+            if(lastSiblingIfSelected) transform.SetAsLastSibling();
         }
         else if (!highlight && hovered)
         {
