@@ -23,7 +23,7 @@ namespace TypTyp.TextSystem.Typable
         public override void UpdateView(in TypableViewDTO dto)
         {
             //Si fue completado y no se comienza a escribir de nuevo, el reseteo lo hace la corrutina
-            if (tmp == null || (StyleConfig.resetTime > 0 && wasComplete && dto.Idx == 0)) 
+            if (tmp == null || (StyleConfig.resetTime > 0 && wasComplete && dto.Idx == 0))
                 return;
             StopAllCoroutines();
             wasComplete = false;
@@ -43,24 +43,21 @@ namespace TypTyp.TextSystem.Typable
             if (idx < safeText.Length)
             {
                 char c = safeText[idx];
-                if (dto.HasMistake)
+                bool hasMistake = dto.HasMistake;
+                bool shouldUnderline = StyleConfig.UnderlineNext;
+
+                if (hasMistake)
                 {
                     sb.Append("<color=#");
                     sb.Append(ColorUtility.ToHtmlStringRGB(StyleConfig.WrongColor));
                     sb.Append('>');
-                    sb.Append(c);
-                    sb.Append("</color>");
                 }
-                else if (StyleConfig.UnderlineNext)
-                {
-                    sb.Append("<u>");
-                    sb.Append(c);
-                    sb.Append("</u>");
-                }
-                else
-                {
-                    sb.Append(c);
-                }
+                if (shouldUnderline) sb.Append("<u>");
+
+                sb.Append(c);
+
+                if (shouldUnderline) sb.Append("</u>");
+                if (hasMistake) sb.Append("</color>");
             }
 
             int restStart = idx + 1;
@@ -86,9 +83,9 @@ namespace TypTyp.TextSystem.Typable
             if (dto.IsComplete)
             {
                 wasComplete = true;
-                if(StyleConfig.resetTime > 0) StartCoroutine(ResetAfterTimer(dto));
+                if (StyleConfig.resetTime > 0) StartCoroutine(ResetAfterTimer(dto));
             }
-            
+
         }
 
         IEnumerator ResetAfterTimer(TypableViewDTO dto)
