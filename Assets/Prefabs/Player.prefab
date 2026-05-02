@@ -370,7 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2605432542
+  GlobalObjectIdHash: 1277958203
   InScenePlacedSourceGlobalObjectIdHash: 1277958203
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1653,18 +1653,18 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7944688164551593234}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.00042574637}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6011674439862989103}
   - {fileID: 3534298015139187038}
+  - {fileID: 6011674439862989103}
   m_Father: {fileID: 2645533360445149744}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -329.74323, y: -326.511}
+  m_AnchoredPosition: {x: 0, y: -2.2000122}
+  m_SizeDelta: {x: -329.74323, y: -335.18552}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2636263880301956117
 CanvasRenderer:
@@ -3052,27 +3052,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5542687155621851250, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5542687155621851250, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5542687155621851250, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5542687155621851250, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5542687155621851250, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 127
+      value: -73
       objectReference: {fileID: 0}
     - target: {fileID: 5542687155621851250, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 193
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 5542687155621851250, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
       propertyPath: m_LocalPosition.x
