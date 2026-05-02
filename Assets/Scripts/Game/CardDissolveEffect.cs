@@ -9,6 +9,7 @@ public class CardDissolveEffect : MonoBehaviour
     [SerializeField] private Image[] linkedImages;
     [SerializeField] private Transform[] linkedImageContainers;
     [SerializeField] private Material dissolveMat;
+    private Material sourceMat;
 
     private float Dissolve
     {
@@ -18,6 +19,7 @@ public class CardDissolveEffect : MonoBehaviour
 
     private void Awake()
     {
+        sourceMat = dissolveMat;
         dissolveMat = new(dissolveMat);
         UpdateMaterials();
         Dissolve = 1;
@@ -56,10 +58,13 @@ public class CardDissolveEffect : MonoBehaviour
         StartCoroutine(BlinkCoroutine(blinkTime, onBlink));
     }
 
-    public void OverrideMaterial(Material mat)
+    public void OverrideMaterial(Material mat, float startingDissolve)
     {
+        if (mat == sourceMat) return;
+        sourceMat = mat;
         dissolveMat = new(mat);
         UpdateMaterials();
+        Dissolve = startingDissolve;
     }
 
     private void UpdateMaterials()

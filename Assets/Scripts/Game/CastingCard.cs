@@ -65,8 +65,7 @@ public class CastingCard : NetworkBehaviour
         else if (state == AnimState.Spell && !IsOwner)
         {
             ShowSprite(backSprite);
-            //dissolveEffect.SetDissolve(0, true, appearTime);
-            //dissolveEffect.OverrideMaterial(enemyMat);
+            dissolveEffect.OverrideMaterial(enemyMat, 1);
         }
     }
 
