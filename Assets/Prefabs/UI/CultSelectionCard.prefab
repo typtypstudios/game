@@ -239,7 +239,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 1
   resetOnWritten: 1
-  resetTime: 0
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &2501573664067777313
@@ -260,6 +259,8 @@ MonoBehaviour:
   cardVisualPresenter: {fileID: 1183715168696632819}
   presenterBorderImage: {fileID: 2745889237770511266}
   presenterBorderEmissionForce: 1
+  interpolationTime: 0.1
+  lastSiblingIfSelected: 1
 --- !u!1 &8484314843680938315
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,19 +506,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -22
+      value: -25.599998
       objectReference: {fileID: 0}
     - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
       propertyPath: m_SizeDelta.y
       value: 1.49
       objectReference: {fileID: 0}
     - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.0000019073486
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.3600006
+      value: -0.47000122
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
