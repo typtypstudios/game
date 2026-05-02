@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using TypTyp.Input;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class CastingCard : MonoBehaviour
+public class CastingCard : NetworkBehaviour
 {
     [SerializeField] private PlayerInputManager inputManager;
     [SerializeField] private Sprite backSprite;
@@ -23,6 +23,9 @@ public class CastingCard : MonoBehaviour
     private Image image;
     private CardDissolveEffect dissolveEffect;
     private readonly Queue<CardDefinition> completedQueue = new();
+    private readonly NetworkVariable<float> progress = new(0,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Owner);
 
     private void Awake()
     {
@@ -32,6 +35,10 @@ public class CastingCard : MonoBehaviour
         ShowSprite(placeholderSprite);
         anim = GetComponent<Animator>();
         inputManager.OnAnimChanged += HandleAnimChange;
+        progress.OnValueChanged += (oldVal, newVal) =>
+        {
+            if (!IsOwner) dissolveEffect.SetDissolve(1 - newVal, true, appearTime);
+        };
     }
 
     private void Start()
@@ -55,21 +62,23 @@ public class CastingCard : MonoBehaviour
     {
         if (state != AnimState.Spell && !showingCard)
             dissolveEffect.SetDissolve(1, true, disappearTime);
-        else if (state == AnimState.Spell && !inputManager.Player.IsOwner)
+        else if (state == AnimState.Spell && !IsOwner)
         {
             ShowSprite(backSprite);
-            dissolveEffect.SetDissolve(0, true, appearTime);
-            dissolveEffect.OverrideMaterial(enemyMat);
+            //dissolveEffect.SetDissolve(0, true, appearTime);
+            //dissolveEffect.OverrideMaterial(enemyMat);
         }
     }
 
     private void OnCardUpdated(CardUI card, float progress, bool canBeCasted)
     {
+        if (!IsOwner) return;
         if (canBeCasted && showingCard && Mathf.Approximately(progress, 1))
             completedQueue.Enqueue(card.CardDefinition);
         if (!canBeCasted || showingCard) return;
         progressDictionary[card] = progress;
         float max = progressDictionary.Values.Max();
+        this.progress.Value = max;
         dissolveEffect.SetDissolve(1 - max, true, appearTime);
         if (Mathf.Approximately(progressDictionary[card], 1))
             ShowCard(card.CardDefinition);
@@ -77,6 +86,7 @@ public class CastingCard : MonoBehaviour
 
     private void ShowCard(CardDefinition cardDefinition)
     {
+        if (!IsOwner) return;
         bool usePresenter = cardDefinition != null && cardVisualPresenter;
         SetVisualMode(usePresenter);
 
@@ -129,6 +139,7 @@ public class CastingCard : MonoBehaviour
 
     public void OnAnimEnded()
     {
+        if (!IsOwner) return;
         dissolveEffect.FadeInAndOut(disappearTime, showTime, null, OnCardDisappear, false);
         foreach (var key in progressDictionary.Keys.ToList())
             progressDictionary[key] = 0;
@@ -136,11 +147,14 @@ public class CastingCard : MonoBehaviour
 
     private void OnCardDisappear()
     {
+        if (!IsOwner) return;
         showingCard = false;
         ShowSprite(placeholderSprite);
+        progress.Value = 0;
         if (completedQueue.Count > 0)
         {
             dissolveEffect.SetDissolve(0);
+            progress.Value = 1;
             ShowCard(completedQueue.Dequeue());
         }
     }
