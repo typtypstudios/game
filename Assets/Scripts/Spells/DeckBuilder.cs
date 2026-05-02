@@ -13,10 +13,10 @@ public class DeckBuilder : MonoBehaviour
     [SerializeField] private Transform equippedLayout;
     [SerializeField] private Transform unequippedLayout;
     [SerializeField] private GameObject[] highlightPanels;
+    [SerializeField] private DeckBuilderSorter sorter;
     private List<int> equippedIndexes = new();
     private BuilderDisplayer selectedEquipped;
     private BuilderDisplayer selectedUnequipped;
-    private DeckBuilderSorter sorter;
     public List<BuilderDisplayer> EquippedCards { get; private set; } = new();
     public List<BuilderDisplayer> UnequippedCards { get; private set; } = new();
     public bool SortOnChange { get; set; } = true; //Ordena las cartas no equipadas siempre
@@ -42,7 +42,6 @@ public class DeckBuilder : MonoBehaviour
             // panel.transform.SetAsFirstSibling();
             panel.transform.SetAsLastSibling();
         }
-        if (!TryGetComponent(out sorter)) Debug.LogError("Error: no hay sorter en el deck builder");
         BuilderDisplayer.OnCardChosen += ProcessCardChosen;
         clickAction.action.canceled += OnAnyClick;
     }
