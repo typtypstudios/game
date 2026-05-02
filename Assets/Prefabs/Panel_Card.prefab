@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6233594972065447991}
   - component: {fileID: 4734598381706829570}
   - component: {fileID: 300047870427569232}
+  - component: {fileID: 6496023527173822487}
   m_Layer: 0
   m_Name: VL_Name+Cost
   m_TagString: Untagged
@@ -85,6 +86,18 @@ MonoBehaviour:
   m_FlexibleWidth: 1e+24
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!225 &6496023527173822487
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323350060545328172}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5164358522766560074
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,6 +306,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!1 &5221048593667433649
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,6 +320,8 @@ GameObject:
   - component: {fileID: 7544946913238032809}
   - component: {fileID: 2644428950823274379}
   - component: {fileID: 31755358212189524}
+  - component: {fileID: 1336933263905112400}
+  - component: {fileID: 1032353019026209704}
   m_Layer: 0
   m_Name: Panel_Card
   m_TagString: Untagged
@@ -385,11 +401,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardUI
   <CardDefinition>k__BackingField: {fileID: 0}
-  cardImage: {fileID: 0}
   cardName: {fileID: 5583102903411735483}
   cardCostLayout: {fileID: 1160001132287062445}
   inkOrbPrefab: {fileID: 1750878099881196607, guid: b95cc37262aac414ea5bb8716fc5b643, type: 3}
-  blockedColor: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 0.5882353}
   visualPresenter: {fileID: 1428800930278557241}
   OnCardWritten:
     m_PersistentCalls:
@@ -420,6 +434,37 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1336933263905112400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5221048593667433649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf2175d849e52d848af8477ae63e5d1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardUIChangeAnimation
+  animationTime: 0.4
+  dissolveEffect: {fileID: 1032353019026209704}
+  nameAndCostGroup: {fileID: 6496023527173822487}
+--- !u!114 &1032353019026209704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5221048593667433649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e22cf753e1b806249ba8f9812e8c2cbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardDissolveEffect
+  linkedImages: []
+  linkedImageContainers:
+  - {fileID: 7635712881482284611}
+  dissolveMat: {fileID: 2100000, guid: 6f7b128878d8f2a459a9fc77e92453bf, type: 2}
 --- !u!1 &7050558370395902119
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,6 +626,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7861897830341111756, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8145543108445574829}
+    - targetCorrespondingSourceObject: {fileID: 7861897830341111756, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3030559073986936889}
+    - targetCorrespondingSourceObject: {fileID: 7861897830341111756, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2714029536340662024}
   m_SourcePrefab: {fileID: 100100000, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
 --- !u!114 &1428800930278557241 stripped
 MonoBehaviour:
@@ -618,6 +669,44 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!222 &3030559073986936889
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5190124374961725949}
+  m_CullTransparentMesh: 1
+--- !u!114 &2714029536340662024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5190124374961725949}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!224 &7635712881482284611 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5542687155621851250, guid: 1ea5c01614627b24194430216e83da9f, type: 3}

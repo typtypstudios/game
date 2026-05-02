@@ -44,6 +44,18 @@ public class CardDissolveEffect : MonoBehaviour
         StartCoroutine(FadeCoroutine(transitionTime, showTime, onStart, onEnd, dissolvePrevContent));
     }
 
+    /// <summary>
+    /// El contenido desaparece y aparece de vuelta
+    /// </summary>
+    /// <param name="blinkTime"></param>
+    /// <param name="onBlink"></param>
+    public void Blink(float blinkTime, Action onBlink)
+    {
+        UpdateMaterials();
+        StopAllCoroutines();
+        StartCoroutine(BlinkCoroutine(blinkTime, onBlink));
+    }
+
     public void OverrideMaterial(Material mat)
     {
         dissolveMat = new(mat);
@@ -104,6 +116,26 @@ public class CardDissolveEffect : MonoBehaviour
         }
 
         onEnd?.Invoke();
+    }
+
+    IEnumerator BlinkCoroutine(float blinkTime, Action onBlink)
+    {
+        float speed = 2 / blinkTime;
+        float dissolve = Dissolve;
+        while (dissolve < 1)
+        {
+            dissolve += speed * Time.deltaTime;
+            Dissolve = dissolve;
+            yield return null;
+        }
+        dissolve = 1;
+        onBlink?.Invoke();
+        while (dissolve > 0)
+        {
+            dissolve -= speed * Time.deltaTime;
+            Dissolve = dissolve;
+            yield return null;
+        }
     }
 
     IEnumerator InterpolateToValue(float targetDissolve, float time)

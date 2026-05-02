@@ -21,6 +21,7 @@ public class CardUI : MonoBehaviour
     [Header("Runtime Visuals")]
     [SerializeField] private CardVisualPresenter visualPresenter;
 
+    private CardUIChangeAnimation changeAnimation;
     private TypableController typableController;
     private DeckController deckController;
     private bool useVisualPresenter;
@@ -32,6 +33,7 @@ public class CardUI : MonoBehaviour
 
     void Awake()
     {
+        changeAnimation = GetComponent<CardUIChangeAnimation>();
         typableController = GetComponentInChildren<TypableController>();
         player = GetComponentInParent<Player>();
         deckController = player.DeckController;
@@ -60,6 +62,12 @@ public class CardUI : MonoBehaviour
     }
 
     public void BindCardDefinition(CardDefinition def, ITextPipeline pipeline, int costModifier = 0)
+    {
+        if (!changeAnimation) UpdateCard(def, pipeline, costModifier);
+        else changeAnimation.PerformChange(def, pipeline, costModifier);
+    }
+
+    public void UpdateCard(CardDefinition def, ITextPipeline pipeline, int costModifier = 0)
     {
         CardDefinition = def;
         UpdateCardName(pipeline);
