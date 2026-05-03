@@ -361,7 +361,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkullSprite
   configurator: {fileID: 5998135541483437264}
   overrideEmissionColor: 0
-  emissionIntensity: 2
   bar: {fileID: 7495245557487061257}
 --- !u!114 &5998135541483437264
 MonoBehaviour:
@@ -377,6 +376,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EmissiveImageConfigurator
   emissiveMat: {fileID: 2100000, guid: e280368218bf75047b441c14b5c4d189, type: 2}
   emitOnStart: 1
+  useImageColor: 0
+  overrideImgColor: 0
 --- !u!1 &8911025566288151633
 GameObject:
   m_ObjectHideFlags: 0
