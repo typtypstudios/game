@@ -1,13 +1,16 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class NavigationController : MonoBehaviour
 {
     [SerializeField] private InputActionReference goBackAction;
     [SerializeField] private Screens initialScreen = Screens.MainMenu;
     [SerializeField] private NavigationEntry[] entries;
+    [SerializeField] private float initialScreenAppearTimer = 1f;
     private CanvasTransitionManager transitionManager;
     private CameraNavigation camNavigation;
     private readonly Dictionary<Screens, NavigationEntry> screenDictionary = new();
@@ -27,19 +30,23 @@ public class NavigationController : MonoBehaviour
             if (!entry.canvas.TryGetComponent(out CanvasGroup canvasGroup))
                 canvasGroup = entry.canvas.gameObject.AddComponent<CanvasGroup>();
             canvasGroup.blocksRaycasts = false;
+            entry.canvas.enabled = false;
         }
         transitionManager.SubscribeOnStarted(this, () => blocked = true);
         transitionManager.SubscribeOnEnded(this, () => blocked = false);
         goBackAction.action.started += GoBackAction;
     }
 
-    void Start()
-    {
-        var initCanvas = screenDictionary[initialScreen].canvas;
-        transitionManager.PerformTransition(initCanvas, initCanvas, this, true);
-    }
+    private void Start() => StartCoroutine(PerformFirstTransition());
 
     private void OnDestroy() => goBackAction.action.started -= GoBackAction;
+
+    IEnumerator PerformFirstTransition()
+    {
+        yield return new WaitForSeconds(initialScreenAppearTimer);
+        var initCanvas = screenDictionary[initialScreen].canvas;
+        transitionManager.PerformTransition(initCanvas, initCanvas, this, true, 2);
+    }
 
     public void GoTo(Screens screen, GameObject sender)
     {

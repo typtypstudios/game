@@ -25,6 +25,10 @@ public class CanvasTransitionManager : MonoBehaviour
     {
         uiCam = GameObject.FindGameObjectWithTag("UICam").GetComponent<Camera>();
         Dissolve = 1;
+        transitionTexture.Release();
+        transitionTexture.width = Screen.width;
+        transitionTexture.height = Screen.height;
+        transitionTexture.Create();
     }
 
     public void SubscribeOnStarted(object sender, Action action)
