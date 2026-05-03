@@ -13,6 +13,7 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
     [SerializeField] private Toggle capLocksWarningToggle;
     [SerializeField] private Toggle filterChatToggle;
     [SerializeField] private Toggle ignoreCaseToggle;
+    [SerializeField] private Toggle largeTextToggle;
     [SerializeField] private Toggle vsyncToggle;
     [SerializeField] private Toggle antialiasingToggle;
     [SerializeField] private Slider volumeSlider;
@@ -63,6 +64,8 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
 
     public void SetIgnoreCase(bool value) => menuPreset.SetCaseSensitive(!value);
 
+    public void SetLargeText(bool value) => Settings.Instance.LargeText = value;
+
     public void SetVolume(float value)
     {
         AudioManager.Instance.SetBusVolume("MasterVolume", Mathf.Clamp01(value));
@@ -92,6 +95,11 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
         if (ignoreCaseToggle != null)
         {
             state.global.ignoreCaseMenus = ignoreCaseToggle.isOn;
+        }
+
+        if (largeTextToggle != null)
+        {
+            state.global.largeText = largeTextToggle.isOn;
         }
 
         if (capLocksWarningToggle != null)
@@ -145,6 +153,12 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
         if (ignoreCaseToggle != null)
         {
             ignoreCaseToggle.isOn = data.ignoreCaseMenus;
+        }
+
+        SetLargeText(data.largeText);
+        if (largeTextToggle != null)
+        {
+            largeTextToggle.isOn = data.largeText;
         }
 
         SetCapsWarning(data.capsLockWarning);

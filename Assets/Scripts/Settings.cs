@@ -34,6 +34,7 @@ namespace TypTyp
         [field: SerializeField] public bool ShowSpaces { get; set; } = true;
         [field: SerializeField] public string SpaceReplacement { get; private set; } = "·\u200B";
         [field: SerializeField] public bool CapsLockWarning { get; set; } = true;
+        [field: SerializeField] public bool LargeText { get; set; } = false;
 
         [Header("DECK RELATED")]
         //Textos a completar para el ritual

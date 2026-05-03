@@ -13,5 +13,6 @@ public class GlobalSettingsData
     public bool initialTipUnderstood;
     public bool vsync = true;
     public bool antialiasing = true;
+    public bool largeText = false;
     public VideoSettingsData videoSettings = VideoSettingsData.CreateDefault();
 }

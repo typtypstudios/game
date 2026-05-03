@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2678519042309844790}
   - component: {fileID: 1111144082493350281}
   - component: {fileID: -7500020090855889294}
+  - component: {fileID: 183898886457019001}
   m_Layer: 0
   m_Name: Ritual_Text
   m_TagString: Untagged
@@ -151,3 +152,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
   ignoreRestriction: 0
+--- !u!114 &183898886457019001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67419306736124226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 200dc6d84286c294e8b7451673e79ff1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LargeTextConfigurator
