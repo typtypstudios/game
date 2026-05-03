@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,8 @@ public class EmissiveImageConfigurator : MonoBehaviour
     [SerializeField] private Material emissiveMat;
     [SerializeField] private bool emitOnStart = false;
     [SerializeField] private bool useImageColor = false;
+    [SerializeField] private bool overrideImgColor = true;
+    private Color prevImgColor;
     private Image image;
     private bool activated = false;
     private float initIntensity;
@@ -26,6 +29,7 @@ public class EmissiveImageConfigurator : MonoBehaviour
         if (activated == activate) return;
         image.material = activate ? emissiveMat : image.defaultMaterial;
         if (activate && useImageColor) SetColor(image.color);
+        CheckColorChange(activate);
         activated = !activated;
     }
 
@@ -40,5 +44,18 @@ public class EmissiveImageConfigurator : MonoBehaviour
     {
         if (!materialCoppied) return;
         emissiveMat.SetColor("_EmissionColor", color);
+    }
+
+    private void CheckColorChange(bool activate)
+    {
+        if (overrideImgColor)
+        {
+            if (activate)
+            {
+                prevImgColor = image.color;
+                image.color = Color.white;
+            }
+            else if (image.color == Color.white) image.color = prevImgColor;
+        }
     }
 }
