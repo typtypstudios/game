@@ -7,7 +7,6 @@ public class SkullSprite : MonoBehaviour
 {
     [SerializeField] private EmissiveImageConfigurator configurator;
     [SerializeField] private bool overrideEmissionColor = true;
-    [SerializeField] private float emissionIntensity = 2;
     [SerializeField] private UIBar bar;
     private Color fillColor;
     private Color initColor;
@@ -29,6 +28,6 @@ public class SkullSprite : MonoBehaviour
     {
         configurator.SetIntensityPercentage(value);
         if(overrideEmissionColor) 
-            configurator.SetTint(Color.Lerp(initColor, fillColor, value), emissionIntensity);
+            configurator.SetColor(Color.Lerp(initColor, fillColor, value));
     }
 }

@@ -6,6 +6,7 @@ public class EmissiveImageConfigurator : MonoBehaviour
 {
     [SerializeField] private Material emissiveMat;
     [SerializeField] private bool emitOnStart = false;
+    [SerializeField] private bool useImageColor = false;
     private Image image;
     private bool activated = false;
     private float initIntensity;
@@ -15,7 +16,7 @@ public class EmissiveImageConfigurator : MonoBehaviour
     {
         emissiveMat = new(emissiveMat);
         materialCoppied = true;
-        initIntensity = emissiveMat.GetFloat("_EmissionForce");
+        initIntensity = emissiveMat.GetFloat("_CurrentForce");
         image = GetComponent<Image>();
         ToggleEmission(emitOnStart);
     }
@@ -24,6 +25,7 @@ public class EmissiveImageConfigurator : MonoBehaviour
     {
         if (activated == activate) return;
         image.material = activate ? emissiveMat : image.defaultMaterial;
+        if (activate && useImageColor) SetColor(image.color);
         activated = !activated;
     }
 
@@ -31,12 +33,12 @@ public class EmissiveImageConfigurator : MonoBehaviour
     {
         if (!materialCoppied) return;
         intensity = Mathf.Clamp01(intensity);
-        emissiveMat.SetFloat("_EmissionForce", initIntensity * intensity);
+        emissiveMat.SetFloat("_CurrentForce", initIntensity * intensity);
     }
 
-    public void SetTint(Color tint, float intensity)
+    public void SetColor(Color color)
     {
         if (!materialCoppied) return;
-        emissiveMat.SetColor("_Tint", Utils.ColorToHDR(tint, intensity));
+        emissiveMat.SetColor("_EmissionColor", color);
     }
 }

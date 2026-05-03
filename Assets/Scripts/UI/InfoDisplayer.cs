@@ -11,7 +11,6 @@ public class InfoDisplayer : MonoBehaviour
 
     [Header("Card Presenter")]
     [SerializeField] private CardVisualPresenter cardVisualPresenter;
-    [SerializeField] private Image presenterBorderImage;
     [SerializeField] private float presenterBorderEmissionForce = 1f;
 
     [Header("Selection Animation")]
@@ -20,31 +19,18 @@ public class InfoDisplayer : MonoBehaviour
     private Vector3 initScale;
 
     private Image image;
-    private bool hovered = false;
-    private bool usingCardPresenter = false;
+    private bool highlighted = false;
     private WritableButton writableButton;
     private Color originalNameColor = Color.white;
-    private Material emissiveMat;
     private Material presenterBorderEmissiveMat;
     public ADefinition Definition { get; private set; }
 
     private void Awake()
     {
         image = GetComponent<Image>();
-        if (image)
-        {
-            emissiveMat = new(image.material);
-            image.material = emissiveMat; //Una copia para cada uno, ya que no hay mat prop block para UI
-        }
         initScale = transform.localScale;
         writableButton = GetComponent<WritableButton>();
         originalNameColor = cardName.color;
-        if (presenterBorderImage)
-        {
-            presenterBorderEmissiveMat = new(presenterBorderImage.material);
-            presenterBorderImage.material = presenterBorderEmissiveMat;
-            SetPresenterBorderEmission(false);
-        }
     }
 
     public virtual void SetInfo(ADefinition definition)
@@ -57,16 +43,14 @@ public class InfoDisplayer : MonoBehaviour
             var cardDefinition = definition as CardDefinition;
             int resolvedManaCost = Mathf.Max(0, cardDefinition.ManaCost);
             cardVisualPresenter.SetCard(cardDefinition, resolvedManaCost, resolvedManaCost);
-            usingCardPresenter = true;
 
-            SetPresenterBorderEmission(hovered);
+            SetPresenterBorderEmission(highlighted);
 
             writableButton.OverrideText(definition.Name);
             Definition = definition;
             return;
         }
 
-        usingCardPresenter = false;
         cardVisualPresenter?.Clear();
 
         if (image)
@@ -99,41 +83,27 @@ public class InfoDisplayer : MonoBehaviour
 
     public virtual void Highlight(bool highlight)
     {
-        if (highlight && !hovered)
+        if (highlight && !highlighted)
         {
             StopAllCoroutines();
             StartCoroutine(InterpolateScale(initScale * hoverSizeMult));
-            hovered = true;
+            highlighted = true;
             cardName.color = writableButton.GetButtonColor() + Color.white * highlightColorAddition;
 
-            if (usingCardPresenter && presenterBorderImage)
-            {
-                SetPresenterBorderEmission(true);
-            }
-            else
-            {
-                if (emissiveMat)
-                    emissiveMat.SetFloat("_EmissionForce", 1);
-            }
+            foreach(var config in GetComponentsInChildren<EmissiveImageConfigurator>())
+                config.ToggleEmission(true);
 
-            if(lastSiblingIfSelected) transform.SetAsLastSibling();
+            if (lastSiblingIfSelected) transform.SetAsLastSibling();
         }
-        else if (!highlight && hovered)
+        else if (!highlight && highlighted)
         {
             StopAllCoroutines();
             StartCoroutine(InterpolateScale(initScale));
-            hovered = false;
+            highlighted = false;
             cardName.color = originalNameColor;
 
-            if (usingCardPresenter && presenterBorderImage)
-            {
-                SetPresenterBorderEmission(false);
-            }
-            else
-            {
-                if (emissiveMat)
-                    emissiveMat.SetFloat("_EmissionForce", 0);
-            }
+            foreach (var config in GetComponentsInChildren<EmissiveImageConfigurator>())
+                config.ToggleEmission(false);
 
             //transform.SetAsFirstSibling();
         }
