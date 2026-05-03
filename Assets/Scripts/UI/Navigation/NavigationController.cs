@@ -36,7 +36,7 @@ public class NavigationController : MonoBehaviour
     void Start()
     {
         var initCanvas = screenDictionary[initialScreen].canvas;
-        transitionManager.PerformTransition(initCanvas, initCanvas, this);
+        transitionManager.PerformTransition(initCanvas, initCanvas, this, true);
     }
 
     private void OnDestroy() => goBackAction.action.started -= GoBackAction;
@@ -77,7 +77,7 @@ public class NavigationController : MonoBehaviour
             receiver.ReceiveContext(currentScreen, isGoingBack, sender);
         currentScreen = screen;
         blocked = true;
-        transitionManager.PerformTransition(originCanvas, destinationCanvas, this);
+        transitionManager.PerformTransition(originCanvas, destinationCanvas, this, true);
         Transform destination = screenDictionary[screen].cameraDestination;
         if (destination != null) camNavigation.MoveTo(destination);
     }

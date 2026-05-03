@@ -1,5 +1,42 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2082485825765553130
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8260941700695404991}
+  m_Layer: 5
+  m_Name: Content
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8260941700695404991
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082485825765553130}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3031457412631350283}
+  - {fileID: 1027915435646993886}
+  m_Father: {fileID: 5183870499486838766}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -6.907501}
+  m_SizeDelta: {x: 180, y: 312.615}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2167173405493568894
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,17 +157,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2405266885151005355}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000018835068}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1482688924362460370}
-  m_Father: {fileID: 5183870499486838766}
+  m_Father: {fileID: 8260941700695404991}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0012465, y: -126.315}
+  m_AnchoredPosition: {x: 0.0015147357, y: -119.40747}
   m_SizeDelta: {x: 174.2, y: 73.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2946249632606475035
@@ -183,6 +220,7 @@ GameObject:
   - component: {fileID: 8081095996965786823}
   - component: {fileID: 2827513033198859849}
   - component: {fileID: 3165594191325828787}
+  - component: {fileID: 8714721363518948952}
   m_Layer: 5
   m_Name: RightPage
   m_TagString: Untagged
@@ -202,8 +240,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3031457412631350283}
-  - {fileID: 1027915435646993886}
+  - {fileID: 8260941700695404991}
   - {fileID: 6077070402220779323}
   m_Father: {fileID: 9151008201013887137}
   m_LocalEulerAnglesHint: {x: 1.606, y: 8.561, z: 0.83}
@@ -268,6 +305,21 @@ MonoBehaviour:
   cardView: {fileID: 5727372854879632516}
   nameText: {fileID: 6507674373713246181}
   infoText: {fileID: 686584850567725558}
+--- !u!114 &8714721363518948952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2777237468806441647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd40986495656a4b8c6a13f68107cc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurnPageEffect
+  transitionTime: 0.8
+  pagesTransform:
+  - {fileID: 8260941700695404991}
 --- !u!1 &3220609232176603899
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,18 +559,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5779324127319868509}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3668413219789897271}
   - {fileID: 2529534263397042985}
-  m_Father: {fileID: 5183870499486838766}
+  m_Father: {fileID: 8260941700695404991}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 59.4}
+  m_AnchoredPosition: {x: 0.00025912188, y: 66.30719}
   m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7322439012432882622
@@ -1002,6 +1054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd40986495656a4b8c6a13f68107cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnPageEffect
+  transitionTime: 0.8
   pagesTransform:
   - {fileID: 7864541007337223098}
 --- !u!114 &1196130154519315092

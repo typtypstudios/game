@@ -12,7 +12,7 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
 
     [Header("Card Presenter")]
     [SerializeField] private CardVisualPresenter cardVisualPresenter;
-    [SerializeField] private UICardView cardView;
+    [SerializeField] private UICardView cardView;   
 
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text infoText;
@@ -21,6 +21,10 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
     private string negativeTag;
     private string effectTag;
     private bool isActive = false;
+    //Turn page effect:
+    private TurnPageEffect turnPageEffect;
+    private ADefinition currentDefinition;
+
     public string DisplayedName => nameText.text;
 
     private void Awake()
@@ -34,6 +38,8 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
         positiveTag = Utils.ColorToTag(UIColors.Instance.PositiveHighlightColor);
         negativeTag = Utils.ColorToTag(UIColors.Instance.NegativeHighlightColor);
         effectTag = Utils.ColorToTag(UIColors.Instance.EffectHighlightColor);
+        turnPageEffect = GetComponent<TurnPageEffect>();
+        if (turnPageEffect) turnPageEffect.OnBlankPage += () => BindDefinition(currentDefinition);
     }
 
     public void ReceiveContext(Screens previousScreen, bool isGoingBack, GameObject sender = null)
@@ -47,7 +53,16 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
         //cardVisualPresenter?.Clear();
     }
 
+
     public void SetInfo(ADefinition definition)
+    {
+        if (definition == currentDefinition) return;
+        currentDefinition = definition;
+        if (!turnPageEffect) BindDefinition(currentDefinition);
+        else turnPageEffect.TurnPage();
+    }
+
+    private void BindDefinition(ADefinition definition)
     {
         bool usePresenter = definition is CardDefinition && cardVisualPresenter;
         SetVisualMode(usePresenter);
@@ -70,7 +85,7 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
         if (isActive && AudioManager.Instance != null)
             AudioManager.Instance.PlayUI(UISound.SelectCard);
 
-        if(cardView) cardView.Details.color = cardView.Border.color;
+        if (cardView) cardView.Details.color = cardView.Border.color;
         foreach (var config in GetComponentsInChildren<EmissiveImageConfigurator>())
             config.ToggleEmission(true, true);
     }

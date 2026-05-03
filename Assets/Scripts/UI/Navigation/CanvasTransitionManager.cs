@@ -47,17 +47,17 @@ public class CanvasTransitionManager : MonoBehaviour
         onCanceledActions[sender] = action;
     }
 
-    public void PerformTransition(Canvas origin, Canvas dest, object sender, bool blockTransitioner = true)
+    public void PerformTransition(Canvas origin, Canvas dest, object sender, bool blockTransitioner, float time = -1)
     {
         if (blocked) return;
         if (activeSender != null && activeSender != sender && onCanceledActions.ContainsKey(activeSender))
             onCanceledActions[activeSender]?.Invoke();
         activeSender = sender;
         StopAllCoroutines();
-        StartCoroutine(TransitionCoroutine(origin, dest, sender, blockTransitioner));
+        StartCoroutine(TransitionCoroutine(origin, dest, sender, blockTransitioner, time));
     }
 
-    private IEnumerator TransitionCoroutine(Canvas origin, Canvas dest, object sender, bool block)
+    private IEnumerator TransitionCoroutine(Canvas origin, Canvas dest, object sender, bool block, float time = -1)
     {
         if (block)
         {
@@ -67,7 +67,7 @@ public class CanvasTransitionManager : MonoBehaviour
         if (onStartedActions.ContainsKey(sender)) onStartedActions[sender]?.Invoke();
         Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
         uiCam.cullingMask |= (1 << LayerMask.NameToLayer("UI"));
-        float speed = 2 / TransitionTime;
+        float speed = 2 / (time == -1 ? TransitionTime : time);
         float dissolveValue = Dissolve; //Para no hacer gets constantes
         while (dissolveValue < 1)
         {
