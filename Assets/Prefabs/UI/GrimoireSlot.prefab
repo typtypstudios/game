@@ -293,7 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 2100000, guid: eb6299107d24c2c41b06566b5b1dc5b9, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -330,7 +330,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -399,8 +399,7 @@ MonoBehaviour:
   hoverSizeMult: 1.1
   highlightColorAddition: 0.3
   cardVisualPresenter: {fileID: 5289384808464458214}
-  presenterBorderImage: {fileID: 9156264922992707511}
-  presenterBorderEmissionForce: 1
+  cardView: {fileID: 6855943986593017393}
   interpolationTime: 0.1
   lastSiblingIfSelected: 0
 --- !u!114 &6762483248211376429
@@ -697,14 +696,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e309bd79a46fa4ab2c4445b3b336d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardVisualPresenter
---- !u!114 &9156264922992707511 stripped
+--- !u!114 &6855943986593017393 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7460670100496519077, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5169355265182180899, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
   m_PrefabInstance: {fileID: 1772176911248689170}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 9cf3db66a67efb84b96e0bea881ea49f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_EditorClassIdentifier: Assembly-CSharp::UICardView

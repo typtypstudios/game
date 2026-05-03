@@ -965,7 +965,7 @@ MonoBehaviour:
   hoverSizeMult: 1.2
   highlightColorAddition: 0.3
   cardVisualPresenter: {fileID: 4862490076434750496}
-  presenterBorderEmissionForce: 2
+  cardView: {fileID: 6141105835780363255}
   interpolationTime: 0.1
   lastSiblingIfSelected: 1
   description: {fileID: 6088852649907448704}
@@ -1287,10 +1287,6 @@ PrefabInstance:
       propertyPath: m_ChildControlHeight
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7460670100496519077, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.5
@@ -1307,34 +1303,15 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.6500015
       objectReference: {fileID: 0}
+    - target: {fileID: 8369875108018214168, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
+      propertyPath: overrideImgColor
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4358646921853069200, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5776503135622875799}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
---- !u!1 &3384926026916696644 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4358646921853069200, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-  m_PrefabInstance: {fileID: 1334378314491426260}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5776503135622875799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3384926026916696644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c3da54bb761df04782fd66d737d7657, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EmissiveImageConfigurator
-  emissiveMat: {fileID: 2100000, guid: eb6299107d24c2c41b06566b5b1dc5b9, type: 2}
-  emitOnStart: 0
-  useImageColor: 1
 --- !u!224 &4132218130088928346 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3160467555292795278, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
@@ -1351,6 +1328,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e309bd79a46fa4ab2c4445b3b336d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardVisualPresenter
+--- !u!114 &6141105835780363255 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5169355265182180899, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
+  m_PrefabInstance: {fileID: 1334378314491426260}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf3db66a67efb84b96e0bea881ea49f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UICardView
 --- !u!1001 &1550245940938003553
 PrefabInstance:
   m_ObjectHideFlags: 0

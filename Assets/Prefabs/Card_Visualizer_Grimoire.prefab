@@ -203,6 +203,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7861897830341111756, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 531901425098758706}
+    - targetCorrespondingSourceObject: {fileID: 79894240707511544, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8369875108018214168}
   m_SourcePrefab: {fileID: 100100000, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
 --- !u!1 &733165937117580848 stripped
 GameObject:
@@ -223,3 +226,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.AspectRatioFitter
   m_AspectMode: 3
   m_AspectRatio: 0.6580311
+--- !u!1 &7362399705861629188 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 79894240707511544, guid: 1ea5c01614627b24194430216e83da9f, type: 3}
+  m_PrefabInstance: {fileID: 7437599011775324668}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8369875108018214168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7362399705861629188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3da54bb761df04782fd66d737d7657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmissiveImageConfigurator
+  emissiveMat: {fileID: 2100000, guid: eb6299107d24c2c41b06566b5b1dc5b9, type: 2}
+  emitOnStart: 0
+  useImageColor: 1
+  colorOverride: 2

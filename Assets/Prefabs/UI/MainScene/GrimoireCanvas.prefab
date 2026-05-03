@@ -265,6 +265,7 @@ MonoBehaviour:
   image: {fileID: 4936301142331433651}
   emission: 0.9
   cardVisualPresenter: {fileID: 6429214516274639699}
+  cardView: {fileID: 5727372854879632516}
   nameText: {fileID: 6507674373713246181}
   infoText: {fileID: 686584850567725558}
 --- !u!1 &3220609232176603899
@@ -399,7 +400,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: -18.371658}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1151,6 +1152,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3160467555292795278, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
   m_PrefabInstance: {fileID: 632345069678631591}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5727372854879632516 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5169355265182180899, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
+  m_PrefabInstance: {fileID: 632345069678631591}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf3db66a67efb84b96e0bea881ea49f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UICardView
 --- !u!114 &6429214516274639699 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5908620420407339508, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}

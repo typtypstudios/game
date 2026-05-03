@@ -8,7 +8,7 @@ public class EmissiveImageConfigurator : MonoBehaviour
     [SerializeField] private Material emissiveMat;
     [SerializeField] private bool emitOnStart = false;
     [SerializeField] private bool useImageColor = false;
-    [SerializeField] private bool overrideImgColor = true;
+    [SerializeField] private OverrideType colorOverride = OverrideType.NoOverride;
     private Color prevImgColor;
     private Image image;
     private bool activated = false;
@@ -24,12 +24,12 @@ public class EmissiveImageConfigurator : MonoBehaviour
         ToggleEmission(emitOnStart);
     }
 
-    public void ToggleEmission(bool activate)
+    public void ToggleEmission(bool activate, bool forceUpdate = false)
     {
-        if (activated == activate) return;
+        if (activated == activate && !forceUpdate) return;
         image.material = activate ? emissiveMat : image.defaultMaterial;
         if (activate && useImageColor) SetColor(image.color);
-        CheckColorChange(activate);
+        CheckColorOverride(activate);
         activated = !activated;
     }
 
@@ -46,16 +46,22 @@ public class EmissiveImageConfigurator : MonoBehaviour
         emissiveMat.SetColor("_EmissionColor", color);
     }
 
-    private void CheckColorChange(bool activate)
+    private void CheckColorOverride(bool activate)
     {
-        if (overrideImgColor)
+        if (colorOverride == OverrideType.NoOverride) return;
+        if (activate)
         {
-            if (activate)
-            {
-                prevImgColor = image.color;
-                image.color = Color.white;
-            }
-            else if (image.color == Color.white) image.color = prevImgColor;
+            prevImgColor = image.color;
+            image.color = Color.white;
         }
+        else if (image.color == Color.white && colorOverride != OverrideType.OnlySet) 
+            image.color = prevImgColor;
+    }
+
+    private enum OverrideType
+    {
+        NoOverride,
+        SetAndRestore,
+        OnlySet
     }
 }

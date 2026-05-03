@@ -12,6 +12,7 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
 
     [Header("Card Presenter")]
     [SerializeField] private CardVisualPresenter cardVisualPresenter;
+    [SerializeField] private UICardView cardView;
 
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text infoText;
@@ -68,6 +69,10 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
             FillStatusInfo(definition as StatusEffectDefinition);
         if (isActive && AudioManager.Instance != null)
             AudioManager.Instance.PlayUI(UISound.SelectCard);
+
+        cardView.Details.color = cardView.Border.color;
+        foreach (var config in GetComponentsInChildren<EmissiveImageConfigurator>())
+            config.ToggleEmission(true, true);
     }
 
     private void SetVisualMode(bool usePresenter)

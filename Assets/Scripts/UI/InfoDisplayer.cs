@@ -11,7 +11,7 @@ public class InfoDisplayer : MonoBehaviour
 
     [Header("Card Presenter")]
     [SerializeField] private CardVisualPresenter cardVisualPresenter;
-    [SerializeField] private float presenterBorderEmissionForce = 1f;
+    [SerializeField] private UICardView cardView;
 
     [Header("Selection Animation")]
     [SerializeField] private float interpolationTime = 0.1f;
@@ -22,7 +22,6 @@ public class InfoDisplayer : MonoBehaviour
     private bool highlighted = false;
     private WritableButton writableButton;
     private Color originalNameColor = Color.white;
-    private Material presenterBorderEmissiveMat;
     public ADefinition Definition { get; private set; }
 
     private void Awake()
@@ -44,8 +43,6 @@ public class InfoDisplayer : MonoBehaviour
             int resolvedManaCost = Mathf.Max(0, cardDefinition.ManaCost);
             cardVisualPresenter.SetCard(cardDefinition, resolvedManaCost, resolvedManaCost);
 
-            SetPresenterBorderEmission(highlighted);
-
             writableButton.OverrideText(definition.Name);
             Definition = definition;
             return;
@@ -60,8 +57,6 @@ public class InfoDisplayer : MonoBehaviour
 
         writableButton.OverrideText(definition.Name);
         Definition = definition;
-
-        SetPresenterBorderEmission(false);
     }
 
     private void SetVisualMode(bool usePresenter)
@@ -83,6 +78,7 @@ public class InfoDisplayer : MonoBehaviour
 
     public virtual void Highlight(bool highlight)
     {
+        if (cardView != null) cardView.Details.color = highlight ? cardView.Border.color : Color.white;
         if (highlight && !highlighted)
         {
             StopAllCoroutines();
@@ -106,19 +102,6 @@ public class InfoDisplayer : MonoBehaviour
                 config.ToggleEmission(false);
 
             //transform.SetAsFirstSibling();
-        }
-    }
-
-    private void SetPresenterBorderEmission(bool enabled)
-    {
-        if (!presenterBorderEmissiveMat)
-        {
-            return;
-        }
-
-        if (presenterBorderEmissiveMat.HasProperty("_EmissionForce"))
-        {
-            presenterBorderEmissiveMat.SetFloat("_EmissionForce", enabled ? presenterBorderEmissionForce : 0f);
         }
     }
 
