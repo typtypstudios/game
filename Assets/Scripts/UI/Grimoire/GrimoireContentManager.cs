@@ -23,7 +23,7 @@ public class GrimoireContentManager : MonoBehaviour
         displayers = GetComponentsInChildren<GrimoireInfoDisplayer>();
         foreach (var displayer in displayers) displayer.Initialize(infoPanel);
         GoToPage(0, false);
-        displayers[0].PerformClick();
+        displayers[0].ForceSelect();
     }
 
     public void GoToPage(int idx, bool performTransition = true)

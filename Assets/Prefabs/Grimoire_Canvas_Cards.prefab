@@ -139,7 +139,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 27.966, y: -14.216, z: -6.965}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -1.015, y: 0.12210469}
+  m_AnchoredPosition: {x: -1.0150146, y: 0.12210083}
   m_SizeDelta: {x: 676.7, y: 767.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &9169071755368178650
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 100
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &321980649902723875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,6 +221,8 @@ MonoBehaviour:
   manaManager: {fileID: 0}
   cardUIPrefab: {fileID: 2644428950823274379, guid: bceccdf026e98714ea86ab6c2fc2d6ef, type: 3}
   cardUIParent: {fileID: 1440694681722261722}
+  scratchs: []
+  cardsCanvasGroup: {fileID: 0}
 --- !u!1 &6122989658651399875
 GameObject:
   m_ObjectHideFlags: 0

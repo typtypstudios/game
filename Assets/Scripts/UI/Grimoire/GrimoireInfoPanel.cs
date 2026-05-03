@@ -53,12 +53,11 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
         //cardVisualPresenter?.Clear();
     }
 
-
-    public void SetInfo(ADefinition definition)
+    public void SetInfo(ADefinition definition, bool justBind = false)
     {
         if (definition == currentDefinition) return;
         currentDefinition = definition;
-        if (!turnPageEffect) BindDefinition(currentDefinition);
+        if (!turnPageEffect || justBind) BindDefinition(currentDefinition);
         else turnPageEffect.TurnPage();
     }
 

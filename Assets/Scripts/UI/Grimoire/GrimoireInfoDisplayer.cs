@@ -11,10 +11,21 @@ public class GrimoireInfoDisplayer : InfoDisplayer
     }
 
     public void PerformClick() => GetComponent<Button>().onClick?.Invoke();
+    
+    public void ForceSelect()
+    {
+        infoPanel.SetInfo(Definition, true);
+        ChangeHighlighted();
+    }
 
     public void DisplayInfo()
     {
         infoPanel.SetInfo(Definition);
+        ChangeHighlighted();
+    }
+
+    private void ChangeHighlighted()
+    {
         if (highlightedDisplayer) highlightedDisplayer.Highlight(false);
         highlightedDisplayer = this;
         Highlight(true);
