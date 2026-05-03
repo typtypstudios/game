@@ -245,6 +245,7 @@ GameObject:
   - component: {fileID: 5564326992844828523}
   - component: {fileID: 3043015261887152249}
   - component: {fileID: 2051944759950267760}
+  - component: {fileID: 9011876518883731485}
   m_Layer: 5
   m_Name: GrimoireSlot
   m_TagString: Untagged
@@ -471,6 +472,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TypableTMPTextInitializer
   controller: {fileID: 5564326992844828523}
   text: {fileID: 2626139421313991629}
+--- !u!114 &9011876518883731485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7375930373604903835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3da54bb761df04782fd66d737d7657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmissiveImageConfigurator
+  emissiveMat: {fileID: 2100000, guid: acb18c438bceae844a7f0f3aa3da4ab2, type: 2}
+  emitOnStart: 0
+  useImageColor: 0
+  colorOverride: 0
 --- !u!1001 &1772176911248689170
 PrefabInstance:
   m_ObjectHideFlags: 0

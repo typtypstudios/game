@@ -492,6 +492,7 @@ GameObject:
   - component: {fileID: 3031457412631350283}
   - component: {fileID: 7322439012432882622}
   - component: {fileID: 4936301142331433651}
+  - component: {fileID: 5818666802370196870}
   m_Layer: 5
   m_Name: Image&name
   m_TagString: Untagged
@@ -558,6 +559,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1.52
+--- !u!114 &5818666802370196870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5779324127319868509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3da54bb761df04782fd66d737d7657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmissiveImageConfigurator
+  emissiveMat: {fileID: 2100000, guid: acb18c438bceae844a7f0f3aa3da4ab2, type: 2}
+  emitOnStart: 1
+  useImageColor: 0
+  colorOverride: 0
 --- !u!1 &6606155590916941478
 GameObject:
   m_ObjectHideFlags: 0

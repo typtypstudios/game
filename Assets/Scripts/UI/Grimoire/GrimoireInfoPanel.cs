@@ -70,7 +70,7 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
         if (isActive && AudioManager.Instance != null)
             AudioManager.Instance.PlayUI(UISound.SelectCard);
 
-        cardView.Details.color = cardView.Border.color;
+        if(cardView) cardView.Details.color = cardView.Border.color;
         foreach (var config in GetComponentsInChildren<EmissiveImageConfigurator>())
             config.ToggleEmission(true, true);
     }

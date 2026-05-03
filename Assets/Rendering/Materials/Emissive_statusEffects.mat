@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Emissive_cards
+  m_Name: Emissive_statusEffects
   m_Shader: {fileID: -6465566751694194690, guid: 127c4f613b934a842bb3b6a049d359c2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -105,7 +105,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Intensity: 2
+    - _Intensity: 1.25
     - _MaxEmission: 2
     - _MaxIntensity: 16
     - _Metallic: 0
@@ -129,6 +129,7 @@ Material:
     - _TintForce: 0.394
     - _UIMaskSoftnessX: 1
     - _UIMaskSoftnessY: 1
+    - _UseTextureColor: 1
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
