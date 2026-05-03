@@ -2523,7 +2523,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 48.4}
+  m_AnchoredPosition: {x: 0, y: 46}
   m_SizeDelta: {x: 680, y: 220.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5727558161700389581
@@ -4498,6 +4498,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_text
+      value: Smooths jagged edges, may reduce performance
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_fontSize
+      value: 14.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3894877121614017850, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5056,6 +5064,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_text
+      value: Ignore uppercase when interacting with UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_fontSize
+      value: 14.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3894877121614017850, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5296,6 +5312,14 @@ PrefabInstance:
     - target: {fileID: 3418790275207530438, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_text
+      value: Display ritual text at maximum size
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_fontSize
+      value: 14.5
       objectReference: {fileID: 0}
     - target: {fileID: 3894877121614017850, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5540,6 +5564,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_text
+      value: Replaces spaces with '\u2022\u200B' in ritual's text
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_fontSize
+      value: 14.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3894877121614017850, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5776,6 +5808,14 @@ PrefabInstance:
     - target: {fileID: 3418790275207530438, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_text
+      value: Eliminates screen tearing, may reduce performance
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_fontSize
+      value: 14.5
       objectReference: {fileID: 0}
     - target: {fileID: 3894877121614017850, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -6048,6 +6088,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_text
+      value: In game, shows a warning when caps lock is on
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_fontSize
+      value: 14.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3894877121614017850, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6181,6 +6229,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2394111529341995312, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3070349308132088248, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6281,6 +6333,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_text
+      value: Allows chatting with rival when spell casting mode is enabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_fontSize
+      value: 14.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3894877121614017850, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6295,6 +6355,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3894877121614017850, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3894877121614017850, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3894877121614017850, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
