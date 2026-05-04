@@ -44,7 +44,12 @@ public class NavigationController : MonoBehaviour
     private void Start()
     {
         if (startsWithTransition) StartCoroutine(PerformFirstTransition());
-        else screenDictionary[initialScreen].canvas.enabled = true;
+        else
+        {
+            Canvas canvas = screenDictionary[initialScreen].canvas;
+            canvas.enabled = true;
+            canvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        }
     }
 
     private void OnDestroy() => goBackAction.action.started -= GoBackAction;

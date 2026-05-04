@@ -1,13 +1,12 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class LoadingScreen : MonoBehaviour
 {
     [SerializeField] private float fadeSpeed = 1.5f;
     [SerializeField] private Button returnButton;
+    [SerializeField] private WritableText message;
     private LobbyManager lobbyManager;
     private bool isReturning;
     private bool lobbyLostSubscribed;
@@ -129,8 +128,11 @@ public class LoadingScreen : MonoBehaviour
                 Debug.LogWarning("Error cancelling search: " + e.Message);
             }
         }
-
+        returnButton.gameObject.SetActive(false);
+        message.SetText("Returning to main menu");
         Debug.Log("Saliendo correctamente de la busqueda de partida");
-        SceneManager.LoadScene("MainMenu");
+        Invoke(nameof(ReturnToMainMenu), 0.1f);
     }
+
+    private void ReturnToMainMenu() => SceneManager.LoadScene("MainMenu");
 }

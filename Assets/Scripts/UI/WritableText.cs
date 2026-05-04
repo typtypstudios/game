@@ -24,6 +24,12 @@ public class WritableText : AInputListener
 
     public void ResetText() => originalText = text.text.Trim();
         
+    public void SetText(string text)
+    {
+        this.text.text = text; //xd
+        ResetText();
+    }
+
     private void OnStringTyped(bool onlyRandomize = false)
     {
         if(!onlyRandomize) text.color = FillColor;
