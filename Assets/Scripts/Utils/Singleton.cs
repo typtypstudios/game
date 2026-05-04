@@ -8,13 +8,12 @@ public class NoAutoCreateAttribute : Attribute { }
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
-    private static bool isQuitting;
 
     public static T Instance
     {
         get
         {
-            if (isQuitting) return null;
+            if (SingletonHelper.IsQuitting) return null;
             if (_instance == null)
             {
                 _instance = FindAnyObjectByType<T>();
@@ -53,8 +52,18 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-    protected virtual void OnApplicationQuit()
+    protected virtual void OnApplicationQuit() => SingletonHelper.SetQuitting();
+}
+
+public static class SingletonHelper
+{
+    public static bool IsQuitting { get; private set; } = false;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void Reset()
     {
-        isQuitting = true;
+        IsQuitting = false;
     }
+
+    public static void SetQuitting() => IsQuitting = true;
 }
