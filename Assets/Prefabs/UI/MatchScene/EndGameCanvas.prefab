@@ -641,7 +641,7 @@ RectTransform:
   m_GameObject: {fileID: 8715725349432877953}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7370135202357104310}
@@ -659,11 +659,11 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8715725349432877953}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 0.31
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -687,11 +687,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ReferenceResolution: {x: 800, y: 450}
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -984,7 +984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2271413804524262513, guid: f140a61c25373a140850a1a61564f960, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2271413804524262513, guid: f140a61c25373a140850a1a61564f960, type: 3}
       propertyPath: m_AnchorMin.x
@@ -992,7 +992,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2271413804524262513, guid: f140a61c25373a140850a1a61564f960, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2271413804524262513, guid: f140a61c25373a140850a1a61564f960, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1036,7 +1036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2271413804524262513, guid: f140a61c25373a140850a1a61564f960, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 246
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2271413804524262513, guid: f140a61c25373a140850a1a61564f960, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1060,15 +1060,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7020238311350889095, guid: f140a61c25373a140850a1a61564f960, type: 3}
       propertyPath: m_Color.b
-      value: 0.21960784
+      value: 0.46666667
       objectReference: {fileID: 0}
     - target: {fileID: 7020238311350889095, guid: f140a61c25373a140850a1a61564f960, type: 3}
       propertyPath: m_Color.g
-      value: 0.1254902
+      value: 0.44705883
       objectReference: {fileID: 0}
     - target: {fileID: 7020238311350889095, guid: f140a61c25373a140850a1a61564f960, type: 3}
       propertyPath: m_Color.r
-      value: 0.09019608
+      value: 0.34117648
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
