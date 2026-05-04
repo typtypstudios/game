@@ -119,5 +119,6 @@ public enum Screens
     GoBack,
     Loading,
     Tutorial,
-    Game
+    Game,
+    Results
 }

@@ -3,13 +3,8 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class StartEndCanvas : MonoBehaviour
+public class StartGameCanvas : MonoBehaviour
 {
-    [SerializeField] private GameObject panel;
-    [SerializeField] private TMP_Text resultText;
-    [SerializeField] private TMP_Text resultReasonText;
-    [SerializeField] private GameObject exitButton;
-
     [Header("Countdown UI")]
     [SerializeField] private TMP_Text countdownText;
     [SerializeField] private RectTransform leftImage;
@@ -26,11 +21,6 @@ public class StartEndCanvas : MonoBehaviour
     [SerializeField] private Vector2 leftImageCenterPos = new Vector2(-300, 0);
     [SerializeField] private Vector2 rightImageCenterPos = new Vector2(300, 0);
 
-    [Header("XP Related")]
-    [SerializeField] private TMP_Text earnedXPText;
-    [SerializeField] private ProgressionBar progressionBar;
-    [SerializeField] private float animSpeed = 1;
-
     private Coroutine slideCoroutine;
 
     public event Action<int> OnCountdownTick;
@@ -38,20 +28,12 @@ public class StartEndCanvas : MonoBehaviour
 
     private void Awake()
     {
-        panel.SetActive(false);
-        exitButton.SetActive(false);
-
-        resultReasonText.text = "";
-
         if (countdownText != null)
             countdownText.gameObject.SetActive(false);
 
         if (leftImage != null) leftImage.anchoredPosition = leftImageOffscreenPos;
         if (rightImage != null) rightImage.anchoredPosition = rightImageOffscreenPos;
-        XPManager.Instance.OnXPUpdated += UpdateProgressionBar;
     }
-
-    private void OnDisable() => XPManager.Instance.OnXPUpdated -= UpdateProgressionBar;
 
     public void SetCountdownActive(bool isActive)
     {
@@ -112,28 +94,6 @@ public class StartEndCanvas : MonoBehaviour
         if (enemyNameText != null)
             enemyNameText.text = enemy;
     }
-
-    public void ShowEndMatch(bool isWinner, MatchEndReason reason)
-    {
-        panel.SetActive(true);
-        exitButton.SetActive(false);
-        resultText.text = isWinner ? "VICTORY" : "DEFEAT";
-        WritableText wt = resultText.GetComponent<WritableText>();
-        if (wt != null)
-        {
-            wt.FillColor = isWinner ? Color.cyan : Color.red;
-            wt.ResetText();
-        }
-
-        if (resultReasonText != null)
-            resultReasonText.text = GetReasonText(isWinner, reason);
-
-        exitButton.SetActive(true);
-        if (isWinner) XPManager.Instance.ProcessVictory();
-        earnedXPText.gameObject.SetActive(isWinner);
-        progressionBar.gameObject.SetActive(isWinner);
-    }
-
     private string GetReasonText(bool isWinner, MatchEndReason reason)
     {
         switch (reason)
@@ -155,26 +115,6 @@ public class StartEndCanvas : MonoBehaviour
 
             default:
                 return string.Empty;
-        }
-    }
-
-    private void UpdateProgressionBar(float prevXP, float nextXP)
-    {
-        StopAllCoroutines();
-        StartCoroutine(GainAnimationCoroutine(prevXP, nextXP));
-    }
-
-    IEnumerator GainAnimationCoroutine(float prevXP, float nextXP)
-    {
-        int xpEarned = Mathf.RoundToInt((nextXP - prevXP) * XPManager.Instance.XPPerRank);
-        Color pointsColor = RuntimeVariables.Instance.CurrentCult.Color;
-        earnedXPText.text = earnedXPText.text.Replace("<points>",
-            Utils.ApplyColorToText(xpEarned.ToString() + " Devotion Points", pointsColor));
-        while (prevXP != nextXP)
-        {
-            prevXP = Mathf.MoveTowards(prevXP, nextXP, Time.deltaTime * animSpeed);
-            progressionBar.DisplayXP(prevXP);
-            yield return null;
         }
     }
 }

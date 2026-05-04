@@ -50,7 +50,8 @@ public class MatchManager : NetworkBehaviour
     public static event Action OnCountdownStarted;
 
     // Referencia al canvas de inicio y final de la partida
-    [SerializeField] private StartEndCanvas startEndCanvas;
+    private StartGameCanvas startGameCanvas;
+    private EndGameCanvas endGameCanvas;
 
 
     //De momento una lista de playerIds server side
@@ -63,6 +64,13 @@ public class MatchManager : NetworkBehaviour
 
     private bool lobbyShutdownRequested = false;
 
+    private void Awake()
+    {
+        startGameCanvas = FindFirstObjectByType<StartGameCanvas>();
+        if (!startGameCanvas) Debug.LogError("Error: no se encontró el canvas de comienzo de partida");
+        endGameCanvas = FindFirstObjectByType<EndGameCanvas>();
+        if (!endGameCanvas) Debug.LogError("Error: no se encontró el canvas de finalización de partida");
+    }
 
     public override void OnNetworkSpawn()
     {
@@ -226,8 +234,8 @@ public class MatchManager : NetworkBehaviour
         string enemyPlayerName = isClient1 ? client2Name : client1Name;
         Player.User.name = localPlayerName;
         Player.Enemy.name = enemyPlayerName;
-        startEndCanvas.ConfigureUsernames(localPlayerName, enemyPlayerName);
-        startEndCanvas.AnimateImagesIn();
+        startGameCanvas.ConfigureUsernames(localPlayerName, enemyPlayerName);
+        startGameCanvas.AnimateImagesIn();
 
         StartCoroutine(WaitForStart(startTime));
     }
@@ -236,7 +244,7 @@ public class MatchManager : NetworkBehaviour
     {
         int lastSecond = -1;
 
-        startEndCanvas.SetCountdownActive(true);
+        startGameCanvas.SetCountdownActive(true);
         OnCountdownStarted?.Invoke();
 
         while (true)
@@ -251,20 +259,20 @@ public class MatchManager : NetworkBehaviour
             if (currentSecond != lastSecond)
             {
                 lastSecond = currentSecond;
-                startEndCanvas.UpdateCountdownText(currentSecond.ToString());
-                startEndCanvas.NotifyCountdownTick(currentSecond);
+                startGameCanvas.UpdateCountdownText(currentSecond.ToString());
+                startGameCanvas.NotifyCountdownTick(currentSecond);
             }
 
             yield return null;
         }
 
-        startEndCanvas.UpdateCountdownText("GO!");
-        startEndCanvas.NotifyCountdownGo();
-        startEndCanvas.AnimateImagesOut();
+        startGameCanvas.UpdateCountdownText("GO!");
+        startGameCanvas.NotifyCountdownGo();
+        startGameCanvas.AnimateImagesOut();
 
         yield return new WaitForSeconds(0.5f);
 
-        startEndCanvas.SetCountdownActive(false);
+        startGameCanvas.SetCountdownActive(false);
         BeginMatchClient();
     }
 
@@ -317,7 +325,7 @@ public class MatchManager : NetworkBehaviour
         OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
-        startEndCanvas.ShowEndMatch(isWinner, reason);
+        endGameCanvas.ShowEndMatch(isWinner, reason);
         //SpawnLocalPlayerCopy(Player.User);
         //SpawnLocalPlayerCopy(Player.Enemy);
         // Handshake de finalización
@@ -371,7 +379,7 @@ public class MatchManager : NetworkBehaviour
                 {
                     matchState = MatchState.Finished;
                     OnMatchEnded?.Invoke();
-                    startEndCanvas.ShowEndMatch(false, MatchEndReason.Disconnection);
+                    endGameCanvas.ShowEndMatch(false, MatchEndReason.Disconnection);
                 }
                 RequestLobbyShutdown();
                 return;
@@ -449,7 +457,7 @@ public class MatchManager : NetworkBehaviour
         else
         {
             OnMatchEnded?.Invoke();
-            startEndCanvas.ShowEndMatch(false, MatchEndReason.Disconnection);
+            endGameCanvas.ShowEndMatch(false, MatchEndReason.Disconnection);
 
             RequestLobbyShutdown();
             NetworkManager.Singleton.Shutdown();
@@ -469,7 +477,7 @@ public class MatchManager : NetworkBehaviour
 
         NetworkManager.Singleton.Shutdown();
 
-        startEndCanvas.ShowEndMatch(haveInternet, MatchEndReason.Disconnection);
+        endGameCanvas.ShowEndMatch(haveInternet, MatchEndReason.Disconnection);
     }
 
     private IEnumerator DelayedLobbyShutdown(float delay)
