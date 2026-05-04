@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CanvasTransitionManager : MonoBehaviour
 {
@@ -20,13 +21,22 @@ public class CanvasTransitionManager : MonoBehaviour
         set { transitionMat.SetFloat("_Dissolve", Mathf.Clamp01(value)); }
     }
 
-    private void Awake()
+    private void Start()
     {
         Dissolve = 1;
+        ResizeRT();
+    }
+
+    private void ResizeRT()
+    {
         transitionTexture.Release();
         transitionTexture.width = Screen.width;
         transitionTexture.height = Screen.height;
         transitionTexture.Create();
+        Camera uiCam = GameObject.FindWithTag("UICam").GetComponent<Camera>();
+        uiCam.targetTexture = null; //Sin esto no funciona putísimo Unity
+        uiCam.targetTexture = transitionTexture;
+        GameObject.FindWithTag("TransitionCanvas").GetComponentInChildren<RawImage>().texture = transitionTexture;
     }
 
     public void SubscribeOnStarted(object sender, Action action)
