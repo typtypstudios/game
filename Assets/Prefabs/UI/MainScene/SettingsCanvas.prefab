@@ -4196,9 +4196,10 @@ GameObject:
   - component: {fileID: 1308977254760055373}
   - component: {fileID: 386527004999000849}
   - component: {fileID: 2034420023584540571}
-  - component: {fileID: 7044027077019195724}
   - component: {fileID: 53397952309769396}
+  - component: {fileID: 7044027077019195724}
   - component: {fileID: 1994289735331621957}
+  - component: {fileID: 2433761733573045168}
   - component: {fileID: 6674456428788649189}
   m_Layer: 5
   m_Name: SettingsCanvas
@@ -4294,6 +4295,14 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!222 &53397952309769396
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9211944843967731824}
+  m_CullTransparentMesh: 1
 --- !u!114 &7044027077019195724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4315,14 +4324,6 @@ MonoBehaviour:
   vsyncToggle: {fileID: 761507986874923575}
   antialiasingToggle: {fileID: 5605905016096138173}
   volumeSlider: {fileID: 2559023129241794216}
---- !u!222 &53397952309769396
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9211944843967731824}
-  m_CullTransparentMesh: 1
 --- !u!114 &1994289735331621957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4344,6 +4345,20 @@ MonoBehaviour:
   - {fileID: 6623145252302591951}
   - {fileID: 6246489751602607443}
   selectedFontAsset: {fileID: 11400000, guid: d227a7116659e094597e14022fada5cc, type: 2}
+--- !u!114 &2433761733573045168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9211944843967731824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 865c035d0961a6641b1ec39dc24b0c59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RTConfigurator
+  rts:
+  - {fileID: 8400000, guid: 9d3d5549c254bf94aaea69fa20f926eb, type: 2}
 --- !u!114 &6674456428788649189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4500,7 +4515,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_text
-      value: Smooths jagged edges, may reduce performance
+      value: Smooths jagged edges, may reduce performance and cause slight blur
       objectReference: {fileID: 0}
     - target: {fileID: 3705759043450600651, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_fontSize

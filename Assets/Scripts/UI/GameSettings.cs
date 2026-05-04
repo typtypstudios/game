@@ -1,3 +1,4 @@
+using System;
 using TypTyp;
 using TypTyp.TextSystem.Typable;
 using UnityEngine;
@@ -17,10 +18,14 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
     [SerializeField] private Toggle antialiasingToggle;
     [SerializeField] private Slider volumeSlider;
     private FontDropdown fontDropdown;
+    private RTConfigurator rtConfig;
+    public static event Action OnAAUpdated;
 
     private void Awake()
     {
         fontDropdown = GetComponentInChildren<FontDropdown>();
+        if (!TryGetComponent(out rtConfig))
+            Debug.LogError("Error, no hay configuración de Render Textures para Antialiasing");
     }
 
     private void OnEnable()
@@ -74,9 +79,9 @@ public class GameSettings : MonoBehaviour, INavigationLeaveReceiver
 
     public void SetAntialiasing(bool value) 
     {
-        var renderAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
-        renderAsset.msaaSampleCount = value ? 4 : 0;
-        GraphicsSettings.defaultRenderPipeline = GraphicsSettings.defaultRenderPipeline;
+        Settings.Instance.FXAA = value;
+        if (rtConfig) rtConfig.ResizeRTs(value ? 2 : 1);
+        OnAAUpdated?.Invoke();
     }
 
     private void HandleBeforeSave(SaveState state)

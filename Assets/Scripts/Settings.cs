@@ -47,6 +47,7 @@ namespace TypTyp
         [Header("Settings")]
         [field: SerializeField] public TMP_FontAsset DefaultFont { get; set; }
         [field: SerializeField] public bool OnlyApplyDefaultFontOnRitual { get; set; } = true;
+        [field: SerializeField] public bool FXAA { get; set; } = true;
 
         [Header("ChatRelated")]
         [field: SerializeField] public bool ChatActive { get; internal set; } = true;

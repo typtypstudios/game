@@ -8,7 +8,6 @@ public class CanvasTransitionManager : MonoBehaviour
 {
     [Min(0)][field: SerializeField] public float TransitionTime { get; private set; } = 2;
     [SerializeField] private Material transitionMat;
-    [SerializeField] private RenderTexture transitionTexture;
     private bool blocked = false;
     private readonly Dictionary<object, Action> onStartedActions = new();
     private readonly Dictionary<object, Action> onDissolvedActions = new();
@@ -21,23 +20,9 @@ public class CanvasTransitionManager : MonoBehaviour
         set { transitionMat.SetFloat("_Dissolve", Mathf.Clamp01(value)); }
     }
 
-    private void Start() => ResizeRT();
-
     private void OnDestroy() => Dissolve = 0;
 
     public void SetDissolve(float dissolve) => Dissolve = dissolve;
-
-    private void ResizeRT()
-    {
-        transitionTexture.Release();
-        transitionTexture.width = Screen.width;
-        transitionTexture.height = Screen.height;
-        transitionTexture.Create();
-        Camera uiCam = GameObject.FindWithTag("UICam").GetComponent<Camera>();
-        uiCam.targetTexture = null; //Sin esto no funciona putísimo Unity
-        uiCam.targetTexture = transitionTexture;
-        GameObject.FindWithTag("TransitionCanvas").GetComponentInChildren<RawImage>().texture = transitionTexture;
-    }
 
     public void SubscribeOnStarted(object sender, Action action)
     {
