@@ -42,7 +42,7 @@ public class LoadingScreen : MonoBehaviour
 
     private void GoToGame()
     {
-        NavigationController controller = GetComponentInParent<NavigationController>();
+        NavigationController controller = FindFirstObjectByType<NavigationController>();
         if (!controller)
         {
             Debug.LogError("Error, no se detecta el controlador de navegación");
