@@ -13,6 +13,9 @@ namespace TypTyp.Cults
         [field: SerializeField] public string[] RankNames { get; private set; }
         [field: SerializeField] public Sprite Image { get; private set; }
         [field: SerializeField] public Color Color { get; private set; }
+        [field: SerializeField] public GameObject CultistModel { get; private set; }
+        [field: SerializeField] public GameObject MenuModel { get; private set; }
+        [field: SerializeField] public GameObject GrimoireModel { get; private set; }
 
 
         public IEnumerable<CardDefinition> GetCards()

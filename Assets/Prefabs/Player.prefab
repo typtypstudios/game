@@ -528,7 +528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputManager
   changeModeActionReference: {fileID: 1942445823674454441, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  diverAnim: {fileID: 1303186598685546842}
+  diverAnim: {fileID: 4950272545079269243}
 --- !u!114 &-5123748923938737129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2800,18 +2800,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 1692789732386944012}
     m_Modifications:
     - target: {fileID: 3189214171444272263, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 3189214171444272263, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 3189214171444272263, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 3189214171444272263, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.007
       objectReference: {fileID: 0}
@@ -2851,14 +2839,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3189214171444272263, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7911518376337199568, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
-      propertyPath: m_UpdateWhenOffscreen
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9028664902429799005, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
       propertyPath: m_Name
       value: CultistDiver
@@ -2866,65 +2846,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9028664902429799005, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1303186598685546842}
-    - targetCorrespondingSourceObject: {fileID: 9028664902429799005, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 606793606416562299}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
---- !u!1 &2727952731148727345 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9028664902429799005, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
+--- !u!95 &4950272545079269243 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2028034681510940951, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
   m_PrefabInstance: {fileID: 6383817746205918828}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1303186598685546842
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2727952731148727345}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e71a9973a39fb894088f70b23be70bb7, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &606793606416562299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2727952731148727345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
-  ShowTopMostFoldoutHeaderGroup: 1
-  NetworkAnimatorExpanded: 0
-  AuthorityMode: 1
-  m_Animator: {fileID: 1303186598685546842}
-  TransitionStateInfoList: []
-  AnimatorParameterEntries:
-    ParameterEntries:
-    - name: CastingSpells
-      NameHash: 1638913603
-      Synchronize: 1
-      ParameterType: 4
-  AnimatorParametersExpanded: 0
 --- !u!4 &8418842948831255275 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3189214171444272263, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
