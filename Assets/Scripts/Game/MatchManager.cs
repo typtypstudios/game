@@ -318,9 +318,19 @@ public class MatchManager : NetworkBehaviour
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
         startEndCanvas.ShowEndMatch(isWinner, reason);
-
+        //SpawnLocalPlayerCopy(Player.User);
+        //SpawnLocalPlayerCopy(Player.Enemy);
         // Handshake de finalización
         NotifyEndHandledServerRpc();
+    }
+
+    private void SpawnLocalPlayerCopy(Player player)
+    {
+        GameObject copy = Instantiate(player.gameObject,
+            player.transform.position,
+            player.transform.rotation);
+        Destroy(copy.GetComponent<NetworkObject>());
+        player.gameObject.SetActive(false);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
