@@ -653,6 +653,7 @@ MonoBehaviour:
   excludedObjects:
   - {fileID: 6989330227806325082}
   - {fileID: 2912842299631653176}
+  isDynamic: 0
 --- !u!222 &3026735544095347791
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -895,7 +896,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 1
   resetOnWritten: 1
-  resetTime: 0.5
   typableController: {fileID: 9066464941486130328}
   tmpView: {fileID: 3579464008533719198}
 --- !u!114 &3804524834815314507
@@ -983,13 +983,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 8014396655593245947}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: 66fd211318b312f4f8058d7f6818b4eb, type: 2}
   StyleConfig:
     CorrectColor: {r: 1, g: 1, b: 1, a: 1}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &3115448367672961641
 MonoBehaviour:
   m_ObjectHideFlags: 0

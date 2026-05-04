@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.015701294, y: 0.21580029}
-  m_SizeDelta: {x: -19.6253, y: -7.2307}
+  m_AnchoredPosition: {x: -0.17409897, y: -0.35779953}
+  m_SizeDelta: {x: -19.2458, y: -4.5528}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &418802971565745113
 CanvasRenderer:
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 9.45
+  m_fontSize: 13.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -186,8 +186,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.24480057, y: -11.400002}
-  m_SizeDelta: {x: -5.0087, y: 19.2643}
+  m_AnchoredPosition: {x: 0, y: -12.550095}
+  m_SizeDelta: {x: 0, y: 21.5644}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3530189595650565893
 CanvasRenderer:
@@ -450,7 +450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 2626139421313991629}
-  stylePreset: {fileID: 11400000, guid: cf1432c075824b746accc1ffdaf5f3c5, type: 2}
+  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
   StyleConfig:
     CorrectColor: {r: 1, g: 1, b: 1, a: 1}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
