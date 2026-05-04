@@ -8,7 +8,6 @@ public class CanvasTransitionManager : MonoBehaviour
     [Min(0)][field: SerializeField] public float TransitionTime { get; private set; } = 2;
     [SerializeField] private Material transitionMat;
     [SerializeField] private RenderTexture transitionTexture;
-    private Camera uiCam;
     private bool blocked = false;
     private readonly Dictionary<object, Action> onStartedActions = new();
     private readonly Dictionary<object, Action> onDissolvedActions = new();
@@ -23,7 +22,6 @@ public class CanvasTransitionManager : MonoBehaviour
 
     private void Awake()
     {
-        uiCam = GameObject.FindGameObjectWithTag("UICam").GetComponent<Camera>();
         Dissolve = 1;
         transitionTexture.Release();
         transitionTexture.width = Screen.width;
@@ -69,8 +67,6 @@ public class CanvasTransitionManager : MonoBehaviour
             origin.GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
         if (onStartedActions.ContainsKey(sender)) onStartedActions[sender]?.Invoke();
-        Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
-        uiCam.cullingMask |= (1 << LayerMask.NameToLayer("UI"));
         float speed = 2 / (time == -1 ? TransitionTime : time);
         float dissolveValue = Dissolve; //Para no hacer gets constantes
         while (dissolveValue < 1)
@@ -89,8 +85,6 @@ public class CanvasTransitionManager : MonoBehaviour
             Dissolve = dissolveValue;
             yield return null;
         }
-        Camera.main.cullingMask |= (1 << LayerMask.NameToLayer("UI"));
-        uiCam.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
         if (onEndedActions.ContainsKey(sender)) onEndedActions[sender]?.Invoke();
         if (block)
         {
