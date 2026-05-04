@@ -8,11 +8,13 @@ public class NoAutoCreateAttribute : Attribute { }
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
+    private static bool isQuitting;
 
     public static T Instance
     {
         get
         {
+            if (isQuitting) return null;
             if (_instance == null)
             {
                 _instance = FindAnyObjectByType<T>();
@@ -49,5 +51,10 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    protected virtual void OnApplicationQuit()
+    {
+        isQuitting = true;
     }
 }

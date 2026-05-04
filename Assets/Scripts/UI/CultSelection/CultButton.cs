@@ -29,7 +29,7 @@ public class CultButton : MonoBehaviour
 
     private void OnDestroy()
     {
-        RuntimeVariables.Instance.OnUpdated -= UpdateInfo;
+        if(RuntimeVariables.Instance) RuntimeVariables.Instance.OnUpdated -= UpdateInfo;
     }
 
     private void InstantiateDisplayers()
