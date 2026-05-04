@@ -59,6 +59,8 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
         currentDefinition = definition;
         if (!turnPageEffect || justBind) BindDefinition(currentDefinition);
         else turnPageEffect.TurnPage();
+        if (isActive && AudioManager.Instance != null)
+            AudioManager.Instance.PlayUI(UISound.SelectCard);
     }
 
     private void BindDefinition(ADefinition definition)
@@ -81,8 +83,6 @@ public class GrimoireInfoPanel : MonoBehaviour, INavigationCtxReceiver, INavigat
         if (nameText != null) nameText.text = definition.Name;
         infoText.text = definition is CardDefinition ? FillCardInfo(definition as CardDefinition) :
             FillStatusInfo(definition as StatusEffectDefinition);
-        if (isActive && AudioManager.Instance != null)
-            AudioManager.Instance.PlayUI(UISound.SelectCard);
 
         if (cardView) cardView.Details.color = cardView.Border.color;
         foreach (var config in GetComponentsInChildren<EmissiveImageConfigurator>())
