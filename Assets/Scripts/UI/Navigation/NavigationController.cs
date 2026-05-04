@@ -3,14 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 public class NavigationController : MonoBehaviour
 {
     [SerializeField] private InputActionReference goBackAction;
-    [SerializeField] private Screens initialScreen = Screens.MainMenu;
+    [SerializeField] private bool allowsGoBack = true;
     [SerializeField] private NavigationEntry[] entries;
+    [Header("Initial screen transition")]
+    [SerializeField] private Screens initialScreen = Screens.MainMenu;
+    [SerializeField] private bool startsWithTransition = true;
     [SerializeField] private float initialScreenAppearTimer = 1f;
+    [SerializeField] private float initialTransitionTime = 2f;
     private CanvasTransitionManager transitionManager;
     private CameraNavigation camNavigation;
     private readonly Dictionary<Screens, NavigationEntry> screenDictionary = new();
@@ -35,17 +38,23 @@ public class NavigationController : MonoBehaviour
         transitionManager.SubscribeOnStarted(this, () => blocked = true);
         transitionManager.SubscribeOnEnded(this, () => blocked = false);
         goBackAction.action.started += GoBackAction;
+        currentScreen = initialScreen;
     }
 
-    private void Start() => StartCoroutine(PerformFirstTransition());
+    private void Start()
+    {
+        if (startsWithTransition) StartCoroutine(PerformFirstTransition());
+        else screenDictionary[initialScreen].canvas.enabled = true;
+    }
 
     private void OnDestroy() => goBackAction.action.started -= GoBackAction;
 
     IEnumerator PerformFirstTransition()
     {
+        transitionManager.SetDissolve(1);
         yield return new WaitForSeconds(initialScreenAppearTimer);
         var initCanvas = screenDictionary[initialScreen].canvas;
-        transitionManager.PerformTransition(initCanvas, initCanvas, this, true, 2);
+        transitionManager.PerformTransition(initCanvas, initCanvas, this, true, initialTransitionTime);
     }
 
     public void GoTo(Screens screen, GameObject sender)
@@ -64,14 +73,13 @@ public class NavigationController : MonoBehaviour
 
     public void GoBack()
     {
-        if (screenStack.Count == 0 || blocked) return;
+        if (screenStack.Count == 0 || blocked || !allowsGoBack) return;
         NavigateToScreen(screenStack.Pop(), true);
     }
 
     private void NavigateToScreen(Screens screen, bool isGoingBack, GameObject sender = null)
     {
         Canvas originCanvas = screenDictionary[currentScreen].canvas;
-
         INavigationLeaveReceiver[] leaveReceivers = 
             originCanvas.GetComponentsInChildren<INavigationLeaveReceiver>(true);
         foreach (var receiver in leaveReceivers)
@@ -110,5 +118,6 @@ public enum Screens
     CultSelection,
     GoBack,
     Loading,
-    Tutorial
+    Tutorial,
+    Game
 }

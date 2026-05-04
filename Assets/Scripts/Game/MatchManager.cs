@@ -197,7 +197,7 @@ public class MatchManager : NetworkBehaviour
     {
         matchState = MatchState.InGame;
         Debug.Log("SERVER: StartSynchronizedMatch()");
-        matchStartTime = NetworkManager.Singleton.ServerTime.Time + 3.0;
+        matchStartTime = NetworkManager.Singleton.ServerTime.Time + 5.0;
 
         ulong[] clientIds = playersData.Keys.ToArray();
         ulong client1Id = clientIds[0];

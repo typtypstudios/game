@@ -2,22 +2,19 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LoadingScreen : MonoBehaviour
 {
     [SerializeField] private float fadeSpeed = 1.5f;
     [SerializeField] private Button returnButton;
     private LobbyManager lobbyManager;
-    private CanvasGroup canvasGroup;
     private bool isReturning;
     private bool lobbyLostSubscribed;
 
     void Awake()
     {
-        GetComponent<Canvas>().enabled = true;
-        canvasGroup = GetComponent<CanvasGroup>();
-        canvasGroup.alpha = 1.0f;
-        GameUIConfigurator.OnUIConfigurated += StartFade;
+        GameUIConfigurator.OnUIConfigurated += GoToGame;
     }
 
     private void Start()
@@ -44,6 +41,17 @@ public class LoadingScreen : MonoBehaviour
         }
     }
 
+    private void GoToGame()
+    {
+        NavigationController controller = GetComponentInParent<NavigationController>();
+        if (!controller)
+        {
+            Debug.LogError("Error, no se detecta el controlador de navegación");
+            GetComponent<Canvas>().enabled = false;
+        }
+        else controller.GoTo(Screens.Game, this.gameObject);
+    }
+
     private void TrySubscribeLobbyLost()
     {
         if (lobbyLostSubscribed || lobbyManager == null) return;
@@ -63,11 +71,6 @@ public class LoadingScreen : MonoBehaviour
         isReturning = true;
 
         if (returnButton != null) returnButton.interactable = false;
-        if (canvasGroup != null)
-        {
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-        }
 
         if (lobbyManager != null)
         {
@@ -87,24 +90,12 @@ public class LoadingScreen : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameUIConfigurator.OnUIConfigurated -= StartFade;
+        GameUIConfigurator.OnUIConfigurated -= GoToGame;
 
         if (lobbyLostSubscribed && lobbyManager != null)
         {
             lobbyManager.OnLobbyLost -= OnLobbyLost;
         }
-    }
-
-    private void StartFade() => StartCoroutine(FadeCoroutine());
-
-    IEnumerator FadeCoroutine()
-    {
-        while (canvasGroup.alpha > 0)
-        {
-            canvasGroup.alpha -= fadeSpeed * Time.deltaTime;
-            yield return null;
-        }
-        gameObject.SetActive(false);
     }
 
     public async void OnReturnButtonClicked()
@@ -120,11 +111,6 @@ public class LoadingScreen : MonoBehaviour
         isReturning = true;
 
         if (returnButton != null) returnButton.interactable = false;
-        if (canvasGroup != null)
-        {
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-        }
 
         if (lobbyManager != null)
         {
@@ -135,11 +121,6 @@ public class LoadingScreen : MonoBehaviour
                 {
                     isReturning = false;
                     if (returnButton != null) returnButton.interactable = true;
-                    if (canvasGroup != null)
-                    {
-                        canvasGroup.interactable = true;
-                        canvasGroup.blocksRaycasts = true;
-                    }
                     return;
                 }
             }

@@ -21,11 +21,11 @@ public class CanvasTransitionManager : MonoBehaviour
         set { transitionMat.SetFloat("_Dissolve", Mathf.Clamp01(value)); }
     }
 
-    private void Start()
-    {
-        Dissolve = 1;
-        ResizeRT();
-    }
+    private void Start() => ResizeRT();
+
+    private void OnDestroy() => Dissolve = 0;
+
+    public void SetDissolve(float dissolve) => Dissolve = dissolve;
 
     private void ResizeRT()
     {
