@@ -4599,7 +4599,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5624846620881497917, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_Name
-      value: Typable_Toggle_MSAA
+      value: Typable_Toggle_AA
       objectReference: {fileID: 0}
     - target: {fileID: 7579677065139613157, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4701,6 +4701,10 @@ PrefabInstance:
     - target: {fileID: 261526767299457082, guid: 1942477e0ea5050419fa93fea78ad1a3, type: 3}
       propertyPath: StyleConfig.UnderlineNext
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 603627152841355967, guid: 1942477e0ea5050419fa93fea78ad1a3, type: 3}
+      propertyPath: m_MinWidth
+      value: 215
       objectReference: {fileID: 0}
     - target: {fileID: 1254399835545658593, guid: 1942477e0ea5050419fa93fea78ad1a3, type: 3}
       propertyPath: m_fontSize
