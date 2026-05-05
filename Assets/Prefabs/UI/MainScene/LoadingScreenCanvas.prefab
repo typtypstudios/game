@@ -413,6 +413,7 @@ GameObject:
   - component: {fileID: 26996735844836990}
   - component: {fileID: 1146658011773348727}
   - component: {fileID: -8978145037749844807}
+  - component: {fileID: 5622158523211830877}
   m_Layer: 5
   m_Name: LoadingScreenCanvas
   m_TagString: Untagged
@@ -521,6 +522,13 @@ MonoBehaviour:
   fadeSpeed: 1.5
   returnButton: {fileID: 6122766998054902412}
   message: {fileID: 8606433637190577274}
+  messages:
+  - type: 0
+    message: Looking for a worthy opponent
+  - type: 1
+    message: Contacting ancient forces (the server)
+  - type: 2
+    message: Retreating to the shadows
 --- !u!114 &-8978145037749844807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,6 +544,18 @@ MonoBehaviour:
   initType: 0
   fixOnStart: 1
   distanceToCam: 0.35
+--- !u!114 &5622158523211830877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4328159750815390074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e7e8f64d33a6f54bbdb6a2778984b17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LoadingScreenCtxReceiver
 --- !u!1 &4885553794347527159
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,7 +1152,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Waiting for another player
+  m_text: Msg text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 726a8b5ed0544ce4580e9e587102553a, type: 2}
   m_sharedMaterial: {fileID: 8728615164726586411, guid: 726a8b5ed0544ce4580e9e587102553a, type: 2}

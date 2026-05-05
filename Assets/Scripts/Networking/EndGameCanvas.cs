@@ -49,7 +49,11 @@ public class EndGameCanvas : MonoBehaviour
     private void GoToResults() => 
         FindFirstObjectByType<NavigationController>().GoTo(Screens.Results, this.gameObject);
 
-    public void Return() => FindFirstObjectByType<MatchManager>().ReturnToMainMenu();
+    public void Return()
+    {
+        FindFirstObjectByType<NavigationController>().GoTo(Screens.Loading, this.gameObject);
+        SceneLoader.Instance.LoadScene(0, true);
+    }
 
     private string GetReasonText(bool isWinner, MatchEndReason reason)
     {

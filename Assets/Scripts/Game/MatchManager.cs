@@ -494,12 +494,6 @@ public class MatchManager : NetworkBehaviour
         _ = ShutdownMatchServer();
     }
 
-    public void ReturnToMainMenu()
-    {
-        SceneManager.LoadScene("MainMenu");
-    }
-
-
     public override void OnDestroy()
     {
         if (NetworkManager.Singleton != null)

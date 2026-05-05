@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CanvasTransitionManager : MonoBehaviour
 {
@@ -14,6 +13,7 @@ public class CanvasTransitionManager : MonoBehaviour
     private readonly Dictionary<object, Action> onEndedActions = new();
     private readonly Dictionary<object, Action> onCanceledActions = new();
     private object activeSender;
+    public static event Action OnTransitionFinished;
     private float Dissolve
     {
         get { return transitionMat.GetFloat("_Dissolve"); }
@@ -87,5 +87,6 @@ public class CanvasTransitionManager : MonoBehaviour
             blocked = false;
         }
         activeSender = null;
+        OnTransitionFinished?.Invoke();
     }
 }

@@ -1,19 +1,28 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
+using System.Collections.Generic;
 
 public class LoadingScreen : MonoBehaviour
 {
     [SerializeField] private float fadeSpeed = 1.5f;
     [SerializeField] private Button returnButton;
     [SerializeField] private WritableText message;
+    [SerializeField] private LoadingMessage[] messages;
     private LobbyManager lobbyManager;
     private bool isReturning;
     private bool lobbyLostSubscribed;
+    private readonly Dictionary<LoadingMessageType, string> messageDictionary = new();
 
     void Awake()
     {
         GameUIConfigurator.OnUIConfigurated += GoToGame;
+        foreach (var msg in messages)
+        {
+            messageDictionary.Add(msg.type, msg.message);
+        }
+        SetMessage(LoadingMessageType.Default);
     }
 
     private void Start()
@@ -32,11 +41,9 @@ public class LoadingScreen : MonoBehaviour
             TrySubscribeLobbyLost();
         }
 
-        if (lobbyManager != null)
-        {
-            bool shouldShow = lobbyManager.CanCancel;
-            if (returnButton.gameObject.activeSelf != shouldShow)
-                returnButton.gameObject.SetActive(shouldShow);
+        if (lobbyManager != null && !lobbyManager.CanCancel)
+        { 
+            ToggleReturnButton(false);
         }
     }
 
@@ -84,7 +91,7 @@ public class LoadingScreen : MonoBehaviour
         }
 
         if (SceneManager.GetActiveScene().name != "MainMenu")
-            SceneManager.LoadScene("MainMenu");
+            ReturnToMainMenu();
     }
 
     private void OnDestroy()
@@ -95,6 +102,17 @@ public class LoadingScreen : MonoBehaviour
         {
             lobbyManager.OnLobbyLost -= OnLobbyLost;
         }
+    }
+
+    public void SetMessage(LoadingMessageType type) 
+    {
+        if (!messageDictionary.ContainsKey(type)) message.SetText("");
+        else message.SetText(messageDictionary[type]);
+    }
+
+    public void ToggleReturnButton(bool active)
+    {
+        returnButton.gameObject.SetActive(active);
     }
 
     public async void OnReturnButtonClicked()
@@ -128,11 +146,24 @@ public class LoadingScreen : MonoBehaviour
                 Debug.LogWarning("Error cancelling search: " + e.Message);
             }
         }
-        returnButton.gameObject.SetActive(false);
-        message.SetText("Returning to main menu");
-        Debug.Log("Saliendo correctamente de la busqueda de partida");
+        ToggleReturnButton(false);
+        SetMessage(LoadingMessageType.ReturningToMenu);
         Invoke(nameof(ReturnToMainMenu), 0.1f);
     }
 
-    private void ReturnToMainMenu() => SceneManager.LoadScene("MainMenu");
+    private void ReturnToMainMenu() => SceneLoader.Instance.LoadScene(0, false);
+}
+
+public enum LoadingMessageType
+{
+    Default,
+    LoadingGameScene,
+    ReturningToMenu
+}
+
+[Serializable]
+public class LoadingMessage
+{
+    public LoadingMessageType type;
+    public string message;
 }
