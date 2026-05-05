@@ -66,7 +66,8 @@ public class CorruptionIndicator : MonoBehaviour
 
     IEnumerator DisplayAnimation(float intensity)
     {
-        UpdateOffset();
+        if(intensity > IndicatorIntensity) UpdateOffset();
+        intensity = Mathf.Max(IndicatorIntensity, intensity);
         IndicatorIntensity = intensity;
         yield return stayTimer;
         while(intensity > 0)
