@@ -16,12 +16,12 @@ public class CanvasTypeFixer : MonoBehaviour
     void Start()
     {
         TryGetComponent(out canvas);
-        uiCam = GameObject.FindWithTag("UICam").GetComponent<Camera>();
         if(fixOnStart) SetCanvasType(initType);
     }
 
     public void SetCanvasType(RenderMode type)
     {
+        uiCam = GameObject.FindWithTag("UICam").GetComponent<Camera>();
         bool prevCanvasState = canvas.enabled;
         canvas.enabled = true; //Si está desactivado no funciona (gracias Unity)
         if (type == RenderMode.WorldSpace) FixToWorld();

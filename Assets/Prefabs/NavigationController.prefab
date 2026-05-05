@@ -80,9 +80,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NavigationController
   goBackAction: {fileID: -8299700176675209721, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  initialScreen: 0
+  allowsGoBack: 1
   entries: []
-  initialScreenAppearTimer: 1
+  initialScreen: 0
+  startsWithTransition: 1
+  initialScreenAppearTimer: 0.75
+  initialTransitionTime: 2
 --- !u!114 &8596976528563535096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,7 +100,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CanvasTransitionManager
   <TransitionTime>k__BackingField: 1
   transitionMat: {fileID: 2100000, guid: e06787ac7399dac40bff16edbb7ed244, type: 2}
-  transitionTexture: {fileID: 8400000, guid: 9d3d5549c254bf94aaea69fa20f926eb, type: 2}
 --- !u!114 &1913596942500623632
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class CanvasTransitionManager : MonoBehaviour
     private readonly Dictionary<object, Action> onCanceledActions = new();
     private object activeSender;
     public static event Action OnTransitionFinished;
+    public static event Action OnDissolved;
     private float Dissolve
     {
         get { return transitionMat.GetFloat("_Dissolve"); }
@@ -72,6 +73,7 @@ public class CanvasTransitionManager : MonoBehaviour
         }
         origin.enabled = false;
         if(onDissolvedActions.ContainsKey(sender)) onDissolvedActions[sender]?.Invoke();
+        OnDissolved?.Invoke();
         dest.enabled = true;
         dissolveValue = 1;
         while (dissolveValue > 0)

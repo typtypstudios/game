@@ -56,7 +56,7 @@ public class NavigationController : MonoBehaviour
 
     IEnumerator PerformFirstTransition()
     {
-        transitionManager.SetDissolve(1);
+        //transitionManager.SetDissolve(1);
         yield return new WaitForSeconds(initialScreenAppearTimer);
         var initCanvas = screenDictionary[initialScreen].canvas;
         transitionManager.PerformTransition(initCanvas, initCanvas, this, true, initialTransitionTime);

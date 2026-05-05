@@ -22,11 +22,11 @@ public class LoadingScreen : MonoBehaviour
         {
             messageDictionary.Add(msg.type, msg.message);
         }
-        SetMessage(LoadingMessageType.Default);
     }
 
     private void Start()
     {
+        SetMessage(LoadingMessageType.Default);
         lobbyManager = FindFirstObjectByType<LobbyManager>();
         TrySubscribeLobbyLost();
     }
