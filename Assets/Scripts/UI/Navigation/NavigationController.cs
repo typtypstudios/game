@@ -125,5 +125,6 @@ public enum Screens
     Loading,
     Tutorial,
     Game,
-    Results
+    Results,
+    Lore
 }

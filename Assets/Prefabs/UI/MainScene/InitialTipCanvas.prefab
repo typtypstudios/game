@@ -127,7 +127,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934091831531068938}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &1217850878769475702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -803,6 +803,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &657218415652119925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1054,6 +1055,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &3082612864866132495
 MonoBehaviour:
   m_ObjectHideFlags: 0
