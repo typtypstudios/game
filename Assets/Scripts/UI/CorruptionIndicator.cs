@@ -44,6 +44,11 @@ public class CorruptionIndicator : MonoBehaviour
 
     private void HandleCorruption(float prevCorr, float newCorr)
     {
+        if (newCorr >= Settings.Instance.MaxCorruption)
+        {
+            disappearSpeed = 0;
+            newCorr = 10000;
+        }
         float addedCorruption = newCorr - prevCorr;
         float normalizedCorruption = addedCorruption / Settings.Instance.MaxCorruption;
         for (int i = ranges.Count - 1; i >= 0; i--)
@@ -70,7 +75,7 @@ public class CorruptionIndicator : MonoBehaviour
         intensity = Mathf.Max(IndicatorIntensity, intensity);
         IndicatorIntensity = intensity;
         yield return stayTimer;
-        while(intensity > 0)
+        while(intensity > 0 && disappearSpeed != 0)
         {
             intensity -= Time.deltaTime * disappearSpeed;
             IndicatorIntensity = intensity;
@@ -83,5 +88,5 @@ public class CorruptionIndicator : MonoBehaviour
 public class IndicatorValues
 {
     [Range(0, 1)] public float corruptionNeeded;
-    [Range(0, 1)] public float intensity;
+    [Range(0, 5)] public float intensity;
 }

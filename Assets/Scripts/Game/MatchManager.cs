@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
+using TypTyp;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -309,9 +310,9 @@ public class MatchManager : NetworkBehaviour
     {
         if (!IsServer || matchState == MatchState.Finished)
             return;
-
         matchState = MatchState.Finished;
-
+        Player otherPlayer = winner == Player.User ? Player.Enemy : Player.User;
+        otherPlayer.CorruptionManager.AddCorruption(Settings.Instance.MaxCorruption);
         EndMatchClientRpc(winner.OwnerClientId, reason);
     }
 
