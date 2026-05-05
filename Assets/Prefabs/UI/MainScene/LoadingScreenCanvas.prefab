@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 7385427463424065321}
   - component: {fileID: 26996735844836990}
   - component: {fileID: 1146658011773348727}
-  - component: {fileID: 4483568490406345331}
+  - component: {fileID: -8978145037749844807}
   m_Layer: 5
   m_Name: LoadingScreenCanvas
   m_TagString: Untagged
@@ -521,7 +521,7 @@ MonoBehaviour:
   fadeSpeed: 1.5
   returnButton: {fileID: 6122766998054902412}
   message: {fileID: 8606433637190577274}
---- !u!114 &4483568490406345331
+--- !u!114 &-8978145037749844807
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -532,7 +532,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0f86768d95101c4890a44335b706f8d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldCanvasFixer
+  m_EditorClassIdentifier: Assembly-CSharp::CanvasTypeFixer
+  initType: 0
+  fixOnStart: 1
   distanceToCam: 0.35
 --- !u!1 &4885553794347527159
 GameObject:

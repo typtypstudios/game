@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Cinemachine;
+using System.Collections;
 
 public class PlayerPositioner : MonoBehaviour
 {
@@ -9,6 +10,17 @@ public class PlayerPositioner : MonoBehaviour
     {
         p.transform.SetPositionAndRotation(playerTransforms[playerIndex].position, 
             playerTransforms[playerIndex].rotation);
-        if (isOwner) FindFirstObjectByType<CinemachineCamera>().Follow = p.transform;
+        if (isOwner)
+        {
+            FindFirstObjectByType<CinemachineCamera>().Follow = p.transform;
+            StartCoroutine(FixLoadingScreenCoroutine());
+        }
+    }
+
+    IEnumerator FixLoadingScreenCoroutine()
+    {
+        yield return null;
+        if (FindFirstObjectByType<LoadingScreen>().TryGetComponent(out CanvasTypeFixer fixer))
+            fixer.SetCanvasType(RenderMode.ScreenSpaceCamera);
     }
 }

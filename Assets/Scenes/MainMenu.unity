@@ -4831,6 +4831,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3201694839510226489}
     m_Modifications:
+    - target: {fileID: -8978145037749844807, guid: e6411ef74b93b284e9c703bf415a1268, type: 3}
+      propertyPath: initType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3273375075383911590, guid: e6411ef74b93b284e9c703bf415a1268, type: 3}
       propertyPath: m_text
       value: Connecting to server
