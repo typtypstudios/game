@@ -625,6 +625,7 @@ GameObject:
   - component: {fileID: 502140986204365485}
   - component: {fileID: 2744796483153302001}
   - component: {fileID: 2544261379380103769}
+  - component: {fileID: 2765206302591821237}
   m_Layer: 5
   m_Name: EndGameCanvas
   m_TagString: Untagged
@@ -727,12 +728,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a937fe82662d2144b8b633fb60e9853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EndGameCanvas
+  showDelay: 0
   resultText: {fileID: 9136418510302254556}
   resultReasonText: {fileID: 1060977182372783890}
   exitButton: {fileID: 8977272633658098315}
   earnedXPText: {fileID: 9040325390901113666}
   progressionBar: {fileID: 3772506444680189326}
   animSpeed: 0.1
+--- !u!114 &2765206302591821237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8715725349432877953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0f86768d95101c4890a44335b706f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CanvasTypeFixer
+  initType: 2
+  fixOnStart: 1
+  distanceToCam: 0.31
 --- !u!1001 &1613787987605240168
 PrefabInstance:
   m_ObjectHideFlags: 0
