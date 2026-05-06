@@ -10,15 +10,21 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
     [TextArea][SerializeField] private string[] texts;
     [Min(0)][SerializeField] private float textAppearSpeed = 1;
     [SerializeField] private InputActionReference clickAction;
+    [Header("On end messages")]
+    [SerializeField] private int numInteractionsToAnger = 10;
+    [SerializeField] private string endMessage = "...";
+    [SerializeField] private string angerMessage = "LET ME REST IN PEACE.";
+    private LoreMenuVisualManager visualManager;
     private int textIdx = 0;
     private int charIdx = 0;
-    private string currentText;
+    private string currentText = "";
     private bool isFocused = false;
     private const float CHAR_APPEAR_INTERVAL = 0.1f;
 
     private void Awake()
     {
         clickAction.action.performed += ProcessInput;
+        visualManager = GetComponent<LoreMenuVisualManager>();
     }
 
     private void OnDestroy()
@@ -51,6 +57,8 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
     {
         textIdx = 0;
         charIdx = 0;
+        currentText = "";
+        visualManager.SetEyesRend(true);
         CanvasTransitionManager.OnTransitionFinished += DisplayText;
         isFocused = true;
     }
@@ -63,9 +71,20 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
         tmp.text = string.Empty;
     }
 
+    private int numExtraInteractions = 0;
     private void DisplayText()
     {
-        currentText = textIdx < texts.Length ? texts[textIdx].Trim() : "...";
+        if (currentText.Equals(angerMessage)) return;
+        bool isEndMessage = textIdx >= texts.Length;
+        if (isEndMessage)
+        {
+            currentText = endMessage;
+            numExtraInteractions++;
+        }
+        else currentText = texts[textIdx].Trim();
+        if (numExtraInteractions >= numInteractionsToAnger)
+            currentText = angerMessage;
+        visualManager.SetEyesRend(!currentText.Equals(endMessage));
         charIdx = 0;
         StopAllCoroutines();
         StartCoroutine(DisplayTextCoroutine());

@@ -20,6 +20,14 @@ public class LoreMenuVisualManager : MonoBehaviour, INavigationCtxReceiver, INav
 
     private void OnDestroy() => CanvasTransitionManager.OnDissolved -= ToggleEyes;
 
+    public void SetEyesRend(bool enabled)
+    {
+        foreach(var rend in skullEyes.GetComponentsInChildren<Renderer>())
+        {
+            rend.enabled = enabled;
+        }
+    }
+
     private void ToggleEyes()
     {
         skullEyes.SetActive(onFocus);
