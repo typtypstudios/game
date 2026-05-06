@@ -2,13 +2,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Canvas))]
-public class LoreMenuTransitionManager : MonoBehaviour, INavigationCtxReceiver, INavigationLeaveReceiver
+[RequireComponent(typeof(RawImage))]
+public class VignetteController : MonoBehaviour
 {
     private RawImage vignette;
     private float initVignetteIntensity;
     private float initVignetteSmoothness;
-    private CameraNavigation cameraNavigation;
     private float Smoothness
     {
         get { return vignette.material.GetFloat("_Smoothness"); }
@@ -22,12 +21,9 @@ public class LoreMenuTransitionManager : MonoBehaviour, INavigationCtxReceiver, 
 
     private void Awake()
     {
-        if(!GameObject.FindWithTag("Vignette").TryGetComponent(out vignette))
-            Debug.LogError("Error: no hay Volume con viñeta");
+        vignette = GetComponent<RawImage>();
         initVignetteIntensity = Intensity;
         initVignetteSmoothness = Smoothness;
-        cameraNavigation = FindFirstObjectByType<CameraNavigation>();
-        if (!cameraNavigation) Debug.LogError("Error: no se encuentra el sistema de navegación de cámara");
     }
 
     private void OnDestroy()
@@ -36,26 +32,26 @@ public class LoreMenuTransitionManager : MonoBehaviour, INavigationCtxReceiver, 
         Smoothness = initVignetteSmoothness;
     }
 
-    public void ReceiveContext(Screens prevScreen, bool isGoingBack, GameObject sender = null)
+    public void FadeIn(float time)
     {
         Intensity = 0;
         Smoothness = 0;
         vignette.enabled = true;
         StopAllCoroutines();
-        StartCoroutine(VignetteTransitionCoroutine(initVignetteIntensity, initVignetteSmoothness));
+        StartCoroutine(VignetteTransitionCoroutine(initVignetteIntensity, initVignetteSmoothness, time));
     }
 
-    public void OnLeave()
+    public void FadeOut(float time)
     {
         StopAllCoroutines();
-        StartCoroutine(VignetteTransitionCoroutine(0, 0));
+        StartCoroutine(VignetteTransitionCoroutine(0, 0, time));
     }
 
-    IEnumerator VignetteTransitionCoroutine(float targetIntensity, float targetSmoothness)
+    IEnumerator VignetteTransitionCoroutine(float targetIntensity, float targetSmoothness, float time)
     {
-        float intensitySpeed = initVignetteIntensity / cameraNavigation.InterpolationTime;
-        float smoothnessSpeed = initVignetteSmoothness / cameraNavigation.InterpolationTime;
-        while(Intensity != targetIntensity && Smoothness != targetSmoothness)
+        float intensitySpeed = initVignetteIntensity / time;
+        float smoothnessSpeed = initVignetteSmoothness / time;
+        while (Intensity != targetIntensity && Smoothness != targetSmoothness)
         {
             Intensity = Mathf.MoveTowards(Intensity, targetIntensity, intensitySpeed * Time.deltaTime);
             Smoothness = Mathf.MoveTowards(Smoothness, targetSmoothness, smoothnessSpeed * Time.deltaTime);
