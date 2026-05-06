@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Linq;
 using TypTyp.Cults;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 public class CultBasedModel : MonoBehaviour
@@ -10,6 +13,7 @@ public class CultBasedModel : MonoBehaviour
     private Quaternion rotation;
     private Vector3 scale;
     private int fixedCultId = -1; //Por si se le quiere fijar un culto
+    Coroutine updateAnimsCoroutine;
 
     private enum ModelType
     {
@@ -48,6 +52,8 @@ public class CultBasedModel : MonoBehaviour
         currentObject = Instantiate(objToCreate, this.transform);
         currentObject.name = name;
         UpdateTransform();
+        if(updateAnimsCoroutine == null) 
+            updateAnimsCoroutine = StartCoroutine(UpdateAnimators());
     }
 
     private void UpdateTransform()
@@ -69,5 +75,17 @@ public class CultBasedModel : MonoBehaviour
             default:
                 return currentCult.GrimoireModel;
         }
+    }
+
+
+    IEnumerator UpdateAnimators()
+    {
+        yield return null;
+        Animator[] animators = GetComponentsInChildren<Animator>();
+        foreach (var anim in animators)
+        {
+            anim.Rebind();
+        }
+        updateAnimsCoroutine = null;
     }
 }
