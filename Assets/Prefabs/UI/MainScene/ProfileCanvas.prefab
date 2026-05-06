@@ -144,7 +144,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 1
   resetOnWritten: 1
-  resetTime: 0.5
   typableController: {fileID: 318774343743530466}
   tmpView: {fileID: 1786377949324607867}
 --- !u!222 &6635582766836269678
@@ -209,6 +208,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &2343546298988559222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,7 +376,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 1
   resetOnWritten: 1
-  resetTime: 0.5
   typableController: {fileID: 0}
   tmpView: {fileID: 0}
 --- !u!114 &3737907978057912306
@@ -433,6 +432,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &8852655449978989329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,6 +692,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &5761625298115370522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1234,8 +1235,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3712065246
-  m_fontColor: {r: 1, g: 1, b: 1, a: 0.14901961}
+    rgba: 2410927591
+  m_fontColor: {r: 0.90588236, g: 0.8352941, b: 0.7019608, a: 0.56078434}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1367,7 +1368,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4033602087907985700}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
@@ -1405,7 +1406,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &8400191511032455826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1705,6 +1706,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &531716504834830728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1984,6 +1986,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &9055866724575709272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2073,8 +2076,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 654311423
-  m_fontColor: {r: 1, g: 1, b: 1, a: 0.14901961}
+    rgba: 2410927591
+  m_fontColor: {r: 0.90588236, g: 0.8352941, b: 0.7019608, a: 0.56078434}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
