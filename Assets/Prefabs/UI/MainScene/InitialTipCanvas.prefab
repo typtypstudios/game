@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 4358641048942405493}
   - component: {fileID: 1217850878769475702}
   - component: {fileID: 3340920267916284345}
+  - component: {fileID: 3336613193876392661}
   m_Layer: 5
   m_Name: InitialTipCanvas
   m_TagString: Untagged
@@ -195,6 +196,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3823c107722b7e45abe98807c9c63c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InitialTip
+  tipPanel: {fileID: 355598864248226294}
+  tutorialPanel: {fileID: 2081853876103958171}
+--- !u!114 &3336613193876392661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934091831531068938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd40986495656a4b8c6a13f68107cc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurnPageEffect
+  transitionTime: 0.8
+  pagesTransform:
+  - {fileID: 3467043060463849864}
+  - {fileID: 4842966675331083428}
 --- !u!1 &1422694784549854236
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,7 +456,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4842966675331083428
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1366,7 +1385,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -1383,7 +1402,7 @@ PrefabInstance:
     - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 355598864248226294}
+      objectReference: {fileID: 2081853876103958171}
     - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
@@ -1414,7 +1433,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument

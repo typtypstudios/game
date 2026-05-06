@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class InitialTip : MonoBehaviour
 {
+    [SerializeField] private GameObject tipPanel;
+    [SerializeField] private GameObject tutorialPanel;
     private bool hasBeenUnderstood;
+    private TurnPageEffect turnPageEffect;
 
     private void OnEnable()
     {
@@ -17,6 +20,12 @@ public class InitialTip : MonoBehaviour
             SaveState state = SaveManager.Instance.GetState();
             ApplyState(state);
         }
+        turnPageEffect = GetComponent<TurnPageEffect>();
+        turnPageEffect.OnBlankPage += () =>
+        {
+            tipPanel.SetActive(false);
+            tutorialPanel.SetActive(true);
+        };
     }
 
     private void OnDisable()
@@ -31,6 +40,7 @@ public class InitialTip : MonoBehaviour
     {
         hasBeenUnderstood = true;
         SaveManager.Instance.Save();
+        turnPageEffect.TurnPage();
     }
 
     private void HandleBeforeSave(SaveState state)
@@ -48,6 +58,7 @@ public class InitialTip : MonoBehaviour
         hasBeenUnderstood = state.global.initialTipUnderstood;
         if(!hasBeenUnderstood)
         {
+            tutorialPanel.SetActive(false);
             NavigationController navController = FindFirstObjectByType<NavigationController>();
             navController.OverrideInitialScreen(Screens.InitialTip);
         }
