@@ -1,10 +1,10 @@
-using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
 
 public class StatusEffectUIBar : MonoBehaviour
 {
     [SerializeField] private GameObject statusImagePrefab;
+    [SerializeField] private bool sortByPolarity = false;
     private Player player;
     private readonly List<StatusEffectUI> addedStatus = new();
 
@@ -40,7 +40,7 @@ public class StatusEffectUIBar : MonoBehaviour
         newEffect.Sprite = effectSprite;
         addedStatus.Add(newEffect);
         //Efectos buenos a la izquierda, malos a la derecha:
-        if (effect.Definition.EffectPolarityType == EffectPolarityType.Good)
+        if (!sortByPolarity || effect.Definition.EffectPolarityType == EffectPolarityType.Good)
             newEffect.transform.SetAsFirstSibling(); //Por defecto esta en ultima posicion
     }
 
