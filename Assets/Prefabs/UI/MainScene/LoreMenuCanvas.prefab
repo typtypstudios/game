@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 5918023677830056400}
   - component: {fileID: 4039134564599440868}
   - component: {fileID: 3404866602763813962}
+  - component: {fileID: 3406272459873303059}
   m_Layer: 5
   m_Name: LoreMenuCanvas
   m_TagString: Untagged
@@ -208,6 +209,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoreMenu
   skullEyes: {fileID: 9178348680677269813}
+--- !u!114 &3406272459873303059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2191213283747029285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78beda5f9f89544aa4b58662bd1aebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LoreMenu
+  fillColor: {r: 1, g: 1, b: 1, a: 1}
+  autoSubscribe: 1
+  tmp: {fileID: 6011429769493505825}
+  texts:
+  - Texto de prueba inicial.
+  - Segundo texto. Se pasa bien de textos.
+  - "Tercer texto. Esta vez mucho m\xE1s largo, para comprobar saltos de l\xEDnea"
+  textAppearSpeed: 0.3
+  clickAction: {fileID: -8619944142541535279, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!1 &2323499283982795663
 GameObject:
   m_ObjectHideFlags: 0
@@ -949,7 +971,7 @@ GameObject:
   - component: {fileID: 7402143752145684186}
   - component: {fileID: 4824420683741218444}
   m_Layer: 5
-  m_Name: Background
+  m_Name: TextBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1079,7 +1101,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ...
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 726a8b5ed0544ce4580e9e587102553a, type: 2}
   m_sharedMaterial: {fileID: 8728615164726586411, guid: 726a8b5ed0544ce4580e9e587102553a, type: 2}
@@ -1109,9 +1131,9 @@ MonoBehaviour:
   m_fontSize: 50
   m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 0
+  m_fontSizeMax: 50
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
