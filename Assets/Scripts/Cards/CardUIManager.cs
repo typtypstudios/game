@@ -168,9 +168,4 @@ public class CardUIManager : MonoBehaviour
             }
         }
     }
-    public IEnumerable<string> GetHandSpellNames()
-    {
-        return cardUIById.Values.Select(ui => ui.CardDefinition.name);
-    }
-
 }

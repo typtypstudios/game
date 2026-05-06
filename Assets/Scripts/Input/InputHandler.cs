@@ -25,10 +25,12 @@ namespace TypTyp.Input
         public event Action<InputModeMask> OnInputModeChanged;
 
         private event Action<char> OnCharTyped; //Wraper, onTextInput no deja eliminar todos los listeners
+        private event Action<char> OnCharTypedPriority;
 
         protected override void Awake()
         {
             base.Awake();
+            OnCharTypedPriority = null;
             OnCharTyped = null;
             Keyboard.current.onTextInput += ProcessInput;
             SceneManager.sceneLoaded += (_, _) =>
@@ -48,12 +50,16 @@ namespace TypTyp.Input
 
         private void CommunicateChartTyped(char c)
         {
-            if (!char.IsControl(c)) OnCharTyped?.Invoke(c);
+            if (char.IsControl(c)) return;
+            OnCharTypedPriority?.Invoke(c);
+            OnCharTyped?.Invoke(c);
         }
 
         public void AddListener(Action<char> func) => OnCharTyped += func;
-
         public void RemoveListener(Action<char> func) => OnCharTyped -= func;
+
+        public void AddPriorityListener(Action<char> func) => OnCharTypedPriority += func;
+        public void RemovePriorityListener(Action<char> func) => OnCharTypedPriority -= func;
 
         /// <summary>
         /// Hace AddListener tras borrar la lista de listeners previa

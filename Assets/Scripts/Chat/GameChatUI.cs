@@ -46,7 +46,7 @@ public class GameChatUI : MonoBehaviour
         ProcessFading(enemyBubble, enemyChatGroup, ref enemyIdleTimer);
     }
 
-    private void UpdateEnemyText(FixedString64Bytes previous, FixedString64Bytes current)
+    private void UpdateEnemyText(FixedString512Bytes previous, FixedString512Bytes current)
     {
         string s = current.ToString();
         if (s == lastEnemyText) return;
