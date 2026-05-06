@@ -873,9 +873,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 3
-  m_Height: 21.285168
+  m_Height: 10.521507
   m_Direction: 1
-  m_Center: {x: 0, y: 10.142584, z: 0}
+  m_Center: {x: 0, y: 15.5244055, z: 0}
 --- !u!114 &6068048520072342005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -889,6 +889,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NavigationObject
   destination: 7
+  minInteractionDistance: 20
 --- !u!4 &5810528683240658763 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1118504093547216880, guid: ed4add07706b0854681e6b9df58f380a, type: 3}

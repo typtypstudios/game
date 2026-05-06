@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Microsoft.Win32.SafeHandles;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class WritableText : AInputListener
@@ -10,6 +11,7 @@ public class WritableText : AInputListener
     [SerializeField] private bool resetIfFail = false;
     private TextMeshProUGUI text;
     private string originalText;
+    private Color originalColor;
     private Canvas canvas;
     private int seed;
 
@@ -17,17 +19,24 @@ public class WritableText : AInputListener
     {
         text = GetComponent<TextMeshProUGUI>();
         originalText = text.text.Trim();
+        originalColor = text.color;
         seed = originalText.ToUpper().GetHashCode();
         if(startRandomized) OnStringTyped(true);
         canvas = GetComponentInParent<Canvas>();
     }
 
-    public void ResetText() => originalText = text.text.Trim();
+    public void RebindText() => originalText = text.text.Trim();
+
+    public void ResetText()
+    {
+        text.color = originalColor;
+        text.text = originalText;
+    }
         
     public void SetText(string text)
     {
         this.text.text = text; //xd
-        ResetText();
+        RebindText();
     }
 
     private void OnStringTyped(bool onlyRandomize = false)

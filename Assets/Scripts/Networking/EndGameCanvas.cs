@@ -34,7 +34,7 @@ public class EndGameCanvas : MonoBehaviour
         if (wt != null)
         {
             wt.FillColor = isWinner ? Color.cyan : Color.red;
-            wt.ResetText();
+            wt.RebindText();
         }
 
         if (resultReasonText != null)

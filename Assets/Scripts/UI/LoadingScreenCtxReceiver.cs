@@ -18,5 +18,7 @@ public class LoadingScreenCtxReceiver : MonoBehaviour, INavigationCtxReceiver
         }
         else if (prevScreen == Screens.CultSelection)
             loadingScreen.SetMessage(LoadingMessageType.LoadingGameScene);
+        foreach (var wt in GetComponentsInChildren<WritableText>(true))
+            wt.ResetText();
     }
 }
