@@ -1,19 +1,20 @@
 using System.Collections;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using TypTyp.Cults;
-using Unity.Netcode.Components;
 using UnityEngine;
 
 public class CultBasedModel : MonoBehaviour
 {
     [SerializeField] private GameObject placeholder;
     [SerializeField] private ModelType modelType;
-    private GameObject currentObject;
+    [SerializeField] private TransitionWithUIType transitionType;
     private Vector3 position;
     private Quaternion rotation;
     private Vector3 scale;
-    private int fixedCultId = -1; //Por si se le quiere fijar un culto
-    Coroutine updateAnimsCoroutine;
+    private LayerMask initLayer;
+    private int currentCultId = -1; 
+    private GameObject currentObject;
+    private bool isFixed = false; //Por si se le quiere fijar un culto
 
     private enum ModelType
     {
@@ -30,6 +31,7 @@ public class CultBasedModel : MonoBehaviour
         currentObject = placeholder;
         RuntimeVariables.Instance.OnUpdated += UpdateModel;
         if (RuntimeVariables.Instance.IsLoaded) UpdateModel();
+        initLayer = gameObject.layer;
     }
 
     private void OnDestroy()
@@ -40,20 +42,49 @@ public class CultBasedModel : MonoBehaviour
 
     public void FixCult(int cultId)
     {
-        fixedCultId = cultId;
+        currentCultId = cultId;
+        isFixed = true;
         UpdateModel();
+        RuntimeVariables.Instance.OnUpdated -= UpdateModel;
     }
 
+    private bool isFirstTime = true;
     private void UpdateModel()
+    {
+        if(!isFixed)
+        {
+            int prevCultId = currentCultId;
+            currentCultId = RuntimeVariables.Instance.CurrentCultID;
+            if (currentCultId == prevCultId) return;
+        }
+        if (transitionType == TransitionWithUIType.Never || 
+            (transitionType == TransitionWithUIType.AlwaysExceptFirst && isFirstTime)) PerformChange();
+        else
+        {
+            Utils.ChangeLayerToHierarchy(this.transform, LayerMask.NameToLayer("UI"));
+            CanvasTransitionManager.OnDissolved += PerformChange;
+            CanvasTransitionManager.OnTransitionFinished += RestoreLayers;
+        }
+        isFirstTime = false;
+    }
+
+    private void PerformChange()
     {
         string name = currentObject.name;
         Destroy(currentObject);
         GameObject objToCreate = GetObjToCreate();
         currentObject = Instantiate(objToCreate, this.transform);
         currentObject.name = name;
+        Utils.ChangeLayerToHierarchy(currentObject.transform, this.gameObject.layer);
         UpdateTransform();
-        if(updateAnimsCoroutine == null) 
-            updateAnimsCoroutine = StartCoroutine(UpdateAnimators());
+        StartCoroutine(UpdateAnimators());
+        CanvasTransitionManager.OnDissolved -= PerformChange;
+    }
+
+    private void RestoreLayers()
+    {
+        Utils.ChangeLayerToHierarchy(this.transform, initLayer);
+        CanvasTransitionManager.OnTransitionFinished -= RestoreLayers;
     }
 
     private void UpdateTransform()
@@ -64,8 +95,7 @@ public class CultBasedModel : MonoBehaviour
 
     private GameObject GetObjToCreate()
     {
-        CultDefinition currentCult = fixedCultId == -1 ? RuntimeVariables.Instance.CurrentCult : 
-            CultRegister.Instance.GetById(fixedCultId);
+        CultDefinition currentCult = CultRegister.Instance.GetById(currentCultId);
         switch (modelType)
         {
             case ModelType.Cultist:
@@ -77,15 +107,18 @@ public class CultBasedModel : MonoBehaviour
         }
     }
 
-
     IEnumerator UpdateAnimators()
     {
         yield return null;
         Animator[] animators = GetComponentsInChildren<Animator>();
         foreach (var anim in animators)
-        {
             anim.Rebind();
-        }
-        updateAnimsCoroutine = null;
+    }
+
+    private enum TransitionWithUIType
+    {
+        Never,
+        Always,
+        AlwaysExceptFirst
     }
 }

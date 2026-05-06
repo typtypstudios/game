@@ -70,4 +70,13 @@ public static class Utils
         //matInstance.SetFloat("_OutlineWidth", t.fontMaterial.GetFloat("_OutlineWidth"));
         t.fontMaterial = matInstance;
     }
+
+    public static void ChangeLayerToHierarchy(Transform parent, LayerMask layer)
+    {
+        parent.gameObject.layer = layer;
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            ChangeLayerToHierarchy(parent.GetChild(i), layer);
+        }
+    }
 }
