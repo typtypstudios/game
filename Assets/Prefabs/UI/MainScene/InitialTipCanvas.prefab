@@ -127,7 +127,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934091831531068938}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &1217850878769475702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,7 +195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3823c107722b7e45abe98807c9c63c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InitialTip
-  mainMenu: {fileID: 0}
 --- !u!1 &1422694784549854236
 GameObject:
   m_ObjectHideFlags: 0
@@ -1600,6 +1599,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2208723263796224444, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 3340920267916284345}
@@ -1734,10 +1737,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 602452911307741091, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5998053476076559263}
   m_SourcePrefab: {fileID: 100100000, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
 --- !u!224 &675395009982935906 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7425783995269280065, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
   m_PrefabInstance: {fileID: 7949648416552043043}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7353961093157426560 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 602452911307741091, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+  m_PrefabInstance: {fileID: 7949648416552043043}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5998053476076559263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7353961093157426560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b853ef8ca493d47bd95a5c077cb94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NavigationButton
+  destination: 0

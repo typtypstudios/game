@@ -2,14 +2,7 @@ using UnityEngine;
 
 public class InitialTip : MonoBehaviour
 {
-    [SerializeField] private GameObject mainMenu;
-    private Canvas selfCanvas;
     private bool hasBeenUnderstood;
-
-    private void Awake()
-    {
-        selfCanvas = GetComponent<Canvas>();
-    }
 
     private void OnEnable()
     {
@@ -23,10 +16,6 @@ public class InitialTip : MonoBehaviour
         {
             SaveState state = SaveManager.Instance.GetState();
             ApplyState(state);
-        }
-        else
-        {
-            ShowTip();
         }
     }
 
@@ -57,25 +46,10 @@ public class InitialTip : MonoBehaviour
     private void ApplyState(SaveState state)
     {
         hasBeenUnderstood = state.global.initialTipUnderstood;
-        if (hasBeenUnderstood)
+        if(!hasBeenUnderstood)
         {
-            HideTip();
-            return;
+            NavigationController navController = FindFirstObjectByType<NavigationController>();
+            navController.OverrideInitialScreen(Screens.InitialTip);
         }
-
-        ShowTip();
-    }
-
-    private void ShowTip()
-    {
-        selfCanvas.enabled = true;
-        mainMenu.SetActive(false);
-    }
-
-    public void HideTip()
-    {
-        if (!selfCanvas.enabled) return;
-        selfCanvas.enabled = false;
-        mainMenu.SetActive(true);
     }
 }

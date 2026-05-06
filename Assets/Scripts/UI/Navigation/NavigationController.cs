@@ -54,9 +54,14 @@ public class NavigationController : MonoBehaviour
 
     private void OnDestroy() => goBackAction.action.started -= GoBackAction;
 
+    public void OverrideInitialScreen(Screens screen)
+    {
+        currentScreen = initialScreen;
+        initialScreen = screen;
+    }
+
     IEnumerator PerformFirstTransition()
     {
-        //transitionManager.SetDissolve(1);
         yield return new WaitForSeconds(initialScreenAppearTimer);
         var initCanvas = screenDictionary[initialScreen].canvas;
         transitionManager.PerformTransition(initCanvas, initCanvas, this, true, initialTransitionTime);
@@ -79,11 +84,14 @@ public class NavigationController : MonoBehaviour
     public void GoBack()
     {
         if (screenStack.Count == 0 || blocked || !allowsGoBack) return;
-        NavigateToScreen(screenStack.Pop(), true);
+        NavigationEntry entry = screenDictionary[screenStack.Pop()];
+        //De momento por defecto va al menú principal. Correcto para nuestro único caso de uso.
+        NavigateToScreen(entry.cantGoBack ? Screens.MainMenu : entry.screen, true);
     }
 
     private void NavigateToScreen(Screens screen, bool isGoingBack, GameObject sender = null)
     {
+        if (screen == currentScreen) return;
         Canvas originCanvas = screenDictionary[currentScreen].canvas;
         INavigationLeaveReceiver[] leaveReceivers = 
             originCanvas.GetComponentsInChildren<INavigationLeaveReceiver>(true);
@@ -109,6 +117,7 @@ public class NavigationEntry
     public Canvas canvas;
     public Screens screen;
     public Transform cameraDestination;
+    public bool cantGoBack;
 }
 
 public enum Screens
