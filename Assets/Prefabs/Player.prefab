@@ -229,6 +229,53 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &682264111515031226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1245664054093147609}
+  - component: {fileID: 9173834145439684758}
+  m_Layer: 0
+  m_Name: CultistModel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1245664054093147609
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682264111515031226}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8418842948831255275}
+  m_Father: {fileID: 1692789732386944012}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9173834145439684758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682264111515031226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 087978f385b83b94bbd1fa664e56b2cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CultBasedModel
+  placeholder: {fileID: 2727952731148727345}
+  modelType: 0
 --- !u!1 &1527992307803624597
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +324,7 @@ Transform:
   - {fileID: 9159527915953395919}
   - {fileID: 2645533360445149744}
   - {fileID: 7141729040088116555}
-  - {fileID: 8418842948831255275}
+  - {fileID: 1245664054093147609}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5150145359944668973
@@ -370,7 +417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1277958203
+  GlobalObjectIdHash: 2605432542
   InScenePlacedSourceGlobalObjectIdHash: 1277958203
   DeferredDespawnTick: 0
   Ownership: 1
@@ -528,7 +575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputManager
   changeModeActionReference: {fileID: 1942445823674454441, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  diverAnim: {fileID: 4950272545079269243}
+  cultistAnim: {fileID: 4950272545079269243}
 --- !u!114 &-5123748923938737129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1430,6 +1477,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7176212913964947840}
+  - component: {fileID: 8894886890784709606}
   m_Layer: 0
   m_Name: Grimoire
   m_TagString: Untagged
@@ -1457,6 +1505,20 @@ Transform:
   - {fileID: 4361857522517858838}
   m_Father: {fileID: 7141729040088116555}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8894886890784709606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6369835554039472312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 087978f385b83b94bbd1fa664e56b2cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CultBasedModel
+  placeholder: {fileID: 996400447448561952}
+  modelType: 2
 --- !u!1 &7469366306235999661
 GameObject:
   m_ObjectHideFlags: 0
@@ -2405,6 +2467,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3443049246721259033, guid: 7061e90fc3383d34185ce2d9d3810789, type: 3}
   m_PrefabInstance: {fileID: 2976904973716641155}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &996400447448561952 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2631223274684509347, guid: 7061e90fc3383d34185ce2d9d3810789, type: 3}
+  m_PrefabInstance: {fileID: 2976904973716641155}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6012143999803800974
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2797,7 +2864,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1692789732386944012}
+    m_TransformParent: {fileID: 1245664054093147609}
     m_Modifications:
     - target: {fileID: 3189214171444272263, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2809,7 +2876,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3189214171444272263, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.006
+      value: 0.006000042
       objectReference: {fileID: 0}
     - target: {fileID: 3189214171444272263, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2841,13 +2908,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9028664902429799005, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
       propertyPath: m_Name
-      value: CultistDiver
+      value: Cultist
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
+--- !u!1 &2727952731148727345 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9028664902429799005, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}
+  m_PrefabInstance: {fileID: 6383817746205918828}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &4950272545079269243 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2028034681510940951, guid: c0d66584805b08c4da9fb9d6ce62205b, type: 3}

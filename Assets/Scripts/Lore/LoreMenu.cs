@@ -65,7 +65,7 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
 
     private void DisplayText()
     {
-        currentText = textIdx < texts.Length ? texts[textIdx] : "...";
+        currentText = textIdx < texts.Length ? texts[textIdx].Trim() : "...";
         charIdx = 0;
         StopAllCoroutines();
         StartCoroutine(DisplayTextCoroutine());

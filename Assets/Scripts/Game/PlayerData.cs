@@ -20,45 +20,45 @@ public struct PlayerData : INetworkSerializable
     /// </summary>
     public int[] Deck;
 
+    /// <summary>
+    /// Id del culto
+    /// </summary>
+    public int CultId;
+
+
     const int MAX_DECK_SIZE = 64;
 
-    public PlayerData(ulong clientID, FixedString32Bytes playerName, int[] deck)
+    public PlayerData(ulong clientID, FixedString32Bytes playerName, int[] deck, int cultId)
     {
         ClientID = clientID;
         PlayerName = playerName;
         Deck = deck;
+        CultId = cultId;
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref ClientID);
         serializer.SerializeValue(ref PlayerName);
-
         int length = Deck != null ? Deck.Length : 0;
-
         serializer.SerializeValue(ref length);
-
         if (length > MAX_DECK_SIZE)
             throw new System.Exception($"Deck size too large: {length}");
-
         if (serializer.IsReader)
             Deck = new int[length];
-
         for (int i = 0; i < length; i++)
         {
             serializer.SerializeValue(ref Deck[i]);
         }
+        serializer.SerializeValue(ref CultId);
     }
-
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder();
-
         sb.Append("PlayerData { ");
         sb.Append("ClientID: ").Append(ClientID);
         sb.Append(", Name: ").Append(PlayerName);
         sb.Append(", Deck: [");
-
         if (Deck != null)
         {
             for (int i = 0; i < Deck.Length; i++)
@@ -68,9 +68,9 @@ public struct PlayerData : INetworkSerializable
                     sb.Append(", ");
             }
         }
-
-        sb.Append("] }");
-
+        sb.Append("] ");
+        sb.Append(", CultId: ").Append(CultId);
+        sb.Append(" }");
         return sb.ToString();
     }
 }

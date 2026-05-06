@@ -140,7 +140,7 @@ public class MatchManager : NetworkBehaviour
         {
             playersById.Add(i, players[i]);
             players[i].ConfigureServerPlayer(playersData[players[i].OwnerClientId]);
-            players[i].ConfigurePlayerRpc(i);
+            players[i].ConfigurePlayerRpc(i, playersData[players[i].OwnerClientId].CultId);
         }
 
         ConfigureUIRpc();
