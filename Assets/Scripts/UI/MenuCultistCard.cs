@@ -16,24 +16,28 @@ public class MenuCultistCard : MonoBehaviour
 
     private void Awake()
     {
-        RuntimeVariables.Instance.OnUpdated += Init;
-        if (RuntimeVariables.Instance.IsLoaded) Init();
+        mainCam = Camera.main.transform;
+        cardPresenter = GetComponentInChildren<CardVisualPresenter>();
+    }
+
+    private void OnEnable()
+    {
+        transform.rotation = globalRotation;
+        if (RuntimeVariables.Instance.IsLoaded) InitCards();
+        else RuntimeVariables.Instance.OnUpdated += InitCards;
+            StartCoroutine(ChangeContentCoroutine());
     }
 
     private void OnDestroy()
     {
-        if(RuntimeVariables.Instance) RuntimeVariables.Instance.OnUpdated -= Init;
+        if(RuntimeVariables.Instance) RuntimeVariables.Instance.OnUpdated -= InitCards;
     }
 
-    private void Init()
+    private void InitCards()
     {
-        if (cards != null) return;
-        mainCam = Camera.main.transform;
-        cardPresenter = GetComponentInChildren<CardVisualPresenter>();
-        transform.rotation = globalRotation;
         cards = RuntimeVariables.Instance.CurrentCult.GetCards().
             OrderBy(_ => Random.value).ToArray();
-        StartCoroutine(ChangeContentCoroutine());
+        RuntimeVariables.Instance.OnUpdated -= InitCards;
     }
 
     void Update()
@@ -72,6 +76,7 @@ public class MenuCultistCard : MonoBehaviour
 
     IEnumerator ChangeContentCoroutine()
     {
+        while (cards == null) yield return null;
         yield return null;
         BindNextCard();
         while (true)

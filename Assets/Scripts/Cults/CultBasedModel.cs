@@ -1,20 +1,19 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using TypTyp.Cults;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class CultBasedModel : MonoBehaviour
 {
     [SerializeField] private GameObject placeholder;
     [SerializeField] private ModelType modelType;
     [SerializeField] private TransitionWithUIType transitionType;
-    private Vector3 position;
-    private Quaternion rotation;
-    private Vector3 scale;
     private LayerMask initLayer;
     private int currentCultId = -1; 
-    private GameObject currentObject;
     private bool isFixed = false; //Por si se le quiere fijar un culto
+    private readonly List<GameObject> models = new();
+    private GameObject currentActiveObject;
 
     private enum ModelType
     {
@@ -25,13 +24,28 @@ public class CultBasedModel : MonoBehaviour
 
     private void Awake()
     {
-        position = placeholder.transform.localPosition;
-        rotation = placeholder.transform.localRotation;
-        scale = placeholder.transform.localScale;
-        currentObject = placeholder;
+        LoadModels();
+        initLayer = gameObject.layer;
+        currentActiveObject = placeholder;
         RuntimeVariables.Instance.OnUpdated += UpdateModel;
         if (RuntimeVariables.Instance.IsLoaded) UpdateModel();
-        initLayer = gameObject.layer;
+    }
+
+    private void LoadModels()
+    {
+        placeholder.transform.GetLocalPositionAndRotation(out Vector3 position, out Quaternion rotation);
+        Vector3 scale = placeholder.transform.localScale;
+        string name = placeholder.name;
+        for(int i = 0; i < CultRegister.Instance.Count; i++)
+        {
+            CultDefinition cult = CultRegister.Instance.GetById(i);
+            GameObject cultModel = Instantiate(GetCultObject(cult), this.transform);
+            cultModel.name = name;
+            cultModel.transform.localScale = scale;
+            cultModel.transform.SetLocalPositionAndRotation(position, rotation);
+            cultModel.SetActive(false);
+            models.Add(cultModel);
+        }
     }
 
     private void OnDestroy()
@@ -70,13 +84,11 @@ public class CultBasedModel : MonoBehaviour
 
     private void PerformChange()
     {
-        string name = currentObject.name;
-        Destroy(currentObject);
-        GameObject objToCreate = GetObjToCreate();
-        currentObject = Instantiate(objToCreate, this.transform);
-        currentObject.name = name;
-        Utils.ChangeLayerToHierarchy(currentObject.transform, this.gameObject.layer);
-        UpdateTransform();
+        currentActiveObject.SetActive(false);
+        currentActiveObject = models[currentCultId];
+        currentActiveObject.SetActive(true);
+        currentActiveObject.transform.SetAsFirstSibling();
+        Utils.ChangeLayerToHierarchy(currentActiveObject.transform, this.gameObject.layer);
         StartCoroutine(UpdateAnimators());
         CanvasTransitionManager.OnDissolved -= PerformChange;
     }
@@ -87,30 +99,23 @@ public class CultBasedModel : MonoBehaviour
         CanvasTransitionManager.OnTransitionFinished -= RestoreLayers;
     }
 
-    private void UpdateTransform()
+    private GameObject GetCultObject(CultDefinition cult)
     {
-        currentObject.transform.localScale = scale;
-        currentObject.transform.SetLocalPositionAndRotation(position, rotation);
-    }
-
-    private GameObject GetObjToCreate()
-    {
-        CultDefinition currentCult = CultRegister.Instance.GetById(currentCultId);
         switch (modelType)
         {
             case ModelType.Cultist:
-                return currentCult.CultistModel;
+                return cult.CultistModel;
             case ModelType.MenuCultist:
-                return currentCult.MenuModel;
+                return cult.MenuModel;
             default:
-                return currentCult.GrimoireModel;
+                return cult.GrimoireModel;
         }
     }
 
     IEnumerator UpdateAnimators()
     {
         yield return null;
-        Animator[] animators = GetComponentsInChildren<Animator>();
+        Animator[] animators = GetComponentsInChildren<Animator>(true);
         foreach (var anim in animators)
             anim.Rebind();
     }
