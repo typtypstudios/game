@@ -128,7 +128,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934091831531068938}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &1217850878769475702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1197,6 +1197,10 @@ PrefabInstance:
       value: HideTip
       objectReference: {fileID: 0}
     - target: {fileID: 3639636182419979670, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: stylePreset
+      value: 
+      objectReference: {fileID: 11400000, guid: cf4868ceb95158945809a2571ccc6a63, type: 2}
+    - target: {fileID: 3639636182419979670, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: StyleConfig.UnderlineNext
       value: 0
       objectReference: {fileID: 0}
@@ -1448,6 +1452,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3639636182419979670, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: stylePreset
+      value: 
+      objectReference: {fileID: 11400000, guid: cf4868ceb95158945809a2571ccc6a63, type: 2}
+    - target: {fileID: 3639636182419979670, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: StyleConfig.UnderlineNext
       value: 0
       objectReference: {fileID: 0}
@@ -1629,6 +1637,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: HideTip
       objectReference: {fileID: 0}
+    - target: {fileID: 3639636182419979670, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: stylePreset
+      value: 
+      objectReference: {fileID: 11400000, guid: cf4868ceb95158945809a2571ccc6a63, type: 2}
     - target: {fileID: 3639636182419979670, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: StyleConfig.UnderlineNext
       value: 0
