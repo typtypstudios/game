@@ -33,29 +33,30 @@ public class MenuCultistCard : MonoBehaviour
         transform.rotation = globalRotation;
         cards = RuntimeVariables.Instance.CurrentCult.GetCards().
             OrderBy(_ => Random.value).ToArray();
-        BindNextCard();
         StartCoroutine(ChangeContentCoroutine());
     }
 
     void Update()
     {
         transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.Self);
-        if (IsFacingCam()) back.SetAsLastSibling();
-        else back.SetAsFirstSibling();
+        if (FacingCam()) back.SetAsFirstSibling();
+        else back.SetAsLastSibling();
         globalRotation = transform.rotation;
     }
 
-    private bool IsFacingCam()
+    private bool FacingCam()
     {
-        Vector3 camToCard = back.position - mainCam.position;
+        Vector3 camToCard = transform.position - mainCam.position;
         camToCard.y = 0;
-        return Vector3.Dot(back.forward, Vector3.Normalize(camToCard)) > 0;
+        bool isFacing = Vector3.Dot(transform.forward, Vector3.Normalize(camToCard)) < 0;
+        bool isOnCamera = Vector3.Dot(mainCam.forward, camToCard) > 0;
+        return isFacing && isOnCamera;
     }
 
     private void EnsureGlow()
     {
         UICardView cardView = cardPresenter.GetComponent<UICardView>();
-        cardView.Details.color = cardView.Border.color;
+        if(cardView.Details) cardView.Details.color = cardView.Border.color;
         foreach (var emi in GetComponentsInChildren<EmissiveImageConfigurator>())
             emi.ToggleEmission(true, true);
     }
@@ -66,15 +67,17 @@ public class MenuCultistCard : MonoBehaviour
         int resolvedManaCost = Mathf.Max(0, cardDefinition.ManaCost);
         cardPresenter.SetCard(cardDefinition, resolvedManaCost, resolvedManaCost);
         if (currentCardIdx >= cards.Length) currentCardIdx = 0;
-        //if(glows) EnsureGlow();
+        if(glows) EnsureGlow();
     }
 
     IEnumerator ChangeContentCoroutine()
     {
+        yield return null;
+        BindNextCard();
         while (true)
         {
             yield return new WaitForSeconds(changeTime);
-            while (!IsFacingCam()) yield return null;
+            while (FacingCam()) yield return null;
             BindNextCard();
         }
     }

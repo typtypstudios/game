@@ -911,10 +911,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2833848300442366128}
     m_Modifications:
-    - target: {fileID: 1560322182939786407, guid: 471040ed34f7f7348bab8c36a6703b72, type: 3}
-      propertyPath: glows
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2460022397770088369, guid: 471040ed34f7f7348bab8c36a6703b72, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1010,6 +1006,10 @@ PrefabInstance:
     - target: {fileID: 3866094561918794173, guid: 471040ed34f7f7348bab8c36a6703b72, type: 3}
       propertyPath: m_Name
       value: CultCard
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277185699923768934, guid: 471040ed34f7f7348bab8c36a6703b72, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
