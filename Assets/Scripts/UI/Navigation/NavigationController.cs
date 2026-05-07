@@ -20,6 +20,7 @@ public class NavigationController : MonoBehaviour
     private readonly Stack<Screens> screenStack = new();
     private Screens currentScreen;
     private bool blocked = false;
+    private static bool hasDoneGlobalFirstTransition = false;
 
     private void Awake()
     {
@@ -27,6 +28,7 @@ public class NavigationController : MonoBehaviour
             Debug.LogError("Error: no hay transition manager asociado al gameObject.");
         if (!TryGetComponent(out camNavigation))
             Debug.LogError("Error: no hay camera navigation asociado al gameObject.");
+
         foreach (var entry in entries)
         {
             screenDictionary[entry.screen] = entry;
@@ -35,7 +37,19 @@ public class NavigationController : MonoBehaviour
             canvasGroup.blocksRaycasts = false;
             entry.canvas.enabled = false;
         }
-        transitionManager.SubscribeOnStarted(this, () => blocked = true);
+
+        transitionManager.SubscribeOnStarted(this, () =>
+        {
+            blocked = true;
+            if (startsWithTransition && !hasDoneGlobalFirstTransition)            
+                hasDoneGlobalFirstTransition = true;            
+            else
+                AudioManager.Instance.PlayUI(UISound.DissolveOut);
+        });
+        transitionManager.SubscribeOnDissolved(this, () =>
+        {
+            AudioManager.Instance.PlayUI(UISound.DissolveIn);
+        });
         transitionManager.SubscribeOnEnded(this, () => blocked = false);
         goBackAction.action.started += GoBackAction;
         currentScreen = initialScreen;
@@ -70,7 +84,7 @@ public class NavigationController : MonoBehaviour
     public void GoTo(Screens screen, GameObject sender)
     {
         if (blocked) return;
-        if(screen == Screens.GoBack)
+        if (screen == Screens.GoBack)
         {
             GoBack();
             return;
@@ -93,13 +107,13 @@ public class NavigationController : MonoBehaviour
     {
         if (screen == currentScreen) return;
         Canvas originCanvas = screenDictionary[currentScreen].canvas;
-        INavigationLeaveReceiver[] leaveReceivers = 
+        INavigationLeaveReceiver[] leaveReceivers =
             originCanvas.GetComponentsInChildren<INavigationLeaveReceiver>(true);
         foreach (var receiver in leaveReceivers)
             receiver.OnLeave();
 
         Canvas destinationCanvas = screenDictionary[screen].canvas;
-        INavigationCtxReceiver[] receivers = 
+        INavigationCtxReceiver[] receivers =
             destinationCanvas.GetComponentsInChildren<INavigationCtxReceiver>(true);
         foreach (var receiver in receivers)
             receiver.ReceiveContext(currentScreen, isGoingBack, sender);

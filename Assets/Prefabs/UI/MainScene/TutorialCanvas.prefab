@@ -1231,6 +1231,7 @@ GameObject:
   - component: {fileID: 6083847883235635511}
   - component: {fileID: 8448921517466536945}
   - component: {fileID: 3616116821515916396}
+  - component: {fileID: 2108421319044147429}
   m_Layer: 5
   m_Name: NextButton
   m_TagString: Untagged
@@ -1463,6 +1464,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2108421319044147429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3980363765720552999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9a0700befef624419bdca5419f735d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonClickSound
+  sound: 1
 --- !u!1 &4076898871358395535
 GameObject:
   m_ObjectHideFlags: 0
@@ -1788,6 +1802,7 @@ GameObject:
   - component: {fileID: 6446468067896759314}
   - component: {fileID: 5460187355590224381}
   - component: {fileID: 1418678196171992109}
+  - component: {fileID: 8599828725700995823}
   m_Layer: 5
   m_Name: PrevButton
   m_TagString: Untagged
@@ -2020,6 +2035,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &8599828725700995823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6635590401054725556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9a0700befef624419bdca5419f735d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonClickSound
+  sound: 1
 --- !u!1 &6812265263315183931
 GameObject:
   m_ObjectHideFlags: 0
@@ -2056,7 +2084,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 75.636, y: 37.325, z: -7.103}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 64.72, y: -9.53}
+  m_AnchoredPosition: {x: 64.71997, y: -9.530029}
   m_SizeDelta: {x: 800, y: 449.99997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &290667593596924585

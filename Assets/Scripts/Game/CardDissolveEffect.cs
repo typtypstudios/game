@@ -112,6 +112,7 @@ public class CardDissolveEffect : MonoBehaviour
         }
 
         yield return new WaitForSeconds(showTime);
+        AudioManager.Instance.PlayUI(UISound.DissolveOut);
         dissolve = 0;
         while (dissolve < 1)
         {

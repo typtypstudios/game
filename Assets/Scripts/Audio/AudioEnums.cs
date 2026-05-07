@@ -22,7 +22,9 @@ public enum UISound
     ExchangeCards,
     SelectCard,
     ChangeCult,
-    FlipPage
+    FlipPage,
+    DissolveOut,
+    DissolveIn
 }
 
 public enum GameSound

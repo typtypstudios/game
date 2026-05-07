@@ -16,7 +16,12 @@ public class TurnPageEffect : MonoBehaviour
         parentCanvas = GetComponentInParent<Canvas>();
         transitionManager = FindFirstObjectByType<CanvasTransitionManager>();
         if (!transitionManager) Debug.LogError("Error: no hay CanvasTransitionManager en la escena.");
-        transitionManager.SubscribeOnDissolved(this, () => OnBlankPage?.Invoke());
+        transitionManager.SubscribeOnStarted(this, () => AudioManager.Instance.PlayUI(UISound.DissolveOut));
+        transitionManager.SubscribeOnDissolved(this, () =>
+        {
+            OnBlankPage?.Invoke();
+            AudioManager.Instance.PlayUI(UISound.DissolveIn);
+        });
         transitionManager.SubscribeOnEnded(this, OnTurnEnded);
         transitionManager.SubscribeOnCanceled(this, OnCanceled);
     }
@@ -29,7 +34,7 @@ public class TurnPageEffect : MonoBehaviour
         wasCanvasEnabled = parentCanvas.enabled;
         foreach (var page in pagesTransform)
         {
-            if(!page.gameObject.TryGetComponent(out Canvas _)) page.gameObject.AddComponent<Canvas>();
+            if (!page.gameObject.TryGetComponent(out Canvas _)) page.gameObject.AddComponent<Canvas>();
             page.gameObject.layer = LayerMask.NameToLayer("UI");
         }
         transitionManager.PerformTransition(parentCanvas, parentCanvas, this, false, transitionTime);
