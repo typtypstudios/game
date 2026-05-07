@@ -63,9 +63,12 @@ namespace TypTyp.TextSystem
             for (int i = 0; i < Texts.Length - 1; i++) Texts[i].text = Texts[i + 1].text;
             Texts[Texts.Count() - 1].text = string.Empty;
             RequestNextTextRpc(textIdx++);
+            //ejecutado en cliente de manera instantanea, esto ejecuta corutina de animacion
             OnNextText?.Invoke();
             return Texts[0].text;
         }
+
+        public string GetText(int index) => default;
 
         [Rpc(SendTo.Server)]
         private void RequestNextTextRpc(int numCompleted)
@@ -83,6 +86,7 @@ namespace TypTyp.TextSystem
         {
             for (int i = 0; i < Texts.Length; i++)
             {
+                //Coge el ultimo texto vacio, me parece un mierdon, deberia siempre ponerse el ultimo y ya esta
                 if (Texts[i].text.Equals(string.Empty))
                 {
                     Texts[i].text = text;
