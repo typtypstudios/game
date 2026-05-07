@@ -5,13 +5,14 @@ public class AddInkEffect : StatusEffectDefinition
 {
     [SerializeField] int tintBars;
 
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
+        Player target = context.Target;
         if (!target.IsServer) return;
         target.ManaManager.AddBars(tintBars);
     }
 
-    public override void OnDeactivate(Player target) { }
+    public override void OnDeactivate(EffectContext context) { }
 
     public override string GetDefaultValue()
     {

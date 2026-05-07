@@ -21,6 +21,7 @@ public class StatusEffectController : MonoBehaviour
     Player player;
     NetworkTextProvider textProvider;
     List<StatusEffect> toRemove;
+    private readonly System.Random random = new();
     
     public void Awake()
     {
@@ -67,7 +68,7 @@ public class StatusEffectController : MonoBehaviour
         if (effectDef.DurationType != EffectDurationType.Immediate && 
             effectDef.DurationType != EffectDurationType.Permanent)
             activeEffects.Add(statusEffect);
-        statusEffect.Activate();
+        statusEffect.Activate(new EffectContext(player, random));
         OnEffectApplied?.Invoke(statusEffect);
     }
 
@@ -79,7 +80,7 @@ public class StatusEffectController : MonoBehaviour
 
     public void RemoveEffect(StatusEffect effect)
     {
-        effect.Deactivate();
+        effect.Deactivate(new EffectContext(player, random));
         activeEffects.Remove(effect);
         OnEffectRemoved?.Invoke(effect);
     }

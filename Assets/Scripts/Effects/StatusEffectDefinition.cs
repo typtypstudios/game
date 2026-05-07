@@ -21,8 +21,8 @@ public abstract class StatusEffectDefinition : ADefinition
     [field: SerializeField] public EffectPolarityType EffectPolarityType { get; private set; } = EffectPolarityType.Bad;
     [field: SerializeField] public float DurationValue { get; private set; } // Tiempo en segundos o numero de líneas, dependiendo del tipo de duracion
 
-    public abstract void OnActivate(Player target);
-    public abstract void OnDeactivate(Player target);
+    public abstract void OnActivate(EffectContext context);
+    public abstract void OnDeactivate(EffectContext context);
     public abstract string GetDefaultValue();
 
     public bool IsOpposite(StatusEffectDefinition other)

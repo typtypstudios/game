@@ -6,8 +6,9 @@ public class StatusRemoveEffect : StatusEffectDefinition
     [Min(1)][SerializeField] private int numEffectsToRemove = 1;
     [SerializeField] private EffectPolarityType polarityToRemove = EffectPolarityType.Bad;
 
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
+        Player target = context.Target;
         StatusEffectController controller = target.StatusEffectController;
         int numEffects = controller.Effects.Count;
         for(int i = numEffects - 1; i >= 0; i--) //Por defecto se borran antes los últimos
@@ -18,10 +19,11 @@ public class StatusRemoveEffect : StatusEffectDefinition
         }
     }
 
-    public override void OnDeactivate(Player target) { }
+    public override void OnDeactivate(EffectContext context) { }
 
     public override string GetDefaultValue()
     {
         return $"{numEffectsToRemove}";
     }
 }
+

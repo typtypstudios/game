@@ -14,8 +14,9 @@ public class ConstantMagnitudeIncreaseEffect : StatusEffectDefinition
     private int millisecondsTime;
     private Dictionary<Player, CancellationTokenSource> cts = new();
 
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
+        Player target = context.Target;
         if (!target.IsServer) return;
         cts[target] = new();
         millisecondsTime = (int)(timeInterval * 1000);
@@ -27,8 +28,9 @@ public class ConstantMagnitudeIncreaseEffect : StatusEffectDefinition
         _ = CorruptCoroutine(target, type, cts[target].Token);
     }
 
-    public override void OnDeactivate(Player target)
+    public override void OnDeactivate(EffectContext context)
     {
+        Player target = context.Target;
         if (!target.IsServer) return;
         cts[target].Cancel();
     }

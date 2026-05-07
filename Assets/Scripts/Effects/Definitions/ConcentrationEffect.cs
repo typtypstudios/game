@@ -5,22 +5,26 @@ using System.Linq;
 public class ConcentrationEffect : StatusEffectDefinition
 {
     [SerializeField] private int inkDiscount = 1;
-    private static System.Random rand = null;
 
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
-        rand ??= new(Utils.GetSeedFromNames());
-        CardDefinition[] cards = target.DeckController.Cards.OrderBy((_) => rand.Next()).ToArray();
+        Player target = context.Target;
+        System.Random rng = context.Random;
+        if (rng == null)
+            return;
+
+        CardDefinition[] cards = target.DeckController.Cards.OrderBy((_) => rng.Next()).ToArray();
         foreach(var card in cards)
         {
             if (target.DeckController.TryApplyDiscount(card, inkDiscount)) return;
         }
     }
 
-    public override void OnDeactivate(Player target) { }
+    public override void OnDeactivate(EffectContext context) { }
 
     public override string GetDefaultValue()
     {
         return $"{inkDiscount}";
     }
 }
+

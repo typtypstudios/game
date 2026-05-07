@@ -3,14 +3,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SealedEffect", menuName = "TypTyp/Effects/SealedEffect")]
 public class SealedEffect : StatusEffectDefinition
 {
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
+        Player target = context.Target;
         target.SpellCaster.Sealed = true;
         target.SpellCaster.OnSpellCasted += KillSelf;
     }
 
-    public override void OnDeactivate(Player target)
+    public override void OnDeactivate(EffectContext context)
     {
+        Player target = context.Target;
         target.SpellCaster.Sealed = false;
         target.SpellCaster.OnSpellCasted -= KillSelf;
     }

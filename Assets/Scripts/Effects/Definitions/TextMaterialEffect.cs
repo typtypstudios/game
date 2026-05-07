@@ -26,8 +26,9 @@ public class TextMaterialEffect : StatusEffectDefinition
         activeMats.Clear();
     }
 
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
+        Player target = context.Target;
         if (defaultMat == null) defaultMat = target.GetComponentInChildren<TMP_Text>(true).fontMaterial;
         foreach(var t in target.GetComponentsInChildren<TMP_Text>(true))
         {
@@ -47,8 +48,9 @@ public class TextMaterialEffect : StatusEffectDefinition
         activeMats[target.tag].Add(mat);
     }
 
-    public override void OnDeactivate(Player target)
+    public override void OnDeactivate(EffectContext context)
     {
+        Player target = context.Target;
         activeMats[target.tag].Remove(mat);
         foreach (var t in target.GetComponentsInChildren<TMP_Text>(true))
         {
@@ -68,3 +70,4 @@ public class TextMaterialEffect : StatusEffectDefinition
         return "";
     }
 }
+
