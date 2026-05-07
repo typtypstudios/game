@@ -25,7 +25,7 @@ public class TurnPageEffect : MonoBehaviour
 
     public void TurnPage()
     {
-        parentCanvas.gameObject.layer = 0;
+        parentCanvas.gameObject.layer = LayerMask.NameToLayer("TurnPageStay");
         wasCanvasEnabled = parentCanvas.enabled;
         foreach (var page in pagesTransform)
         {
