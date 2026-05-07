@@ -86,7 +86,7 @@ public class InfoDisplayer : MonoBehaviour
             highlighted = true;
             cardName.color = writableButton.GetButtonColor() + Color.white * highlightColorAddition;
 
-            foreach(var config in GetComponentsInChildren<EmissiveImageConfigurator>())
+            foreach(var config in GetComponentsInChildren<EmissiveImageConfigurator>(true))
                 config.ToggleEmission(true);
 
             if (lastSiblingIfSelected) transform.SetAsLastSibling();
@@ -98,7 +98,7 @@ public class InfoDisplayer : MonoBehaviour
             highlighted = false;
             cardName.color = originalNameColor;
 
-            foreach (var config in GetComponentsInChildren<EmissiveImageConfigurator>())
+            foreach (var config in GetComponentsInChildren<EmissiveImageConfigurator>(true))
                 config.ToggleEmission(false);
 
             //transform.SetAsFirstSibling();
