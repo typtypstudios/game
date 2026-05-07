@@ -63,6 +63,9 @@ public class MatchManager : NetworkBehaviour
     //Cambiar esto mas adelante para mas jugadores
     int MaxPlayers => 2;
 
+    // Variable para controlar el countdown para que comience la partida.
+    float startCountdownAmount = 5.0f;
+
     private bool lobbyShutdownRequested = false;
 
     private void Awake()
@@ -206,7 +209,7 @@ public class MatchManager : NetworkBehaviour
     {
         matchState = MatchState.InGame;
         Debug.Log("SERVER: StartSynchronizedMatch()");
-        matchStartTime = NetworkManager.Singleton.ServerTime.Time + 5.0;
+        matchStartTime = NetworkManager.Singleton.ServerTime.Time + startCountdownAmount;
 
         ulong[] clientIds = playersData.Keys.ToArray();
         ulong client1Id = clientIds[0];
@@ -244,6 +247,7 @@ public class MatchManager : NetworkBehaviour
     private IEnumerator WaitForStart(double startTime)
     {
         int lastSecond = -1;
+        bool ignoreFirstTick = true;
 
         startGameCanvas.SetCountdownActive(true);
         OnCountdownStarted?.Invoke();
@@ -261,7 +265,9 @@ public class MatchManager : NetworkBehaviour
             {
                 lastSecond = currentSecond;
                 startGameCanvas.UpdateCountdownText(currentSecond.ToString());
-                startGameCanvas.NotifyCountdownTick(currentSecond);
+
+                if (ignoreFirstTick) ignoreFirstTick = false;
+                else startGameCanvas.NotifyCountdownTick(currentSecond);
             }
 
             yield return null;

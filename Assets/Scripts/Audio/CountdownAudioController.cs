@@ -23,13 +23,12 @@ public class CountdownAudioController : MonoBehaviour
 
     private void HandleTick(int second)
     {
-        CountdownSound sound = second switch
+        if (second <= 0)
         {
-            3 => CountdownSound.Three,
-            2 => CountdownSound.Two,
-            1 => CountdownSound.One,
-            _ => CountdownSound.None
-        };
+            AudioManager.Instance.PlayCountdown(CountdownSound.None);
+            return;
+        }
+        CountdownSound sound = second % 2 != 0 ? CountdownSound.One : CountdownSound.Two;
         AudioManager.Instance.PlayCountdown(sound);
     }
 
