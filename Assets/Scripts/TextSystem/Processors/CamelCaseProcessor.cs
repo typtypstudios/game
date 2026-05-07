@@ -11,12 +11,16 @@ namespace TypTyp.TextSystem
             if (builder.Length == 0)
                 return;
 
+            System.Random rng = context.Random;
+            if (rng == null)
+                return;
+
             var sb = new StringBuilder(builder.Length);
             bool capitalizeNext = false;
             bool firstWord = true;
 
             int spaceCounter = 0;
-            int nextSpaceToKeep = UnityEngine.Random.Range(2, 5); // 2–4
+            int nextSpaceToKeep = rng.Next(2, 5); // 2-4
 
             for (int i = 0; i < builder.Length; i++)
             {
@@ -32,7 +36,7 @@ namespace TypTyp.TextSystem
                     {
                         sb.Append(' ');
                         spaceCounter = 0;
-                        nextSpaceToKeep = UnityEngine.Random.Range(2, 5);
+                        nextSpaceToKeep = rng.Next(2, 5);
                     }
 
                     continue;

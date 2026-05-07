@@ -1,12 +1,10 @@
-using System;
-
 namespace TypTyp.TextSystem
 {
     public readonly struct TextProcessContext
     {
-        public readonly Random Random;
+        public readonly System.Random Random;
 
-        public TextProcessContext(Random random)
+        public TextProcessContext(System.Random random)
         {
             Random = random;
         }
