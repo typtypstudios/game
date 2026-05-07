@@ -60,7 +60,6 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
         currentText = "";
         visualManager.SetEyesRend(true);
         CanvasTransitionManager.OnTransitionFinished += DisplayText;
-        isFocused = true;
     }
 
     public void OnLeave()
@@ -74,6 +73,7 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
     private int numExtraInteractions = 0;
     private void DisplayText()
     {
+        isFocused = true;
         if (currentText.Equals(angerMessage)) return;
         bool isEndMessage = textIdx >= texts.Length;
         if (isEndMessage)

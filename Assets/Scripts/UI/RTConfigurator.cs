@@ -4,6 +4,7 @@ public class RTConfigurator : MonoBehaviour
 {
     [SerializeField] private RenderTexture[] rts;
     private Camera[] cameras;
+    private int currentSize = 0;
 
     void Awake()
     {
@@ -13,6 +14,7 @@ public class RTConfigurator : MonoBehaviour
 
     public void ResizeRTs(int scaleFactor = 1)
     {
+        if (scaleFactor == currentSize) return;
         foreach(var rt in rts)
         {
             rt.Release();
@@ -26,5 +28,6 @@ public class RTConfigurator : MonoBehaviour
                 cam.targetTexture = rt;
             }
         }
+        currentSize = scaleFactor;
     }
 }
