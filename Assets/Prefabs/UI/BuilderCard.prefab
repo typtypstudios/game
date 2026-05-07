@@ -93,6 +93,7 @@ MonoBehaviour:
   image: {fileID: 0}
   emission: 0.9
   cardVisualPresenter: {fileID: 0}
+  cardView: {fileID: 0}
   nameText: {fileID: 0}
   infoText: {fileID: 6349554052005909900}
 --- !u!1 &2247746088261927468
@@ -1371,7 +1372,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2053037489924372653, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_fontSize
-      value: 9.6
+      value: 9.18
       objectReference: {fileID: 0}
     - target: {fileID: 2053037489924372653, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_margin.x
@@ -1399,7 +1400,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2053037489924372653, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_fontSizeMin
-      value: 9.6
+      value: 9.18
       objectReference: {fileID: 0}
     - target: {fileID: 2053037489924372653, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_TextWrappingMode
@@ -1519,19 +1520,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5590775828627560194, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -30
+      value: -33.6777
       objectReference: {fileID: 0}
     - target: {fileID: 5590775828627560194, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -0.03440094
+      value: 2.9794
       objectReference: {fileID: 0}
     - target: {fileID: 5590775828627560194, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 0.10910034
       objectReference: {fileID: 0}
     - target: {fileID: 5590775828627560194, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.01720047
+      value: 0.6619997
       objectReference: {fileID: 0}
     - target: {fileID: 7425783995269280065, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_Pivot.x
@@ -1559,11 +1560,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7425783995269280065, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -40
+      value: -50.0086
       objectReference: {fileID: 0}
     - target: {fileID: 7425783995269280065, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 19.9656
+      value: 18.9984
       objectReference: {fileID: 0}
     - target: {fileID: 7425783995269280065, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1595,11 +1596,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7425783995269280065, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 0.33110046
       objectReference: {fileID: 0}
     - target: {fileID: 7425783995269280065, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 19.11721
+      value: 18.633598
       objectReference: {fileID: 0}
     - target: {fileID: 7425783995269280065, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1619,15 +1620,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_Color.b
-      value: 0.7019608
+      value: 0.9137255
       objectReference: {fileID: 0}
     - target: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_Color.g
-      value: 0.8352941
+      value: 0.92941177
       objectReference: {fileID: 0}
     - target: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
       propertyPath: m_Color.r
-      value: 0.90588236
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 9183941291294489147, guid: 221f2a56a92d54e49a1627cfa7744331, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 2.89
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
