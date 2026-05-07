@@ -37,6 +37,7 @@ public class EclipseUpdater : MonoBehaviour
     }
     private void HandleSpaces(ref int idx)
     {
+        if (!tmp || typableController.Text == null || typableController.Text.Equals(string.Empty)) return;
         if (Settings.Instance.ShowSpaces && view.Config.isAbleToShowSpaces)
         {
             string original = typableController.Text;
