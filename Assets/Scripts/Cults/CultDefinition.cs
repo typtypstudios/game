@@ -16,7 +16,7 @@ namespace TypTyp.Cults
         [field: SerializeField] public GameObject CultistModel { get; private set; }
         [field: SerializeField] public GameObject MenuModel { get; private set; }
         [field: SerializeField] public GameObject GrimoireModel { get; private set; }
-
+        [field: SerializeField] public Sprite CardBack { get; private set; }
 
         public IEnumerable<CardDefinition> GetCards()
         {

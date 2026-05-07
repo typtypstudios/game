@@ -5,6 +5,7 @@ using Unity.Collections;
 using TypTyp;
 using TypTyp.TextSystem;
 using TypTyp.Input;
+using System;
 
 public class Player : NetworkBehaviour
 {
@@ -21,6 +22,7 @@ public class Player : NetworkBehaviour
     public ITextPipeline TextPipeline { get; private set; }
     public static Player User { get; private set; }
     public static Player Enemy { get; private set; }
+    public event Action<int> OnCultConfigurated;
 
     public NetworkVariable<float> RitualProgress { get; private set; } = new();
     public NetworkVariable<float> CurrentMana { get; private set; } = new();
@@ -95,6 +97,7 @@ public class Player : NetworkBehaviour
         }
         foreach (var cultModel in GetComponentsInChildren<CultBasedModel>())
             cultModel.FixCult(cultId);
+        OnCultConfigurated?.Invoke(cultId);
     }
 
     [Rpc(SendTo.Server)]

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8166153275879180481}
   - component: {fileID: 7158786930809575023}
   - component: {fileID: 137406554706024965}
+  - component: {fileID: 2326377966950331597}
   m_Layer: 0
   m_Name: Back
   m_TagString: Untagged
@@ -75,6 +76,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2326377966950331597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2374128881885044789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e820bc4b000ab34d94f16890893341b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardBack
+  searchInParentPlayer: 0
 --- !u!1 &3140421415667288660
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,7 +242,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 100
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &7127561641381929510
 MonoBehaviour:
   m_ObjectHideFlags: 0
