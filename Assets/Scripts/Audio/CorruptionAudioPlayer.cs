@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class CorruptionAudioPlayer : MonoBehaviour
 {
-    [SerializeField] private float damageDelay = 0.7f;
-    [SerializeField] private float healDelay = 0.7f;
+    private float damageDelay = 0.0f;
+    private float healDelay = 0.0f;
 
     private CorruptionGainManager corruptionManager;
 

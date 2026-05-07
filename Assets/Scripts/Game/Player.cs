@@ -123,6 +123,7 @@ public class Player : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void NotifyCorruptionAudioRpc(bool isDamage)
     {
+        // Enviar desde el server el damage o healing al jugador
         if (isDamage)
             CorruptionManager.TriggerDamageEvent();
         else

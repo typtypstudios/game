@@ -19,7 +19,7 @@ public class ConstantMagnitudeIncreaseEffect : StatusEffectDefinition
         if (!target.IsServer) return;
         cts[target] = new();
         millisecondsTime = (int)(timeInterval * 1000);
-        float maxValue = type == MagnitudeType.Corruption ? 
+        float maxValue = type == MagnitudeType.Corruption ?
             Settings.Instance.MaxCorruption : Settings.Instance.MaxMana;
         int numTicks = (int)Mathf.Ceil(DurationValue / timeInterval);
         magnitudePerTick = totalPercentage / 100 * maxValue;
@@ -40,13 +40,20 @@ public class ConstantMagnitudeIncreaseEffect : StatusEffectDefinition
 
     private async Task CorruptCoroutine(Player target, MagnitudeType type, CancellationToken token)
     {
+        bool isFirstTick = true;
+
         while (true)
         {
             if (token.IsCancellationRequested) return;
             if (type == MagnitudeType.Corruption)
-                target.CorruptionManager.AddCorruption(magnitudePerTick);
+                target.CorruptionManager.AddCorruption(magnitudePerTick, isPassive: !isFirstTick);
             else target.ManaManager.AddMana(magnitudePerTick);
-                await Task.Delay(millisecondsTime, token);
+
+            // A partir del segundo tick, el efecto se declara como pasivo y ya no se notifica
+            // su sonido, sin afectar a ninguna otra cosa de su lógica.
+            isFirstTick = false;
+
+            await Task.Delay(millisecondsTime, token);
         }
     }
 }
