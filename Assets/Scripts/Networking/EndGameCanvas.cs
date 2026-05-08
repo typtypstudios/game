@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EndGameCanvas : MonoBehaviour
 {
-    [SerializeField] private float showDelay = 1.0f;
     [SerializeField] private TMP_Text resultText;
     [SerializeField] private TMP_Text resultReasonText;
     [SerializeField] private GameObject exitButton;
@@ -27,7 +26,6 @@ public class EndGameCanvas : MonoBehaviour
 
     public void ShowEndMatch(bool isWinner, MatchEndReason reason)
     {
-        Invoke(nameof(GoToResults), showDelay);
         exitButton.SetActive(false);
         resultText.text = isWinner ? "VICTORY" : "DEFEAT";
         WritableText wt = resultText.GetComponent<WritableText>();
@@ -45,9 +43,6 @@ public class EndGameCanvas : MonoBehaviour
         earnedXPText.gameObject.SetActive(isWinner);
         progressionBar.gameObject.SetActive(isWinner);
     }
-
-    private void GoToResults() => 
-        FindFirstObjectByType<NavigationController>().GoTo(Screens.Results, this.gameObject);
 
     public void Return()
     {

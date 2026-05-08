@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ public class CanvasTransitionManager : MonoBehaviour
     private object activeSender;
     public static event Action OnTransitionFinished;
     public static event Action OnDissolved;
+    private Canvas currentCanvas;
     private float Dissolve
     {
         get { return transitionMat.GetFloat("_Dissolve"); }
@@ -55,6 +57,13 @@ public class CanvasTransitionManager : MonoBehaviour
         StartCoroutine(TransitionCoroutine(origin, dest, sender, blockTransitioner, time));
     }
 
+    public void FadeOut(bool blockTransitioner = true, float time = -1)
+    {
+        if (blocked) return;
+        StopAllCoroutines();
+        StartCoroutine(FadeOutCoroutine(blockTransitioner, time));
+    }
+
     private IEnumerator TransitionCoroutine(Canvas origin, Canvas dest, object sender, bool block, float time = -1)
     {
         if (block)
@@ -88,7 +97,23 @@ public class CanvasTransitionManager : MonoBehaviour
             dest.GetComponent<CanvasGroup>().blocksRaycasts = true;
             blocked = false;
         }
+        currentCanvas = dest;
         activeSender = null;
         OnTransitionFinished?.Invoke();
+    }
+
+    private IEnumerator FadeOutCoroutine(bool block, float time = -1)
+    {
+        if (block) blocked = true;
+        float speed = 2 / (time == -1 ? TransitionTime : time);
+        float dissolveValue = Dissolve; //Para no hacer gets constantes
+        while (dissolveValue < 1)
+        {
+            dissolveValue += speed * Time.deltaTime;
+            Dissolve = dissolveValue;
+            yield return null;
+        }
+        if (block) blocked = false;
+        if (currentCanvas != null) currentCanvas.enabled = false;
     }
 }

@@ -1,15 +1,21 @@
-using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
 public class EndMatchAnimationManager : MonoBehaviour
 {
+    [SerializeField] private float showResultsDelay = 2.0f;
+
     public void HandleEndMatch(bool isUserWinner)
     {
+        FindFirstObjectByType<CanvasTransitionManager>().FadeOut();
+        Invoke(nameof(GoToResults), showResultsDelay);
         SpawnLocalPlayerCopy(Player.User, isUserWinner, true);
         SpawnLocalPlayerCopy(Player.Enemy, !isUserWinner, false);
         if (TryGetComponent(out Animator anim)) anim.SetTrigger("FadeOut");
     }
+
+    private void GoToResults() =>
+       FindFirstObjectByType<NavigationController>().GoTo(Screens.Results, this.gameObject);
 
     private void SpawnLocalPlayerCopy(Player player, bool isWinner, bool setAsFollowTarget)
     {
