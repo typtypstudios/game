@@ -17,27 +17,27 @@ public class CardBack : MonoBehaviour
 
     void OnEnable()
     {
-        if (searchInParentPlayer) player.OnCultConfigurated += BindImage;
+        if (searchInParentPlayer) player.OnPlayerConfigurated += BindPlayerCult;
         else
         {
-            if (RuntimeVariables.Instance.IsLoaded) BindImage(RuntimeVariables.Instance.CurrentCultID);
+            if (RuntimeVariables.Instance.IsLoaded) BindCurrentCult();
             else RuntimeVariables.Instance.OnUpdated += BindCurrentCult;
         }
     }
 
     private void OnDisable()
     {
-        if (searchInParentPlayer && player != null) player.OnCultConfigurated -= BindImage;
+        if (searchInParentPlayer && player != null) player.OnPlayerConfigurated -= BindPlayerCult;
         else if (RuntimeVariables.Instance) RuntimeVariables.Instance.OnUpdated -= BindCurrentCult;
     }
 
     private void BindCurrentCult()
     {
-        BindImage(RuntimeVariables.Instance.CurrentCultID);
+        image.sprite = CultRegister.Instance.GetById(RuntimeVariables.Instance.CurrentCultID).CardBack;
     }
 
-    private void BindImage(int cultId)
+    private void BindPlayerCult()
     {
-        image.sprite = CultRegister.Instance.GetById(cultId).CardBack;
+        image.sprite = CultRegister.Instance.GetById(player.CultID).CardBack;
     }
 }

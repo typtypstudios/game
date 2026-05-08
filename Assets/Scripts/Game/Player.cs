@@ -22,7 +22,11 @@ public class Player : NetworkBehaviour
     public ITextPipeline TextPipeline { get; private set; }
     public static Player User { get; private set; }
     public static Player Enemy { get; private set; }
-    public event Action<int> OnCultConfigurated;
+    //Player info:
+    public string Name { get; private set; }
+    public int CultID { get; private set; }
+    public int CultRank { get; private set; }
+    public event Action OnPlayerConfigurated;
 
     public NetworkVariable<float> RitualProgress { get; private set; } = new();
     public NetworkVariable<float> CurrentMana { get; private set; } = new();
@@ -57,7 +61,8 @@ public class Player : NetworkBehaviour
 
             FixedString32Bytes playerName = playerNameValue;
             int[] deck = CardRegister.Instance.GetIds(DeckBuilder.CardsInDeck);
-            PlayerData playerData = new(OwnerClientId, playerName, deck, RuntimeVariables.Instance.CurrentCultID);
+            PlayerData playerData = new(OwnerClientId, playerName, deck, 
+                RuntimeVariables.Instance.CurrentCultID, (int)RuntimeVariables.Instance.CurrentLevel);
 
             InputHandler.Instance.SetMode(InputModeMask.WaitingForPlayers);
             MatchManager.OnPlayerReadyRpc(playerData);
@@ -79,7 +84,7 @@ public class Player : NetworkBehaviour
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    public void ConfigurePlayerRpc(int playerIdx, int cultId)
+    public void ConfigurePlayerRpc(int playerIdx, PlayerData playerData)
     {
         this.tag = playerIdx == 0 ? Settings.Instance.P1_tag : Settings.Instance.P2_tag;
         FindFirstObjectByType<PlayerPositioner>().PositionPlayer(this, playerIdx, IsOwner);
@@ -96,8 +101,11 @@ public class Player : NetworkBehaviour
             FindFirstObjectByType<MatchManager>().NotifyPlayerConfiguredServerRpc();
         }
         foreach (var cultModel in GetComponentsInChildren<CultBasedModel>())
-            cultModel.FixCult(cultId);
-        OnCultConfigurated?.Invoke(cultId);
+            cultModel.FixCult(playerData.CultId);
+        Name = playerData.PlayerName.ToString();
+        CultID = playerData.CultId;
+        CultRank = playerData.CultRank;
+        OnPlayerConfigurated?.Invoke();
     }
 
     [Rpc(SendTo.Server)]
