@@ -10,11 +10,9 @@ public class ShuffleEffect : StatusEffectDefinition
 
     public override void OnActivate(EffectContext context)
     {
-        Player target = context.Target;
     }
 
     public override void OnDeactivate(EffectContext context)
     {
-        Player target = context.Target;
     }
 }
