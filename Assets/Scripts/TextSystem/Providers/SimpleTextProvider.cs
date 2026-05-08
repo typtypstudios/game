@@ -15,6 +15,8 @@ namespace TypTyp.TextSystem
 
         private int currentIndex = 0;
 
+        public void SetRandom(System.Random random) { }
+
         public string GetNextText()
         {
             if (currentIndex >= sampleSentences.Length)
@@ -22,5 +24,7 @@ namespace TypTyp.TextSystem
 
             return sampleSentences[currentIndex++];
         }
+
+        public string GetText(int index) => default;
     }
 }

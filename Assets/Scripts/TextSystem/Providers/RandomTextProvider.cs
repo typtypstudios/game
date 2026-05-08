@@ -9,12 +9,11 @@ namespace TypTyp.TextSystem
     public class RandomTextProvider : MonoBehaviour, ITextProvider
     {
         [SerializeField] TextAsset textSource;
-        [SerializeField] int seed;
         [SerializeField] GenerationMode generationMode = GenerationMode.Cycle;
         [SerializeField, Min(1)] int repetitionsPerCycle = 1;
 
         [SerializeField]string[] phrases;
-        System.Random random;
+        private System.Random random = new();
 
         //Just for cycle mode
         int currentIndex = 0;
@@ -40,8 +39,6 @@ namespace TypTyp.TextSystem
                 return;
             }
 
-            random = new System.Random(seed);
-
             if(generationMode == GenerationMode.Cycle)
             {
                 indexer = RangeProvider.FillRepeatedRange(0, phrases.Length - 1, repetitionsPerCycle);
@@ -66,6 +63,18 @@ namespace TypTyp.TextSystem
                 return phrases[random.Next(phrases.Length)];
             }
             else return default;
+        }
+
+        public string GetText(int index) => default;
+
+        public void SetRandom(System.Random random)
+        {
+            this.random = random ?? throw new ArgumentNullException(nameof(random));
+            if (generationMode == GenerationMode.Cycle && indexer != null && indexer.Length > 0)
+            {
+                indexer.Shuffle(this.random);
+                currentIndex = 0;
+            }
         }
     }
 }

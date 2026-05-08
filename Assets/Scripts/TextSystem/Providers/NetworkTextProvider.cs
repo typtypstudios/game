@@ -12,6 +12,7 @@ namespace TypTyp.TextSystem
         [field: SerializeField] public TMP_Text[] Texts { get; private set; }
         [SerializeField] TextAsset textSource;
         private static List<string> phrases = new();
+        private System.Random random = new();
         private int textIdx = 0;
         private RitualManager ritualManager; //Referencia circular
         private ITextPipeline textPipeline;
@@ -52,7 +53,8 @@ namespace TypTyp.TextSystem
                 : new();
             for (int i = 0; i < Settings.Instance.MaxTextsProvided; i++)
             {
-                string phrase = allPhrases[UnityEngine.Random.Range(0, allPhrases.Count)];
+                int randomIndex = random.Next(allPhrases.Count);
+                string phrase = allPhrases[randomIndex];
                 allPhrases.Remove(phrase);
                 phrases.Add(phrase.Trim());
             }
@@ -69,6 +71,11 @@ namespace TypTyp.TextSystem
         }
 
         public string GetText(int index) => default;
+
+        public void SetRandom(System.Random random)
+        {
+            this.random = random ?? throw new ArgumentNullException(nameof(random));
+        }
 
         [Rpc(SendTo.Server)]
         private void RequestNextTextRpc(int numCompleted)
