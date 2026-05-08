@@ -229,8 +229,9 @@ MonoBehaviour:
     many like you."
   - Listen carefully... I don't have much else to offer besides words. And believe
     me, here... words carry a lot of weight.
-  - "A long time ago... too long ago for the exact number to matter... they arrived.
-    We never knew where they came from. They were gods. \r\n"
+  - A long time ago... too long ago for the exact number to matter... they arrived.
+    No one knew their origin. No one understood their nature. But their power made
+    them indistinguishable from gods.
   - 'Incomprehensible beings who provided humanity with riches, power, and everything
     they could ever want. But never for free.
 
@@ -245,30 +246,30 @@ MonoBehaviour:
 
 '
   - "Some needed to be understood\u2026 to be deciphered. As if simply existing weren\u2019t
-    enough. Others simply consumed."
-  - It all ended in wars. Not between them. Between us. Controlled by them, of course.
+    enough. Others fed off fear."
+  - It all ended in wars. Not between them. Between humanity. Controlled by them,
+    of course.
   - "Because they were\u2026 incompatible. They couldn\u2019t coexist. Their very
     nature made it impossible for them to share the same world without destroying
     it."
-  - 'But then something happened that would completely change the course of events...
-    the writing... and someone... someone realized it. '
-  - The words didn't just describe reality. They affected them. Somehow... control
-    passed into the hands of humanity. And at that moment... everything began to
-    fall apart.
+  - But then something happened that would completely change the course of events...
+    writing appeared. And someone... someone understood its power.
+  - Words didn't just describe reality. They affected them. Somehow... control passed
+    into the hands of humanity. And at that moment... everything began to fall apart.
   - "Entire civilizations rose up against one another. Cults, empires, scholars\u2026
     all trying to control their god\u2026 to destroy the others. Words became weapons.
     Every symbol, every phrase\u2026 could tip the scales."
   - The world barely survived that. But there was... a group. No one remembers their
     names. No one remembers where they came from. But they understood something that
     the others didn't.
-  - Humanity was doomed to self-destruction if it did not act in time. We couldn't
-    drive them out, but we could lock them up.
+  - "Humanity was doomed to self-destruction unless it acted in time. They couldn\u2019t
+    drive them out... but they could seal them away."
   - 'They used writing... flawless, without error... rituals that brooked no mistakes...
     and they banished them. All of them. They pushed them out... far away... where
-    they couldn''t touch us.
+    they couldn''t touch them.
 
 '
-  - "And so\u2026 the age of the gods came to an end. Or so we thought.\n"
+  - "And so\u2026 the age of the gods came to an end. Or so the world believed."
   - "Time passed. Everything became myth\u2026 legend\u2026 nonsense meant to scare
     children. And humanity carried on\u2026 blissfully ignorant. Until it arrived\u2026\r\n"
   - 'INTERNET.
@@ -289,23 +290,22 @@ MonoBehaviour:
   - "Memes. Videos. Absurd clips. Things you see... share... and forget. But they
     aren\u2019t random. They never were. Every repetition shapes them. Every time
     something goes viral, something on the other side becomes more real.\n"
-  - "And no one sees it. Because these days... nothing on the internet seems real.
+  - "And no one sees it. Because these days... nothing on the Internet seems real.
     It\u2019s the best hiding place they\u2019ve ever had.\r\n"
   - 'They already know what happened in the past and what humanity is capable of;
     this time, they won''t make the same mistake.
 
 
 '
-  - 'Old-school internet users. People who had spent far too long lost in forgotten
+  - 'Old-school Internet users. People who had spent far too long lost in forgotten
     forums, defunct chat rooms, and websites that no one should have been visiting
     anymore.
 
 '
-  - We started finding .txt files hidden where they shouldn't be. Strange patterns
+  - They started finding .txt files hidden where they shouldn't be. Strange patterns
     caught our attention. They weren't old files, they were recent ones... and they
     had placed them strategically.
-  - "That\u2019s when we realized the truth. They wanted to go back. And now\u2026
-    they\u2019ve found new believers. \r\n"
+  - "They wanted to return. And now\u2026 they\u2019ve found new believers. \r\n"
   - Just like you.
   - 'Cults. Secret online groups. Each one worships a different deity. Each one convinced
     that it holds the key... the right ritual... the perfect sequence.
@@ -322,12 +322,15 @@ MonoBehaviour:
 
 '
   - But of course... You know how this works, don't you? After all... this is the
-    internet. Anything could be fake here.
+    Internet. Anything could be fake here.
   - "But the real question isn\u2019t if this is real or just another viral trend.
     What you should really be asking yourself is...\r\r\n"
   - Why do you keep writing?
   textAppearSpeed: 0.3
   clickAction: {fileID: -8619944142541535279, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  numInteractionsToAnger: 10
+  endMessage: ...
+  angerMessage: LET ME REST IN PEACE.
 --- !u!1 &2323499283982795663
 GameObject:
   m_ObjectHideFlags: 0
