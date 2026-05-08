@@ -840,7 +840,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea7b6071f8d30d48b09a095b4e5ee22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EndMatchAnimationManager
-  timeUntilFadeOut: 0.8
+  showResultsDelay: 2
+  transitionCanvasNewDist: 1
 --- !u!1001 &404194725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -895,7 +896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3165650907841122507, guid: c52eb22ad6e85ab4eb326a4bc5c39878, type: 3}
       propertyPath: m_PlaneDistance
-      value: 0.31
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 7046849182916803878, guid: c52eb22ad6e85ab4eb326a4bc5c39878, type: 3}
       propertyPath: m_ClearFlags
@@ -928,6 +929,10 @@ PrefabInstance:
     - target: {fileID: 7710779194541940778, guid: c52eb22ad6e85ab4eb326a4bc5c39878, type: 3}
       propertyPath: m_Depth
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7710779194541940778, guid: c52eb22ad6e85ab4eb326a4bc5c39878, type: 3}
+      propertyPath: field of view
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 8261081536707962677, guid: c52eb22ad6e85ab4eb326a4bc5c39878, type: 3}
       propertyPath: m_LocalRotation.x

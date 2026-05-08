@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using TypTyp;
-using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Networking;

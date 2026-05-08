@@ -14,13 +14,7 @@ public class CultBasedModel : MonoBehaviour
     private bool isFixed = false; //Por si se le quiere fijar un culto
     private readonly List<GameObject> models = new();
     private GameObject currentActiveObject;
-
-    private enum ModelType
-    {
-        Cultist,
-        MenuCultist,
-        Grimoire
-    }
+    public ModelType Type => modelType;
 
     private void Start()
     {
@@ -126,4 +120,11 @@ public class CultBasedModel : MonoBehaviour
         Always,
         AlwaysExceptFirst
     }
+}
+
+public enum ModelType
+{
+    Cultist,
+    MenuCultist,
+    Grimoire
 }
