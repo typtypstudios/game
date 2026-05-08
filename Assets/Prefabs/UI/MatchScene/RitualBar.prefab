@@ -459,7 +459,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 8844d797ffc43647392b9c34117bb402, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
@@ -481,8 +481,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIBar
   filler: {fileID: 7604769809348727930}
-  updateTime: 0.1
   fillType: 0
+  updateTime: 0.01
+  replaceParentWithFill: 1
 --- !u!1 &3282643860041156176
 GameObject:
   m_ObjectHideFlags: 0
@@ -761,8 +762,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIBar
   filler: {fileID: 1653618295358903852}
-  updateTime: 0.1
   fillType: 1
+  updateTime: 0.01
+  replaceParentWithFill: 1
 --- !u!1 &3770756772965638028
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,7 +833,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 62121093c4471b68d8505bf979455494, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
@@ -853,8 +855,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIBar
   filler: {fileID: 5470170933195842144}
-  updateTime: 0.1
   fillType: 0
+  updateTime: 0.01
+  replaceParentWithFill: 1
 --- !u!1 &4505285432833326584
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,7 +926,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 131cb8148cafb3c4cb4667bfeea74cc0, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
@@ -945,8 +948,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIBar
   filler: {fileID: 3599663676515155356}
-  updateTime: 0.1
   fillType: 0
+  updateTime: 0.01
+  replaceParentWithFill: 1
 --- !u!1 &4655391757578409687
 GameObject:
   m_ObjectHideFlags: 0
@@ -1090,7 +1094,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 49ee183bfa84beddba02cb3d276f23ea, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
@@ -1112,8 +1116,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIBar
   filler: {fileID: 5252003772151813859}
-  updateTime: 0.1
   fillType: 0
+  updateTime: 0.01
+  replaceParentWithFill: 1
 --- !u!1 &5624000705906563628
 GameObject:
   m_ObjectHideFlags: 0
@@ -1182,7 +1187,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: e00b9531715e7208ba42a38c8042607e, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
@@ -1204,8 +1209,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIBar
   filler: {fileID: 8836868621880235605}
-  updateTime: 0.1
   fillType: 0
+  updateTime: 0.01
+  replaceParentWithFill: 1
 --- !u!1 &5679665192947691113
 GameObject:
   m_ObjectHideFlags: 0
@@ -1274,13 +1280,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 2f76ba35771a5ef6391acf3e7186e83d, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 1
+  m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 0
-  m_FillOrigin: 0
+  m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!114 &6242025396483004163
@@ -1296,8 +1302,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIBar
   filler: {fileID: 2217521151610920315}
-  updateTime: 0.1
   fillType: 0
+  updateTime: 0.01
+  replaceParentWithFill: 1
 --- !u!1 &7975059866092625103
 GameObject:
   m_ObjectHideFlags: 0
