@@ -44,19 +44,18 @@ public class DeckController : NetworkBehaviour
     private Queue<int> cardQueue;
     private HashSet<int> currentHand;
     private SpellCaster spellCaster;
-    private static int seed;
-    public HashSet<int> CurrentHand => currentHand;
+    private System.Random random = new();
 
     //Events
     public UnityEvent<CardDefinition> OnCardPlayed = new();
     public UnityEvent<CardDefinition> OnCardDrawn = new();
+    public UnityEvent<CardDefinition> OnCardRemoved = new();
     public event Action<CardEventArgs> OnCardPlayedEvent;
     public event Action<CardEventArgs> OnCardDrawnEvent;
-
+    public event Action<CardEventArgs> OnCardRemovedEvent;
     public event Action<CardEventArgs> OnCardPlayRequestSuccess;
     public event Action<CardEventArgs> OnCardPlayRequestFailed;
     public event Action<CardDefinition> OnDiscountApplied;
-    public event Action<int[]> OnShuffledEvent;
     public event Action OnNotEnoughInkAttempt;
 
     //Static events
@@ -73,7 +72,6 @@ public class DeckController : NetworkBehaviour
         spellCaster = GetComponentInParent<SpellCaster>();
         UnityEngine.Assertions.Assert.IsNotNull(spellCaster,
             "DeckController requires a SpellCaster component in its parents");
-        seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
 
         CardDefinition shuffleCard = CardRegister.Instance.RegisteredItems.FirstOrDefault(card => card != null && card.name == "Shuffle");
         if (shuffleCard != null)
@@ -92,7 +90,7 @@ public class DeckController : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        deck.Shuffle(seed);
+        deck.Shuffle(random);
         //just for editor view purposes
         Cards = deck.Select(c => GetCardDefinitionById(c)).ToArray();
         cardQueue = new(deck);
@@ -118,35 +116,39 @@ public class DeckController : NetworkBehaviour
             }
             else
             {
-                // Al final he optado por hacerlo aquí forzado porque la lógica del
-                // shuffle es bastante diferente al anterior flujo
-                ReturnCardToDeck(card);
-                
-                int[] currentCards = currentHand.ToArray();
-                foreach (int cardInHand in currentCards)
-                {
-                    ReturnCardToDeck(cardInHand);
-                }
-
-                List<int> shuffledList = cardQueue.OrderBy(x => UnityEngine.Random.value).ToList();
-                cardQueue = new Queue<int>(shuffledList);
-
-                int[] cardsToDraw = new int[TypTyp.Settings.Instance.HandSize];
-                for (int i = 0; i < cardsToDraw.Length; i++)
-                {
-                    cardsToDraw[i] = DrawCard();
-                }
-
-                ShuffleHandRpc(currentCards);
-                PlayCardServer(card);
-                PlayCardResultRpc(validation, card, cardsToDraw);//Owner
-                PlayCardRpc(card);//Not Owner
+                HandleShufflePlay(card, validation);
             }
         }
         else
         {
             PlayCardResultRpc(validation, card);
         }
+    }
+
+    void HandleShufflePlay(int card, PlayCardRequestResult validation)
+    {
+        ReturnCardToDeck(card);
+
+        int[] currentCards = currentHand.ToArray();
+        foreach (int cardInHand in currentCards)
+        {
+            ReturnCardToDeck(cardInHand);
+        }
+
+        List<int> shuffledList = cardQueue.ToList();
+        shuffledList.Shuffle(random);
+        cardQueue = new Queue<int>(shuffledList);
+
+        int[] cardsToDraw = new int[TypTyp.Settings.Instance.HandSize];
+        for (int i = 0; i < cardsToDraw.Length; i++)
+        {
+            cardsToDraw[i] = DrawCard();
+        }
+
+        RemoveCardsFromHandClientRpc(currentCards);
+        PlayCardServer(card);
+        PlayCardResultRpc(validation, card, cardsToDraw);//Owner
+        PlayCardRpc(card);//Not Owner
     }
 
     void PlayCardServer(int card)
@@ -246,8 +248,7 @@ public class DeckController : NetworkBehaviour
 
         if (result == PlayCardRequestResult.Success)
         {
-            // OnCardPlayedEvent?.Invoke(playedCard);
-            // OnCardPlayed.Invoke(CardRegister.Instance.GetById(playedCard));
+            RemoveCardsFromHandClient(playedCard);
             PlayCardClient(playedCard);
         }
         else
@@ -299,20 +300,34 @@ public class DeckController : NetworkBehaviour
 
         foreach (var card in cardIds)
         {
-            // Debug.Log($"[Deck][Client][CardDrawn] cid={OwnerClientId} card={card}");
-            var cardDef = CardRegister.Instance.GetById(card);
-            CardEventArgs eventArgs = new(OwnerClientId, card);
-            OnCardDrawnEvent?.Invoke(eventArgs);
-            OnCardDrawn?.Invoke(cardDef);
-            OnAnyCardDrawEvent?.Invoke(eventArgs);
+            DrawCardClient(card);
         }
     }
 
     [Rpc(SendTo.Owner, InvokePermission = RpcInvokePermission.Server)]
-    private void ShuffleHandRpc(params int[] oldCards)
+    private void RemoveCardsFromHandClientRpc(params int[] oldCards)
     {
-        // Borrar las cartas viejas de la UI
-        OnShuffledEvent?.Invoke(oldCards);
+        RemoveCardsFromHandClient(oldCards);
+    }
+
+    void DrawCardClient(int card)
+    {
+        var cardDef = CardRegister.Instance.GetById(card);
+        CardEventArgs eventArgs = new(OwnerClientId, card);
+        OnCardDrawnEvent?.Invoke(eventArgs);
+        OnCardDrawn?.Invoke(cardDef);
+        OnAnyCardDrawEvent?.Invoke(eventArgs);
+    }
+
+    void RemoveCardsFromHandClient(params int[] cards)
+    {
+        foreach (var card in cards)
+        {
+            var cardDef = CardRegister.Instance.GetById(card);
+            CardEventArgs eventArgs = new(OwnerClientId, card);
+            OnCardRemovedEvent?.Invoke(eventArgs);
+            OnCardRemoved?.Invoke(cardDef);
+        }
     }
 
     public bool TryApplyDiscount(CardDefinition card, int discount)
@@ -361,6 +376,11 @@ public class DeckController : NetworkBehaviour
     CardDefinition GetCardDefinitionById(int id) => CardRegister.Instance.GetById(id);
     int GetCardId(CardDefinition cardDef) => CardRegister.Instance.GetId(cardDef);
 
+    public void SetRandom(System.Random random)
+    {
+        this.random = random ?? throw new ArgumentNullException(nameof(random));
+    }
+
     void UpdateQueueListView()
     {
         Cards = cardQueue.Select(id => CardRegister.Instance.GetById(id)).ToArray();
@@ -368,3 +388,4 @@ public class DeckController : NetworkBehaviour
 
     #endregion
 }
+
