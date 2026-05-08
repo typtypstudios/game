@@ -11,7 +11,12 @@ public class UIBarGroup : MonoBehaviour
     void Start()
     {
         if (bars.Count == 0) //A lo mejor se ha creado en un componente hijo y ya está el array completo
-            bars = GetComponentsInChildren<IFillableBar>().ToList();
+            bars = GetComponentsInChildren<IFillableBar>(true).
+                Where(b => { var c = b as Component; return c != null && 
+                    c.transform.parent != null && 
+                    (c.transform.GetComponent<UIBar_Multiple>() != null || 
+                    c.transform.parent.GetComponentInParent<UIBar_Multiple>() == null); })
+                .ToList();
         perBarPercentage = 1f / bars.Count;
     }
 

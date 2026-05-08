@@ -57,9 +57,10 @@ public class UIBar : MonoBehaviour, IFillableBar
     public virtual void SetValueWithoutTransition(float value)
     {
         StopAllCoroutines();
-        BackgroundAmount = value;
-        filler.fillAmount = value;
-        OnValueUpdated?.Invoke(value);
+        float normalizedValue = value / MaxValue;
+        BackgroundAmount = normalizedValue;
+        filler.fillAmount = normalizedValue;
+        OnValueUpdated?.Invoke(normalizedValue);
     }
 
     IEnumerator UpdateBarCorroutine(float target)
