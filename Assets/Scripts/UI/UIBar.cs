@@ -7,9 +7,23 @@ public class UIBar : MonoBehaviour, IFillableBar
 {
     [SerializeField] protected Image filler;
     [SerializeField] protected float updateTime = 0.5f;
+    [SerializeField] private FillType fillType;
     protected Image bar;
     public float MaxValue { get; set; } = 1f;
     public event Action<float> OnValueUpdated;
+    private float FillAmount
+    {
+        get 
+        {
+            if (fillType == FillType.Fill) return filler.fillAmount;
+            else return filler.color.a;
+        }
+        set
+        {
+            if(fillType == FillType.Fill) filler.fillAmount = value;
+            else filler.color = new(filler.color.r, filler.color.g, filler.color.b, value);
+        }
+    }
 
     private void Awake()
     {
@@ -34,13 +48,19 @@ public class UIBar : MonoBehaviour, IFillableBar
 
     IEnumerator UpdateBarCorroutine(float target)
     {
-        float speed = (target - filler.fillAmount) / updateTime;
+        float speed = (target - FillAmount) / updateTime;
         bar.fillAmount = target;
-        while (filler.fillAmount < target)
+        while (FillAmount < target)
         {
-            filler.fillAmount = Mathf.MoveTowards(filler.fillAmount, target, speed * Time.deltaTime);
+            FillAmount = Mathf.MoveTowards(FillAmount, target, speed * Time.deltaTime);
             yield return null;
         }
-        filler.fillAmount = target;
+        FillAmount = target;
+    }
+
+    private enum FillType
+    {
+        Fill,
+        Alpha
     }
 }

@@ -1039,6 +1039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TurnPageEffect
   transitionTime: 0.8
   pagesTransform: []
+  turnPagesToBlock: []
 --- !u!1 &3334572425313809608
 GameObject:
   m_ObjectHideFlags: 0
@@ -3677,16 +3678,47 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7444666307086757219, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6925143108979369926, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5813663989997594984}
   m_SourcePrefab: {fileID: 100100000, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
 --- !u!224 &7340775260163415538 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8297118828396061764, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
   m_PrefabInstance: {fileID: 1655888331181177270}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8566384558364237424 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6925143108979369926, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+  m_PrefabInstance: {fileID: 1655888331181177270}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5813663989997594984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8566384558364237424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 252a8be48755e9b4fab6a8356b336cf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialBarFiller
+  fillType: 1
+  changeTime: 0.5
+  values:
+  - 0
+  - 0.25
+  - 0.5
+  - 0.75
+  - 1
+  fillTime: 3
+  cooldownOnFill: 1
 --- !u!1001 &1797082970633007850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5642,6 +5674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252a8be48755e9b4fab6a8356b336cf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialBarFiller
+  fillType: 0
   changeTime: 0.5
   values:
   - 0
@@ -5649,6 +5682,8 @@ MonoBehaviour:
   - 0.5
   - 0.75
   - 1
+  fillTime: 2
+  cooldownOnFill: 2
 --- !u!1001 &7031285480600298610
 PrefabInstance:
   m_ObjectHideFlags: 0

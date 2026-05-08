@@ -1,15 +1,13 @@
 using System;
-using TypTyp.Input;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameUIConfigurator : MonoBehaviour
 {
     private CanvasGroup canvasGroup;
     [Tooltip("Barras de progreso del ritual. La primera ha de ser la del cliente.")]
-    [SerializeField] private UIBar[] ritualBars; 
-    [Tooltip("Barras de man�. La primera ha de ser la del cliente.")]
-    [SerializeField] private UIInkBar[] manaBars;
+    [SerializeField] private UIBarGroup[] ritualBars; 
+    [Tooltip("Barras de tinta. La primera ha de ser la del cliente.")]
+    [SerializeField] private UIBarGroup[] manaBars;
     [Tooltip("Barras de corrupci�n. La primera ha de ser la del cliente.")]
     [SerializeField] private UIBar[] corruptionBars;
     [Tooltip("UI de efectos de estados de cada jugador.")]

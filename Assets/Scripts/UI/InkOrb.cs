@@ -10,7 +10,7 @@ public class InkOrb : MonoBehaviour, IFillableBar
     [SerializeField] private float updateTime = 0.5f;
     private EmissiveImageConfigurator emissionConfigurator;
     private float initHeight;
-    public InkOrb PrevOrb { get; set; }
+    public IFillableBar PrevOrb { get; set; }
     private float FillHeight {
         get { return filler.anchoredPosition.y; }
         set { SetHeight(filler, value); }
