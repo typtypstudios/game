@@ -22,7 +22,7 @@ public class CultBasedModel : MonoBehaviour
         Grimoire
     }
 
-    private void Awake()
+    private void Start()
     {
         LoadModels();
         initLayer = gameObject.layer;
