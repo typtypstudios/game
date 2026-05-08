@@ -9,31 +9,22 @@ public class EndMatchAnimationManager : MonoBehaviour
     [SerializeField] private float showResultsDelay = 2.0f;
     [SerializeField] private float transitionCanvasNewDist = 1.0f;
     private readonly List<GameObject> grimoires = new();
+    private float prevPlaneDistance;
 
     private void OnDestroy()
     {
-        CanvasTransitionManager.OnDissolved -= DisableGrimoires;
+        CanvasTransitionManager.OnDissolved -= OnDissolve;
     }
 
     public void HandleEndMatch(bool isUserWinner)
     {
         FindFirstObjectByType<CanvasTransitionManager>().FadeOut();
         Invoke(nameof(GoToResults), showResultsDelay);
-        ConfigureCam();
+        ConfigureCam(transitionCanvasNewDist);
         HandlePlayer(Player.User, isUserWinner, true);
         HandlePlayer(Player.Enemy, !isUserWinner, false);
+        CanvasTransitionManager.OnDissolved += OnDissolve;
     }
-
-    private void ConfigureCam()
-    {
-        Utils.FindChildrenWithTag(Camera.main.transform, "TransitionCanvas").
-            GetComponent<Canvas>().planeDistance = transitionCanvasNewDist;
-        Utils.FindChildrenWithTag(Camera.main.transform, "UICam").
-            GetComponent<Camera>().fieldOfView = Camera.main.fieldOfView;
-    }
-
-    private void GoToResults() =>
-       FindFirstObjectByType<NavigationController>().GoTo(Screens.Results, this.gameObject);
 
     private void HandlePlayer(Player player, bool isWinner, bool setAsFollowTarget)
     {
@@ -47,11 +38,15 @@ public class EndMatchAnimationManager : MonoBehaviour
     {
         GameObject cultistModel = GetGO(player, ModelType.Cultist);
         cultistModel.transform.SetParent(null);
-        if (!isWinner) cultistModel.GetComponentInChildren<Animator>().SetTrigger("Defeat");
-        if (setAsFollowTarget)
+        if (!isWinner) 
         {
-            FindFirstObjectByType<CinemachineCamera>().enabled = false;
-            Camera.main.transform.SetParent(Utils.FindChildrenWithTag(cultistModel.transform, "CultistHead"));
+            cultistModel.GetComponentInChildren<Animator>().SetTrigger("Defeat");
+            //De momento sólo hay animación de derrota. Cuando haya victoria el follow target también afectará
+            if (setAsFollowTarget)
+            {
+                FindFirstObjectByType<CinemachineCamera>().enabled = false;
+                Camera.main.transform.SetParent(Utils.FindChildrenWithTag(cultistModel.transform, "CultistHead"));
+            }
         }
     }
 
@@ -61,13 +56,6 @@ public class EndMatchAnimationManager : MonoBehaviour
         grimoires.Add(grimoireModel);
         grimoireModel.transform.SetParent(null);
         Utils.ChangeLayerToHierarchy(grimoireModel.transform, LayerMask.NameToLayer("UI"));
-        CanvasTransitionManager.OnDissolved += DisableGrimoires;
-    }
-
-    private void DisableGrimoires()
-    {
-        foreach(GameObject grimoire in grimoires) grimoire.SetActive(false);
-        CanvasTransitionManager.OnDissolved -= DisableGrimoires;
     }
 
     private void HandleCastingCard(Player player)
@@ -79,6 +67,26 @@ public class EndMatchAnimationManager : MonoBehaviour
         canvas.SetParent(null);
         canvas.SetPositionAndRotation(pos, rot);
         card.FadeOut();
+    }
+
+    private void ConfigureCam(float planeDistance)
+    {
+        Canvas c = Utils.FindChildrenWithTag(Camera.main.transform, "TransitionCanvas").
+            GetComponent<Canvas>();
+        prevPlaneDistance = c.planeDistance;
+        c.planeDistance = planeDistance;
+        Utils.FindChildrenWithTag(Camera.main.transform, "UICam").
+            GetComponent<Camera>().fieldOfView = Camera.main.fieldOfView;
+    }
+
+    private void GoToResults() =>
+       FindFirstObjectByType<NavigationController>().GoTo(Screens.Results, this.gameObject);
+
+    private void OnDissolve()
+    {
+        foreach (GameObject grimoire in grimoires) grimoire.SetActive(false);
+        ConfigureCam(prevPlaneDistance);
+        CanvasTransitionManager.OnDissolved -= OnDissolve;
     }
 
     private GameObject GetGO(Player player, ModelType type)

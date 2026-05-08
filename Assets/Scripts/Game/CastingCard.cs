@@ -56,6 +56,7 @@ public class CastingCard : NetworkBehaviour
 
     private void OnDestroy()
     {
+        if (!cardUIManager) return;
         foreach (var card in cardUIManager.GetComponentsInChildren<CardUI>())
         {
             card.OnIdxChanged -= OnCardUpdated;
