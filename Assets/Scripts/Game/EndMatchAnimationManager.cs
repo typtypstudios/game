@@ -3,6 +3,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using System.Collections.Generic;
 
+//Este script entero es un crimen de guerra. Pido perdón.
 public class EndMatchAnimationManager : MonoBehaviour
 {
     [SerializeField] private float showResultsDelay = 2.0f;
@@ -38,6 +39,7 @@ public class EndMatchAnimationManager : MonoBehaviour
     {
         HandleCultistModel(player, isWinner, setAsFollowTarget);
         HandleGrimoireModel(player);
+        HandleCastingCard(player);
         Destroy(player.gameObject);
     }
 
@@ -66,6 +68,17 @@ public class EndMatchAnimationManager : MonoBehaviour
     {
         foreach(GameObject grimoire in grimoires) grimoire.SetActive(false);
         CanvasTransitionManager.OnDissolved -= DisableGrimoires;
+    }
+
+    private void HandleCastingCard(Player player)
+    {
+        CastingCard card = player.GetComponentInChildren<CastingCard>();
+        if (!card) return;
+        Transform canvas = card.GetComponentInParent<Canvas>().transform;
+        canvas.GetPositionAndRotation(out Vector3 pos, out Quaternion rot);
+        canvas.SetParent(null);
+        canvas.SetPositionAndRotation(pos, rot);
+        card.FadeOut();
     }
 
     private GameObject GetGO(Player player, ModelType type)

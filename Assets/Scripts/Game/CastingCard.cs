@@ -158,4 +158,9 @@ public class CastingCard : NetworkBehaviour
             ShowCard(completedQueue.Dequeue());
         }
     }
+
+    public void FadeOut()
+    {
+        dissolveEffect.SetDissolve(1, true, disappearTime);
+    }
 }
