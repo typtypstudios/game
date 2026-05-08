@@ -334,25 +334,9 @@ public class MatchManager : NetworkBehaviour
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
         endGameCanvas.ShowEndMatch(isWinner, reason);
-        SpawnLocalPlayerCopy(Player.User, isWinner, true);
-        SpawnLocalPlayerCopy(Player.Enemy, !isWinner, false);
+        if (TryGetComponent(out EndMatchAnimationManager e)) e.HandleEndMatch(isWinner);
         // Handshake de finalización
         NotifyEndHandledServerRpc();
-    }
-
-    private void SpawnLocalPlayerCopy(Player player, bool isWinner, bool setAsFollowTarget)
-    {
-        GameObject cultistModel = Utils.FindChildrenWithTag(player.transform, "CultistModel").gameObject;
-        GameObject copy = Instantiate(cultistModel, cultistModel.transform.position, cultistModel.transform.rotation);
-        if (copy.TryGetComponent(out CultBasedModel cbm)) Destroy(cbm);
-        Animator originalAnimator = cultistModel.GetComponent<Animator>();
-        Animator copyAnimator = copy.GetComponent<Animator>();
-        AnimatorStateInfo stateInfo = originalAnimator.GetCurrentAnimatorStateInfo(0);
-        copyAnimator.Play(stateInfo.fullPathHash, 0, stateInfo.normalizedTime);
-        if(!isWinner) copyAnimator.SetTrigger("Defeat");
-        if(setAsFollowTarget)
-            FindFirstObjectByType<CinemachineCamera>().Follow = copy.transform;
-        player.gameObject.SetActive(false);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
