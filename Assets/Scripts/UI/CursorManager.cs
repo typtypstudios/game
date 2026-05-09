@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [NoAutoCreate]
@@ -21,25 +22,36 @@ public class CursorManager : Singleton<CursorManager>
         if (hoverImage.transform.parent != defaultImage.transform)
             hoverImage.transform.SetParent(defaultImage.transform);
         cursorRT = defaultImage.GetComponent<RectTransform>();
-        cam = Camera.main;
-    }
+        AssignCamera();
 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
     private void Start()
     {
         MatchManager.OnCountdownStarted += HideCursor;
         MatchManager.OnMatchEnded += ShowCursor;
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        AssignCamera();
+    }
+
     private void OnDestroy()
     {
         MatchManager.OnCountdownStarted -= HideCursor;
         MatchManager.OnMatchEnded -= ShowCursor;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         ShowCursor();
     }
-
+    private void AssignCamera()
+    {
+        cam = Camera.main;
+    }
     private void Update()
     {
-        if (!cursorCanvas.enabled) return;
+        if (!cursorCanvas.enabled || cam == null)
+            return;
         cursorRT.position = Mouse.current.position.ReadValue();
         //Objetos 3D:
         if(Physics.Raycast(cam.ScreenPointToRay(cursorRT.position), out RaycastHit hit))
