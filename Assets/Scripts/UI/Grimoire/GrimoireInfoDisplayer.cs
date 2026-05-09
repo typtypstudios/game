@@ -30,4 +30,10 @@ public class GrimoireInfoDisplayer : InfoDisplayer
         highlightedDisplayer = this;
         Highlight(true);
     }
+
+    public override void Highlight(bool highlight)
+    {
+        base.Highlight(highlight);
+        writableButton.CompletelyBlock(highlight);
+    }
 }

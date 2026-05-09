@@ -21,7 +21,7 @@ public class InfoDisplayer : MonoBehaviour
 
     private Image image;
     private bool highlighted = false;
-    private WritableButton writableButton;
+    protected WritableButton writableButton;
     private Color originalNameColor = Color.white;
     public ADefinition Definition { get; private set; }
 
