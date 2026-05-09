@@ -19,6 +19,8 @@ namespace TypTyp.TextSystem
         int currentIndex = 0;
         int[] indexer;
 
+        public int Count => phrases != null ? phrases.Length : 0;
+
         void Awake()
         {
             LoadSource();
@@ -74,7 +76,13 @@ namespace TypTyp.TextSystem
             else return default;
         }
 
-        public string GetText(int index) => default;
+        public string GetText(int index)
+        {
+            if (phrases == null || phrases.Length == 0 || index < 0)
+                return string.Empty;
+
+            return phrases[index % phrases.Length];
+        }
 
         public void SetRandom(System.Random random)
         {

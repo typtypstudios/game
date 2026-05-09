@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
-using TypTyp.TextSystem;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,27 +17,32 @@ public class StatusEffectController : MonoBehaviour
     public List<StatusEffect> Effects => activeEffects;
 
     Player player;
-    NetworkTextProvider textProvider;
     List<StatusEffect> toRemove;
     private System.Random random;
-    
-    public void Awake()
+
+    void Awake()
     {
         player = GetComponent<Player>();
-        textProvider = GetComponent<NetworkTextProvider>();
-        textProvider.OnLineRequested += OnRitualLineRequested;
         activeEffects = new();
         toRemove = new();
     }
 
-    private void OnDestroy() => textProvider.OnLineRequested -= OnRitualLineRequested;
+    void Start()
+    {
+        player.RitualManager.OnLineCompleted += OnRitualLineCompleted;
+    }
+
+    void OnDestroy()
+    {
+        player.RitualManager.OnLineCompleted -= OnRitualLineCompleted;
+    }
 
     void Update()
     {
         HandleEffectExpiration(EffectDurationType.Time);
     }
 
-    void OnRitualLineRequested()
+    void OnRitualLineCompleted(int completedLines)
     {
         HandleEffectExpiration(EffectDurationType.Lines);
     }
@@ -71,7 +74,7 @@ public class StatusEffectController : MonoBehaviour
         }
 
         // Addition and activation
-        if (effectDef.DurationType != EffectDurationType.Immediate && 
+        if (effectDef.DurationType != EffectDurationType.Immediate &&
             effectDef.DurationType != EffectDurationType.Permanent)
             activeEffects.Add(statusEffect);
         statusEffect.Activate(new EffectContext(player, random));

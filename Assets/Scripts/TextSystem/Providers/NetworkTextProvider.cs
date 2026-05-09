@@ -19,6 +19,7 @@ namespace TypTyp.TextSystem
         private ITextPipeline textPipeline;
         public event Action OnLineRequested;
         public event Action OnNextText;
+        public int Count => phrases.Count;
 
         public override void OnNetworkSpawn()
         {
@@ -80,7 +81,13 @@ namespace TypTyp.TextSystem
             return Texts[0].text;
         }
 
-        public string GetText(int index) => default;
+        public string GetText(int index)
+        {
+            if (index < 0 || index >= phrases.Count)
+                return string.Empty;
+
+            return phrases[index];
+        }
 
         public void SetRandom(System.Random random)
         {
@@ -111,7 +118,7 @@ namespace TypTyp.TextSystem
                 if (Texts[i].text.Equals(string.Empty))
                 {
                     Texts[i].text = text;
-                    if (i == 0) ritualManager.OriginalText = text;
+                    if (i == 0) ritualManager.SetText(text);
                     break;
                 }
             }

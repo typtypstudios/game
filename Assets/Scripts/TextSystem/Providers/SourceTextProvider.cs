@@ -2,19 +2,35 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Serialization;
 
 namespace TypTyp.TextSystem
 {
     public class SourceTextProvider : MonoBehaviour, ITextProvider
     {
-        [SerializeField] TextAsset TextSource;
+        [SerializeField, FormerlySerializedAs("TextSource")] TextAsset textSource;
 
-        private List<string> phrases;
+        private List<string> phrases = new();
         private System.Random random;
+        private int currentIndex;
 
-        public string GetNextText() => default;
+        public int Count => phrases.Count;
 
-        public string GetText(int index) => default;
+        public string GetNextText()
+        {
+            if (phrases.Count == 0) return string.Empty;
+            string text = GetText(currentIndex);
+            currentIndex++;
+            return text;
+        }
+
+        public string GetText(int index)
+        {
+            if (index < 0 || index >= phrases.Count)
+                return string.Empty;
+
+            return phrases[index];
+        }
 
         public void SetRandom(System.Random random)
         {
@@ -22,18 +38,23 @@ namespace TypTyp.TextSystem
             if (phrases != null && phrases.Count > 0)
             {
                 RandomizePhrases(this.random);
+                currentIndex = 0;
             }
         }
 
         void Awake()
         {
-            LoadSource(TextSource);
+            LoadSource(textSource);
         }
 
         private void LoadSource(TextAsset textSource)
         {
             phrases = textSource != null
-                ? textSource.text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList()
+                ? textSource.text
+                    .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(phrase => phrase.Trim())
+                    .Where(phrase => !string.IsNullOrWhiteSpace(phrase))
+                    .ToList()
                 : new();
 
             if (phrases.Count <= 0)
