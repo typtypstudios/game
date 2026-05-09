@@ -140,6 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 71783166255295927}
   - component: {fileID: 1629906521899659217}
+  - component: {fileID: 3490361628028329494}
   m_Layer: 0
   m_Name: ColdHat
   m_TagString: Untagged
@@ -223,6 +224,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -4.3518715, y: 0.56499755, z: 0.04216242}
     m_Extent: {x: 1.5467157, y: 1.402005, z: 1.8885782}
   m_DirtyAABB: 0
+--- !u!114 &3490361628028329494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625033738528367832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &945212452813903179
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 992863898621374841}
   - component: {fileID: 874094998870591903}
+  - component: {fileID: 8642293128666269318}
   m_Layer: 0
   m_Name: ColdBufandaB
   m_TagString: Untagged
@@ -316,6 +330,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -2.6860354, y: 0.7383538, z: 0.064006925}
     m_Extent: {x: 0.6329458, y: 1.3899817, z: 1.5724546}
   m_DirtyAABB: 0
+--- !u!114 &8642293128666269318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945212452813903179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &1049396680913675160
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,6 +649,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3405149114297652251}
   - component: {fileID: 5376561143517841720}
+  - component: {fileID: 1523206780933207994}
   m_Layer: 0
   m_Name: ColdBufandaC
   m_TagString: Untagged
@@ -706,6 +733,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -3.0246654, y: 0.98164815, z: 0.111905575}
     m_Extent: {x: 0.59087443, y: 1.1035693, z: 1.3357745}
   m_DirtyAABB: 0
+--- !u!114 &1523206780933207994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064574232306144788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &2356519355972321383
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,6 +787,7 @@ GameObject:
   m_Component:
   - component: {fileID: 874772249368140012}
   - component: {fileID: 8898950052058660333}
+  - component: {fileID: 3722170689402501505}
   m_Layer: 0
   m_Name: ColdBufandaD
   m_TagString: Untagged
@@ -831,6 +871,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -3.1093078, y: 0.743729, z: 0.050661564}
     m_Extent: {x: 1.023179, y: 1.2494919, z: 1.2892872}
   m_DirtyAABB: 0
+--- !u!114 &3722170689402501505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2515123540396459740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &2701858188683522262
 GameObject:
   m_ObjectHideFlags: 0
@@ -1769,6 +1821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3673133028357568434}
   - component: {fileID: 7180853770364949432}
+  - component: {fileID: 1830938593332304483}
   m_Layer: 0
   m_Name: ColdBufandaA
   m_TagString: Untagged
@@ -1854,6 +1907,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -3.4965098, y: 1.0590248, z: 0.035827875}
     m_Extent: {x: 3.6076448, y: 1.7824421, z: 2.03738}
   m_DirtyAABB: 0
+--- !u!114 &1830938593332304483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7051349278151311729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &7204706137685089523
 GameObject:
   m_ObjectHideFlags: 0
@@ -1896,6 +1961,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5825698849170021875}
   - component: {fileID: 2404212079230744799}
+  - component: {fileID: 7943656383523480510}
   m_Layer: 0
   m_Name: ColdGlasses
   m_TagString: Untagged
@@ -1979,6 +2045,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -4.202322, y: 0.66645783, z: 0.052518487}
     m_Extent: {x: 0.56695735, y: 1.4675972, z: 1.3526613}
   m_DirtyAABB: 0
+--- !u!114 &7943656383523480510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7467715025479055915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &7524924661137664738
 GameObject:
   m_ObjectHideFlags: 0

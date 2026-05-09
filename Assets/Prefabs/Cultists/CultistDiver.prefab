@@ -616,6 +616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8499209773505582688}
   - component: {fileID: 6681855350989968153}
+  - component: {fileID: 2590657061255560857}
   m_Layer: 0
   m_Name: BuzoCasco
   m_TagString: Untagged
@@ -699,6 +700,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -2.8281412, y: 0.4347793, z: -0.000052928925}
     m_Extent: {x: 3.2206278, y: 1.948049, z: 2.2737067}
   m_DirtyAABB: 0
+--- !u!114 &2590657061255560857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295951316604544754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &3391806069843048102
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,6 +1711,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6904222686561467351}
   - component: {fileID: 8425611737462662877}
+  - component: {fileID: 3198366940485882172}
   m_Layer: 0
   m_Name: Cigarro
   m_TagString: Untagged
@@ -1781,6 +1795,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -3.5329542, y: 2.2145925, z: 1.5024095}
     m_Extent: {x: 0.18604708, y: 0.36680627, z: 0.46362388}
   m_DirtyAABB: 0
+--- !u!114 &3198366940485882172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7629933591816423444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &7777238232429242057
 GameObject:
   m_ObjectHideFlags: 0
@@ -2181,6 +2207,7 @@ GameObject:
   - component: {fileID: 6553942337305553717}
   - component: {fileID: 5026905653135142458}
   - component: {fileID: 3906831829560453929}
+  - component: {fileID: 7708219655802154420}
   m_Layer: 0
   m_Name: light
   m_TagString: Untagged
@@ -2283,6 +2310,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.00021362324, y: 0.000015258788, z: -0.00030517607}
+--- !u!114 &7708219655802154420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9007466891429562822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &9028664902429799005
 GameObject:
   m_ObjectHideFlags: 0
