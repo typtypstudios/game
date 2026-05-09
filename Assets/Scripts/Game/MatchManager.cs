@@ -44,6 +44,7 @@ public class MatchManager : NetworkBehaviour
 
     private double matchStartTime;
     private MatchState matchState;
+    private int matchSeed;
 
     // Eventos
     public static event Action OnMatchStarted;
@@ -137,11 +138,18 @@ public class MatchManager : NetworkBehaviour
     private void SetupPlayers()
     {
         playersById.Clear();
+        matchSeed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
         Player[] players = FindObjectsByType<Player>(FindObjectsSortMode.None);
 
         for (int i = 0; i < players.Length; i++)
         {
             playersById.Add(i, players[i]);
+            // players[i].ConfigureRandomContext(matchSeed);
+            players[i].ConfigureRandomContextRpc(matchSeed);
+        }
+
+        for (int i = 0; i < players.Length; i++)
+        {
             players[i].ConfigureServerPlayer(playersData[players[i].OwnerClientId]);
             players[i].ConfigurePlayerRpc(i, playersData[players[i].OwnerClientId]);
         }
@@ -334,8 +342,19 @@ public class MatchManager : NetworkBehaviour
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
         endGameCanvas.ShowEndMatch(isWinner, reason);
         if (TryGetComponent(out EndMatchAnimationManager e)) e.HandleEndMatch(isWinner);
+        //SpawnLocalPlayerCopy(Player.User);
+        //SpawnLocalPlayerCopy(Player.Enemy);
         // Handshake de finalización
         NotifyEndHandledServerRpc();
+    }
+
+    private void SpawnLocalPlayerCopy(Player player)
+    {
+        GameObject copy = Instantiate(player.gameObject,
+            player.transform.position,
+            player.transform.rotation);
+        Destroy(copy.GetComponent<NetworkObject>());
+        player.gameObject.SetActive(false);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -500,4 +519,5 @@ public class MatchManager : NetworkBehaviour
 
         base.OnDestroy();
     }
+
 }

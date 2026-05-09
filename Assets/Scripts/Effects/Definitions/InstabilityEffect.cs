@@ -6,14 +6,16 @@ public class InstabilityEffect : StatusEffectDefinition
 {
     [Range(0, 100)][SerializeField] float corruptionPerBar; //Porcentaje
 
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
+        Player target = context.Target;
         if (!target.IsServer) return;
         target.SpellCaster.OnSpellCasted += ManageCastedSpell;
     }
 
-    public override void OnDeactivate(Player target) 
+    public override void OnDeactivate(EffectContext context) 
     {
+        Player target = context.Target;
         if (!target.IsServer) return;
         target.SpellCaster.OnSpellCasted -= ManageCastedSpell;
     }
@@ -30,3 +32,4 @@ public class InstabilityEffect : StatusEffectDefinition
         player.CorruptionManager.AddCorruption(damage);
     }
 }
+

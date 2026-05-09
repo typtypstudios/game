@@ -3,14 +3,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MistakeHarvestEffect", menuName = "TypTyp/Effects/MistakeHarvestEffect")]
 public class MistakeHarvestEffect : StatusEffectDefinition
 {
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
+        Player target = context.Target;
         if (!target.IsServer) return;
         target.CorruptionManager.OnMistake += ProcessMistake;
     }
 
-    public override void OnDeactivate(Player target)
+    public override void OnDeactivate(EffectContext context)
     {
+        Player target = context.Target;
         if (!target.IsServer) return;
         target.CorruptionManager.OnMistake -= ProcessMistake;
     }

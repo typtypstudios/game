@@ -23,8 +23,9 @@ public class TextFontEffect : StatusEffectDefinition
         activeFonts.Clear();
     }
 
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
+        Player target = context.Target;
         foreach(var t in target.GetComponentsInChildren<TMP_Text>(true))
         {
             SafelyChangeFont(t, font);
@@ -37,8 +38,9 @@ public class TextFontEffect : StatusEffectDefinition
         activeFonts[target.tag].Add(font);
     }
 
-    public override void OnDeactivate(Player target)
+    public override void OnDeactivate(EffectContext context)
     {
+        Player target = context.Target;
         activeFonts[target.tag].Remove(font);
         foreach (var t in target.GetComponentsInChildren<TMP_Text>(true))
         {
@@ -59,3 +61,4 @@ public class TextFontEffect : StatusEffectDefinition
         return "";
     }
 }
+

@@ -1,10 +1,11 @@
 using TypTyp.TextSystem;
 using UnityEngine;
+using System.Text;
 
 namespace TypTyp.TextSystem
 {
     public abstract class ScriptableTextProcessor : ScriptableObject, ITextProcessor
     {
-        public abstract string ProcessText(string text);
+        public abstract void ProcessText(StringBuilder builder, TextProcessContext context);
     }
 }

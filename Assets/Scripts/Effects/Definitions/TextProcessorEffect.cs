@@ -6,8 +6,9 @@ public class TextProcessorEffect : StatusEffectDefinition
 {
     [SerializeField] ScriptableTextProcessor processor;
 
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
+        Player target = context.Target;
         // if (!target.IsServer) return;
         if (target.TryGetComponent<ITextPipeline>(out var pipeline))
         {
@@ -15,8 +16,9 @@ public class TextProcessorEffect : StatusEffectDefinition
         }
     }
 
-    public override void OnDeactivate(Player target)
+    public override void OnDeactivate(EffectContext context)
     {
+        Player target = context.Target;
         // if (!target.IsServer) return;
         if (target.TryGetComponent<ITextPipeline>(out var pipeline))
         {

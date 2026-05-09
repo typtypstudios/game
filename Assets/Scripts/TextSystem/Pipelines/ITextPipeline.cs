@@ -1,10 +1,11 @@
 using System;
-using System.Collections.Generic;
 
 namespace TypTyp.TextSystem
 {
-    public interface ITextPipeline : ITextProcessor
+    public interface ITextPipeline
     {
+        public string ProcessText(string text);
+        public void SetContext(TextProcessContext context);
         public void AddProcessor(ITextProcessor processor);
         public void RemoveProcessor(ITextProcessor processor);
 

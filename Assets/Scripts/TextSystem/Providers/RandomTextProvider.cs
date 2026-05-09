@@ -9,16 +9,17 @@ namespace TypTyp.TextSystem
     public class RandomTextProvider : MonoBehaviour, ITextProvider
     {
         [SerializeField] TextAsset textSource;
-        [SerializeField] int seed;
         [SerializeField] GenerationMode generationMode = GenerationMode.Cycle;
         [SerializeField, Min(1)] int repetitionsPerCycle = 1;
 
         [SerializeField]string[] phrases;
-        System.Random random;
+        private System.Random random;
 
         //Just for cycle mode
         int currentIndex = 0;
         int[] indexer;
+
+        public int Count => phrases != null ? phrases.Length : 0;
 
         void Awake()
         {
@@ -40,17 +41,24 @@ namespace TypTyp.TextSystem
                 return;
             }
 
-            random = new System.Random(seed);
-
             if(generationMode == GenerationMode.Cycle)
             {
                 indexer = RangeProvider.FillRepeatedRange(0, phrases.Length - 1, repetitionsPerCycle);
-                indexer.Shuffle(random);
+                if (random != null)
+                {
+                    indexer.Shuffle(random);
+                }
             }
         }
 
         public string GetNextText()
         {
+            if (random == null && generationMode != GenerationMode.None)
+            {
+                Debug.LogError("RandomTextProvider random not configured. Call SetRandom before requesting text.");
+                return default;
+            }
+
             if(generationMode == GenerationMode.Cycle)
             {
                 if (currentIndex >= indexer.Length)
@@ -66,6 +74,24 @@ namespace TypTyp.TextSystem
                 return phrases[random.Next(phrases.Length)];
             }
             else return default;
+        }
+
+        public string GetText(int index)
+        {
+            if (phrases == null || phrases.Length == 0 || index < 0)
+                return string.Empty;
+
+            return phrases[index % phrases.Length];
+        }
+
+        public void SetRandom(System.Random random)
+        {
+            this.random = random ?? throw new ArgumentNullException(nameof(random));
+            if (generationMode == GenerationMode.Cycle && indexer != null && indexer.Length > 0)
+            {
+                indexer.Shuffle(this.random);
+                currentIndex = 0;
+            }
         }
     }
 }

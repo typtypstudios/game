@@ -11,8 +11,9 @@ public class PlayerInputEffect : StatusEffectDefinition
         return "";
     }
 
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
+        Player target = context.Target;
         if(target.TryGetComponent<PlayerInputManager>(out var inputManager))
         {
             switch (DurationType)
@@ -29,8 +30,9 @@ public class PlayerInputEffect : StatusEffectDefinition
         }        
     }
 
-    public override void OnDeactivate(Player target)
+    public override void OnDeactivate(EffectContext context)
     {
+        Player target = context.Target;
         if (target.TryGetComponent<PlayerInputManager>(out var inputManager))
         {
             switch (DurationType)
@@ -46,3 +48,4 @@ public class PlayerInputEffect : StatusEffectDefinition
         }
     }
 }
+

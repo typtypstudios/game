@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace TypTyp.TextSystem
@@ -8,18 +9,30 @@ namespace TypTyp.TextSystem
     public class ScriptableTextPipeline : ScriptableObject, ITextPipeline
     {
         [SerializeField] List<ScriptableTextProcessor> processors;
+        private TextProcessContext context;
 
         public event Action<ITextProcessor> ProcessorAdded;
         public event Action<ITextProcessor> ProcessorRemoved;
 
         public string ProcessText(string text)
         {
-            string processedText = text;
+            if (context.Random == null)
+            {
+                Debug.LogError("ScriptableTextPipeline context random not configured. Call SetContext before ProcessText.");
+                return text;
+            }
+
+            StringBuilder builder = new(text);
             foreach (var processor in processors)
             {
-                processedText = processor.ProcessText(processedText);
+                processor.ProcessText(builder, context);
             }
-            return processedText;
+            return builder.ToString();
+        }
+
+        public void SetContext(TextProcessContext context)
+        {
+            this.context = context;
         }
 
         public void AddProcessor(ITextProcessor processor)

@@ -5,15 +5,17 @@ public class TemporalManaCostModifier : StatusEffectDefinition
 {
     [field: SerializeField] public int CostModifier { get; private set; } = 1;
 
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
+        Player target = context.Target;
         // if (!target.IsServer) return;
 
         target.ManaManager.AddCostModifier(CostModifier);
     }
 
-    public override void OnDeactivate(Player target)
+    public override void OnDeactivate(EffectContext context)
     {
+        Player target = context.Target;
         // if (!target.IsServer) return;
 
         target.ManaManager.AddCostModifier(-CostModifier);

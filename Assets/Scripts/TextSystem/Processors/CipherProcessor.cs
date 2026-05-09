@@ -1,5 +1,6 @@
 using System.Text;
 using UnityEngine;
+using System;
 
 namespace TypTyp.TextSystem
 {
@@ -9,21 +10,25 @@ namespace TypTyp.TextSystem
         [Range(0, 1)][SerializeField] private float replaceProb = 0.25f;
         [SerializeField] private string specialChars;
 
-        public override string ProcessText(string input)
+        public override void ProcessText(StringBuilder builder, TextProcessContext context)
         {
-            StringBuilder sb = new();
-            foreach(char c in input)
+            if (string.IsNullOrEmpty(specialChars))
+                return;
+
+            System.Random rng = context.Random;
+            if (rng == null)
+                return;
+
+            for (int i = 0; i < builder.Length; i++)
             {
-                if (Random.Range(0f, 1f) < replaceProb) sb.Append(GetSpecialChar());
-                else sb.Append(c);
+                if (rng.NextDouble() < replaceProb)
+                    builder[i] = GetSpecialChar(rng);
             }
-            return sb.ToString();
         }
 
-        private char GetSpecialChar()
+        private char GetSpecialChar(System.Random rng)
         {
-            int numChars = specialChars.Length;
-            int idx = Random.Range(0, numChars);
+            int idx = rng.Next(0, specialChars.Length);
             return specialChars[idx];
         }
     }

@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
-using TypTyp.TextSystem;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,32 +17,44 @@ public class StatusEffectController : MonoBehaviour
     public List<StatusEffect> Effects => activeEffects;
 
     Player player;
-    NetworkTextProvider textProvider;
     List<StatusEffect> toRemove;
-    
-    public void Awake()
+    private System.Random random;
+
+    void Awake()
     {
         player = GetComponent<Player>();
-        textProvider = GetComponent<NetworkTextProvider>();
-        textProvider.OnLineRequested += OnRitualLineRequested;
         activeEffects = new();
         toRemove = new();
     }
 
-    private void OnDestroy() => textProvider.OnLineRequested -= OnRitualLineRequested;
+    void Start()
+    {
+        player.RitualManager.OnLineCompleted += OnRitualLineCompleted;
+    }
+
+    void OnDestroy()
+    {
+        player.RitualManager.OnLineCompleted -= OnRitualLineCompleted;
+    }
 
     void Update()
     {
         HandleEffectExpiration(EffectDurationType.Time);
     }
 
-    void OnRitualLineRequested()
+    void OnRitualLineCompleted(int completedLines)
     {
         HandleEffectExpiration(EffectDurationType.Lines);
     }
 
     public void AddEffect(StatusEffectDefinition effectDef)
     {
+        if (random == null)
+        {
+            Debug.LogError("StatusEffectController random not configured. Call SetRandom before AddEffect.");
+            return;
+        }
+
         var statusEffect = CreateStatusEffect(effectDef);
 
         // Refresh
@@ -64,10 +74,10 @@ public class StatusEffectController : MonoBehaviour
         }
 
         // Addition and activation
-        if (effectDef.DurationType != EffectDurationType.Immediate && 
+        if (effectDef.DurationType != EffectDurationType.Immediate &&
             effectDef.DurationType != EffectDurationType.Permanent)
             activeEffects.Add(statusEffect);
-        statusEffect.Activate();
+        statusEffect.Activate(new EffectContext(player, random));
         OnEffectApplied?.Invoke(statusEffect);
     }
 
@@ -79,9 +89,20 @@ public class StatusEffectController : MonoBehaviour
 
     public void RemoveEffect(StatusEffect effect)
     {
-        effect.Deactivate();
+        if (random == null)
+        {
+            Debug.LogError("StatusEffectController random not configured. Call SetRandom before RemoveEffect.");
+            return;
+        }
+
+        effect.Deactivate(new EffectContext(player, random));
         activeEffects.Remove(effect);
         OnEffectRemoved?.Invoke(effect);
+    }
+
+    public void SetRandom(System.Random random)
+    {
+        this.random = random ?? throw new System.ArgumentNullException(nameof(random));
     }
 
     // Assume that refreshable effects are only those not immediate and added to the active effects list

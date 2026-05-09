@@ -14,7 +14,7 @@ public class StatusEffect : IEquatable<StatusEffect>
         Target = target;
     }
 
-    public void Activate()
+    public void Activate(EffectContext context)
     {
         if (Target == null)
         {
@@ -22,13 +22,13 @@ public class StatusEffect : IEquatable<StatusEffect>
             return;
         }
         RemainingDuration = Definition.DurationValue;
-        Definition.OnActivate(Target);
+        Definition.OnActivate(context);
     }
 
-    public void Deactivate()
+    public void Deactivate(EffectContext context)
     {
         RemainingDuration = 0;
-        Definition.OnDeactivate(Target);
+        Definition.OnDeactivate(context);
     }
 
     public bool Equals(StatusEffect other)

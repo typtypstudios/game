@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
+using System.Text;
 
 namespace TypTyp.TextSystem
 {
     public interface ITextProcessor
     {
-        public string ProcessText(string text);
+        public void ProcessText(StringBuilder builder, TextProcessContext context);
     }
 }

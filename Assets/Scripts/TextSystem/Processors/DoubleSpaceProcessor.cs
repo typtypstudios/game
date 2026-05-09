@@ -9,19 +9,29 @@ namespace TypTyp.TextSystem
         [SerializeField] int minSpacesAdded = 0;
         [SerializeField] int maxSpacesAdded = 2;
 
-        public override string ProcessText(string input)
+        public override void ProcessText(StringBuilder builder, TextProcessContext context)
         {
-            StringBuilder output = new();
-            foreach(var c in input)
+            if (builder.Length == 0)
+                return;
+
+            System.Random rng = context.Random;
+            if (rng == null)
+                return;
+
+            StringBuilder output = new(builder.Length);
+            for (int i = 0; i < builder.Length; i++)
             {
+                char c = builder[i];
                 if (c == ' ')
                 {
-                    int spacesAdded = Random.Range(minSpacesAdded, maxSpacesAdded + 1) + 1; //El original se respeta con el +1
+                    int spacesAdded = rng.Next(minSpacesAdded, maxSpacesAdded + 1) + 1; //El original se respeta con el +1
                     output.Append(' ', spacesAdded);
                 }
                 else output.Append(c);
             }
-            return output.ToString();
+
+            builder.Clear();
+            builder.Append(output);
         }
     }
 }

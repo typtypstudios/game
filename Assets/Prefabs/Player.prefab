@@ -580,14 +580,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1527992307803624597}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da87269a5c6b9b04b9fb90f43bb0c6be, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a625ec136cb77044b9ec4b03a64b229, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NetworkTextProvider
+  m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.SourceTextProvider
   ShowTopMostFoldoutHeaderGroup: 1
-  <Texts>k__BackingField:
-  - {fileID: 6446494482979382859}
-  - {fileID: 6630704629930138631}
-  - {fileID: 539573767581524674}
   textSource: {fileID: 4900000, guid: c9d5b28d49bba6a4eb30d37f0124b5eb, type: 3}
 --- !u!114 &8066366628784344674
 MonoBehaviour:
@@ -2470,12 +2466,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3722723451963864444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b00516c454db58459d4e1f94205131a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a5d2443367643a4aa20e1be101df0d8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RitualTextAnimator
+  m_EditorClassIdentifier: Assembly-CSharp::RitualPresenter
+  ritualManager: {fileID: 2871317661360311635}
+  texts:
+  - {fileID: 6446494482979382859}
+  - {fileID: 6630704629930138631}
+  - {fileID: 539573767581524674}
   transitionTime: 0.2
   appearTime: 1
-  provider: {fileID: 573460399314959333}
   textsLayoutGroup: {fileID: 6531589668252879024}
 --- !u!1 &4208740102075316087
 GameObject:

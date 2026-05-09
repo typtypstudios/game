@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using TypTyp.TextSystem;
 using UnityEngine;
 
@@ -47,9 +46,8 @@ public class CardUIManager : MonoBehaviour
     void OnEnable()
     {
         deckController.OnCardDrawnEvent += HandleCardDrawn;
-        deckController.OnCardPlayedEvent += HandleCardPlayed;
+        deckController.OnCardRemovedEvent += HandleCardRemoved;
         deckController.OnDiscountApplied += HandleDiscount;
-        deckController.OnShuffledEvent += HandleHandShuffled;
 
         manaManager.OnCostModifierChangedEvent += ManaCostModifierChanged;
         PlayerInputEffect.OnSealedChanged += HandleSeal;
@@ -61,9 +59,8 @@ public class CardUIManager : MonoBehaviour
     void OnDisable()
     {
         deckController.OnCardDrawnEvent -= HandleCardDrawn;
-        deckController.OnCardPlayedEvent -= HandleCardPlayed;
+        deckController.OnCardRemovedEvent -= HandleCardRemoved;
         deckController.OnDiscountApplied -= HandleDiscount;
-        deckController.OnShuffledEvent -= HandleHandShuffled;
 
         manaManager.OnCostModifierChangedEvent -= ManaCostModifierChanged;
         PlayerInputEffect.OnSealedChanged -= HandleSeal;
@@ -110,21 +107,6 @@ public class CardUIManager : MonoBehaviour
         cardUIById[cardId] = slot;
     }
 
-    void HandleCardPlayed(CardEventArgs args)
-    {
-        var cardId = args.CardId;
-        if (!cardUIById.TryGetValue(cardId, out var ui))
-        {
-            Debug.LogWarning($"No CardUI found for cardId {cardId}", this);
-            return;
-        }
-
-        cardUIById.Remove(cardId);
-
-        ui.Clear(); // método que debes añadir a CardUI
-        emptySlots.Enqueue(ui);
-    }
-
     void HandleCardWritten(CardUI cardUI)
     {
         int id = CardRegister.Instance.GetId(cardUI.CardDefinition);
@@ -155,17 +137,15 @@ public class CardUIManager : MonoBehaviour
         }
     }
 
-    private void HandleHandShuffled(int[] cardsToClear)
+    private void HandleCardRemoved(CardEventArgs args)
     {
-        foreach (int cardId in cardsToClear)
+        var cardId = args.CardId;
+        if (cardUIById.TryGetValue(cardId, out CardUI ui))
         {
-            if (cardUIById.TryGetValue(cardId, out CardUI ui))
-            {
-                cardUIById.Remove(cardId);
+            cardUIById.Remove(cardId);
 
-                ui.Clear();
-                emptySlots.Enqueue(ui);
-            }
+            ui.Clear();
+            emptySlots.Enqueue(ui);
         }
     }
 }

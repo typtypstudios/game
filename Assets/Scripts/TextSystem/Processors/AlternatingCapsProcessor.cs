@@ -1,21 +1,20 @@
 using UnityEngine;
+using System.Text;
 
 namespace TypTyp.TextSystem
 {
     [CreateAssetMenu(fileName = "AlternatingCapsProcessor", menuName = "TypTyp/Text Processors/AlternatingCaps")]
     public class AlternatingCapsProcessor : ScriptableTextProcessor
     {
-        public override string ProcessText(string input)
+        public override void ProcessText(StringBuilder builder, TextProcessContext context)
         {
-            char[] chars = input.ToCharArray();
-            for (int i = 0; i < chars.Length; i++)
+            for (int i = 0; i < builder.Length; i++)
             {
-                if (char.IsLetter(chars[i]))
+                if (char.IsLetter(builder[i]))
                 {
-                    chars[i] = (i % 2 == 0) ? char.ToUpper(chars[i]) : char.ToLower(chars[i]);
+                    builder[i] = (i % 2 == 0) ? char.ToUpper(builder[i]) : char.ToLower(builder[i]);
                 }
             }
-            return new string(chars);
         }
     }
 }

@@ -8,11 +8,11 @@ public class ShuffleEffect : StatusEffectDefinition
         return "";
     }
 
-    public override void OnActivate(Player target)
+    public override void OnActivate(EffectContext context)
     {
     }
 
-    public override void OnDeactivate(Player target)
+    public override void OnDeactivate(EffectContext context)
     {
     }
 }

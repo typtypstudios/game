@@ -15,12 +15,24 @@ namespace TypTyp.TextSystem
 
         private int currentIndex = 0;
 
+        public int Count => sampleSentences.Length;
+
+        public void SetRandom(System.Random random) { }
+
         public string GetNextText()
         {
             if (currentIndex >= sampleSentences.Length)
                 currentIndex = 0;
 
             return sampleSentences[currentIndex++];
+        }
+
+        public string GetText(int index)
+        {
+            if (sampleSentences.Length == 0 || index < 0)
+                return string.Empty;
+
+            return sampleSentences[index % sampleSentences.Length];
         }
     }
 }
