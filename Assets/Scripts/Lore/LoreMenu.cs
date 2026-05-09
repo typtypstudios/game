@@ -14,6 +14,7 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
     [SerializeField] private int numInteractionsToAnger = 10;
     [SerializeField] private string endMessage = "...";
     [SerializeField] private string angerMessage = "LET ME REST IN PEACE.";
+    private Animator skeletonAnim;
     private LoreMenuVisualManager visualManager;
     private int textIdx = 0;
     private int charIdx = 0;
@@ -25,6 +26,7 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
     {
         clickAction.action.performed += ProcessInput;
         visualManager = GetComponent<LoreMenuVisualManager>();
+        skeletonAnim = GameObject.FindWithTag("SkeletonJaw")?.GetComponent<Animator>();
     }
 
     private void OnDestroy()
@@ -40,9 +42,9 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
     private void OnInteraction()
     {
         if (!isFocused) return;
-        StopAllCoroutines();
         if (charIdx < currentText.Length)
         {
+            StopText();
             charIdx = currentText.Length;
             UpdateView();
         }
@@ -65,7 +67,7 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
     public void OnLeave()
     {
         CanvasTransitionManager.OnTransitionFinished -= DisplayText;
-        StopAllCoroutines();
+        StopText();
         isFocused = false;
         tmp.text = string.Empty;
     }
@@ -86,7 +88,7 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
             currentText = angerMessage;
         visualManager.SetEyesRend(!currentText.Equals(endMessage));
         charIdx = 0;
-        StopAllCoroutines();
+        StopText();
         StartCoroutine(DisplayTextCoroutine());
     }
 
@@ -95,13 +97,21 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
         tmp.text = currentText[..charIdx] + "<alpha=#00>" + currentText[charIdx..];
     }
 
+    private void StopText()
+    {
+        StopAllCoroutines();
+        if(skeletonAnim) skeletonAnim.SetBool("Talking", false);
+    }
+
     IEnumerator DisplayTextCoroutine()
     {
-        while(charIdx <= currentText.Length)
+        if(!currentText.Equals(endMessage) && skeletonAnim) skeletonAnim.SetBool("Talking", true);
+        while (charIdx <= currentText.Length)
         {
             yield return new WaitForSeconds(CHAR_APPEAR_INTERVAL * textAppearSpeed);
             UpdateView();
             charIdx++;
         }
+        StopText();
     }
 }
