@@ -669,6 +669,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3540612660810891087}
   - component: {fileID: 5991470200295567366}
+  - component: {fileID: 767794836156276839}
   m_Layer: 0
   m_Name: Astronaut Foil
   m_TagString: Untagged
@@ -752,6 +753,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -5.925732, y: 0.09877908, z: -0.047682762}
     m_Extent: {x: 0.9699178, y: 1.0563564, z: 1.0894381}
   m_DirtyAABB: 0
+--- !u!114 &767794836156276839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120659466892054653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &2221125608029191980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,6 +1058,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3863214326504653106}
   - component: {fileID: 7096468172073130481}
+  - component: {fileID: 4370438651639652920}
   m_Layer: 0
   m_Name: AstroCasco
   m_TagString: Untagged
@@ -1130,6 +1144,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -4.820445, y: 0.7495301, z: 0.0023690462}
     m_Extent: {x: 4.711446, y: 2.0925744, z: 1.9925113}
   m_DirtyAABB: 0
+--- !u!114 &4370438651639652920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2972290286370799770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &3178503353132574213
 GameObject:
   m_ObjectHideFlags: 0
@@ -2504,6 +2530,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6729316847650907818}
   - component: {fileID: 419461406895290017}
+  - component: {fileID: 1550734151642414932}
   m_Layer: 0
   m_Name: AstroCorbata
   m_TagString: Untagged
@@ -2587,6 +2614,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.794178, y: 2.444603, z: 0.17404205}
     m_Extent: {x: 1.3818147, y: 0.4824962, z: 0.4507215}
   m_DirtyAABB: 0
+--- !u!114 &1550734151642414932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7814451295304517646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler
 --- !u!1 &7951284537549711397
 GameObject:
   m_ObjectHideFlags: 0
@@ -2997,6 +3036,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7137378029195543873}
   - component: {fileID: 9126553736901615730}
+  - component: {fileID: 8717677150506723831}
   m_Layer: 0
   m_Name: AstroClip
   m_TagString: Untagged
@@ -3080,3 +3120,15 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.4056673, y: 2.778775, z: 0.2853145}
     m_Extent: {x: 0.22438145, y: 0.096786976, z: 0.40938264}
   m_DirtyAABB: 0
+--- !u!114 &8717677150506723831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9124631332969293357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e28e3e5660d6498f7929849d4292c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRendererDisabler

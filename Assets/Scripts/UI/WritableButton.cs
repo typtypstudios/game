@@ -5,6 +5,7 @@ using System.Collections;
 using System;
 using TypTyp;
 using TypTyp.TextSystem.Typable;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Button))]
 public class WritableButton : MonoBehaviour
@@ -13,6 +14,7 @@ public class WritableButton : MonoBehaviour
     [SerializeField] private bool resetOnWritten = true;
     [SerializeField] private TypableController typableController;
     [SerializeField] private TMPTypableView tmpView;
+    private InputAction clickAction;
     private Button button;
     private string originalText;
     private Coroutine resetCoroutine;
@@ -31,6 +33,8 @@ public class WritableButton : MonoBehaviour
             typableController = GetComponent<TypableController>();
         if (tmpView == null)
             tmpView = GetComponent<TMPTypableView>();
+        clickAction = FindFirstObjectByType<PlayerInput>().actions.FindActionMap("Player").FindAction("Click");
+        clickAction.started += ResetOnClick;
     }
 
     private void OnEnable()
@@ -55,6 +59,13 @@ public class WritableButton : MonoBehaviour
         }
         ResetButton();
     }
+
+    private void OnDestroy()
+    {
+        clickAction.started -= ResetOnClick;
+    }
+
+    private void ResetOnClick(InputAction.CallbackContext ctx) => ResetButton();
 
     private bool InteractionEnabled()
     {

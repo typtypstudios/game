@@ -711,7 +711,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 154.5}
+  m_AnchoredPosition: {x: 0, y: 142.7}
   m_SizeDelta: {x: 404.5, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6273948712587552735
@@ -742,7 +742,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You are silenced!
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 726a8b5ed0544ce4580e9e587102553a, type: 2}
   m_sharedMaterial: {fileID: 8728615164726586411, guid: 726a8b5ed0544ce4580e9e587102553a, type: 2}
@@ -777,7 +779,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -1373,6 +1375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30189d310ae1f75468f15490cde0bba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEffectReminder
+  escActionReference: {fileID: -8299700176675209721, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   feedbackText: {fileID: 2799572306597780517}
   showDuration: 2
 --- !u!225 &9108532060779299520
@@ -1399,6 +1402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 410e15235c757494cae60b8e5703c205, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouseDisabler
+  hoverImage: {fileID: 0}
 --- !u!1 &6752210573890792684
 GameObject:
   m_ObjectHideFlags: 0
