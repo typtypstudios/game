@@ -6,7 +6,7 @@ public class PlayerLabel : MonoBehaviour
 {
     [SerializeField] private TMP_Text playerName;
     [SerializeField] private TMP_Text playerRank;
-    Player player;
+    private Player player;
 
     private void Awake()
     {
