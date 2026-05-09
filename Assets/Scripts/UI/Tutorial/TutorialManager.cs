@@ -7,6 +7,7 @@ public class TutorialManager : MonoBehaviour, INavigationCtxReceiver, INavigatio
     [SerializeField] private Transform contentParent;
     [SerializeField] private WritableButton prevButton;
     [SerializeField] private WritableButton nextButton;
+    [SerializeField] private PracticeRitual practiceRitual;
     private readonly List<GameObject> content = new();
     private int currentIdx = 0;
     private TurnPageEffect turnPageEffect;
@@ -35,6 +36,7 @@ public class TutorialManager : MonoBehaviour, INavigationCtxReceiver, INavigatio
     public void ReceiveContext(Screens previousScreen, bool isGoingBack, GameObject sender = null)
     {
         isActive = true;
+        practiceRitual.ResetText();
     }
 
     public void OnLeave()

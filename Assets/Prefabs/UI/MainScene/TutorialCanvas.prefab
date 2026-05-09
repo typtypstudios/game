@@ -1025,6 +1025,7 @@ MonoBehaviour:
   contentParent: {fileID: 8978645285910261072}
   prevButton: {fileID: 8944970015260631313}
   nextButton: {fileID: 2376774807607147202}
+  practiceRitual: {fileID: 6862787182543633330}
 --- !u!114 &8661501457802225838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1039,7 +1040,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TurnPageEffect
   transitionTime: 0.8
   pagesTransform: []
-  turnPagesToBlock: []
 --- !u!1 &3334572425313809608
 GameObject:
   m_ObjectHideFlags: 0
@@ -3680,6 +3680,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7444666307086757219, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+    - {fileID: 2874216417355882885, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -3687,6 +3688,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5813663989997594984}
   m_SourcePrefab: {fileID: 100100000, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+--- !u!114 &6862787182543633330 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5316324800012567044, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+  m_PrefabInstance: {fileID: 1655888331181177270}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17409b6ead57bbe41a178be1a9ae99bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PracticeRitual
 --- !u!224 &7340775260163415538 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8297118828396061764, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
