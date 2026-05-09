@@ -12,8 +12,9 @@ namespace TypTyp.TextSystem
         [field: SerializeField] public TMP_Text[] Texts { get; private set; }
         [SerializeField] TextAsset textSource;
         private static List<string> phrases = new();
-        private System.Random random = new();
+        private System.Random random;
         private int textIdx = 0;
+        private bool initialTextsRequested;
         private RitualManager ritualManager; //Referencia circular
         private ITextPipeline textPipeline;
         public event Action OnLineRequested;
@@ -21,10 +22,9 @@ namespace TypTyp.TextSystem
 
         public override void OnNetworkSpawn()
         {
-            if (IsServer && IsOwner) LoadSource();
+            if (IsServer && IsOwner && random != null) LoadSource();
             if (IsOwner)
             {
-                for (int i = 0; i < Texts.Length; i++) RequestNextTextRpc(textIdx++);
                 MatchManager.OnMatchStarted += EnableTexts;
             }
         }
@@ -43,10 +43,20 @@ namespace TypTyp.TextSystem
         public void EnableTexts()
         {
             MatchManager.OnMatchStarted -= EnableTexts;
+            if (!IsOwner || initialTextsRequested) return;
+
+            for (int i = 0; i < Texts.Length; i++) RequestNextTextRpc(textIdx++);
+            initialTextsRequested = true;
         }
 
         private void LoadSource()
         {
+            if (random == null)
+            {
+                Debug.LogError("NetworkTextProvider random not configured. Call SetRandom before loading source.");
+                return;
+            }
+
             phrases.Clear();
             List<string> allPhrases = textSource != null
                 ? textSource.text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList()
@@ -75,6 +85,10 @@ namespace TypTyp.TextSystem
         public void SetRandom(System.Random random)
         {
             this.random = random ?? throw new ArgumentNullException(nameof(random));
+            if (IsServer && IsOwner && phrases.Count == 0)
+            {
+                LoadSource();
+            }
         }
 
         [Rpc(SendTo.Server)]

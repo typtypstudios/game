@@ -13,7 +13,7 @@ namespace TypTyp.TextSystem
         [SerializeField, Min(1)] int repetitionsPerCycle = 1;
 
         [SerializeField]string[] phrases;
-        private System.Random random = new();
+        private System.Random random;
 
         //Just for cycle mode
         int currentIndex = 0;
@@ -42,12 +42,21 @@ namespace TypTyp.TextSystem
             if(generationMode == GenerationMode.Cycle)
             {
                 indexer = RangeProvider.FillRepeatedRange(0, phrases.Length - 1, repetitionsPerCycle);
-                indexer.Shuffle(random);
+                if (random != null)
+                {
+                    indexer.Shuffle(random);
+                }
             }
         }
 
         public string GetNextText()
         {
+            if (random == null && generationMode != GenerationMode.None)
+            {
+                Debug.LogError("RandomTextProvider random not configured. Call SetRandom before requesting text.");
+                return default;
+            }
+
             if(generationMode == GenerationMode.Cycle)
             {
                 if (currentIndex >= indexer.Length)

@@ -8,6 +8,8 @@ using TypTyp.Input;
 
 public class Player : NetworkBehaviour
 {
+    public MatchRandomContext RandomContext { get; private set; }
+    private int configuredRandomSeed = int.MinValue;
     public MatchManager MatchManager { get; private set; }
     public RitualManager RitualManager { get; private set; }
     public ManaGainManager ManaManager { get; private set; }
@@ -95,6 +97,35 @@ public class Player : NetworkBehaviour
         }
         foreach (var cultModel in GetComponentsInChildren<CultBasedModel>())
             cultModel.FixCult(cultId);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void ConfigureRandomContextRpc(int matchSeed)
+    {
+        ConfigureRandomContext(matchSeed);
+    }
+
+    public void ConfigureRandomContext(int matchSeed)
+    {
+        if (configuredRandomSeed == matchSeed)
+            return;
+
+        configuredRandomSeed = matchSeed;
+        RandomContext = new MatchRandomContext(matchSeed);
+
+        DeckController.SetRandom(RandomContext.Deck);
+        StatusEffectController.SetRandom(RandomContext.Spells);
+
+        if (TextPipeline != null)
+        {
+            TextPipeline.SetContext(new TextProcessContext(RandomContext.Ritual));
+        }
+
+        var textProviders = GetComponentsInChildren<ITextProvider>(true);
+        foreach (var provider in textProviders)
+        {
+            provider.SetRandom(RandomContext.Ritual);
+        }
     }
 
     [Rpc(SendTo.Server)]

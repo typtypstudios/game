@@ -44,7 +44,7 @@ public class DeckController : NetworkBehaviour
     private Queue<int> cardQueue;
     private HashSet<int> currentHand;
     private SpellCaster spellCaster;
-    private System.Random random = new();
+    private System.Random random;
 
     //Events
     public UnityEvent<CardDefinition> OnCardPlayed = new();
@@ -89,6 +89,11 @@ public class DeckController : NetworkBehaviour
     public void ConfigureServerDeckController(int[] deck)
     {
         if (!IsServer) return;
+        if (random == null)
+        {
+            Debug.LogError("DeckController random not configured. Call SetRandom before ConfigureServerDeckController.");
+            return;
+        }
 
         deck.Shuffle(random);
         //just for editor view purposes
@@ -127,6 +132,12 @@ public class DeckController : NetworkBehaviour
 
     void HandleShufflePlay(int card, PlayCardRequestResult validation)
     {
+        if (random == null)
+        {
+            Debug.LogError("DeckController random not configured. Cannot shuffle hand.");
+            return;
+        }
+
         ReturnCardToDeck(card);
 
         int[] currentCards = currentHand.ToArray();

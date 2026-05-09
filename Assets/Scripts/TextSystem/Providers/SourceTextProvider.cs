@@ -10,7 +10,7 @@ namespace TypTyp.TextSystem
         [SerializeField] TextAsset TextSource;
 
         private List<string> phrases;
-        private System.Random random = new();
+        private System.Random random;
 
         public string GetNextText() => default;
 
@@ -28,10 +28,6 @@ namespace TypTyp.TextSystem
         void Awake()
         {
             LoadSource(TextSource);
-            if (phrases != null && phrases.Count > 0)
-            {
-                RandomizePhrases(random);
-            }
         }
 
         private void LoadSource(TextAsset textSource)

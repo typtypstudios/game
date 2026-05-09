@@ -21,7 +21,7 @@ public class StatusEffectController : MonoBehaviour
     Player player;
     NetworkTextProvider textProvider;
     List<StatusEffect> toRemove;
-    private readonly System.Random random = new();
+    private System.Random random;
     
     public void Awake()
     {
@@ -46,6 +46,12 @@ public class StatusEffectController : MonoBehaviour
 
     public void AddEffect(StatusEffectDefinition effectDef)
     {
+        if (random == null)
+        {
+            Debug.LogError("StatusEffectController random not configured. Call SetRandom before AddEffect.");
+            return;
+        }
+
         var statusEffect = CreateStatusEffect(effectDef);
 
         // Refresh
@@ -80,9 +86,20 @@ public class StatusEffectController : MonoBehaviour
 
     public void RemoveEffect(StatusEffect effect)
     {
+        if (random == null)
+        {
+            Debug.LogError("StatusEffectController random not configured. Call SetRandom before RemoveEffect.");
+            return;
+        }
+
         effect.Deactivate(new EffectContext(player, random));
         activeEffects.Remove(effect);
         OnEffectRemoved?.Invoke(effect);
+    }
+
+    public void SetRandom(System.Random random)
+    {
+        this.random = random ?? throw new System.ArgumentNullException(nameof(random));
     }
 
     // Assume that refreshable effects are only those not immediate and added to the active effects list

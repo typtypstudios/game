@@ -8,13 +8,19 @@ namespace TypTyp.TextSystem
     public class TextPipeline : MonoBehaviour, ITextPipeline
     {
         [SerializeField] List<ScriptableTextProcessor> processors;
-        private TextProcessContext context = new(new System.Random());
+        private TextProcessContext context;
 
         public event Action<ITextProcessor> ProcessorAdded;
         public event Action<ITextProcessor> ProcessorRemoved;
 
         public string ProcessText(string text)
         {
+            if (context.Random == null)
+            {
+                Debug.LogError("TextPipeline context random not configured. Call SetContext before ProcessText.");
+                return text;
+            }
+
             StringBuilder builder = new(text);
             foreach (var processor in processors)
             {
