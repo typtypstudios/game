@@ -5783,6 +5783,10 @@ PrefabInstance:
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7044027077019195724}
+    - target: {fileID: 5132627200434579725, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetShowSpaces
+      objectReference: {fileID: 0}
     - target: {fileID: 5624846620881497917, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_Name
       value: Typable_Toggle_ShowSpaces
@@ -6387,6 +6391,10 @@ PrefabInstance:
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7044027077019195724}
+    - target: {fileID: 5132627200434579725, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetCapsWarning
+      objectReference: {fileID: 0}
     - target: {fileID: 5624846620881497917, guid: ff0bd228b06b63d42b549c62991a2b8e, type: 3}
       propertyPath: m_Name
       value: Typable_Toggle_CapsLock

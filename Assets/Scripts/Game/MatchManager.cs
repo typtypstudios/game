@@ -151,7 +151,7 @@ public class MatchManager : NetworkBehaviour
         for (int i = 0; i < players.Length; i++)
         {
             players[i].ConfigureServerPlayer(playersData[players[i].OwnerClientId]);
-            players[i].ConfigurePlayerRpc(i, playersData[players[i].OwnerClientId].CultId);
+            players[i].ConfigurePlayerRpc(i, playersData[players[i].OwnerClientId]);
         }
 
         ConfigureUIRpc();
@@ -341,6 +341,7 @@ public class MatchManager : NetworkBehaviour
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
         endGameCanvas.ShowEndMatch(isWinner, reason);
+        if (TryGetComponent(out EndMatchAnimationManager e)) e.HandleEndMatch(isWinner);
         //SpawnLocalPlayerCopy(Player.User);
         //SpawnLocalPlayerCopy(Player.Enemy);
         // Handshake de finalización

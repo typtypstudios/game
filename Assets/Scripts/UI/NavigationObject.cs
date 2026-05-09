@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Collider))]
-public class NavigationObject : MonoBehaviour, IPointerClickHandler
+public class NavigationObject : MonoBehaviour, IPointerClickHandler, ICursorHoverTarget
 {
     [SerializeField] private Screens destination;
     [SerializeField] private float minInteractionDistance = 20;
@@ -23,8 +23,18 @@ public class NavigationObject : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!isFirstScreenLoaded) return;
-        if (Vector3.Distance(transform.position, Camera.main.transform.position) < minInteractionDistance) return;
+        if (!CanBeInteracted()) return;
         controller.GoTo(destination, this.gameObject);
+    }
+
+    public bool CanBeInteracted()
+    {
+        return isFirstScreenLoaded && 
+            Vector3.Distance(transform.position, Camera.main.transform.position) >= minInteractionDistance;
+    }
+
+    public bool CanCauseHover()
+    {
+        return CanBeInteracted();
     }
 }

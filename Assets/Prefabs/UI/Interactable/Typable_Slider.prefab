@@ -304,7 +304,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 1
   resetOnWritten: 1
-  resetTime: 0.5
   typableController: {fileID: 2305356867058479360}
   tmpView: {fileID: 261526767299457082}
 --- !u!114 &813061431112966700
@@ -361,6 +360,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &299343132466075998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -731,7 +731,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -894,6 +894,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &3922200496115894599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1192,7 +1193,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WritableButton
   resetIfFailed: 1
   resetOnWritten: 1
-  resetTime: 0.5
   typableController: {fileID: 3485263714906631649}
   tmpView: {fileID: 5036077821824566956}
 --- !u!114 &5411115229054196820
@@ -1249,6 +1249,7 @@ MonoBehaviour:
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
+    resetTime: 0.5
 --- !u!114 &4210337468056717047
 MonoBehaviour:
   m_ObjectHideFlags: 0

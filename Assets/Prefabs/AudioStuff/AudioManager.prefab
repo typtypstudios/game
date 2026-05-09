@@ -58,7 +58,7 @@ MonoBehaviour:
   uiSounds:
   - id: 1
     clip: {fileID: 8300000, guid: d04894814e31b954494de087702ab73b, type: 3}
-    volume: 0.3
+    volume: 0.24
   - id: 4
     clip: {fileID: 8300000, guid: 6bcb12a46f055f84f8f5ecf95e4435b7, type: 3}
     volume: 0.4
@@ -71,6 +71,12 @@ MonoBehaviour:
   - id: 5
     clip: {fileID: 8300000, guid: 6bcb12a46f055f84f8f5ecf95e4435b7, type: 3}
     volume: 0.6
+  - id: 6
+    clip: {fileID: 8300000, guid: 7428054d9366d95458ad5818c49fa386, type: 3}
+    volume: 0.24
+  - id: 7
+    clip: {fileID: 8300000, guid: c3fedfef023408045846011e0b46b4df, type: 3}
+    volume: 0.55
   musicTracks:
   - id: 1
     clip: {fileID: 8300000, guid: 750986aaa4c118341a7a1755eca8335c, type: 3}
@@ -148,8 +154,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 594b9d04ff66f9a4e8a8e9b7b97e8ad3, type: 3}
   - {fileID: 8300000, guid: e71d147742f4783459ef98d5a151016b, type: 3}
   - {fileID: 8300000, guid: 7616d70270d04ff4c9fa473d9f4a2558, type: 3}
-  minVolume: 0.5
-  maxVolume: 0.7
-  minPitch: 0.8
-  maxPitch: 1.2
+  minVolume: 0.65
+  maxVolume: 0.8
+  minPitch: 1
+  maxPitch: 1.3
   menuSceneName: MainMenu

@@ -11,16 +11,23 @@ public class PracticeRitual : MonoBehaviour
 {
     [SerializeField] private string text;
     private Canvas parentCanvas;
+    private TypableController controller;
 
     private void Awake()
     {
         parentCanvas = GetComponentInParent<Canvas>();
+        controller = GetComponent<TypableController>();
+    }
+
+    public void ResetText()
+    {
+        controller.SetText(text);
     }
 
     void Update() //No sé si ponerlo en Start dará problemas, ni quiero saberlo
     {
         if (!parentCanvas.enabled) return;
-        GetComponent<TypableController>().SetText(text);
+        controller.SetText(text);
         this.enabled = false;
     }
 }

@@ -19,7 +19,8 @@ public class NavigationController : MonoBehaviour
     private readonly Dictionary<Screens, NavigationEntry> screenDictionary = new();
     private readonly Stack<Screens> screenStack = new();
     private Screens currentScreen;
-    private bool blocked = false;
+    public static bool Navigating { get; private set; } = false;
+    private static bool hasDoneGlobalFirstTransition = false;
 
     private void Awake()
     {
@@ -27,6 +28,7 @@ public class NavigationController : MonoBehaviour
             Debug.LogError("Error: no hay transition manager asociado al gameObject.");
         if (!TryGetComponent(out camNavigation))
             Debug.LogError("Error: no hay camera navigation asociado al gameObject.");
+
         foreach (var entry in entries)
         {
             screenDictionary[entry.screen] = entry;
@@ -35,10 +37,23 @@ public class NavigationController : MonoBehaviour
             canvasGroup.blocksRaycasts = false;
             entry.canvas.enabled = false;
         }
-        transitionManager.SubscribeOnStarted(this, () => blocked = true);
-        transitionManager.SubscribeOnEnded(this, () => blocked = false);
+
+        transitionManager.SubscribeOnStarted(this, () =>
+        {
+            Navigating = true;
+            if (startsWithTransition && !hasDoneGlobalFirstTransition)            
+                hasDoneGlobalFirstTransition = true;            
+            else
+                AudioManager.Instance.PlayUI(UISound.DissolveOut);
+        });
+        transitionManager.SubscribeOnDissolved(this, () =>
+        {
+            AudioManager.Instance.PlayUI(UISound.DissolveIn);
+        });
+        transitionManager.SubscribeOnEnded(this, () => Navigating = false);
         goBackAction.action.started += GoBackAction;
         currentScreen = initialScreen;
+        Navigating = false;
     }
 
     private void Start()
@@ -69,8 +84,8 @@ public class NavigationController : MonoBehaviour
 
     public void GoTo(Screens screen, GameObject sender)
     {
-        if (blocked) return;
-        if(screen == Screens.GoBack)
+        if (Navigating) return;
+        if (screen == Screens.GoBack)
         {
             GoBack();
             return;
@@ -83,7 +98,7 @@ public class NavigationController : MonoBehaviour
 
     public void GoBack()
     {
-        if (screenStack.Count == 0 || blocked || !allowsGoBack) return;
+        if (screenStack.Count == 0 || Navigating || !allowsGoBack) return;
         NavigationEntry entry = screenDictionary[screenStack.Pop()];
         //De momento por defecto va al menú principal. Correcto para nuestro único caso de uso.
         NavigateToScreen(entry.cantGoBack ? Screens.MainMenu : entry.screen, true);
@@ -93,18 +108,18 @@ public class NavigationController : MonoBehaviour
     {
         if (screen == currentScreen) return;
         Canvas originCanvas = screenDictionary[currentScreen].canvas;
-        INavigationLeaveReceiver[] leaveReceivers = 
+        INavigationLeaveReceiver[] leaveReceivers =
             originCanvas.GetComponentsInChildren<INavigationLeaveReceiver>(true);
         foreach (var receiver in leaveReceivers)
             receiver.OnLeave();
 
         Canvas destinationCanvas = screenDictionary[screen].canvas;
-        INavigationCtxReceiver[] receivers = 
+        INavigationCtxReceiver[] receivers =
             destinationCanvas.GetComponentsInChildren<INavigationCtxReceiver>(true);
         foreach (var receiver in receivers)
             receiver.ReceiveContext(currentScreen, isGoingBack, sender);
         currentScreen = screen;
-        blocked = true;
+        Navigating = true;
         transitionManager.PerformTransition(originCanvas, destinationCanvas, this, true);
         Transform destination = screenDictionary[screen].cameraDestination;
         if (destination != null) camNavigation.MoveTo(destination);

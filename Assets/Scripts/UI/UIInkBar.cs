@@ -1,32 +1,15 @@
 using TypTyp;
 using UnityEngine;
-using System.Collections.Generic;
 
-public class UIInkBar : MonoBehaviour
+public class UIInkBar : UIBarGroup
 {
     [Tooltip("Separación entre barras expresado en porcentaje del width de mana bar")]
     [Range(0f, 0.1f)][SerializeField] private float barSeparation = 0.01f;
     [SerializeField] private GameObject manaBarPrefab;
-    private readonly List<InkOrb> bars = new();
-    private float perBarPercentage;
-    public float MaxValue { get; set; } = 1f;
 
     private void Awake()
     {
         CreateBars();
-        perBarPercentage = 1f / bars.Count;
-    }
-
-    public void UpdateValue(float oldValue, float newValue)
-    {
-        float normalizedValue = newValue / MaxValue;
-        foreach(InkOrb bar in bars)
-        {
-            float barValue = normalizedValue >= perBarPercentage ? 1.0f : normalizedValue / perBarPercentage;
-            bar.UpdateValue(0, barValue);
-            //else bar.SetValueWithoutTransition(barValue);
-            normalizedValue = Mathf.Clamp01(normalizedValue - perBarPercentage);
-        }
     }
 
     private void CreateBars() //Se colocan las barras manualmente y no en un layout group porque va mejor
@@ -41,7 +24,7 @@ public class UIInkBar : MonoBehaviour
             bar.sizeDelta = new Vector2(barWidth, bar.sizeDelta.y);
             bar.anchoredPosition = new Vector2(currentPos, 0);
             currentPos += barWidth + barSeparation * totalWidth;
-            InkOrb inkBar = bar.GetComponentInChildren<InkOrb>();
+            InkOrb inkBar = bar.GetComponentInChildren<IFillableBar>() as InkOrb;
             if (i != 0) inkBar.PrevOrb = bars[i - 1];
             bars.Add(inkBar);
         }

@@ -17,10 +17,11 @@ public class InfoDisplayer : MonoBehaviour
     [SerializeField] private float interpolationTime = 0.1f;
     [SerializeField] private bool lastSiblingIfSelected = true;
     private Vector3 initScale;
+    private Vector3 targetScale = Vector3.one;
 
     private Image image;
     private bool highlighted = false;
-    private WritableButton writableButton;
+    protected WritableButton writableButton;
     private Color originalNameColor = Color.white;
     public ADefinition Definition { get; private set; }
 
@@ -30,6 +31,11 @@ public class InfoDisplayer : MonoBehaviour
         initScale = transform.localScale;
         writableButton = GetComponent<WritableButton>();
         originalNameColor = cardName.color;
+    }
+
+    private void OnDisable()
+    {
+        transform.localScale = targetScale;
     }
 
     public virtual void SetInfo(ADefinition definition)
@@ -107,6 +113,7 @@ public class InfoDisplayer : MonoBehaviour
 
     IEnumerator InterpolateScale(Vector3 targetScale)
     {
+        this.targetScale = targetScale;
         float dist = Vector3.Distance(transform.localScale, targetScale);
         float speed = dist / interpolationTime;
         while(transform.localScale != targetScale)

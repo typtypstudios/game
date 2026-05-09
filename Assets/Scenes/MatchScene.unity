@@ -765,6 +765,7 @@ GameObject:
   - component: {fileID: 377042277}
   - component: {fileID: 377042275}
   - component: {fileID: 377042276}
+  - component: {fileID: 377042278}
   m_Layer: 0
   m_Name: MatchManager
   m_TagString: Untagged
@@ -827,6 +828,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &377042278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377042274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea7b6071f8d30d48b09a095b4e5ee22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndMatchAnimationManager
+  showResultsDelay: 2
+  transitionCanvasNewDist: 1
 --- !u!1001 &404194725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -881,7 +896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3165650907841122507, guid: c52eb22ad6e85ab4eb326a4bc5c39878, type: 3}
       propertyPath: m_PlaneDistance
-      value: 0.31
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 7046849182916803878, guid: c52eb22ad6e85ab4eb326a4bc5c39878, type: 3}
       propertyPath: m_ClearFlags
@@ -914,6 +929,10 @@ PrefabInstance:
     - target: {fileID: 7710779194541940778, guid: c52eb22ad6e85ab4eb326a4bc5c39878, type: 3}
       propertyPath: m_Depth
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7710779194541940778, guid: c52eb22ad6e85ab4eb326a4bc5c39878, type: 3}
+      propertyPath: field of view
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 8261081536707962677, guid: c52eb22ad6e85ab4eb326a4bc5c39878, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2279,7 +2298,8 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2175960240703212246, guid: f90d019e6ada2754f8520f3a77e01041, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

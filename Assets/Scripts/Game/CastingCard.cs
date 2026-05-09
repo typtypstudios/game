@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class CastingCard : NetworkBehaviour
 {
     [SerializeField] private PlayerInputManager inputManager;
-    [SerializeField] private Sprite backSprite;
-    [SerializeField] private Sprite placeholderSprite;
     [SerializeField] private CardVisualPresenter cardVisualPresenter;
     [SerializeField] private CardUIManager cardUIManager;
     [SerializeField] private Material enemyMat;
@@ -21,6 +19,7 @@ public class CastingCard : NetworkBehaviour
     private bool showingCard = false;
     private readonly Dictionary<CardUI, float> progressDictionary = new();
     private Image image;
+    private Sprite backSprite;
     private CardDissolveEffect dissolveEffect;
     private readonly Queue<CardDefinition> completedQueue = new();
     private readonly NetworkVariable<float> progress = new(0,
@@ -32,13 +31,19 @@ public class CastingCard : NetworkBehaviour
         if (!TryGetComponent(out dissolveEffect)) 
             Debug.LogError("Error: falta el componente CardDissolveEffect");
         image = GetComponent<Image>();
-        ShowSprite(placeholderSprite);
+        SetVisualMode(false);
         anim = GetComponent<Animator>();
         inputManager.OnAnimChanged += HandleAnimChange;
         progress.OnValueChanged += (oldVal, newVal) =>
         {
             if (!IsOwner) dissolveEffect.SetDissolve(1 - newVal, true, appearTime);
         };
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (!IsOwner) dissolveEffect.OverrideMaterial(enemyMat, 1);
     }
 
     private void Start()
@@ -51,6 +56,7 @@ public class CastingCard : NetworkBehaviour
 
     private void OnDestroy()
     {
+        if (!cardUIManager) return;
         foreach (var card in cardUIManager.GetComponentsInChildren<CardUI>())
         {
             card.OnIdxChanged -= OnCardUpdated;
@@ -62,11 +68,6 @@ public class CastingCard : NetworkBehaviour
     {
         if (state != AnimState.Spell && !showingCard)
             dissolveEffect.SetDissolve(1, true, disappearTime);
-        else if (state == AnimState.Spell && !IsOwner)
-        {
-            ShowSprite(backSprite);
-            dissolveEffect.OverrideMaterial(enemyMat, 1);
-        }
     }
 
     private void OnCardUpdated(CardUI card, float progress, bool canBeCasted)
@@ -85,6 +86,7 @@ public class CastingCard : NetworkBehaviour
 
     private void ShowCard(CardDefinition cardDefinition)
     {
+        if (!backSprite) backSprite = image.sprite;
         if (!IsOwner) return;
         bool usePresenter = cardDefinition != null && cardVisualPresenter;
         SetVisualMode(usePresenter);
@@ -148,7 +150,7 @@ public class CastingCard : NetworkBehaviour
     {
         if (!IsOwner) return;
         showingCard = false;
-        ShowSprite(placeholderSprite);
+        ShowSprite(backSprite);
         progress.Value = 0;
         if (completedQueue.Count > 0)
         {
@@ -156,5 +158,10 @@ public class CastingCard : NetworkBehaviour
             progress.Value = 1;
             ShowCard(completedQueue.Dequeue());
         }
+    }
+
+    public void FadeOut()
+    {
+        dissolveEffect.SetDissolve(1, true, disappearTime);
     }
 }

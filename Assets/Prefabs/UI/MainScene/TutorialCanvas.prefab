@@ -1025,6 +1025,7 @@ MonoBehaviour:
   contentParent: {fileID: 8978645285910261072}
   prevButton: {fileID: 8944970015260631313}
   nextButton: {fileID: 2376774807607147202}
+  practiceRitual: {fileID: 6862787182543633330}
 --- !u!114 &8661501457802225838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1231,6 +1232,7 @@ GameObject:
   - component: {fileID: 6083847883235635511}
   - component: {fileID: 8448921517466536945}
   - component: {fileID: 3616116821515916396}
+  - component: {fileID: 2108421319044147429}
   m_Layer: 5
   m_Name: NextButton
   m_TagString: Untagged
@@ -1463,6 +1465,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2108421319044147429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3980363765720552999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9a0700befef624419bdca5419f735d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonClickSound
+  sound: 1
 --- !u!1 &4076898871358395535
 GameObject:
   m_ObjectHideFlags: 0
@@ -1788,6 +1803,7 @@ GameObject:
   - component: {fileID: 6446468067896759314}
   - component: {fileID: 5460187355590224381}
   - component: {fileID: 1418678196171992109}
+  - component: {fileID: 8599828725700995823}
   m_Layer: 5
   m_Name: PrevButton
   m_TagString: Untagged
@@ -2020,6 +2036,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &8599828725700995823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6635590401054725556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9a0700befef624419bdca5419f735d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonClickSound
+  sound: 1
 --- !u!1 &6812265263315183931
 GameObject:
   m_ObjectHideFlags: 0
@@ -2056,7 +2085,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 75.636, y: 37.325, z: -7.103}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 64.72, y: -9.53}
+  m_AnchoredPosition: {x: 64.71997, y: -9.530029}
   m_SizeDelta: {x: 800, y: 449.99997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &290667593596924585
@@ -3650,16 +3679,58 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 5316324800012567044, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+    - {fileID: 7444666307086757219, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+    - {fileID: 2874216417355882885, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6925143108979369926, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5813663989997594984}
   m_SourcePrefab: {fileID: 100100000, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+--- !u!114 &6862787182543633330 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5316324800012567044, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+  m_PrefabInstance: {fileID: 1655888331181177270}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17409b6ead57bbe41a178be1a9ae99bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PracticeRitual
 --- !u!224 &7340775260163415538 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8297118828396061764, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
   m_PrefabInstance: {fileID: 1655888331181177270}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8566384558364237424 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6925143108979369926, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+  m_PrefabInstance: {fileID: 1655888331181177270}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5813663989997594984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8566384558364237424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 252a8be48755e9b4fab6a8356b336cf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialBarFiller
+  fillType: 1
+  changeTime: 0.5
+  values:
+  - 0
+  - 0.25
+  - 0.5
+  - 0.75
+  - 1
+  fillTime: 3
+  cooldownOnFill: 1
 --- !u!1001 &1797082970633007850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5615,6 +5686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252a8be48755e9b4fab6a8356b336cf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialBarFiller
+  fillType: 0
   changeTime: 0.5
   values:
   - 0
@@ -5622,6 +5694,8 @@ MonoBehaviour:
   - 0.5
   - 0.75
   - 1
+  fillTime: 2
+  cooldownOnFill: 2
 --- !u!1001 &7031285480600298610
 PrefabInstance:
   m_ObjectHideFlags: 0

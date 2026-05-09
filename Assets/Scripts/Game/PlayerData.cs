@@ -26,14 +26,21 @@ public struct PlayerData : INetworkSerializable
     public int CultId;
 
 
+    /// <summary>
+    /// Rango del culto
+    /// </summary>
+    public int CultRank;
+
+
     const int MAX_DECK_SIZE = 64;
 
-    public PlayerData(ulong clientID, FixedString32Bytes playerName, int[] deck, int cultId)
+    public PlayerData(ulong clientID, FixedString32Bytes playerName, int[] deck, int cultId, int cultRank)
     {
         ClientID = clientID;
         PlayerName = playerName;
         Deck = deck;
         CultId = cultId;
+        CultRank = cultRank;
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -51,6 +58,7 @@ public struct PlayerData : INetworkSerializable
             serializer.SerializeValue(ref Deck[i]);
         }
         serializer.SerializeValue(ref CultId);
+        serializer.SerializeValue(ref CultRank);
     }
     public override string ToString()
     {
@@ -70,6 +78,7 @@ public struct PlayerData : INetworkSerializable
         }
         sb.Append("] ");
         sb.Append(", CultId: ").Append(CultId);
+        sb.Append(", CultRank: ").Append(CultRank);
         sb.Append(" }");
         return sb.ToString();
     }

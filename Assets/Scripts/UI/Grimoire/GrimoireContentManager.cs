@@ -59,7 +59,7 @@ public class GrimoireContentManager : MonoBehaviour
                 if(def.Name.Equals(definitionName))
                 {
                     GoToPage(page.pageIndex, false);
-                    displayers[page.definitions.IndexOf(def)].PerformClick();
+                    displayers[page.definitions.IndexOf(def)].ForceSelect();
                     return;
                 }
             }
