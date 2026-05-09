@@ -111,8 +111,9 @@ InitTestScene*.unity*
 .plastic
 
 # Sprite PNG exports
-/[Aa]ssets/Art/Sprites/Cards/**/*.png
-/[Aa]ssets/Art/Sprites/Cards/**/*.png.meta
+/[Aa]ssets/Art/Cards/**/*.png
+/[Aa]ssets/Art/Cards/**/*.png.meta
+!/[Aa]ssets/Art/Cards/Back/Concepts/*.png
 
 Assets/Art/Fonts/IMFellEnglish-Italic SDF 1.asset
 Assets/Art/Fonts/IMFellEnglish-Italic SDF.asset
