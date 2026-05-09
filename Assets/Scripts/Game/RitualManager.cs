@@ -9,7 +9,7 @@ public class RitualManager : MonoBehaviour
     private TypableController typableController;
     private ITextProvider textProvider;
     private ITextPipeline textPipeline;
-    private readonly Dictionary<int, string> processedTexts = new();
+    private readonly List<string> processedTexts = new();
     private int numTextsCompleted;
     private int lastIdx;
     private string currentText = "";
@@ -64,6 +64,11 @@ public class RitualManager : MonoBehaviour
         typableController.OnError += HandleError;
         typableController.OnComplete += HandleComplete;
         MatchManager.OnMatchStarted += StartRitual;
+        if (textPipeline != null)
+        {
+            textPipeline.ProcessorAdded += HandleTextPipelineChanged;
+            textPipeline.ProcessorRemoved += HandleTextPipelineChanged;
+        }
     }
 
     void OnDisable()
@@ -74,6 +79,11 @@ public class RitualManager : MonoBehaviour
             typableController.OnError -= HandleError;
             typableController.OnComplete -= HandleComplete;
         }
+        if (textPipeline != null)
+        {
+            textPipeline.ProcessorAdded -= HandleTextPipelineChanged;
+            textPipeline.ProcessorRemoved -= HandleTextPipelineChanged;
+        }
         MatchManager.OnMatchStarted -= StartRitual;
     }
 
@@ -83,7 +93,7 @@ public class RitualManager : MonoBehaviour
 
         ritualStarted = true;
         numTextsCompleted = 0;
-        processedTexts.Clear();
+        InitializeProcessedTextsCache();
         LoadCurrentLine();
         UpdateProgress();
     }
@@ -102,14 +112,16 @@ public class RitualManager : MonoBehaviour
         if (index < 0)
             return string.Empty;
 
-        if (processedTexts.TryGetValue(index, out string text))
-            return text;
-
         if (textProvider == null)
             return string.Empty;
 
         if (index >= TargetLineCount || index >= textProvider.Count)
             return string.Empty;
+
+        EnsureProcessedTextsCacheSize();
+        string text = processedTexts[index];
+        if (text != null)
+            return text;
 
         text = textProvider.GetText(index) ?? string.Empty;
         if (textPipeline != null)
@@ -168,5 +180,44 @@ public class RitualManager : MonoBehaviour
             (float)typableController.Idx / (currentText.Length * targetLineCount);
         Progress = Mathf.Clamp01(globalProgress + localProgress);
         OnProgressUpdated?.Invoke(Progress);
+    }
+
+    private void HandleTextPipelineChanged(ITextProcessor _)
+    {
+        InvalidateFutureProcessedTexts();
+        // Trigger queue refresh for lines after the current one without touching active line.
+        OnTextChanged?.Invoke(currentText);
+    }
+
+    private void InvalidateFutureProcessedTexts()
+    {
+        if (processedTexts.Count == 0)
+            return;
+
+        int startIndex = numTextsCompleted + 1;
+        int endIndex = Mathf.Min(TargetLineCount, processedTexts.Count);
+        for (int key = startIndex; key < endIndex; key++)
+        {
+            processedTexts[key] = null;
+        }
+    }
+
+    private void InitializeProcessedTextsCache()
+    {
+        processedTexts.Clear();
+        int cacheSize = TargetLineCount;
+        for (int i = 0; i < cacheSize; i++)
+        {
+            processedTexts.Add(null);
+        }
+    }
+
+    private void EnsureProcessedTextsCacheSize()
+    {
+        int targetCount = TargetLineCount;
+        while (processedTexts.Count < targetCount)
+        {
+            processedTexts.Add(null);
+        }
     }
 }
