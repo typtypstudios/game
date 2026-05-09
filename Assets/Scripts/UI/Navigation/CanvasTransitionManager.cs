@@ -1,4 +1,3 @@
-using NUnit.Framework.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,8 +11,7 @@ public class CanvasTransitionManager : MonoBehaviour
     private readonly Dictionary<object, Action> onStartedActions = new();
     private readonly Dictionary<object, Action> onDissolvedActions = new();
     private readonly Dictionary<object, Action> onEndedActions = new();
-    private readonly Dictionary<object, Action> onCanceledActions = new();
-    private object activeSender;
+    private readonly List<object> activeSenders = new();
     public static event Action OnTransitionFinished;
     public static event Action OnDissolved;
     private Canvas currentCanvas;
@@ -42,19 +40,12 @@ public class CanvasTransitionManager : MonoBehaviour
         onEndedActions[sender] = action;
     }
 
-    public void SubscribeOnCanceled(object sender, Action action)
-    {
-        onCanceledActions[sender] = action;
-    }
-
     public void PerformTransition(Canvas origin, Canvas dest, object sender, bool blockTransitioner, float time = -1)
     {
         if (blocked) return;
-        if (activeSender != null && activeSender != sender && onCanceledActions.ContainsKey(activeSender))
-            onCanceledActions[activeSender]?.Invoke();
-        activeSender = sender;
+        activeSenders.Add(sender);
         StopAllCoroutines();
-        StartCoroutine(TransitionCoroutine(origin, dest, sender, blockTransitioner, time));
+        StartCoroutine(TransitionCoroutine(origin, dest, blockTransitioner, time));
     }
 
     public void FadeOut(bool blockTransitioner = true, float time = -1)
@@ -64,14 +55,15 @@ public class CanvasTransitionManager : MonoBehaviour
         StartCoroutine(FadeOutCoroutine(blockTransitioner, time));
     }
 
-    private IEnumerator TransitionCoroutine(Canvas origin, Canvas dest, object sender, bool block, float time = -1)
+    private IEnumerator TransitionCoroutine(Canvas origin, Canvas dest, bool block, float time = -1)
     {
         if (block)
         {
             blocked = true;
             origin.GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
-        if (onStartedActions.ContainsKey(sender)) onStartedActions[sender]?.Invoke();
+        foreach(var sender in activeSenders)
+            if (onStartedActions.ContainsKey(sender)) onStartedActions[sender]?.Invoke();
         float speed = 2 / (time == -1 ? TransitionTime : time);
         float dissolveValue = Dissolve; //Para no hacer gets constantes
         while (dissolveValue < 1)
@@ -81,7 +73,8 @@ public class CanvasTransitionManager : MonoBehaviour
             yield return null;
         }
         origin.enabled = false;
-        if(onDissolvedActions.ContainsKey(sender)) onDissolvedActions[sender]?.Invoke();
+        foreach (var sender in activeSenders) 
+            if (onDissolvedActions.ContainsKey(sender)) onDissolvedActions[sender]?.Invoke();
         OnDissolved?.Invoke();
         dest.enabled = true;
         dissolveValue = 1;
@@ -91,14 +84,15 @@ public class CanvasTransitionManager : MonoBehaviour
             Dissolve = dissolveValue;
             yield return null;
         }
-        if (onEndedActions.ContainsKey(sender)) onEndedActions[sender]?.Invoke();
+        foreach (var sender in activeSenders) 
+            if (onEndedActions.ContainsKey(sender)) onEndedActions[sender]?.Invoke();
         if (block)
         {
             dest.GetComponent<CanvasGroup>().blocksRaycasts = true;
             blocked = false;
         }
         currentCanvas = dest;
-        activeSender = null;
+        activeSenders.Clear();
         OnTransitionFinished?.Invoke();
     }
 

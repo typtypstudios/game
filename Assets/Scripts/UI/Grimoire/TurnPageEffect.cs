@@ -5,13 +5,10 @@ public class TurnPageEffect : MonoBehaviour
 {
     [SerializeField] private float transitionTime = 0.8f;
     [SerializeField] private Transform[] pagesTransform;
-    [SerializeField] private TurnPageEffect[] turnPagesToBlock;
     private Canvas parentCanvas;
-    private bool wasCanvasEnabled = false;
     private CanvasTransitionManager transitionManager;
     public event Action OnBlankPage;
     public event Action OnTurnFinished;
-    private bool blocked = false;
 
     private void Start()
     {
@@ -25,17 +22,13 @@ public class TurnPageEffect : MonoBehaviour
             AudioManager.Instance.PlayUI(UISound.DissolveIn);
         });
         transitionManager.SubscribeOnEnded(this, OnTurnEnded);
-        transitionManager.SubscribeOnCanceled(this, OnCanceled);
     }
 
     public void InitializePages(Transform[] pages) => pagesTransform = pages;
 
     public void TurnPage()
     {
-        if (blocked) return;
-        foreach (var tpe in turnPagesToBlock) tpe.blocked = true;
         parentCanvas.gameObject.layer = LayerMask.NameToLayer("TurnPageStay");
-        wasCanvasEnabled = parentCanvas.enabled;
         foreach (var page in pagesTransform)
         {
             if (!page.gameObject.TryGetComponent(out Canvas _)) page.gameObject.AddComponent<Canvas>();
@@ -46,17 +39,9 @@ public class TurnPageEffect : MonoBehaviour
 
     private void OnTurnEnded()
     {
-        parentCanvas.enabled = wasCanvasEnabled;
         parentCanvas.gameObject.layer = LayerMask.NameToLayer("UI");
         OnTurnFinished?.Invoke();
         foreach (var page in pagesTransform)
             Destroy(page.gameObject.GetComponent<Canvas>());
-        foreach (var tpe in turnPagesToBlock) tpe.blocked = false;
-    }
-
-    private void OnCanceled()
-    {
-        OnBlankPage?.Invoke(); //Para aplicar cambios
-        OnTurnEnded();
     }
 }

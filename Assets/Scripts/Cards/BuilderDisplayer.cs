@@ -9,7 +9,6 @@ public class BuilderDisplayer : InfoDisplayer
     public static event Action<BuilderDisplayer> OnCardChosen;
     public CardDefinition Card => Definition as CardDefinition;
     private RectTransform infoPanelRect;
-    private Canvas rootCanvas;
     private float infoPanelOffsetYRatio;
     private void Start()
     {
@@ -20,7 +19,6 @@ public class BuilderDisplayer : InfoDisplayer
             if (parentRect != null)
                 infoPanelOffsetYRatio = Mathf.Abs(infoPanelRect.localPosition.y) / parentRect.rect.height;
         }
-        rootCanvas = GetComponentInParent<Canvas>()?.rootCanvas;
         infoPanel.gameObject.SetActive(false);
     }
     public override void SetInfo(ADefinition definition)
@@ -40,7 +38,7 @@ public class BuilderDisplayer : InfoDisplayer
     {
         infoPanel.gameObject.SetActive(enable);
         if (!enable) return;
-        infoPanel.SetInfo(Card);
+        infoPanel.SetInfo(Card, true);
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
         float direction = screenPos.y > Screen.height * 0.5f ? -1f : 1f;
         RectTransform parentRect = infoPanelRect.parent as RectTransform;
