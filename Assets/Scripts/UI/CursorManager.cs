@@ -30,6 +30,7 @@ public class CursorManager : Singleton<CursorManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Canvas.ForceUpdateCanvases();
         AssignCamera();
     }
 
