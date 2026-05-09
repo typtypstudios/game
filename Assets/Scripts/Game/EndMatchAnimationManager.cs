@@ -8,6 +8,7 @@ public class EndMatchAnimationManager : MonoBehaviour
 {
     [SerializeField] private float showResultsDelay = 2.0f;
     [SerializeField] private float transitionCanvasNewDist = 1.0f;
+    [SerializeField] private float newNear = 0.2f;
     private readonly List<GameObject> grimoires = new();
     private float prevPlaneDistance;
 
@@ -38,15 +39,13 @@ public class EndMatchAnimationManager : MonoBehaviour
     {
         GameObject cultistModel = GetGO(player, ModelType.Cultist);
         cultistModel.transform.SetParent(null);
-        if (!isWinner) 
+        string animTrigger = "Victory";
+        if (!isWinner) animTrigger = "Defeat";
+        cultistModel.GetComponentInChildren<Animator>().SetTrigger(animTrigger);
+        if (setAsFollowTarget)
         {
-            cultistModel.GetComponentInChildren<Animator>().SetTrigger("Defeat");
-            //De momento sólo hay animación de derrota. Cuando haya victoria el follow target también afectará
-            if (setAsFollowTarget)
-            {
-                FindFirstObjectByType<CinemachineCamera>().enabled = false;
-                Camera.main.transform.SetParent(Utils.FindChildrenWithTag(cultistModel.transform, "CultistHead"));
-            }
+            FindFirstObjectByType<CinemachineCamera>().enabled = false;
+            Camera.main.transform.SetParent(Utils.FindChildrenWithTag(cultistModel.transform, "CultistHead"));
         }
     }
 
@@ -77,6 +76,7 @@ public class EndMatchAnimationManager : MonoBehaviour
         c.planeDistance = planeDistance;
         Utils.FindChildrenWithTag(Camera.main.transform, "UICam").
             GetComponent<Camera>().fieldOfView = Camera.main.fieldOfView;
+        Camera.main.nearClipPlane = newNear;
     }
 
     private void GoToResults() =>
