@@ -52,6 +52,11 @@ public class CursorManager : Singleton<CursorManager>
         if (!cursorCanvas.enabled || cam == null)
             return;
         parentRT.position = Mouse.current.position.ReadValue();
+        if (NavigationController.Navigating)
+        {
+            UpdateState(false);
+            return;
+        }
         //Objetos 3D:
         if(Physics.Raycast(cam.ScreenPointToRay(parentRT.position), out RaycastHit hit))
         {
