@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using Microsoft.Win32.SafeHandles;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class WritableText : AInputListener
