@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -30,8 +31,8 @@ public class CursorManager : Singleton<CursorManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Canvas.ForceUpdateCanvases();
         AssignCamera();
+        StartCoroutine(RestoreCanvasAfterFrame());
     }
 
     private void OnDestroy()
@@ -98,5 +99,11 @@ public class CursorManager : Singleton<CursorManager>
     {
         Cursor.lockState = CursorLockMode.None;
         cursorCanvas.enabled = true;
+    }
+
+    IEnumerator RestoreCanvasAfterFrame()
+    {
+        yield return null;
+        Canvas.ForceUpdateCanvases();
     }
 }
