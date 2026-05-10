@@ -82,7 +82,7 @@ MonoBehaviour:
     volume: 0.45
   - id: 9
     clip: {fileID: 8300000, guid: ffabfc6aad12c6f4f96d28e5ca9953ba, type: 3}
-    volume: 0.5
+    volume: 0.8
   musicTracks:
   - id: 1
     clip: {fileID: 8300000, guid: 750986aaa4c118341a7a1755eca8335c, type: 3}
@@ -132,6 +132,12 @@ MonoBehaviour:
   - id: 5
     clip: {fileID: 8300000, guid: fd7cf53f3543ca541a5ee959ca5a0771, type: 3}
     volume: 0.5
+  - id: 6
+    clip: {fileID: 8300000, guid: 7693a25e91366ce429ff2130ac924c42, type: 3}
+    volume: 0.8
+  - id: 7
+    clip: {fileID: 8300000, guid: 21abf2503b177b448ac0d28a6a89de30, type: 3}
+    volume: 0.8
 --- !u!114 &9054697067088249900
 MonoBehaviour:
   m_ObjectHideFlags: 0

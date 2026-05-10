@@ -36,7 +36,9 @@ public enum GameSound
     EnemySpell,
     FailRitual, // No se usa, el sonido de tos está en RitualChoirPlayer en el MatchSceneMusicAudio
     Damage,
-    Heal
+    Heal,
+    Victory,
+    Defeat
 }
 
 public enum CultSound

@@ -51,19 +51,31 @@ public class ProgressionBar : MonoBehaviour
 
     private void ProcessXPUpdate(float prevXP, float newXP)
     {
+        CultDefinition cult = RuntimeVariables.Instance.CurrentCult;
+        int maxLevel = cult.RankNames.Length - 1;
+        bool shouldPlaySound = Mathf.FloorToInt(prevXP) < maxLevel;
+
         StopAllCoroutines();
-        StartCoroutine(GainAnimationCoroutine(prevXP, newXP));
+        StartCoroutine(GainAnimationCoroutine(prevXP, newXP, shouldPlaySound));
     }
 
-    IEnumerator GainAnimationCoroutine(float prevXP, float nextXP)
+    IEnumerator GainAnimationCoroutine(float prevXP, float nextXP, bool playSound)
     {
-        AudioManager.Instance.PlayUI(UISound.XPGain);
+        if (playSound)
+        {
+            AudioManager.Instance.PlayUI(UISound.XPGain);
+        }
+
         while (prevXP != nextXP)
         {
             prevXP = Mathf.MoveTowards(prevXP, nextXP, Time.deltaTime * animSpeed);
             DisplayXP(prevXP);
             yield return null;
         }
-        AudioManager.Instance.StopUI(UISound.XPGain, fadeDuration: 2f);
+
+        if (playSound)
+        {
+            AudioManager.Instance.StopUI(UISound.XPGain, fadeDuration: 2f);
+        }
     }
 }
