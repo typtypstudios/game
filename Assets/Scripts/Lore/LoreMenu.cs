@@ -101,11 +101,16 @@ public class LoreMenu : AInputListener, INavigationCtxReceiver, INavigationLeave
     {
         StopAllCoroutines();
         if(skeletonAnim) skeletonAnim.SetBool("Talking", false);
+        AudioManager.Instance.StopUI(UISound.SkeletonTalk);
     }
 
     IEnumerator DisplayTextCoroutine()
     {
-        if(!currentText.Equals(endMessage) && skeletonAnim) skeletonAnim.SetBool("Talking", true);
+        if (!currentText.Equals(endMessage) && skeletonAnim)
+        {
+            skeletonAnim.SetBool("Talking", true);
+            AudioManager.Instance.PlayUI(UISound.SkeletonTalk);
+        }
         while (charIdx <= currentText.Length)
         {
             yield return new WaitForSeconds(CHAR_APPEAR_INTERVAL * textAppearSpeed);

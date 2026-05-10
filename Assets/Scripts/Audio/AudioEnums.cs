@@ -24,7 +24,8 @@ public enum UISound
     ChangeCult,
     FlipPage,
     DissolveOut,
-    DissolveIn
+    DissolveIn,
+    SkeletonTalk
 }
 
 public enum GameSound

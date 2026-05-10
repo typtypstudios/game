@@ -80,11 +80,13 @@ public class AudioManager : Singleton<AudioManager>
     private SFXPool sfxPool;
     private SFXPool uiPool;
     private MusicPlayer music;
+    private Dictionary<UISound, AudioSource> uiDedicatedSources;
     private Dictionary<UISound, UISoundEntry> uiMap;
     private Dictionary<MusicTrack, MusicEntry> musicMap;
     private Dictionary<CountdownSound, CountdownSoundEntry> countdownMap;
     private Dictionary<CultSound, CultSoundEntry> cultMap;
     private Dictionary<GameSound, GameSoundEntry> gameMap;
+    private Dictionary<UISound, Coroutine> uiFadeCoroutines;
 
     public AudioMixerGroup ChoirGroup => choirGroup;
     public AudioMixerGroup KeyGroup => keyGroup;
@@ -108,11 +110,29 @@ public class AudioManager : Singleton<AudioManager>
     private void BuildUiMap()
     {
         uiMap = new Dictionary<UISound, UISoundEntry>();
+        uiDedicatedSources = new Dictionary<UISound, AudioSource>();
+        uiFadeCoroutines = new Dictionary<UISound, Coroutine>();
+
         if (uiSounds == null) return;
+
         foreach (var entry in uiSounds)
         {
             if (entry == null || entry.clip == null) continue;
+
             uiMap[entry.id] = entry;
+
+            AudioSource source = gameObject.AddComponent<AudioSource>();
+            source.clip = entry.clip;
+            source.volume = entry.volume;
+            source.outputAudioMixerGroup = uiGroup;
+            source.playOnAwake = false;
+
+            if (entry.id == UISound.SkeletonTalk)
+            {
+                source.loop = true;
+            }
+
+            uiDedicatedSources[entry.id] = source;
         }
     }
 
@@ -184,10 +204,66 @@ public class AudioManager : Singleton<AudioManager>
     public void PlayUI(UISound id)
     {
         if (id == UISound.None) return;
-        if (uiMap.TryGetValue(id, out var entry))
-            uiPool.PlayOneShot(entry.clip, entry.volume);
+
+        if (uiDedicatedSources.TryGetValue(id, out var source))
+        {
+            if (uiMap.TryGetValue(id, out var entry))
+            {
+                source.volume = entry.volume;
+            }
+            if (uiFadeCoroutines.TryGetValue(id, out var coroutine) && coroutine != null)
+            {
+                StopCoroutine(coroutine);
+                uiFadeCoroutines[id] = null;
+            }
+            if (source.loop && source.isPlaying) return;
+            source.Play();
+        }
         else
+        {
             Debug.LogWarning($"[AudioManager] UISound '{id}' no está mapeado.");
+        }
+    }
+
+    public void StopUI(UISound id, float fadeDuration = 0.05f)
+    {
+        if (id == UISound.None) return;
+
+        if (uiDedicatedSources.TryGetValue(id, out var source))
+        {
+            if (id == UISound.SkeletonTalk && source.isPlaying && source.gameObject.activeInHierarchy)
+            {
+                if (uiFadeCoroutines.TryGetValue(id, out var currentCoroutine) && currentCoroutine != null)
+                {
+                    StopCoroutine(currentCoroutine);
+                }
+                uiFadeCoroutines[id] = StartCoroutine(FadeOutUI(id, source, fadeDuration));
+            }
+            else
+            {
+                source.Stop();
+            }
+        }
+    }
+
+    private IEnumerator FadeOutUI(UISound id, AudioSource source, float duration)
+    {
+        float startVolume = source.volume;
+        float time = 0;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            source.volume = Mathf.Lerp(startVolume, 0f, time / duration);
+            yield return null;
+        }
+
+        source.Stop();
+
+        if (uiFadeCoroutines.ContainsKey(id))
+        {
+            uiFadeCoroutines[id] = null;
+        }
     }
 
     public void PlayCountdown(CountdownSound id)
