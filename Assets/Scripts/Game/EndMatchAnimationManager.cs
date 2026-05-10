@@ -17,10 +17,11 @@ public class EndMatchAnimationManager : MonoBehaviour
         CanvasTransitionManager.OnDissolved -= OnDissolve;
     }
 
-    public void HandleEndMatch(bool isUserWinner)
+    public void HandleEndMatch(bool isUserWinner, MatchEndReason reason)
     {
         FindFirstObjectByType<CanvasTransitionManager>().FadeOut();
         Invoke(nameof(GoToResults), showResultsDelay);
+        if (reason == MatchEndReason.Disconnection) return;
         ConfigureCam(transitionCanvasNewDist);
         HandlePlayer(Player.User, isUserWinner, true);
         HandlePlayer(Player.Enemy, !isUserWinner, false);

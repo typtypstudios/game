@@ -341,20 +341,9 @@ public class MatchManager : NetworkBehaviour
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
         endGameCanvas.ShowEndMatch(isWinner, reason);
-        if (TryGetComponent(out EndMatchAnimationManager e)) e.HandleEndMatch(isWinner);
-        //SpawnLocalPlayerCopy(Player.User);
-        //SpawnLocalPlayerCopy(Player.Enemy);
+        if (TryGetComponent(out EndMatchAnimationManager e)) e.HandleEndMatch(isWinner, reason);
         // Handshake de finalización
         NotifyEndHandledServerRpc();
-    }
-
-    private void SpawnLocalPlayerCopy(Player player)
-    {
-        GameObject copy = Instantiate(player.gameObject,
-            player.transform.position,
-            player.transform.rotation);
-        Destroy(copy.GetComponent<NetworkObject>());
-        player.gameObject.SetActive(false);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -494,6 +483,8 @@ public class MatchManager : NetworkBehaviour
         NetworkManager.Singleton.Shutdown();
 
         endGameCanvas.ShowEndMatch(haveInternet, MatchEndReason.Disconnection);
+        if (TryGetComponent(out EndMatchAnimationManager e)) 
+            e.HandleEndMatch(haveInternet, MatchEndReason.Disconnection);
     }
 
     private IEnumerator DelayedLobbyShutdown(float delay)
