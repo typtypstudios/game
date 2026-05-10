@@ -67,9 +67,9 @@ public class CursorManager : Singleton<CursorManager>
         List<RaycastResult> results = new();
         EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current)
             { position = hoverRT.position }, results);
-        foreach (var result in results)
+        if (results.Count > 0)
         {
-            Selectable s = result.gameObject.GetComponentInParent<Selectable>();
+            Selectable s = results[0].gameObject.GetComponentInParent<Selectable>();
             if (s && s.interactable)
             {
                 UpdateState(true);

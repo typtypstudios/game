@@ -264,14 +264,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 7427603092274400110}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &2195776658267963408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,7 +503,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 7064828586207197524}
   m_OnClick:
     m_PersistentCalls:
@@ -571,14 +571,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 7064828586207197524}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &6702634505139139448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,14 +857,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 1067839989503999409}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &824297028998198847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1214,7 +1214,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 9152742509496077974}
   m_OnClick:
     m_PersistentCalls:
@@ -1282,14 +1282,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 9152742509496077974}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &4796827866678182614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1568,14 +1568,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 3539626508594259130}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &4644487407088898649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1808,7 +1808,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 4333779503588123538}
   m_OnClick:
     m_PersistentCalls:
@@ -1876,14 +1876,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 4333779503588123538}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &3264801008125427563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2116,7 +2116,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 3477306758319698122}
   m_OnClick:
     m_PersistentCalls:
@@ -2184,14 +2184,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 3477306758319698122}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &783890030609112727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2470,14 +2470,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 3904131049883249161}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &4514486488431869153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2756,14 +2756,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 7122360260545320013}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &8280106202521621501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3106,14 +3106,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 7745696588055088322}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &6617615105504148783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3349,7 +3349,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3815539966792406689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3623,7 +3623,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 9063323771612691632}
   m_OnClick:
     m_PersistentCalls:
@@ -3691,14 +3691,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 9063323771612691632}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &5617168304578444652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3977,14 +3977,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 1192104131462448659}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &1635804456170280754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4328,14 +4328,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 5015342116838628439}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &5351368515122311849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4677,14 +4677,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 2501932715234568457}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &3362948599576414486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4963,14 +4963,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 8359058801354035279}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &4580373229686664016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5249,14 +5249,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 4618543249467598907}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &1882979608238450195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5618,7 +5618,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 3155218369701810139}
   m_OnClick:
     m_PersistentCalls:
@@ -5686,14 +5686,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 3155218369701810139}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &5496705133791187111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5926,7 +5926,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 2735013605854419996}
   m_OnClick:
     m_PersistentCalls:
@@ -5994,14 +5994,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 2735013605854419996}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &4674341656386425126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6280,14 +6280,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 8355214552498806765}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &602360946892657914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6520,7 +6520,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1273675948737415373}
   m_OnClick:
     m_PersistentCalls:
@@ -6588,14 +6588,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 1273675948737415373}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &7779144623916289262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6874,14 +6874,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TypTyp.TextSystem.Typable.TMPTypableView
   tmp: {fileID: 1004236785528088298}
-  stylePreset: {fileID: 11400000, guid: bcc0449977c2331469546ac542006e6f, type: 2}
+  stylePreset: {fileID: 11400000, guid: d229bef6a5f93ed4594cf9f6d6f67b34, type: 2}
   StyleConfig:
     CorrectColor: {r: 0, g: 0, b: 0, a: 0}
     WrongColor: {r: 1, g: 0, b: 0, a: 1}
     UnderlineNext: 1
     RandomizeCorrectColorOnComplete: 0
     isAbleToShowSpaces: 0
-    resetTime: 0.5
+    resetTime: 100000000
 --- !u!114 &3148499899732134154
 MonoBehaviour:
   m_ObjectHideFlags: 0
