@@ -49,6 +49,7 @@ public class UIBar : MonoBehaviour, IFillableBar
 
     public virtual void UpdateValue(float oldValue, float newValue)
     {
+        if (!bar || !filler) return;
         StopAllCoroutines();
         float normalizedValue = newValue / MaxValue;
         StartCoroutine(UpdateBarCorroutine(normalizedValue));
@@ -57,6 +58,7 @@ public class UIBar : MonoBehaviour, IFillableBar
 
     public virtual void SetValueWithoutTransition(float value)
     {
+        if (!bar || !filler) return;
         StopAllCoroutines();
         float normalizedValue = value / MaxValue;
         BackgroundAmount = normalizedValue;
