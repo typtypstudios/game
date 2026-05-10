@@ -257,8 +257,7 @@ MonoBehaviour:
   hoverSizeMult: 1
   highlightColorAddition: 0
   cardVisualPresenter: {fileID: 1183715168696632819}
-  presenterBorderImage: {fileID: 2745889237770511266}
-  presenterBorderEmissionForce: 1
+  cardView: {fileID: 0}
   interpolationTime: 0.1
   lastSiblingIfSelected: 1
 --- !u!1 &8484314843680938315
@@ -424,6 +423,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card_Visualizer_Grimoire
       objectReference: {fileID: 0}
+    - target: {fileID: 2344713601130310565, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
+      propertyPath: m_Spacing
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 3160467555292795278, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -504,26 +507,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -25.599998
-      objectReference: {fileID: 0}
-    - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 1.49
-      objectReference: {fileID: 0}
-    - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.47000122
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -540,17 +523,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e309bd79a46fa4ab2c4445b3b336d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardVisualPresenter
---- !u!114 &2745889237770511266 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7460670100496519077, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-  m_PrefabInstance: {fileID: 4725054855118859271}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!224 &7660332850021399945 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3160467555292795278, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}

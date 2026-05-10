@@ -1108,6 +1108,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card_Visualizer_Grimoire
       objectReference: {fileID: 0}
+    - target: {fileID: 2344713601130310565, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
+      propertyPath: m_Spacing
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3160467555292795278, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1187,30 +1191,6 @@ PrefabInstance:
     - target: {fileID: 3160467555292795278, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4116432340831585011, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_Spacing
-      value: 3.23
-      objectReference: {fileID: 0}
-    - target: {fileID: 7460670100496519077, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -92
-      objectReference: {fileID: 0}
-    - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 4.99
-      objectReference: {fileID: 0}
-    - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7735369237184259621, guid: 6a724536ce3fe324e994d8f7647f2ee4, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -1.8700027
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

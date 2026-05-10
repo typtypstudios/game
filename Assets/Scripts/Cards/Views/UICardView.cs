@@ -11,8 +11,8 @@ public class UICardView : MonoBehaviour, ICardView
 
     [Header("Orbs")]
     [SerializeField] private Transform orbContainer;
-    [SerializeField] private Image orbPrefab;
-    [SerializeField] private List<Image> orbs = new();
+    [SerializeField] private GameObject orbPrefab;
+    [SerializeField] private List<GameObject> orbs = new();
 
     public Image Details => levelDetailImage;
     public Image Border => frameImage;
@@ -102,8 +102,9 @@ public class UICardView : MonoBehaviour, ICardView
             }
 
             bool isFilled = i < state.FilledOrbCount;
-            orb.sprite = isFilled ? state.FilledOrbSprite : state.EmptyOrbSprite;
-            orb.color = state.CardTint;
+            var img = orb.GetComponentInChildren<Image>(true);
+            img.sprite = isFilled ? state.FilledOrbSprite : state.EmptyOrbSprite;
+            img.color = state.CardTint;
         }
     }
 

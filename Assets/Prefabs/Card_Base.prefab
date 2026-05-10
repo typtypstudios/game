@@ -32,10 +32,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5542687155621851250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 125, y: 191}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8897097709104616425
 CanvasRenderer:
@@ -84,7 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 895694827737319385}
-  - component: {fileID: 6779933403955880719}
+  - component: {fileID: 5169482001594190425}
   m_Layer: 5
   m_Name: Card_Cost_Container
   m_TagString: Untagged
@@ -106,12 +106,12 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5542687155621851250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0.38, y: 0.95336795}
+  m_AnchorMax: {x: 0.62, y: 0.98963726}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 49, y: 12}
-  m_Pivot: {x: 0.5, y: 1}
---- !u!114 &6779933403955880719
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5169482001594190425
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,16 +124,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
   m_Padding:
-    m_Left: 7
-    m_Right: 7
+    m_Left: 0
+    m_Right: 0
     m_Top: 0
-    m_Bottom: 2
+    m_Bottom: 0
   m_ChildAlignment: 4
   m_Spacing: 1
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
-  m_ChildControlHeight: 0
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -169,10 +169,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5542687155621851250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 127, y: 193}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5786042187992360309
 CanvasRenderer:
@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 5542687155621851250}
   - component: {fileID: 3947416148774324232}
   - component: {fileID: 2344851330479196127}
+  - component: {fileID: 3183465754616469605}
   m_Layer: 5
   m_Name: Card_Base
   m_TagString: Untagged
@@ -248,10 +249,10 @@ RectTransform:
   - {fileID: 895694827737319385}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 127, y: 193}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3947416148774324232
 MonoBehaviour:
@@ -283,8 +284,22 @@ MonoBehaviour:
   frameImage: {fileID: 53540756040920665}
   levelDetailImage: {fileID: 3544964748653941652}
   orbContainer: {fileID: 895694827737319385}
-  orbPrefab: {fileID: 6636262571685488333, guid: bfe8022e3e5fc374fa05acb9aa2815b5, type: 3}
+  orbPrefab: {fileID: 1342864491401908807, guid: bfe8022e3e5fc374fa05acb9aa2815b5, type: 3}
   orbs: []
+--- !u!114 &3183465754616469605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7861897830341111756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.AspectRatioFitter
+  m_AspectMode: 3
+  m_AspectRatio: 0.6580311
 --- !u!1 &8808641599806850650
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,10 +332,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5542687155621851250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 127, y: 193}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1447888830241599094
 CanvasRenderer:
