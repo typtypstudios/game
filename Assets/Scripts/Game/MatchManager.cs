@@ -49,6 +49,7 @@ public class MatchManager : NetworkBehaviour
     // Eventos
     public static event Action OnMatchStarted;
     public static event Action OnMatchEnded;
+    public static event Action OnClientReadyForCountown;
     public static event Action OnCountdownStarted;
 
     // Referencia al canvas de inicio y final de la partida
@@ -68,6 +69,7 @@ public class MatchManager : NetworkBehaviour
     float startCountdownAmount = 5.0f;
 
     private bool lobbyShutdownRequested = false;
+    private bool endMatchPresented = false;
 
     private void Awake()
     {
@@ -124,7 +126,7 @@ public class MatchManager : NetworkBehaviour
 
         if (sceneReadyClients.Count == MaxPlayers && matchState == MatchState.WaitingPlayers)
         {
-            _ = FindFirstObjectByType<LobbyManager>().UpdateLobbyState("starting");
+            _ = FindFirstObjectByType<LobbyManager>().UpdateLobbyState("starting", locked: true);
             matchState = MatchState.ConfiguringPlayers;
 
             setupStates.Clear();
@@ -241,11 +243,19 @@ public class MatchManager : NetworkBehaviour
 
         Debug.Log($"CLIENT {NetworkManager.Singleton.LocalClientId}: Received StartMatchClientRpc");
 
+        // Esto hace que se quite el loading
+        OnClientReadyForCountown?.Invoke();
+
         bool isClient1 = NetworkManager.Singleton.LocalClientId == client1Id;
         string localPlayerName = isClient1 ? client1Name : client2Name;
         string enemyPlayerName = isClient1 ? client2Name : client1Name;
         Player.User.name = localPlayerName;
         Player.Enemy.name = enemyPlayerName;
+
+        // Cachear los gameobjects de los jugadores
+        if (TryGetComponent(out EndMatchAnimationManager endMgr))
+            endMgr.CachePlayerModels();
+
         startGameCanvas.ConfigureUsernames(localPlayerName, enemyPlayerName);
         startGameCanvas.AnimateImagesIn();
 
@@ -340,8 +350,8 @@ public class MatchManager : NetworkBehaviour
         OnMatchEnded?.Invoke(); // Player input manager está suscrito y desactiva el input
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
-        endGameCanvas.ShowEndMatch(isWinner, reason);
-        if (TryGetComponent(out EndMatchAnimationManager e)) e.HandleEndMatch(isWinner, reason);
+        PresentEndMatch(isWinner, reason);
+
         // Handshake de finalización
         NotifyEndHandledServerRpc();
     }
@@ -375,6 +385,13 @@ public class MatchManager : NetworkBehaviour
 
     private void OnClientDisconnected(ulong clientId)
     {
+        // Detatch de los gameobjects
+        if (TryGetComponent(out EndMatchAnimationManager endMgrDetach))
+        {
+            // Hacer el detach de los gameobjects antes de eliminar cualquier cosa
+            endMgrDetach.DetachCachedModels();
+        }
+
         // Host side
         if (IsServer)
         {
@@ -384,7 +401,7 @@ public class MatchManager : NetworkBehaviour
                 {
                     matchState = MatchState.Finished;
                     OnMatchEnded?.Invoke();
-                    endGameCanvas.ShowEndMatch(false, MatchEndReason.Disconnection);
+                    PresentEndMatch(false, MatchEndReason.Disconnection);
                 }
                 RequestLobbyShutdown();
                 return;
@@ -462,7 +479,7 @@ public class MatchManager : NetworkBehaviour
         else
         {
             OnMatchEnded?.Invoke();
-            endGameCanvas.ShowEndMatch(false, MatchEndReason.Disconnection);
+            PresentEndMatch(false, MatchEndReason.Disconnection);
 
             RequestLobbyShutdown();
             NetworkManager.Singleton.Shutdown();
@@ -471,6 +488,7 @@ public class MatchManager : NetworkBehaviour
 
     private IEnumerator ResolveClientDisconnect()
     {
+        if (matchState == MatchState.Finished) yield break;
         matchState = MatchState.Finished;
         OnMatchEnded?.Invoke();
 
@@ -482,9 +500,24 @@ public class MatchManager : NetworkBehaviour
 
         NetworkManager.Singleton.Shutdown();
 
-        endGameCanvas.ShowEndMatch(haveInternet, MatchEndReason.Disconnection);
-        if (TryGetComponent(out EndMatchAnimationManager e)) 
-            e.HandleEndMatch(haveInternet, MatchEndReason.Disconnection);
+        PresentEndMatch(haveInternet, MatchEndReason.Disconnection);
+    }
+
+    // Funcion para gestionar la finalización de partida
+    private void PresentEndMatch(bool isWinner, MatchEndReason reason)
+    {
+        if (endMatchPresented) return;
+        endMatchPresented = true;
+
+        endGameCanvas.ShowEndMatch(isWinner, reason);
+        if (TryGetComponent(out EndMatchAnimationManager e))
+        {
+            e.HandleEndMatch(isWinner, reason);
+        }
+        else
+        {
+            Debug.LogWarning("No se encontró el EndMatchAnimationManager");
+        }
     }
 
     private IEnumerator DelayedLobbyShutdown(float delay)

@@ -30,12 +30,21 @@ public class LobbyManager : MonoBehaviour
     private CancellationTokenSource lifetimeCts;
 
     public event Action OnLobbyLost;
+    public event Action OnNetworkDisconnected;
     private CancellationTokenSource clientPollCts;
+    private readonly LobbyEventsHandler lobbyEventsHandler = new LobbyEventsHandler();
+
+    public enum MatchmakingPhase { Idle, Searching, JoiningOrCreating, Connected }
+    private MatchmakingPhase phase = MatchmakingPhase.Idle;
+    public MatchmakingPhase Phase => phase;
 
     public bool CanCancel
     {
         get
         {
+            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsHost
+                && NetworkManager.Singleton.ConnectedClients.Count >= MaxPlayers) return false;
+
             if (currentLobby == null) return true;
             if (currentLobby.IsLocked) return false;
             if (currentLobby.Players != null && currentLobby.Players.Count >= MaxPlayers) return false;
@@ -47,6 +56,7 @@ public class LobbyManager : MonoBehaviour
     async void Awake()
     {
         lifetimeCts = new CancellationTokenSource();
+        phase = MatchmakingPhase.Idle;
 
         await InitializeServices();
         if (lifetimeCts.IsCancellationRequested) return;
@@ -77,12 +87,34 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += HandleNetworkDisconnect;
+        }
+    }
+
+    private void HandleNetworkDisconnect(ulong clientId)
+    {
+        if (NetworkManager.Singleton == null) return;
+        if (phase != MatchmakingPhase.Connected) return;
+
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            OnNetworkDisconnected?.Invoke();
+        }
+    }
+
+
+
     // Método público para hacer "Quick Play"
     // Busca una lobby existente o crea una nueva si no hay ninguna
     public async Task SearchLobby()
     {
         if (isMatching) return;
         isMatching = true;
+        phase = MatchmakingPhase.Searching;
 
         var token = lifetimeCts?.Token ?? CancellationToken.None;
 
@@ -97,6 +129,7 @@ public class LobbyManager : MonoBehaviour
             for (int i = 0; i < 5; ++i)
             {
                 if (token.IsCancellationRequested) return;
+                phase = MatchmakingPhase.Searching;
 
                 try
                 {
@@ -105,14 +138,14 @@ public class LobbyManager : MonoBehaviour
                         {
                             Filters = new List<QueryFilter>
                             {
-                            new QueryFilter(
-                                QueryFilter.FieldOptions.AvailableSlots,
-                                "0",
-                                QueryFilter.OpOptions.GT),
-                            new QueryFilter(
-                                QueryFilter.FieldOptions.S1,
-                                "waiting",
-                                QueryFilter.OpOptions.EQ)
+                                new QueryFilter(
+                                    QueryFilter.FieldOptions.AvailableSlots,
+                                    "0",
+                                    QueryFilter.OpOptions.GT),
+                                new QueryFilter(
+                                    QueryFilter.FieldOptions.S1,
+                                    "waiting",
+                                    QueryFilter.OpOptions.EQ)
                             }
                         });
 
@@ -148,7 +181,7 @@ public class LobbyManager : MonoBehaviour
                     try { await Task.Delay(1000, token); }
                     catch (OperationCanceledException) { return; }
                 }
-            }// End for
+            } // End for
 
             if (token.IsCancellationRequested) return;
 
@@ -160,16 +193,36 @@ public class LobbyManager : MonoBehaviour
         finally
         {
             isMatching = false;
+            // Marcar que se vuelve a la phase idle en caso de no encontrar
+            if (phase != MatchmakingPhase.Connected)
+                phase = MatchmakingPhase.Idle;
         }
     }
 
     // Crea una lobby y configura Relay como host
     async Task<bool> CreateLobby()
     {
+        // Marcar que está uniendose o creando
+        phase = MatchmakingPhase.JoiningOrCreating;
+        var token = lifetimeCts?.Token ?? CancellationToken.None;
+
         try
         {
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(MaxPlayers - 1, "europe-west4");
+
+            if (token.IsCancellationRequested)
+            {
+                phase = MatchmakingPhase.Idle;
+                return false;
+            }
+
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+
+            if (token.IsCancellationRequested)
+            {
+                phase = MatchmakingPhase.Idle;
+                return false;
+            }
 
             var playerData = new Dictionary<string, PlayerDataObject>
             {
@@ -196,32 +249,61 @@ public class LobbyManager : MonoBehaviour
             };
 
             currentLobby = await LobbyService.Instance.CreateLobbyAsync("Lobby", MaxPlayers, options);
+
+            // Otra comprobación por si acaso
+            if (token.IsCancellationRequested)
+            {
+                try { await LobbyService.Instance.DeleteLobbyAsync(currentLobby.Id); }
+                catch (Exception e) { Debug.LogWarning("Cleanup delete failed: " + e.Message); }
+                currentLobby = null;
+                phase = MatchmakingPhase.Idle;
+                return false;
+            }
+
             ConfigureTransport(allocation);
+            await lobbyEventsHandler.Subscribe(currentLobby.Id, ApplyLobbyChanges, HandleLobbyLost);
+
+            if (token.IsCancellationRequested)
+            {
+                await CloseLobyAndShutdown();
+                phase = MatchmakingPhase.Idle;
+                return false;
+            }
 
             if (!NetworkManager.Singleton.StartHost())
             {
                 Debug.LogWarning("Failed to start host");
                 await CloseLobyAndShutdown();
+                phase = MatchmakingPhase.Searching;
                 return false;
             }
 
-            await Task.Delay(2000);
+            try { await Task.Delay(2000, token); }
+            catch (OperationCanceledException)
+            {
+                await CloseLobyAndShutdown();
+                phase = MatchmakingPhase.Idle;
+                return false;
+            }
 
             bool stillHost = await ResolveHostConflict();
             if (!stillHost)
             {
-                return false; // perdió el conflicto reintentar
+                phase = MatchmakingPhase.Searching;
+                return false; // perdió el conflicto, reintentar
             }
 
-            Debug.Log("Uniendose a un lobby como host");
+            Debug.Log("Uniendose a un lobby como HOST");
             InvokeRepeating(nameof(SendHeartbeatWrapper), heartbeatInterval, heartbeatInterval);
 
+            phase = MatchmakingPhase.Connected;
             return true; // éxito
         }
         catch (Exception e)
         {
             Debug.LogWarning("CreateLobby failed: " + e);
             await CloseLobyAndShutdown();
+            phase = MatchmakingPhase.Searching;
             return false;
         }
     }
@@ -235,27 +317,18 @@ public class LobbyManager : MonoBehaviour
     async Task<bool> ResolveHostConflict()
     {
         QueryResponse query = await LobbyService.Instance.QueryLobbiesAsync(
-        new QueryLobbiesOptions
-        {
-            Filters = new List<QueryFilter>
+            new QueryLobbiesOptions
             {
-                new QueryFilter(
-                    QueryFilter.FieldOptions.AvailableSlots,
-                    "0",
-                    QueryFilter.OpOptions.GT),
+                Filters = new List<QueryFilter>
+                {
+                new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT),
+                new QueryFilter(QueryFilter.FieldOptions.S1, "waiting", QueryFilter.OpOptions.EQ)
+                }
+            });
 
-                new QueryFilter(
-                    QueryFilter.FieldOptions.S1,
-                    "waiting",
-                    QueryFilter.OpOptions.EQ)
-            }
-        });
-
-        if (query.Results.Count <= 1)
-            return true;
+        if (query.Results.Count <= 1) return true;
 
         query.Results.Sort((a, b) => string.Compare(a.Id, b.Id, StringComparison.Ordinal));
-
         Lobby winningLobby = query.Results[0];
 
         if (currentLobby == null)
@@ -264,15 +337,23 @@ public class LobbyManager : MonoBehaviour
             return false;
         }
 
-        // Decide si se queda o se va del lobby
         if (currentLobby.Id != winningLobby.Id)
         {
+            // No abandonar si ya hay clientes
+            bool hasLobbyClients = currentLobby.Players != null && currentLobby.Players.Count >= 2;
+            bool hasNetClients = NetworkManager.Singleton != null
+                                 && NetworkManager.Singleton.IsHost
+                                 && NetworkManager.Singleton.ConnectedClients.Count > 1;
+
+            if (hasLobbyClients || hasNetClients)
+            {
+                Debug.Log("Perdemos por ID pero ya tenemos clientes. Mantenemos este lobby vivo.");
+                return true;
+            }
+
             Debug.Log("ABANDONANDO ESTE LOBBY");
-
             await CloseLobyAndShutdown();
-
             await Task.Delay(500);
-
             return false;
         }
 
@@ -282,48 +363,76 @@ public class LobbyManager : MonoBehaviour
     // Se une a una lobby existente y configura Relay como cliente
     async Task<bool> JoinLobby(Lobby lobby)
     {
+        phase = MatchmakingPhase.JoiningOrCreating;
+        var token = lifetimeCts?.Token ?? CancellationToken.None;
+
         try
         {
             var playerData = new Dictionary<string, PlayerDataObject>
             {
-                {
-                    "sessionId",
-                    new PlayerDataObject(
-                        PlayerDataObject.VisibilityOptions.Member,
-                        AuthenticationService.Instance.PlayerId)
-                }
+                { "sessionId", new PlayerDataObject(
+                    PlayerDataObject.VisibilityOptions.Member,
+                    AuthenticationService.Instance.PlayerId) }
             };
 
             currentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(
-                lobby.Id,
-                new JoinLobbyByIdOptions
-                {
-                    Player = new LobbyPlayer(data: playerData)
-                });
+                lobby.Id, new JoinLobbyByIdOptions { Player = new LobbyPlayer(data: playerData) });
+
+            if (token.IsCancellationRequested)
+            {
+                await SafeRemoveSelf(currentLobby);
+                currentLobby = null;
+                phase = MatchmakingPhase.Idle;
+                return false;
+            }
+
+            if (currentLobby != null && currentLobby.Players != null && currentLobby.Players.Count > MaxPlayers)
+            {
+                await SafeRemoveSelf(currentLobby);
+                currentLobby = null;
+                phase = MatchmakingPhase.Searching;
+                return false;
+            }
 
             if (currentLobby == null || !currentLobby.Data.ContainsKey("joinCode"))
             {
-                Debug.LogWarning("Invalid lobby data");
                 await CloseLobyAndShutdown();
+                phase = MatchmakingPhase.Searching;
                 return false;
             }
 
             string joinCode = currentLobby.Data["joinCode"].Value;
-
             JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
+            if (token.IsCancellationRequested)
+            {
+                await SafeRemoveSelf(currentLobby);
+                currentLobby = null;
+                phase = MatchmakingPhase.Idle;
+                return false;
+            }
+
             ConfigureTransport(allocation);
+            await lobbyEventsHandler.Subscribe(currentLobby.Id, ApplyLobbyChanges, HandleLobbyLost);
+
+            if (token.IsCancellationRequested)
+            {
+                await CloseLobyAndShutdown();
+                phase = MatchmakingPhase.Idle;
+                return false;
+            }
 
             if (!NetworkManager.Singleton.StartClient())
             {
-                Debug.LogWarning("Failed to start client");
                 await CloseLobyAndShutdown();
+                phase = MatchmakingPhase.Searching;
                 return false;
             }
 
             StartClientLobbyPolling();
-            Debug.Log("Uniendose a un lobby como cliente");
-            return true; // éxito
+            Debug.Log("Uniendose a un lobby como CLIENTE");
+            phase = MatchmakingPhase.Connected;
+            return true;
         }
         catch (LobbyServiceException e) when (e.Reason == LobbyExceptionReason.LobbyConflict)
         {
@@ -331,7 +440,6 @@ public class LobbyManager : MonoBehaviour
 
             try
             {
-                // intentar salir de este lobby
                 await LobbyService.Instance.RemovePlayerAsync(lobby.Id, AuthenticationService.Instance.PlayerId);
                 Debug.Log("Salida forzada exitosa. El bucle de búsqueda intentará con otra lobby o creará una.");
             }
@@ -341,14 +449,27 @@ public class LobbyManager : MonoBehaviour
             }
 
             currentLobby = null;
+            phase = MatchmakingPhase.Searching;
             return false;
         }
         catch (Exception e)
         {
             Debug.LogWarning("JoinLobby failed: " + e);
             await CloseLobyAndShutdown();
+            phase = MatchmakingPhase.Searching;
             return false;
         }
+    }
+
+    private async Task SafeRemoveSelf(Lobby lobby)
+    {
+        if (lobby == null) return;
+        try
+        {
+            await LobbyService.Instance.RemovePlayerAsync(
+                lobby.Id, AuthenticationService.Instance.PlayerId);
+        }
+        catch (Exception e) { Debug.LogWarning("SafeRemoveSelf failed: " + e.Message); }
     }
 
     // Configura UnityTransport con datos de Relay
@@ -392,13 +513,13 @@ public class LobbyManager : MonoBehaviour
                     IsLocked = locked,
                     Data = new Dictionary<string, DataObject>
                     {
-                    {
-                        "state",
-                        new DataObject(
-                            DataObject.VisibilityOptions.Public,
-                            newState,
-                            DataObject.IndexOptions.S1)
-                    }
+                        {
+                            "state",
+                            new DataObject(
+                                DataObject.VisibilityOptions.Public,
+                                newState,
+                                DataObject.IndexOptions.S1)
+                        }
                     }
                 });
         }
@@ -413,7 +534,7 @@ public class LobbyManager : MonoBehaviour
         CancelInvoke(nameof(SendHeartbeatWrapper));
         StopClientPolling();
 
-        bool wasHost = NetworkManager.Singleton != null && NetworkManager.Singleton.IsHost;
+        await lobbyEventsHandler.Unsubscribe();
 
         if (NetworkManager.Singleton != null &&
             (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient))
@@ -426,7 +547,9 @@ public class LobbyManager : MonoBehaviour
         {
             try
             {
-                if (wasHost)
+                bool isLobbyOwner = currentLobby.HostId == AuthenticationService.Instance.PlayerId;
+
+                if (isLobbyOwner)
                 {
                     await LobbyService.Instance.DeleteLobbyAsync(currentLobby.Id);
                 }
@@ -459,6 +582,7 @@ public class LobbyManager : MonoBehaviour
         }
 
         await CloseLobyAndShutdown();
+        phase = MatchmakingPhase.Idle;
         return true;
     }
 
@@ -479,7 +603,13 @@ public class LobbyManager : MonoBehaviour
                 await Task.Delay(3000, token);
                 if (token.IsCancellationRequested || currentLobby == null) return;
 
-                currentLobby = await LobbyService.Instance.GetLobbyAsync(currentLobby.Id);
+                Lobby polledLobby = await LobbyService.Instance.GetLobbyAsync(currentLobby.Id);
+
+                if (polledLobby.HostId == AuthenticationService.Instance.PlayerId)
+                {
+                    HandleLobbyLost();
+                    return;
+                }
             }
             catch (OperationCanceledException)
             {
@@ -487,14 +617,12 @@ public class LobbyManager : MonoBehaviour
             }
             catch (LobbyServiceException e) when (e.Reason == LobbyExceptionReason.LobbyNotFound)
             {
-                Debug.LogWarning("[Client] LobbyNotFound. Host left. Firing OnLobbyLost.");
-                currentLobby = null;
-                OnLobbyLost?.Invoke();
+                HandleLobbyLost();
                 return;
             }
             catch (Exception e)
             {
-                Debug.LogWarning($"[Client] Poll error: {e.Message}");
+                Debug.LogWarning($"Poll error: {e.Message}");
             }
         }
     }
@@ -509,9 +637,29 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    private void ApplyLobbyChanges(ILobbyChanges changes)
+    {
+        if (currentLobby == null) return;
+        changes.ApplyToLobby(currentLobby);
+    }
+
+
+    private void HandleLobbyLost()
+    {
+        currentLobby = null;
+        phase = MatchmakingPhase.Idle;
+        OnLobbyLost?.Invoke();
+    }
+
     private void OnDestroy()
     {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback -= HandleNetworkDisconnect;
+        }
+
         StopClientPolling();
+        _ = lobbyEventsHandler.Unsubscribe();
 
         if (lifetimeCts != null)
         {
@@ -519,5 +667,7 @@ public class LobbyManager : MonoBehaviour
             lifetimeCts.Dispose();
             lifetimeCts = null;
         }
+
+        phase = MatchmakingPhase.Idle;
     }
 }

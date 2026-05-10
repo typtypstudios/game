@@ -10,14 +10,20 @@ public class LoadingScreen : MonoBehaviour
     [SerializeField] private Button returnButton;
     [SerializeField] private WritableText message;
     [SerializeField] private LoadingMessage[] messages;
+
     private LobbyManager lobbyManager;
     private bool isReturning;
-    private bool lobbyLostSubscribed;
+    private bool transitioningToGame;
+    private bool lobbyEventsSubscribed;
+    private bool matchHasOccurred;
+
     private readonly Dictionary<LoadingMessageType, string> messageDictionary = new();
 
     void Awake()
     {
-        GameUIConfigurator.OnUIConfigurated += GoToGame;
+        MatchManager.OnClientReadyForCountown += GoToGame;
+        MatchManager.OnMatchStarted += MarkMatchStarted;
+
         foreach (var msg in messages)
         {
             messageDictionary.Add(msg.type, msg.message);
@@ -27,28 +33,67 @@ public class LoadingScreen : MonoBehaviour
     private void Start()
     {
         SetMessage(LoadingMessageType.Default);
-        lobbyManager = FindFirstObjectByType<LobbyManager>();
-        TrySubscribeLobbyLost();
+        TryFindAndSubscribeLobbyManager();
     }
 
     void Update()
     {
         if (returnButton == null || isReturning) return;
 
-        if (lobbyManager == null)
+        if (matchHasOccurred)
         {
-            lobbyManager = FindFirstObjectByType<LobbyManager>();
-            TrySubscribeLobbyLost();
+            if (returnButton.gameObject.activeSelf)
+                ToggleReturnButton(false);
+            return;
         }
 
-        if (lobbyManager != null && !lobbyManager.CanCancel)
-        { 
-            ToggleReturnButton(false);
+        if (lobbyManager == null)
+        {
+            TryFindAndSubscribeLobbyManager();
         }
+
+        if (lobbyManager != null)
+        {
+            bool shouldShow = lobbyManager.CanCancel;
+            if (returnButton.gameObject.activeSelf != shouldShow)
+                ToggleReturnButton(shouldShow);
+        }
+    }
+
+    private void TryFindAndSubscribeLobbyManager()
+    {
+        if (lobbyEventsSubscribed) return;
+
+        lobbyManager = FindFirstObjectByType<LobbyManager>();
+        if (lobbyManager != null)
+        {
+            lobbyManager.OnLobbyLost += OnConnectionLost;
+            lobbyManager.OnNetworkDisconnected += OnConnectionLost;
+            lobbyEventsSubscribed = true;
+        }
+    }
+
+    private void UnsubscribeLobbyEvents()
+    {
+        if (lobbyEventsSubscribed && lobbyManager != null)
+        {
+            lobbyManager.OnLobbyLost -= OnConnectionLost;
+            lobbyManager.OnNetworkDisconnected -= OnConnectionLost;
+            lobbyEventsSubscribed = false;
+        }
+    }
+
+    private void MarkMatchStarted()
+    {
+        matchHasOccurred = true;
+        if (returnButton != null && returnButton.gameObject.activeSelf)
+            ToggleReturnButton(false);
     }
 
     private void GoToGame()
     {
+        transitioningToGame = true;
+        UnsubscribeLobbyEvents();
         NavigationController controller = FindFirstObjectByType<NavigationController>();
         if (!controller)
         {
@@ -58,16 +103,11 @@ public class LoadingScreen : MonoBehaviour
         else controller.GoTo(Screens.Game, this.gameObject);
     }
 
-    private void TrySubscribeLobbyLost()
+    private void OnConnectionLost()
     {
-        if (lobbyLostSubscribed || lobbyManager == null) return;
-        lobbyManager.OnLobbyLost += OnLobbyLost;
-        lobbyLostSubscribed = true;
-    }
+        if (isReturning || transitioningToGame) return;
 
-    private void OnLobbyLost()
-    {
-        Debug.Log("LoadingScreen: lobby perdido. Forzando salida.");
+        Debug.Log("LoadingScreen: Conexión o Lobby perdida. Forzando salida.");
         ForceReturnToMainMenu();
     }
 
@@ -96,15 +136,13 @@ public class LoadingScreen : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameUIConfigurator.OnUIConfigurated -= GoToGame;
+        MatchManager.OnClientReadyForCountown -= GoToGame;
+        MatchManager.OnMatchStarted -= MarkMatchStarted;
 
-        if (lobbyLostSubscribed && lobbyManager != null)
-        {
-            lobbyManager.OnLobbyLost -= OnLobbyLost;
-        }
+        UnsubscribeLobbyEvents();
     }
 
-    public void SetMessage(LoadingMessageType type) 
+    public void SetMessage(LoadingMessageType type)
     {
         if (!messageDictionary.ContainsKey(type)) message.SetText("");
         else message.SetText(messageDictionary[type]);
@@ -117,7 +155,7 @@ public class LoadingScreen : MonoBehaviour
 
     public async void OnReturnButtonClicked()
     {
-        if (isReturning) return;
+        if (isReturning || matchHasOccurred) return;
 
         if (lobbyManager != null && !lobbyManager.CanCancel)
         {
