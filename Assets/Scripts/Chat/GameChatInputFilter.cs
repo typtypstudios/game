@@ -48,6 +48,7 @@ public class GameChatInputFilter : NetworkBehaviour
     private struct CastSpell { public string Name; public int Start; public int Length; }
     private List<CastSpell> castSpell = new();
     private List<CastSpell> castSpellRaw = new();
+    private Dictionary<int, Queue<string>> locallyTypedSpellsCache = new();
 
     // Lista para almacenar las cartas actuales en el grimorio y no crear una lista nueva
     // todo el rato
@@ -58,10 +59,32 @@ public class GameChatInputFilter : NetworkBehaviour
     {
         // Inicializar componentes y suscribir al evento de jugar carta
         deckController = GetComponent<DeckController>();
+
         deckController.OnCardPlayedEvent += HandleCardPlayed;
+        deckController.OnLocalSpellExactTCText += HandleLocalSpellTypedExact;
+        deckController.OnCardPlayRequestFailed += HandleCardPlayFailed;
+
         marker = new ChatMarkerFormatter();
 
         currentCardUIs = new List<(TypableController tc, CardUI ui)>(TypTyp.Settings.Instance.HandSize);
+    }
+
+    private void HandleCardPlayFailed(CardEventArgs args)
+    {
+        if (locallyTypedSpellsCache.TryGetValue(args.CardId, out var queue) && queue.Count > 0)
+        {
+            queue.Dequeue();
+        }
+    }
+
+    private void HandleLocalSpellTypedExact(int cardId, string exactText)
+    {
+        //Debug.Log("Exact text: " + exactText);
+        if (!locallyTypedSpellsCache.ContainsKey(cardId))
+        {
+            locallyTypedSpellsCache[cardId] = new Queue<string>();
+        }
+        locallyTypedSpellsCache[cardId].Enqueue(exactText);
     }
 
     public override void OnNetworkSpawn()
@@ -97,6 +120,13 @@ public class GameChatInputFilter : NetworkBehaviour
         if (!CardRegister.Instance.TryGetById(args.CardId, out CardDefinition cardDef)) return;
 
         string spellName = cardDef.Name;
+        
+        // Intentar ver si la carta estaba almacenada en la lista de cartas lanzadas con validación local
+        // En caso afirmativo, se dispone de su texto exacto con posibles procesamientos
+        if (locallyTypedSpellsCache.TryGetValue(args.CardId, out var queue) && queue.Count > 0)
+        {
+            spellName = queue.Dequeue();
+        }
         int cardNameL = spellName.Length;
 
         // Buscar la última aparición exacta en el texto filtrado
@@ -347,5 +377,17 @@ public class GameChatInputFilter : NetworkBehaviour
 
         fs.CopyFromTruncated(s);
         return fs;
+    }
+
+    public override void OnDestroy()
+    {
+        if (deckController)
+        {
+            deckController.OnCardPlayedEvent -= HandleCardPlayed;
+            deckController.OnLocalSpellExactTCText -= HandleLocalSpellTypedExact;
+            deckController.OnCardPlayRequestFailed -= HandleCardPlayFailed;
+        }
+
+        base.OnDestroy();
     }
 }
