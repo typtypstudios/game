@@ -11,27 +11,47 @@ public class RitualPresenter : MonoBehaviour
     [SerializeField] private TMP_Text[] texts;
     [SerializeField, Min(0.01f)] private float transitionTime = 0.2f;
     [SerializeField, Min(0.01f)] private float appearTime = 1.0f;
+    [SerializeField, Min(0.01f)] private float groupAppearTime = 1.0f;
     [SerializeField] private VerticalLayoutGroup textsLayoutGroup;
+    [SerializeField] private CanvasGroup textsGroup;
+    [SerializeField] private StartGameCanvas startGameCanvas;
 
     private RectTransform[] textRects;
     private readonly List<Vector2> initPositions = new();
     private CanvasGroup lastTextGroup;
     private bool initialized;
+    private Coroutine transitionCoroutine;
+    private Coroutine lastTextAppearCoroutine;
+    private Coroutine groupAppearCoroutine;
 
     void Awake()
     {
         if (ritualManager == null)
             ritualManager = GetComponentInChildren<RitualManager>(true);
 
+        if (textsGroup == null)
+            textsGroup = GetComponent<CanvasGroup>();
+
+        if (startGameCanvas == null)
+            startGameCanvas = FindFirstObjectByType<StartGameCanvas>();
+
+        SetTextsGroupAlpha(0f);
         ClearTexts();
     }
 
     void OnEnable()
     {
-        if (ritualManager == null) return;
+        if (ritualManager != null)
+        {
+            ritualManager.OnTextChanged += HandleTextChanged;
+            ritualManager.OnLineCompleted += HandleLineCompleted;
+        }
 
-        ritualManager.OnTextChanged += HandleTextChanged;
-        ritualManager.OnLineCompleted += HandleLineCompleted;
+        if (startGameCanvas == null)
+            startGameCanvas = FindFirstObjectByType<StartGameCanvas>();
+
+        if (startGameCanvas != null)
+            startGameCanvas.OnCountdownTick += HandleCountdownTick;
     }
 
     void Start()
@@ -41,11 +61,19 @@ public class RitualPresenter : MonoBehaviour
 
     void OnDisable()
     {
-        if (ritualManager == null) return;
+        if (ritualManager != null)
+        {
+            ritualManager.OnTextChanged -= HandleTextChanged;
+            ritualManager.OnLineCompleted -= HandleLineCompleted;
+        }
 
-        ritualManager.OnTextChanged -= HandleTextChanged;
-        ritualManager.OnLineCompleted -= HandleLineCompleted;
+        if (startGameCanvas != null)
+            startGameCanvas.OnCountdownTick -= HandleCountdownTick;
+
         StopAllCoroutines();
+        transitionCoroutine = null;
+        lastTextAppearCoroutine = null;
+        groupAppearCoroutine = null;
     }
 
     private void HandleTextChanged(string text)
@@ -58,9 +86,18 @@ public class RitualPresenter : MonoBehaviour
         PerformAnimation();
     }
 
+    private void HandleCountdownTick(int second)
+    {
+        if (second != 1 || ritualManager == null)
+            return;
+
+        ritualManager.PrepareRitualTexts();
+        StartGroupAppearAnimation();
+    }
+
     private void RefreshQueue()
     {
-        if (ritualManager == null || texts == null || !ritualManager.HasStarted)
+        if (ritualManager == null || texts == null || !ritualManager.HasPreparedTexts)
             return;
 
         for (int i = 1; i < texts.Length; i++)
@@ -109,9 +146,24 @@ public class RitualPresenter : MonoBehaviour
         InitializeLayout();
         if (!initialized) return;
 
-        StopAllCoroutines();
-        StartCoroutine(TransitionCoroutine());
-        StartCoroutine(LastTextAppearCoroutine());
+        if (transitionCoroutine != null)
+            StopCoroutine(transitionCoroutine);
+        if (lastTextAppearCoroutine != null)
+            StopCoroutine(lastTextAppearCoroutine);
+
+        transitionCoroutine = StartCoroutine(TransitionCoroutine());
+        lastTextAppearCoroutine = StartCoroutine(LastTextAppearCoroutine());
+    }
+
+    private void StartGroupAppearAnimation()
+    {
+        if (textsGroup == null)
+            return;
+
+        if (groupAppearCoroutine != null)
+            StopCoroutine(groupAppearCoroutine);
+
+        groupAppearCoroutine = StartCoroutine(GroupAppearCoroutine());
     }
 
     private IEnumerator TransitionCoroutine()
@@ -138,6 +190,7 @@ public class RitualPresenter : MonoBehaviour
         }
 
         textsLayoutGroup.enabled = true;
+        transitionCoroutine = null;
     }
 
     private IEnumerator LastTextAppearCoroutine()
@@ -152,5 +205,28 @@ public class RitualPresenter : MonoBehaviour
             lastTextGroup.alpha += speed * Time.deltaTime;
             yield return null;
         }
+
+        lastTextGroup.alpha = 1f;
+        lastTextAppearCoroutine = null;
+    }
+
+    private IEnumerator GroupAppearCoroutine()
+    {
+        SetTextsGroupAlpha(0f);
+        float speed = 1 / groupAppearTime;
+        while (textsGroup.alpha < 1.0f)
+        {
+            SetTextsGroupAlpha(textsGroup.alpha + speed * Time.deltaTime);
+            yield return null;
+        }
+
+        SetTextsGroupAlpha(1f);
+        groupAppearCoroutine = null;
+    }
+
+    private void SetTextsGroupAlpha(float alpha)
+    {
+        if (textsGroup != null)
+            textsGroup.alpha = Mathf.Clamp01(alpha);
     }
 }

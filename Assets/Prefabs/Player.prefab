@@ -2366,6 +2366,7 @@ GameObject:
   - component: {fileID: 2260052322681896606}
   - component: {fileID: 4548978627347393254}
   - component: {fileID: 3514727971150147135}
+  - component: {fileID: 734921864501772333}
   - component: {fileID: 1260990126122803118}
   m_Layer: 0
   m_Name: Ritual_Canvas
@@ -2457,6 +2458,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &734921864501772333
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3722723451963864444}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &1260990126122803118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2476,7 +2489,10 @@ MonoBehaviour:
   - {fileID: 539573767581524674}
   transitionTime: 0.2
   appearTime: 1
+  groupAppearTime: 1
   textsLayoutGroup: {fileID: 6531589668252879024}
+  textsGroup: {fileID: 734921864501772333}
+  startGameCanvas: {fileID: 0}
 --- !u!1 &4208740102075316087
 GameObject:
   m_ObjectHideFlags: 0

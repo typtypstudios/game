@@ -14,11 +14,13 @@ public class RitualManager : MonoBehaviour
     private int lastIdx;
     private string currentText = "";
     private bool ritualStarted;
+    private bool ritualTextsPrepared;
 
     public string CurrentText => currentText;
     public int CurrentLineIndex => numTextsCompleted;
     public int CompletedLines => numTextsCompleted;
     public bool HasStarted => ritualStarted;
+    public bool HasPreparedTexts => ritualTextsPrepared;
     public float Progress { get; private set; }
     private int TargetLineCount
     {
@@ -91,11 +93,19 @@ public class RitualManager : MonoBehaviour
     {
         if (ritualStarted) return;
 
+        PrepareRitualTexts();
         ritualStarted = true;
+        UpdateProgress();
+    }
+
+    public void PrepareRitualTexts()
+    {
+        if (ritualTextsPrepared) return;
+
+        ritualTextsPrepared = true;
         numTextsCompleted = 0;
         InitializeProcessedTextsCache();
         LoadCurrentLine();
-        UpdateProgress();
     }
 
     public void SetText(string text)
