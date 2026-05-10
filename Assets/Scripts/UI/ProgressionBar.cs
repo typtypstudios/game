@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using TypTyp.Cults;
 using UnityEngine;
@@ -13,11 +14,19 @@ public class ProgressionBar : MonoBehaviour
     [SerializeField] private TMP_Text nextLvlText;
     [SerializeField] private TMP_Text devotionPointsLeft;
     [SerializeField] private Image fillArea;
+    [Header("Animation:")]
+    [SerializeField] private float animSpeed = 0.1f;
     private string originalPointsLeftText;
 
     private void Awake()
     {
         originalPointsLeftText = devotionPointsLeft.text;
+        XPManager.Instance.OnXPUpdated += ProcessXPUpdate;
+    }
+
+    private void OnDestroy()
+    {
+        XPManager.Instance.OnXPUpdated -= ProcessXPUpdate;
     }
 
     public void DisplayXP(float xp)
@@ -33,5 +42,21 @@ public class ProgressionBar : MonoBehaviour
         maxLevelLabel.SetActive(lvl >= nextlvl);
         int pointsLeft = Mathf.RoundToInt((nextlvl - xp) * XPManager.Instance.XPPerRank);
         devotionPointsLeft.text = originalPointsLeftText.Replace("<value>", pointsLeft.ToString());
+    }
+
+    private void ProcessXPUpdate(float prevXP, float newXP)
+    {
+        StopAllCoroutines();
+        StartCoroutine(GainAnimationCoroutine(prevXP, newXP));
+    }
+
+    IEnumerator GainAnimationCoroutine(float prevXP, float nextXP)
+    {
+        while (prevXP != nextXP)
+        {
+            prevXP = Mathf.MoveTowards(prevXP, nextXP, Time.deltaTime * animSpeed);
+            DisplayXP(prevXP);
+            yield return null;
+        }
     }
 }

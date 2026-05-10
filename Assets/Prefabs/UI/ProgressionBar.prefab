@@ -109,6 +109,7 @@ MonoBehaviour:
   nextLvlText: {fileID: 6590617064960045675}
   devotionPointsLeft: {fileID: 4879391655899639054}
   fillArea: {fileID: 2556108066637141157}
+  animSpeed: 0.1
 --- !u!1 &1686087782359168648
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,7 +728,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0.19999996}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3452081974300405335
 CanvasRenderer:

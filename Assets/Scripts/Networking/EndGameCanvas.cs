@@ -1,4 +1,3 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -11,7 +10,6 @@ public class EndGameCanvas : MonoBehaviour, INavigationCtxReceiver
     [Header("XP Related")]
     [SerializeField] private TMP_Text earnedXPText;
     [SerializeField] private ProgressionBar progressionBar;
-    [SerializeField] private float animSpeed = 1;
     private bool isWinner;
 
     private void Awake()
@@ -47,7 +45,7 @@ public class EndGameCanvas : MonoBehaviour, INavigationCtxReceiver
 
     public void ReceiveContext(Screens prevScreen, bool isGoingBack, GameObject sender = null)
     {
-        CanvasTransitionManager.OnDissolved += ProcessVictory;
+        if(isWinner) CanvasTransitionManager.OnDissolved += ProcessVictory;
     }
 
     private void ProcessVictory()
@@ -88,21 +86,9 @@ public class EndGameCanvas : MonoBehaviour, INavigationCtxReceiver
 
     private void UpdateProgressionBar(float prevXP, float nextXP)
     {
-        StopAllCoroutines();
-        StartCoroutine(GainAnimationCoroutine(prevXP, nextXP));
-    }
-
-    IEnumerator GainAnimationCoroutine(float prevXP, float nextXP)
-    {
         int xpEarned = Mathf.RoundToInt((nextXP - prevXP) * XPManager.Instance.XPPerRank);
         Color pointsColor = RuntimeVariables.Instance.CurrentCult.Color;
         earnedXPText.text = earnedXPText.text.Replace("<points>",
             Utils.ApplyColorToText(xpEarned.ToString() + " Devotion Points", pointsColor));
-        while (prevXP != nextXP)
-        {
-            prevXP = Mathf.MoveTowards(prevXP, nextXP, Time.deltaTime * animSpeed);
-            progressionBar.DisplayXP(prevXP);
-            yield return null;
-        }
     }
 }
