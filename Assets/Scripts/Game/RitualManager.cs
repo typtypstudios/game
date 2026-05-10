@@ -9,7 +9,9 @@ public class RitualManager : MonoBehaviour
     private TypableController typableController;
     private ITextProvider textProvider;
     private ITextPipeline textPipeline;
-    private readonly List<string> processedTexts = new();
+    private StatusEffectController statusEffectController;
+    private readonly List<string> sourceTexts = new();
+    private readonly List<ProcessedTextCache> processedTexts = new();
     private int numTextsCompleted;
     private int lastIdx;
     private string currentText = "";
@@ -56,6 +58,7 @@ public class RitualManager : MonoBehaviour
         typableController = GetComponent<TypableController>();
         textProvider = GetComponentInParent<ITextProvider>();
         textPipeline = GetComponentInParent<ITextPipeline>();
+        statusEffectController = GetComponentInParent<StatusEffectController>();
         UnityEngine.Assertions.Assert.IsNotNull(typableController);
     }
 
@@ -71,6 +74,10 @@ public class RitualManager : MonoBehaviour
             textPipeline.ProcessorAdded += HandleTextPipelineChanged;
             textPipeline.ProcessorRemoved += HandleTextPipelineChanged;
         }
+        if (statusEffectController != null)
+        {
+            statusEffectController.OnEffectRefreshed.AddListener(HandleStatusEffectRefreshed);
+        }
     }
 
     void OnDisable()
@@ -85,6 +92,10 @@ public class RitualManager : MonoBehaviour
         {
             textPipeline.ProcessorAdded -= HandleTextPipelineChanged;
             textPipeline.ProcessorRemoved -= HandleTextPipelineChanged;
+        }
+        if (statusEffectController != null)
+        {
+            statusEffectController.OnEffectRefreshed.RemoveListener(HandleStatusEffectRefreshed);
         }
         MatchManager.OnMatchStarted -= StartRitual;
     }
@@ -129,15 +140,16 @@ public class RitualManager : MonoBehaviour
             return string.Empty;
 
         EnsureProcessedTextsCacheSize();
-        string text = processedTexts[index];
-        if (text != null)
-            return text;
+        string text = GetSourceText(index);
+        string processorKey = GetProcessorCacheKey(index);
+        ProcessedTextCache cached = processedTexts[index];
+        if (cached.IsValid && cached.ProcessorKey == processorKey)
+            return cached.Text;
 
-        text = textProvider.GetText(index) ?? string.Empty;
         if (textPipeline != null)
-            text = textPipeline.ProcessText(text);
+            text = textPipeline.ProcessText(text, processor => ShouldApplyProcessorToLine(processor, index));
 
-        processedTexts[index] = text;
+        processedTexts[index] = new ProcessedTextCache(text, processorKey);
         return text;
     }
 
@@ -199,6 +211,12 @@ public class RitualManager : MonoBehaviour
         OnTextChanged?.Invoke(currentText);
     }
 
+    private void HandleStatusEffectRefreshed(StatusEffect _)
+    {
+        InvalidateFutureProcessedTexts();
+        OnTextChanged?.Invoke(currentText);
+    }
+
     private void InvalidateFutureProcessedTexts()
     {
         if (processedTexts.Count == 0)
@@ -208,26 +226,107 @@ public class RitualManager : MonoBehaviour
         int endIndex = Mathf.Min(TargetLineCount, processedTexts.Count);
         for (int key = startIndex; key < endIndex; key++)
         {
-            processedTexts[key] = null;
+            processedTexts[key] = default;
         }
     }
 
     private void InitializeProcessedTextsCache()
     {
+        sourceTexts.Clear();
         processedTexts.Clear();
         int cacheSize = TargetLineCount;
         for (int i = 0; i < cacheSize; i++)
         {
-            processedTexts.Add(null);
+            sourceTexts.Add(null);
+            processedTexts.Add(default);
         }
     }
 
     private void EnsureProcessedTextsCacheSize()
     {
         int targetCount = TargetLineCount;
+        while (sourceTexts.Count < targetCount)
+        {
+            sourceTexts.Add(null);
+        }
         while (processedTexts.Count < targetCount)
         {
-            processedTexts.Add(null);
+            processedTexts.Add(default);
+        }
+    }
+
+    private string GetSourceText(int index)
+    {
+        string sourceText = sourceTexts[index];
+        if (sourceText != null)
+            return sourceText;
+
+        sourceText = textProvider.GetText(index) ?? string.Empty;
+        sourceTexts[index] = sourceText;
+        return sourceText;
+    }
+
+    private string GetProcessorCacheKey(int lineIndex)
+    {
+        if (textPipeline == null)
+            return string.Empty;
+
+        IReadOnlyList<ITextProcessor> processors = textPipeline.Processors;
+        if (processors == null || processors.Count == 0)
+            return string.Empty;
+
+        List<int> appliedProcessors = new();
+        for (int i = 0; i < processors.Count; i++)
+        {
+            ITextProcessor processor = processors[i];
+            if (!ShouldApplyProcessorToLine(processor, lineIndex))
+                continue;
+
+            appliedProcessors.Add(processor.GetHashCode());
+        }
+
+        return string.Join("|", appliedProcessors);
+    }
+
+    private bool ShouldApplyProcessorToLine(ITextProcessor processor, int lineIndex)
+    {
+        if (textPipeline == null || !textPipeline.IsRuntimeProcessor(processor))
+            return true;
+
+        List<StatusEffect> effects = statusEffectController != null ? statusEffectController.Effects : null;
+        if (effects == null || effects.Count == 0)
+            return true;
+
+        bool hasLineProcessorEffect = false;
+        for (int i = 0; i < effects.Count; i++)
+        {
+            StatusEffect effect = effects[i];
+            if (effect.Definition is not TextProcessorEffect textProcessorEffect ||
+                !ReferenceEquals(textProcessorEffect.Processor, processor))
+                continue;
+
+            if (effect.Definition.DurationType != EffectDurationType.Lines)
+                return true;
+
+            hasLineProcessorEffect = true;
+            if (effect.AffectsLine(lineIndex))
+                return true;
+        }
+
+        return !hasLineProcessorEffect;
+    }
+
+    private readonly struct ProcessedTextCache
+    {
+        public readonly string Text;
+        public readonly string ProcessorKey;
+        public readonly bool IsValid;
+
+        public ProcessedTextCache(string text, string processorKey)
+        {
+            Text = text;
+            ProcessorKey = processorKey;
+            IsValid = true;
         }
     }
 }

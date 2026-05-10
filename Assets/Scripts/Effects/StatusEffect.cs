@@ -7,6 +7,8 @@ public class StatusEffect : IEquatable<StatusEffect>
     [field: SerializeField] public StatusEffectDefinition Definition { get; private set; }
     [field: SerializeField] public Player Target { get; private set; }
     [field: SerializeField] public float RemainingDuration { get; set; }
+    [field: SerializeField] public int FirstAffectedLineIndex { get; private set; } = -1;
+    [field: SerializeField] public int LastAffectedLineIndex { get; private set; } = -1;
 
     public StatusEffect(StatusEffectDefinition definition, Player target)
     {
@@ -23,6 +25,19 @@ public class StatusEffect : IEquatable<StatusEffect>
         }
         RemainingDuration = Definition.DurationValue;
         Definition.OnActivate(context);
+    }
+
+    public void SetAffectedLineWindow(int firstLineIndex, int lineCount)
+    {
+        FirstAffectedLineIndex = firstLineIndex;
+        LastAffectedLineIndex = firstLineIndex + Mathf.Max(0, lineCount) - 1;
+    }
+
+    public bool AffectsLine(int lineIndex)
+    {
+        return FirstAffectedLineIndex >= 0 &&
+            lineIndex >= FirstAffectedLineIndex &&
+            lineIndex <= LastAffectedLineIndex;
     }
 
     public void Deactivate(EffectContext context)

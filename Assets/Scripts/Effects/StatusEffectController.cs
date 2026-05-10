@@ -10,10 +10,10 @@ using UnityEngine.Events;
 public class StatusEffectController : MonoBehaviour
 {
     [SerializeField] List<StatusEffect> activeEffects;
-    public UnityEvent<StatusEffect> OnEffectApplied;
-    public UnityEvent<StatusEffect> OnEffectRemoved;
-    public UnityEvent<StatusEffect> OnEffectExpired;
-    public UnityEvent<StatusEffect> OnEffectRefreshed;
+    public UnityEvent<StatusEffect> OnEffectApplied = new();
+    public UnityEvent<StatusEffect> OnEffectRemoved = new();
+    public UnityEvent<StatusEffect> OnEffectExpired = new();
+    public UnityEvent<StatusEffect> OnEffectRefreshed = new();
     public List<StatusEffect> Effects => activeEffects;
 
     Player player;
@@ -39,12 +39,12 @@ public class StatusEffectController : MonoBehaviour
 
     void Update()
     {
-        HandleEffectExpiration(EffectDurationType.Time);
+        HandleEffectExpiration(EffectDurationType.Time, 0);
     }
 
     void OnRitualLineCompleted(int completedLines)
     {
-        HandleEffectExpiration(EffectDurationType.Lines);
+        HandleEffectExpiration(EffectDurationType.Lines, completedLines);
     }
 
     public void AddEffect(StatusEffectDefinition effectDef)
@@ -56,6 +56,7 @@ public class StatusEffectController : MonoBehaviour
         }
 
         var statusEffect = CreateStatusEffect(effectDef);
+        ConfigureLineDuration(statusEffect);
 
         // Refresh
         var refreshMatch = activeEffects.Find(e => e.Equals(statusEffect));
@@ -109,6 +110,7 @@ public class StatusEffectController : MonoBehaviour
     void RefreshEffect(StatusEffect effect)
     {
         effect.RemainingDuration = effect.Definition.DurationValue;
+        ConfigureLineDuration(effect);
         OnEffectRefreshed.Invoke(effect);
     }
 
@@ -117,15 +119,36 @@ public class StatusEffectController : MonoBehaviour
         return new StatusEffect(definition, player);
     }
 
-    private void HandleEffectExpiration(EffectDurationType durationType)
+    private void ConfigureLineDuration(StatusEffect effect)
+    {
+        if (effect.Definition.DurationType != EffectDurationType.Lines)
+            return;
+
+        int firstAffectedLine = player.RitualManager.CurrentLineIndex + 1;
+        int lineCount = Mathf.CeilToInt(effect.Definition.DurationValue);
+        effect.SetAffectedLineWindow(firstAffectedLine, lineCount);
+    }
+
+    private void HandleEffectExpiration(EffectDurationType durationType, int completedLines)
     {
         foreach (var effect in activeEffects)
         {
             if (effect.Definition.DurationType == durationType)
             {
-                effect.RemainingDuration -= durationType == EffectDurationType.Time ? Time.deltaTime : 1;
+                if (durationType == EffectDurationType.Time)
+                {
+                    effect.RemainingDuration -= Time.deltaTime;
+                }
+                else
+                {
+                    effect.RemainingDuration = Mathf.Max(0, effect.LastAffectedLineIndex - completedLines + 1);
+                }
 
-                if (effect.RemainingDuration <= 0)
+                bool isExpired = durationType == EffectDurationType.Lines
+                    ? completedLines > effect.LastAffectedLineIndex
+                    : effect.RemainingDuration <= 0;
+
+                if (isExpired)
                 {
                     toRemove.Add(effect);
                 }

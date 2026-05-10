@@ -6,6 +6,8 @@ public class TextProcessorEffect : StatusEffectDefinition
 {
     [SerializeField] ScriptableTextProcessor processor;
 
+    public ScriptableTextProcessor Processor => processor;
+
     public override void OnActivate(EffectContext context)
     {
         Player target = context.Target;
