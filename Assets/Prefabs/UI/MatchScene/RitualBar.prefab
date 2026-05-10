@@ -165,6 +165,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 146d0bd0d70d5804e999ab4372edc8b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RitualBar
+  weightedBars:
+  - bar: {fileID: 7425662633897250216}
+    weight: 0.1
+  - bar: {fileID: 2953497280671396566}
+    weight: 0.12
+  - bar: {fileID: 3782909001715769394}
+    weight: 0.12
+  - bar: {fileID: 1127900884547898944}
+    weight: 0.12
+  - bar: {fileID: 2727297104636956221}
+    weight: 0.12
+  - bar: {fileID: 8762074252851119329}
+    weight: 0.12
+  - bar: {fileID: 6242025396483004163}
+    weight: 0.3
   percentajeText: {fileID: 1997461202311676345}
 --- !u!1 &1875900884670585782
 GameObject:
