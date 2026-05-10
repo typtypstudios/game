@@ -230,7 +230,7 @@ public class ProfileSettings : MonoBehaviour, INavigationLeaveReceiver
             return false;
         }
 
-        if (!Regex.IsMatch(textToCheck, @"^[a-zA-Z0-9]+$"))
+        if (!Regex.IsMatch(textToCheck, @"^[\p{L}\p{N}]+$"))
         {
             helpText.text = "Name can only contain letters and numbers.";
             return false;
