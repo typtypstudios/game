@@ -9,8 +9,9 @@ using UnityEngine.UI;
 [NoAutoCreate]
 public class CursorManager : Singleton<CursorManager>
 {
-    [SerializeField] private Image hoverImage;
-    private RectTransform hoverRT;
+    [SerializeField] private RectTransform hoverImage;
+    [SerializeField] private float hoverRotSpeed = 1.0f;
+    [SerializeField] private float hoverScaleSpeed = 1.0f;
     private Canvas hoverCanvas;
     private Camera cam;
 
@@ -18,7 +19,6 @@ public class CursorManager : Singleton<CursorManager>
     {
         base.Awake();
         hoverCanvas = GetComponentInChildren<Canvas>();
-        hoverRT = hoverImage.GetComponent<RectTransform>();
         AssignCamera();
         SceneManager.sceneLoaded += OnSceneLoaded;
         MatchManager.OnCountdownStarted += HideCursor;
@@ -47,14 +47,14 @@ public class CursorManager : Singleton<CursorManager>
     {
         if (!hoverCanvas.enabled || cam == null)
             return;
-        hoverRT.position = Mouse.current.position.ReadValue();
+        hoverImage.position = Mouse.current.position.ReadValue();
         if (NavigationController.Navigating)
         {
             UpdateState(false);
             return;
         }
         //Objetos 3D:
-        if(Physics.Raycast(cam.ScreenPointToRay(hoverRT.position), out RaycastHit hit))
+        if(Physics.Raycast(cam.ScreenPointToRay(hoverImage.position), out RaycastHit hit))
         {
             if (hit.transform.TryGetComponent(out ICursorHoverTarget target) &&
                 target.CanCauseHover())
@@ -66,7 +66,7 @@ public class CursorManager : Singleton<CursorManager>
         //Objetos interfaz:
         List<RaycastResult> results = new();
         EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current)
-            { position = hoverRT.position }, results);
+            { position = hoverImage.position }, results);
         if (results.Count > 0)
         {
             Selectable s = results[0].gameObject.GetComponentInParent<Selectable>();
@@ -81,8 +81,10 @@ public class CursorManager : Singleton<CursorManager>
 
     private void UpdateState(bool hover)
     {
-        Cursor.visible = !hover;
-        hoverImage.enabled = hover;
+        hoverImage.Rotate(Vector3.forward, hoverRotSpeed * Time.deltaTime, Space.Self);
+        Vector3 targetScale = hover ? Vector3.one : Vector3.zero;
+        hoverImage.localScale = Vector3.MoveTowards(hoverImage.localScale, 
+            targetScale, hoverScaleSpeed * Time.deltaTime);
     }
 
     private void HideCursor()
@@ -90,6 +92,7 @@ public class CursorManager : Singleton<CursorManager>
         Cursor.lockState = CursorLockMode.Locked;
         hoverCanvas.enabled = false;
     }
+
     private void ShowCursor()
     {
         Cursor.lockState = CursorLockMode.None;
