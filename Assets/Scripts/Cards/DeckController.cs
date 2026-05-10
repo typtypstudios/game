@@ -56,6 +56,7 @@ public class DeckController : NetworkBehaviour
     public event Action<CardEventArgs> OnCardPlayRequestSuccess;
     public event Action<CardEventArgs> OnCardPlayRequestFailed;
     public event Action<CardDefinition> OnDiscountApplied;
+    public event Action<int, string> OnLocalSpellExactTCText;
     public event Action OnNotEnoughInkAttempt;
 
     //Static events
@@ -226,20 +227,23 @@ public class DeckController : NetworkBehaviour
     }
 
     //Client entry point
-    public void RequestPlayCard(int card)
+    public void RequestPlayCard(int cardId, string cardExactText)
     {
         if (!IsOwner) return;
 
         // Debug.Log($"[Deck][Client][PlayRequest] cid={OwnerClientId} card={card}");
 
-        var validation = ValidatePlayCardRequest(RequestValidationType.Client, card);
+        var validation = ValidatePlayCardRequest(RequestValidationType.Client, cardId);
 
-        Debug.Log($"[Deck][Client][Validation] cid={OwnerClientId} card={card} res={validation}");
+        Debug.Log($"[Deck][Client][Validation] cid={OwnerClientId} card={cardId} res={validation}");
 
         if (validation == PlayCardRequestResult.Success)
         {
             // Debug.Log($"[Deck][Client][SendRPC] cid={OwnerClientId} card={card}");
-            PlayCardRequestRpc(card);
+            // Primero notificar en local que se lanza esa carta
+            NotifyCastedSpellWithExactTCText(cardId, cardExactText);
+            // Segundo pedir al servidor que lance la carta
+            PlayCardRequestRpc(cardId);
         }
         else
         {
@@ -265,6 +269,7 @@ public class DeckController : NetworkBehaviour
         else
         {
             // Debug.LogWarning($"[Deck][Client][PlayFailed] card={playedCard} res={result}");
+            OnCardPlayRequestFailed?.Invoke(new CardEventArgs(OwnerClientId, playedCard));
         }
 
         if (receivedCards.Length > 0)
@@ -395,6 +400,12 @@ public class DeckController : NetworkBehaviour
     void UpdateQueueListView()
     {
         Cards = cardQueue.Select(id => CardRegister.Instance.GetById(id)).ToArray();
+    }
+
+    public void NotifyCastedSpellWithExactTCText(int cardId, string exactText)
+    {
+        // Notifica que se ha casteado una carta y también su texto exacto
+        OnLocalSpellExactTCText?.Invoke(cardId, exactText);
     }
 
     #endregion

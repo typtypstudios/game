@@ -36,7 +36,7 @@ public class GameChatInputFilter : NetworkBehaviour
     private ChatMarkerFormatter marker; // Insertar marcadores para colorear el texto
 
     private bool castingSpellMode = false;  // Comprobar que está en el modo de hechizos
-    private bool pendingModeSpace = false;  // Se busca meter un espacio
+    private bool pendingSwitchModeAutoSpace = false;  // Se busca meter un espacio
 
     // Stringbuilders para la gestión de los strings cambiando todo el rato.
     // Estos strings no tienen los marcadores de color, solo procesan el texto
@@ -48,6 +48,7 @@ public class GameChatInputFilter : NetworkBehaviour
     private struct CastSpell { public string Name; public int Start; public int Length; }
     private List<CastSpell> castSpell = new();
     private List<CastSpell> castSpellRaw = new();
+    private Dictionary<int, Queue<string>> locallyTypedSpellsCache = new();
 
     // Lista para almacenar las cartas actuales en el grimorio y no crear una lista nueva
     // todo el rato
@@ -58,10 +59,32 @@ public class GameChatInputFilter : NetworkBehaviour
     {
         // Inicializar componentes y suscribir al evento de jugar carta
         deckController = GetComponent<DeckController>();
+
         deckController.OnCardPlayedEvent += HandleCardPlayed;
+        deckController.OnLocalSpellExactTCText += HandleLocalSpellTypedExact;
+        deckController.OnCardPlayRequestFailed += HandleCardPlayFailed;
+
         marker = new ChatMarkerFormatter();
 
         currentCardUIs = new List<(TypableController tc, CardUI ui)>(TypTyp.Settings.Instance.HandSize);
+    }
+
+    private void HandleCardPlayFailed(CardEventArgs args)
+    {
+        if (locallyTypedSpellsCache.TryGetValue(args.CardId, out var queue) && queue.Count > 0)
+        {
+            queue.Dequeue();
+        }
+    }
+
+    private void HandleLocalSpellTypedExact(int cardId, string exactText)
+    {
+        //Debug.Log("Exact text: " + exactText);
+        if (!locallyTypedSpellsCache.ContainsKey(cardId))
+        {
+            locallyTypedSpellsCache[cardId] = new Queue<string>();
+        }
+        locallyTypedSpellsCache[cardId].Enqueue(exactText);
     }
 
     public override void OnNetworkSpawn()
@@ -97,6 +120,13 @@ public class GameChatInputFilter : NetworkBehaviour
         if (!CardRegister.Instance.TryGetById(args.CardId, out CardDefinition cardDef)) return;
 
         string spellName = cardDef.Name;
+        
+        // Intentar ver si la carta estaba almacenada en la lista de cartas lanzadas con validación local
+        // En caso afirmativo, se dispone de su texto exacto con posibles procesamientos
+        if (locallyTypedSpellsCache.TryGetValue(args.CardId, out var queue) && queue.Count > 0)
+        {
+            spellName = queue.Dequeue();
+        }
         int cardNameL = spellName.Length;
 
         // Buscar la última aparición exacta en el texto filtrado
@@ -133,7 +163,7 @@ public class GameChatInputFilter : NetworkBehaviour
         bool wasCastingSpells = castingSpellMode;
         castingSpellMode = (mode == InputModeMask.Spells);
         if (castingSpellMode && !wasCastingSpells)
-            pendingModeSpace = true;
+            pendingSwitchModeAutoSpace = true;
     }
 
     private void OnCharTyped(char c)
@@ -143,26 +173,24 @@ public class GameChatInputFilter : NetworkBehaviour
 
         if (char.IsControl(c) || c == marker.SpellMarker) return;
 
-        // Evitar dobles espacios y aplicar el espacio pendiente
-        if (c == ' ')
-        {
-            pendingModeSpace = false;
-            InjectSpaceSafely();
-            UpdateOutputs();
-            return;
-        }
-
-        var pairs = GetActiveCardTcUIPairs();
+        List<(TypableController tc, CardUI ui)> pairs = GetActiveCardTcUIPairs();
 
         bool charAdvancesProgress = false;
         bool charStartsSpell = false;
+        bool spaceExpectedInCard = false;
 
-        // Analizar cada typanble controller
+        // Analizar cada typable controller
         foreach (var (tc, cardUI) in pairs)
         {
-            // Obtener el texto de la carte
+            // Obtener el texto de la carta
             string cardTcText = tc.Text ?? "";
-            if (cardTcText.Length == 0) continue;
+            if (cardTcText.Length == 0 || tc.Idx >= cardTcText.Length) continue;
+
+            // Comprobar si el char esperado en este momento es un espacio
+            if (cardTcText[tc.Idx] == ' ')
+            {
+                spaceExpectedInCard = true;
+            }
 
             // La letra pulsada coincide con la letra de algún hechizo
             bool matchesExpected = tc.Idx < cardTcText.Length && cardTcText[tc.Idx] == c;
@@ -181,20 +209,32 @@ public class GameChatInputFilter : NetworkBehaviour
             }
         }
 
+        if (c == ' ')
+        {
+            pendingSwitchModeAutoSpace = false;
+
+            if (!spaceExpectedInCard)
+            {
+                InjectSpaceSafely();
+                UpdateOutputs();
+                return;
+            }
+        }
+
         // Determinar si la tecla es útil y si inicia una nueva palabra
         bool useful = charAdvancesProgress || charStartsSpell;
         bool startedOtherNewSpell = charStartsSpell && !charAdvancesProgress;
 
-        // Comprobar la necesidad de inyectar espacios automáticos
+        // Comprobar la necesidad de inyectar espacios automáticos entre distintos hechizos
         bool isContinuingSpell = useful && !startedOtherNewSpell;
 
-        if (pendingModeSpace && isContinuingSpell)
-            pendingModeSpace = false;
+        if (pendingSwitchModeAutoSpace && isContinuingSpell)
+            pendingSwitchModeAutoSpace = false;
 
-        if (pendingModeSpace || startedOtherNewSpell)
+        if (pendingSwitchModeAutoSpace || startedOtherNewSpell)
         {
             InjectSpaceSafely();
-            pendingModeSpace = false;
+            pendingSwitchModeAutoSpace = false;
         }
 
         // Añadir el carácter al texto crudo y hacer trim
@@ -347,5 +387,17 @@ public class GameChatInputFilter : NetworkBehaviour
 
         fs.CopyFromTruncated(s);
         return fs;
+    }
+
+    public override void OnDestroy()
+    {
+        if (deckController)
+        {
+            deckController.OnCardPlayedEvent -= HandleCardPlayed;
+            deckController.OnLocalSpellExactTCText -= HandleLocalSpellTypedExact;
+            deckController.OnCardPlayRequestFailed -= HandleCardPlayFailed;
+        }
+
+        base.OnDestroy();
     }
 }

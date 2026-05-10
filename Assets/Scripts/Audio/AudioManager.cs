@@ -127,7 +127,7 @@ public class AudioManager : Singleton<AudioManager>
             source.outputAudioMixerGroup = uiGroup;
             source.playOnAwake = false;
 
-            if (entry.id == UISound.SkeletonTalk)
+            if (entry.id == UISound.SkeletonTalk || entry.id == UISound.XPGain)
             {
                 source.loop = true;
             }
@@ -231,7 +231,7 @@ public class AudioManager : Singleton<AudioManager>
 
         if (uiDedicatedSources.TryGetValue(id, out var source))
         {
-            if (id == UISound.SkeletonTalk && source.isPlaying && source.gameObject.activeInHierarchy)
+            if ((id == UISound.SkeletonTalk || id == UISound.XPGain) && source.isPlaying && source.gameObject.activeInHierarchy)
             {
                 if (uiFadeCoroutines.TryGetValue(id, out var currentCoroutine) && currentCoroutine != null)
                 {

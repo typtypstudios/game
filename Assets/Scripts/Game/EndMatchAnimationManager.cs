@@ -59,6 +59,8 @@ public class EndMatchAnimationManager : MonoBehaviour
 
     public void HandleEndMatch(bool isUserWinner, MatchEndReason reason)
     {
+        if(isUserWinner) AudioManager.Instance.PlayGame(GameSound.Victory);
+
         FindFirstObjectByType<CanvasTransitionManager>().FadeOut();
         Invoke(nameof(GoToResults), showResultsDelay);
         // if (reason == MatchEndReason.Disconnection) return;

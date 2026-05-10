@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TypTyp.TextSystem;
+using TypTyp.TextSystem.Typable;
 using UnityEngine;
 
 public class CardUIManager : MonoBehaviour
@@ -110,7 +111,9 @@ public class CardUIManager : MonoBehaviour
     void HandleCardWritten(CardUI cardUI)
     {
         int id = CardRegister.Instance.GetId(cardUI.CardDefinition);
-        deckController.RequestPlayCard(id);
+        TypableController tc = cardUI.GetComponentInChildren<TypableController>(true);
+        string exactText = tc != null ? tc.Text : cardUI.CardDefinition.Name;
+        deckController.RequestPlayCard(id, exactText);
     }
 
     private void ManaCostModifierChanged(int costModifier)

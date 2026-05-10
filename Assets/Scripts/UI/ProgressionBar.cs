@@ -27,12 +27,17 @@ public class ProgressionBar : MonoBehaviour
     private void OnDestroy()
     {
         XPManager.Instance.OnXPUpdated -= ProcessXPUpdate;
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopUI(UISound.XPGain, fadeDuration: 1f);
+        }
     }
 
     public void DisplayXP(float xp)
     {
         CultDefinition cult = RuntimeVariables.Instance.CurrentCult;
-        int lvl = Mathf.FloorToInt(xp); 
+        int lvl = Mathf.FloorToInt(xp);
         int nextlvl = Mathf.Min(lvl + 1, cult.RankNames.Length - 1);
         nextLvlText.text = nextlvl.ToString();
         int currentlvl = nextlvl - 1;
@@ -46,17 +51,31 @@ public class ProgressionBar : MonoBehaviour
 
     private void ProcessXPUpdate(float prevXP, float newXP)
     {
+        CultDefinition cult = RuntimeVariables.Instance.CurrentCult;
+        int maxLevel = cult.RankNames.Length - 1;
+        bool shouldPlaySound = Mathf.FloorToInt(prevXP) < maxLevel;
+
         StopAllCoroutines();
-        StartCoroutine(GainAnimationCoroutine(prevXP, newXP));
+        StartCoroutine(GainAnimationCoroutine(prevXP, newXP, shouldPlaySound));
     }
 
-    IEnumerator GainAnimationCoroutine(float prevXP, float nextXP)
+    IEnumerator GainAnimationCoroutine(float prevXP, float nextXP, bool playSound)
     {
+        if (playSound)
+        {
+            AudioManager.Instance.PlayUI(UISound.XPGain);
+        }
+
         while (prevXP != nextXP)
         {
             prevXP = Mathf.MoveTowards(prevXP, nextXP, Time.deltaTime * animSpeed);
             DisplayXP(prevXP);
             yield return null;
+        }
+
+        if (playSound)
+        {
+            AudioManager.Instance.StopUI(UISound.XPGain, fadeDuration: 2f);
         }
     }
 }
