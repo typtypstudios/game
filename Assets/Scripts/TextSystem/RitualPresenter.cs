@@ -13,6 +13,7 @@ public class RitualPresenter : MonoBehaviour
     [SerializeField, Min(0.01f)] private float appearTime = 1.0f;
     [SerializeField, Min(0.01f)] private float groupAppearTime = 1.0f;
     [SerializeField] private VerticalLayoutGroup textsLayoutGroup;
+    [SerializeField] private CanvasGroup placeholderGroup;
     [SerializeField] private CanvasGroup textsGroup;
     [SerializeField] private StartGameCanvas startGameCanvas;
 
@@ -35,7 +36,8 @@ public class RitualPresenter : MonoBehaviour
         if (startGameCanvas == null)
             startGameCanvas = FindFirstObjectByType<StartGameCanvas>();
 
-        SetTextsGroupAlpha(0f);
+        SetGroupAlpha(textsGroup, 0f);
+        SetGroupAlpha(placeholderGroup, 1f);
         ClearTexts();
     }
 
@@ -88,7 +90,7 @@ public class RitualPresenter : MonoBehaviour
 
     private void HandleCountdownTick(int second)
     {
-        if (second != 1 || ritualManager == null)
+        if (second != 2 || ritualManager == null)
             return;
 
         ritualManager.PrepareRitualTexts();
@@ -212,21 +214,30 @@ public class RitualPresenter : MonoBehaviour
 
     private IEnumerator GroupAppearCoroutine()
     {
-        SetTextsGroupAlpha(0f);
         float speed = 1 / groupAppearTime;
-        while (textsGroup.alpha < 1.0f)
+
+        SetGroupAlpha(placeholderGroup, 1f);
+        while (placeholderGroup.alpha > 0.0f)
         {
-            SetTextsGroupAlpha(textsGroup.alpha + speed * Time.deltaTime);
+            SetGroupAlpha(placeholderGroup, placeholderGroup.alpha - speed * Time.deltaTime);
             yield return null;
         }
+        SetGroupAlpha(placeholderGroup, 0f);
 
-        SetTextsGroupAlpha(1f);
+        SetGroupAlpha(textsGroup, 0f);
+        while (textsGroup.alpha < 1.0f)
+        {
+            SetGroupAlpha(textsGroup, textsGroup.alpha + speed * Time.deltaTime);
+            yield return null;
+        }
+        SetGroupAlpha(textsGroup, 1f);
+
         groupAppearCoroutine = null;
     }
 
-    private void SetTextsGroupAlpha(float alpha)
+    private void SetGroupAlpha(CanvasGroup group, float alpha)
     {
-        if (textsGroup != null)
-            textsGroup.alpha = Mathf.Clamp01(alpha);
+        if (group != null)
+            group.alpha = Mathf.Clamp01(alpha);
     }
 }
