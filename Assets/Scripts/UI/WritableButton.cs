@@ -18,6 +18,7 @@ public class WritableButton : MonoBehaviour
     private string originalText;
     private Canvas parentCanvas;
     public bool Block { get; set; } = false;
+    public bool ClickEnabled { get; set; } = true;
     private static event Action<WritableButton> OnButtonWritten;
 
     private void Awake()
@@ -109,7 +110,15 @@ public class WritableButton : MonoBehaviour
     public void CompletelyBlock(bool block)
     {
         Block = block;
+        ClickEnabled = !block;
         button.interactable = !block;
+        if (typableController != null)
+            typableController.enabled = !block;
+    }
+
+    public void BlockTypContButNotClick(bool block)
+    {
+        Block = block;
         if (typableController != null)
             typableController.enabled = !block;
     }

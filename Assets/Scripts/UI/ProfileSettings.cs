@@ -7,12 +7,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class ProfileSettings : MonoBehaviour
+public class ProfileSettings : MonoBehaviour, INavigationLeaveReceiver
 {
     [SerializeField] private TextMeshProUGUI usernameText;
     [SerializeField] private TextMeshProUGUI helpText;
     [SerializeField] private TMP_Text numGames;
     [SerializeField] private TMP_Text numVictories;
+    [SerializeField] private WritableButton goBackButton;
+    [SerializeField] private TypableController goBackButtonTC;
+
+    [SerializeField] private TextMeshProUGUI usernameButtonText;
+    [SerializeField] private TextMeshProUGUI typingNameText;
+
     private readonly string defaultUsername = "AverageCultist";
 
     private string currentName = string.Empty;
@@ -20,12 +26,14 @@ public class ProfileSettings : MonoBehaviour
     private WritableButton usernameButton;
     private TypableController usernameTypCont;
     private WritableButton[] allWritableButtons;
+    private TypableController[] allWritableTexts;
     private readonly int minNameLength = 4;
     private readonly int maxNameLength = 15;
 
     private void Awake()
     {
         allWritableButtons = GetComponentsInChildren<Button>().Select(b => b.GetComponent<WritableButton>()).ToArray();
+        allWritableTexts = GetComponentsInChildren<TypableController>().ToArray();
         usernameButton = usernameText.GetComponentInParent<WritableButton>();
         usernameTypCont = usernameButton.GetComponent<TypableController>();
         if (RuntimeVariables.Instance.IsLoaded) ApplyProfile(SaveManager.Instance.GetState());
@@ -49,6 +57,10 @@ public class ProfileSettings : MonoBehaviour
             currentName = GenerateDisplayName(defaultUsername);
             usernameButton.OverrideText(currentName);
         }
+
+        usernameButtonText.enabled = true;
+        typingNameText.enabled = false;
+        typingNameText.text = "";
     }
 
     private void OnDisable()
@@ -66,22 +78,21 @@ public class ProfileSettings : MonoBehaviour
         if (Keyboard.current.backspaceKey.wasPressedThisFrame && currentName.Length > 0)
         {
             currentName = currentName.Substring(0, currentName.Length - 1);
-            usernameButton.OverrideText(currentName);
+            typingNameText.text = currentName;
         }
 
         if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.numpadEnterKey.wasPressedThisFrame)
         {
             SubmitName();
+            return;
         }
 
         if (isTyping)
         {
-            for (int i = 0; i < allWritableButtons.Length; i++)
-            {
-                allWritableButtons[i].CompletelyBlock(true);
-            }
+            ToggleBlockWritableButtons(true);
         }
     }
+
     public void ChangeName()
     {
         if (isTyping) return;
@@ -89,10 +100,14 @@ public class ProfileSettings : MonoBehaviour
         currentName = string.Empty;
         usernameButton.OverrideText(currentName);
 
+        usernameButtonText.enabled = false;
+        typingNameText.enabled = true;
+        typingNameText.text = "";
+
         helpText.enabled = true;
         helpText.text = "Press enter to save name";
 
-        ToggleWritableButtons(true);
+        ToggleBlockWritableButtons(true);
         InputHandler.Instance.AddListener(OnCharacterTyped);
     }
 
@@ -101,7 +116,7 @@ public class ProfileSettings : MonoBehaviour
         if (!isTyping || currentName.Length >= maxNameLength) return;
 
         currentName += c;
-        usernameButton.OverrideText(currentName);
+        typingNameText.text = currentName;
 
         if (usernameTypCont != null)
             usernameTypCont.enabled = false;
@@ -116,7 +131,7 @@ public class ProfileSettings : MonoBehaviour
             InputHandler.Instance.RemoveListener(OnCharacterTyped);
         }
 
-        ToggleWritableButtons(false);
+        ToggleBlockWritableButtons(false);
         currentName = currentName.Trim();
         if (CheckText(currentName))
         {
@@ -135,18 +150,69 @@ public class ProfileSettings : MonoBehaviour
         }
 
         usernameButton.OverrideText(currentName);
+
+        usernameButtonText.enabled = true;
+        typingNameText.enabled = false;
+
         usernameButton.Block = false;
     }
 
-    private void ToggleWritableButtons(bool blockState)
+    private void CancelTyping()
+    {
+        if (!isTyping) return;
+        isTyping = false;
+
+        if (InputHandler.Instance != null)
+        {
+            InputHandler.Instance.RemoveListener(OnCharacterTyped);
+        }
+
+        ToggleBlockWritableButtons(false);
+
+        // Restablecer el nombre que se tenía guardado
+        if (SaveManager.Instance != null && SaveManager.Instance.HasLoadedState)
+        {
+            SaveState state = SaveManager.Instance.GetState();
+            ApplyProfile(state);
+        }
+        else
+        {
+            currentName = GenerateDisplayName(defaultUsername);
+            if (usernameButton != null)
+            {
+                usernameButton.OverrideText(currentName);
+            }
+        }
+
+        usernameButtonText.enabled = true;
+        typingNameText.enabled = false;
+
+        if (usernameButton != null) usernameButton.Block = false;
+        if (helpText != null) helpText.enabled = false;
+    }
+
+    public void OnLeave()
+    {
+        CancelTyping();
+    }
+
+    private void ToggleBlockWritableButtons(bool blockState)
     {
         for (int i = 0; i < allWritableButtons.Length; i++)
         {
-            allWritableButtons[i].CompletelyBlock(blockState);
-            if (allWritableButtons[i].TryGetComponent<HoverEffect>(out HoverEffect he))
-            {
-                he.enabled = !blockState;
-            }
+            if (allWritableButtons[i] == goBackButton) continue;
+            else allWritableButtons[i].CompletelyBlock(blockState);
+        }
+
+        for (int i = 0; i < allWritableTexts.Length; i++)
+        {
+            if (allWritableTexts[i] == goBackButtonTC) continue;
+            else allWritableTexts[i].enabled = !blockState;
+        }
+
+        if (goBackButton != null)
+        {
+            goBackButton.BlockTypContButNotClick(blockState);
         }
     }
 
@@ -173,10 +239,6 @@ public class ProfileSettings : MonoBehaviour
         return true;
     }
 
-    public void ExitProfile()
-    {
-        helpText.enabled = false;
-    }
 
     private void OnDestroy()
     {
@@ -184,11 +246,6 @@ public class ProfileSettings : MonoBehaviour
         {
             InputHandler.Instance.RemoveListener(OnCharacterTyped);
         }
-    }
-
-    public void LinkAccount()
-    {
-        Debug.Log("Not implemented yet");
     }
 
     private void HandleBeforeSave(SaveState state)

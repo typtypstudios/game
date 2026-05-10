@@ -16,6 +16,7 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private WritableButton writableButton;
     private float targetFill = 0f;
     private bool InteractionEnabled => writableButton == null || !writableButton.Block;
+    private bool ClickEnabled => writableButton == null || writableButton.ClickEnabled;
 
     private void Awake()
     {
@@ -24,7 +25,7 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void Update()
     {
-        if (!InteractionEnabled)
+        if (!InteractionEnabled && !ClickEnabled)
         {
             targetFill = 0;
             text.color = normalColor;
