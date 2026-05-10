@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 7018878567087808704}
   - component: {fileID: 1443247925441504945}
   - component: {fileID: 5732419696849667398}
-  - component: {fileID: 1843955899213530803}
-  - component: {fileID: 4620236622339054218}
   - component: {fileID: 5464529744155357311}
   - component: {fileID: 162528611543211200}
   m_Layer: 5
@@ -155,30 +153,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultFontConfigurator
   ignoreRestriction: 0
---- !u!114 &1843955899213530803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4383117283774477001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50e5e8b648f0ca14d8c06796dbc1363e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CultColoredItem
---- !u!114 &4620236622339054218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4383117283774477001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50e5e8b648f0ca14d8c06796dbc1363e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CultColoredItem
 --- !u!114 &5464529744155357311
 MonoBehaviour:
   m_ObjectHideFlags: 0
