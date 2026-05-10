@@ -13,13 +13,29 @@ public class RotationEffect : StatusEffectDefinition
             return;
 
         if (!target.IsServer) return;
-        Transform rotTransform = Utils.FindChildrenWithTag(target.transform, "RotEffectPivot");
+        Transform rotTransform = GetRotationTransform(target);
+        if (rotTransform == null)
+            return;
+
         float rot = (float)(rng.NextDouble() * (maxRotation * 2f) - maxRotation);
         rotTransform.localRotation = Quaternion.identity;
         rotTransform.Rotate(Vector3.forward, rot, Space.Self);
     }
 
-    public override void OnDeactivate(EffectContext context) { }
+    public override void OnDeactivate(EffectContext context)
+    {
+        Player target = context.Target;
+        if (!target.IsServer) return;
+
+        Transform rotTransform = GetRotationTransform(target);
+        if (rotTransform != null)
+            rotTransform.localRotation = Quaternion.identity;
+    }
+
+    private Transform GetRotationTransform(Player target)
+    {
+        return Utils.FindChildrenWithTag(target.transform, "RotEffectPivot");
+    }
 
     public override string GetDefaultValue()
     {

@@ -27,9 +27,19 @@ public class StatusEffectController : MonoBehaviour
         toRemove = new();
     }
 
+    void OnEnable()
+    {
+        MatchManager.OnMatchEnded += ClearAllEffects;
+    }
+
     void Start()
     {
         player.RitualManager.OnLineCompleted += OnRitualLineCompleted;
+    }
+
+    void OnDisable()
+    {
+        MatchManager.OnMatchEnded -= ClearAllEffects;
     }
 
     void OnDestroy()
@@ -75,8 +85,7 @@ public class StatusEffectController : MonoBehaviour
         }
 
         // Addition and activation
-        if (effectDef.DurationType != EffectDurationType.Immediate &&
-            effectDef.DurationType != EffectDurationType.Permanent)
+        if (effectDef.DurationType != EffectDurationType.Immediate)
             activeEffects.Add(statusEffect);
         statusEffect.Activate(new EffectContext(player, random));
         OnEffectApplied?.Invoke(statusEffect);
@@ -99,6 +108,16 @@ public class StatusEffectController : MonoBehaviour
         effect.Deactivate(new EffectContext(player, random));
         activeEffects.Remove(effect);
         OnEffectRemoved?.Invoke(effect);
+    }
+
+    public void ClearAllEffects()
+    {
+        foreach (var effect in new List<StatusEffect>(activeEffects))
+        {
+            RemoveEffect(effect);
+        }
+
+        toRemove.Clear();
     }
 
     public void SetRandom(System.Random random)
