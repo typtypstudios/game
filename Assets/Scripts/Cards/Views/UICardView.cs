@@ -19,7 +19,7 @@ public class UICardView : MonoBehaviour, ICardView
 
     void Awake()
     {
-        EnsureOrbPool(4);
+        EnsureOrbPool(5);
     }
 
     public void Apply(CardVisualState state)
