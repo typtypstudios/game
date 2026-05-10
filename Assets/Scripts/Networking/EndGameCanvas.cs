@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class EndGameCanvas : MonoBehaviour
+public class EndGameCanvas : MonoBehaviour, INavigationCtxReceiver
 {
     [SerializeField] private TMP_Text resultText;
     [SerializeField] private TMP_Text resultReasonText;
@@ -12,6 +12,7 @@ public class EndGameCanvas : MonoBehaviour
     [SerializeField] private TMP_Text earnedXPText;
     [SerializeField] private ProgressionBar progressionBar;
     [SerializeField] private float animSpeed = 1;
+    private bool isWinner;
 
     private void Awake()
     {
@@ -39,9 +40,20 @@ public class EndGameCanvas : MonoBehaviour
             resultReasonText.text = GetReasonText(isWinner, reason);
 
         exitButton.SetActive(true);
-        if (isWinner) XPManager.Instance.ProcessVictory();
+        this.isWinner = isWinner;
         earnedXPText.gameObject.SetActive(isWinner);
         progressionBar.gameObject.SetActive(isWinner);
+    }
+
+    public void ReceiveContext(Screens prevScreen, bool isGoingBack, GameObject sender = null)
+    {
+        CanvasTransitionManager.OnDissolved += ProcessVictory;
+    }
+
+    private void ProcessVictory()
+    {
+        XPManager.Instance.ProcessVictory();
+        CanvasTransitionManager.OnDissolved -= ProcessVictory;
     }
 
     public void Return()
