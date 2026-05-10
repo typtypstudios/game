@@ -4,8 +4,10 @@ using TypTyp;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CapsLockedWarning : MonoBehaviour
+public class CapsLockedWarning : AAnimStateListener
 {
+    [SerializeField] private AnimState requiredStateToShow;
+    private AnimState currentState;
     private Image warning;
 
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
@@ -49,15 +51,21 @@ public class CapsLockedWarning : MonoBehaviour
 
 #endif
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         warning = GetComponent<Image>();
     }
 
     void Update()
     {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX
-        warning.enabled = Settings.Instance.CapsLockWarning && IsCapsLockOn();
+        warning.enabled = Settings.Instance.CapsLockWarning && IsCapsLockOn() && currentState == requiredStateToShow;
 #endif
+    }
+
+    protected override void HandleStateChange(AnimState state)
+    {
+        currentState = state;
     }
 }

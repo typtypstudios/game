@@ -624,7 +624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1277958203
+  GlobalObjectIdHash: 2605432542
   InScenePlacedSourceGlobalObjectIdHash: 1277958203
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2561,6 +2561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36298f4f2b9774e4093c0cff0dd3a721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CapsLockedWarning
+  requiredStateToShow: 1
 --- !u!1 &3722723451963864444
 GameObject:
   m_ObjectHideFlags: 0
@@ -3028,6 +3029,7 @@ GameObject:
   - component: {fileID: 3772560725483415375}
   - component: {fileID: 7413224361144916573}
   - component: {fileID: 7815844671887858319}
+  - component: {fileID: 2547589577283183672}
   m_Layer: 0
   m_Name: TABImage
   m_TagString: Untagged
@@ -3092,6 +3094,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2547589577283183672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5978688011307652889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47fc269b49f96c847bfec76f5e8a71fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TABImage
 --- !u!1 &6175149643497534989
 GameObject:
   m_ObjectHideFlags: 0
@@ -3930,6 +3944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36298f4f2b9774e4093c0cff0dd3a721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CapsLockedWarning
+  requiredStateToShow: 0
 --- !u!1001 &245046556554085745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4232,6 +4247,18 @@ PrefabInstance:
     - target: {fileID: 2631223274684509347, guid: 7061e90fc3383d34185ce2d9d3810789, type: 3}
       propertyPath: m_Name
       value: GrimoireInterfaz
+      objectReference: {fileID: 0}
+    - target: {fileID: 3443049246721259033, guid: 7061e90fc3383d34185ce2d9d3810789, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 3443049246721259033, guid: 7061e90fc3383d34185ce2d9d3810789, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3443049246721259033, guid: 7061e90fc3383d34185ce2d9d3810789, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.17482458
       objectReference: {fileID: 0}
     - target: {fileID: 3443049246721259033, guid: 7061e90fc3383d34185ce2d9d3810789, type: 3}
       propertyPath: m_LocalPosition.x
