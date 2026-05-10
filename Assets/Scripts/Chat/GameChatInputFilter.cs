@@ -136,20 +136,12 @@ public class GameChatInputFilter : NetworkBehaviour
             pendingModeSpace = true;
     }
 
-    private char NormalizeChar(char c)
-    {
-        // Filtrar caracteres invisibles o teclas de control
-        if (c >= 32 && c <= 126) return c;
-        return '\0';
-    }
-
     private void OnCharTyped(char c)
     {
         // Ignorar la entrada si no es modo hechizo o si el carácter es inválido
         if (!castingSpellMode) return;
 
-        c = NormalizeChar(c);
-        if (c == '\0') return;
+        if (char.IsControl(c) || c == marker.SpellMarker) return;
 
         // Evitar dobles espacios y aplicar el espacio pendiente
         if (c == ' ')
