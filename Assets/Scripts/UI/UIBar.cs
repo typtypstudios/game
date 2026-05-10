@@ -23,6 +23,7 @@ public class UIBar : MonoBehaviour, IFillableBar
         {
             if(fillType == FillType.Fill) filler.fillAmount = value;
             else filler.color = new(filler.color.r, filler.color.g, filler.color.b, value);
+            if (replaceParentWithFill) BackgroundAmount = value;
         }
     }
     private float BackgroundAmount
@@ -66,7 +67,7 @@ public class UIBar : MonoBehaviour, IFillableBar
     IEnumerator UpdateBarCorroutine(float target)
     {
         float speed = (target - FillerAmount) / updateTime;
-        BackgroundAmount = target;
+        if(!replaceParentWithFill) BackgroundAmount = target;
         while (FillerAmount < target)
         {
             FillerAmount = Mathf.MoveTowards(FillerAmount, target, speed * Time.deltaTime);

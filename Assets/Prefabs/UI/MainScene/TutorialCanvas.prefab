@@ -3435,6 +3435,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8978645285910261072}
     m_Modifications:
+    - target: {fileID: 1013644212026844428, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+      propertyPath: updateTime
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190450880552528965, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+      propertyPath: updateTime
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2389217947821422318, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+      propertyPath: updateTime
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 3469277201729784164, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
       propertyPath: m_text
       value: 'For menu interactions, players can use either the mouse or type the
@@ -3485,6 +3497,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4897527875660497375, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+      propertyPath: updateTime
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 5316324800012567044, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
       propertyPath: text
       value: Practice text. Very mystical. Much arcane. Go on, type it. Nothing bad
@@ -3509,6 +3525,10 @@ PrefabInstance:
     - target: {fileID: 5689922855844922425, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -32.760002
+      objectReference: {fileID: 0}
+    - target: {fileID: 5931621492799467472, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+      propertyPath: updateTime
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 6082113987798382523, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3537,6 +3557,10 @@ PrefabInstance:
     - target: {fileID: 6232397458322485862, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878397643843965755, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+      propertyPath: updateTime
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 7004700562294153872, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3677,6 +3701,10 @@ PrefabInstance:
     - target: {fileID: 8297118828396061764, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8660158160778538925, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
+      propertyPath: updateTime
+      value: 0.01
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7444666307086757219, guid: 42f5fe34613bd4f43bcd8761176ac1f0, type: 3}
