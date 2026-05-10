@@ -88,7 +88,7 @@ MonoBehaviour:
   reverbParam: ChoirReverb
   minReverb: -10000
   maxReverb: 800
-  coughVolume: 0.55
+  coughVolume: 0.48
 --- !u!114 &1964084521426550645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,5 +101,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b02d24f697bd3c44af63586454171bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CorruptionAudioPlayer
-  damageDelay: 0.7
-  healDelay: 0.7

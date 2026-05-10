@@ -22,6 +22,13 @@ public class NavigationController : MonoBehaviour
     public static bool Navigating { get; private set; } = false;
     private static bool hasDoneGlobalFirstTransition = false;
 
+    // Al tener el Domain Reload en el editor, la variable podía mantener el valor de la ejecución anterior
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticVariables()
+    {
+        hasDoneGlobalFirstTransition = false;
+    }
+
     private void Awake()
     {
         if (!TryGetComponent(out transitionManager))
@@ -41,8 +48,8 @@ public class NavigationController : MonoBehaviour
         transitionManager.SubscribeOnStarted(this, () =>
         {
             Navigating = true;
-            if (startsWithTransition && !hasDoneGlobalFirstTransition)            
-                hasDoneGlobalFirstTransition = true;            
+            if (startsWithTransition && !hasDoneGlobalFirstTransition)
+                hasDoneGlobalFirstTransition = true;
             else
                 AudioManager.Instance.PlayUI(UISound.DissolveOut);
         });
