@@ -33,11 +33,13 @@ public class Player : NetworkBehaviour
     public NetworkVariable<float> RitualProgress { get; private set; } = new();
     public NetworkVariable<float> CurrentMana { get; private set; } = new();
     public NetworkVariable<float> CurrentCorruption { get; private set; } = new();
+    public event Action<float, float> OnCorruptionChanged;
 
     private void Awake()
     {
         GetComponents();
         MatchManager = FindFirstObjectByType<MatchManager>();
+        CurrentCorruption.OnValueChanged += NotifyCorruptionChange;
     }
 
     public override void OnNetworkSpawn()
@@ -157,6 +159,17 @@ public class Player : NetworkBehaviour
             Player winner = MatchManager.GetPlayerById(MatchManager.GetPlayerId(this) == 0 ? 1 : 0);
             MatchManager.HandlePlayerVictory(winner, MatchEndReason.CorruptionOverflow);
         }
+    }
+
+    private void NotifyCorruptionChange(float oldValue, float newValue)
+    {
+        OnCorruptionChanged?.Invoke(oldValue, newValue);
+    }
+
+    //AVISO: sólo usar cuando la partida haya finalizado
+    public void SetLocalCorruption(float localCorruption)
+    {
+        NotifyCorruptionChange(0, localCorruption);
     }
 
     [Rpc(SendTo.Server)]

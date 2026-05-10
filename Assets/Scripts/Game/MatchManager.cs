@@ -335,8 +335,6 @@ public class MatchManager : NetworkBehaviour
         if (!IsServer || matchState == MatchState.Finished)
             return;
         matchState = MatchState.Finished;
-        Player otherPlayer = winner == Player.User ? Player.Enemy : Player.User;
-        otherPlayer.CorruptionManager.AddCorruption(Settings.Instance.MaxCorruption);
         EndMatchClientRpc(winner.OwnerClientId, reason);
     }
 
@@ -351,6 +349,8 @@ public class MatchManager : NetworkBehaviour
 
         bool isWinner = NetworkManager.Singleton.LocalClientId == winnerClientId;
         PresentEndMatch(isWinner, reason);
+        Player loser = isWinner ? Player.Enemy : Player.User;
+        loser.SetLocalCorruption(Settings.Instance.MaxCorruption);
 
         // Handshake de finalización
         NotifyEndHandledServerRpc();

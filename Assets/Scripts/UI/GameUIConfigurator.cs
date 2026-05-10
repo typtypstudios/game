@@ -29,8 +29,8 @@ public class GameUIConfigurator : MonoBehaviour
         Player.User.CurrentMana.OnValueChanged += manaBars[0].UpdateValue;
         Player.Enemy.CurrentMana.OnValueChanged += manaBars[1].UpdateValue;
         foreach (UIInkBar bar in manaBars) bar.MaxValue = TypTyp.Settings.Instance.MaxMana;
-        Player.User.CurrentCorruption.OnValueChanged += corruptionBars[0].UpdateValue;
-        Player.Enemy.CurrentCorruption.OnValueChanged += corruptionBars[1].UpdateValue;
+        Player.User.OnCorruptionChanged += corruptionBars[0].UpdateValue;
+        Player.Enemy.OnCorruptionChanged += corruptionBars[1].UpdateValue;
         foreach (UIBar bar in corruptionBars) bar.MaxValue = TypTyp.Settings.Instance.MaxCorruption;
         statusEffectUIs[0].BindToPlayer(Player.User);
         statusEffectUIs[1].BindToPlayer(Player.Enemy);

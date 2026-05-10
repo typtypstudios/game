@@ -34,12 +34,12 @@ public class CorruptionIndicator : MonoBehaviour
     {
         GameUIConfigurator.OnUIConfigurated -= Subscribe;
         if(Player.User != null)
-            Player.User.CurrentCorruption.OnValueChanged -= HandleCorruption;
+            Player.User.OnCorruptionChanged -= HandleCorruption;
     }
 
     private void Subscribe()
     {
-        Player.User.CurrentCorruption.OnValueChanged += HandleCorruption;
+        Player.User.OnCorruptionChanged += HandleCorruption;
     }
 
     private void HandleCorruption(float prevCorr, float newCorr)
