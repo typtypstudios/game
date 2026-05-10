@@ -842,6 +842,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndMatchAnimationManager
   showResultsDelay: 2
   transitionCanvasNewDist: 1
+  newNear: 0.2
 --- !u!1001 &404194725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2131,7 +2132,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: d2b9291536b04094b98ef3911d81ae6d, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 6071ad1f39546c44e9ac2c6b71bdcd98, type: 2}
 --- !u!4 &2095396375
 Transform:
   m_ObjectHideFlags: 0
