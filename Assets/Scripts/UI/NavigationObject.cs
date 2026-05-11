@@ -29,7 +29,7 @@ public class NavigationObject : MonoBehaviour, IPointerClickHandler, ICursorHove
 
     public bool CanBeInteracted()
     {
-        return isFirstScreenLoaded && 
+        return isFirstScreenLoaded && controller.CurrentScreen != Screens.InitialTip &&
             Vector3.Distance(transform.position, Camera.main.transform.position) >= minInteractionDistance;
     }
 

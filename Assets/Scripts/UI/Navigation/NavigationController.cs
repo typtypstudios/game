@@ -18,7 +18,7 @@ public class NavigationController : MonoBehaviour
     private CameraNavigation camNavigation;
     private readonly Dictionary<Screens, NavigationEntry> screenDictionary = new();
     private readonly Stack<Screens> screenStack = new();
-    private Screens currentScreen;
+    public Screens CurrentScreen { get; private set; }
     public static bool Navigating { get; private set; } = false;
     private static bool hasDoneGlobalFirstTransition = false;
 
@@ -59,7 +59,7 @@ public class NavigationController : MonoBehaviour
         });
         transitionManager.SubscribeOnEnded(this, () => Navigating = false);
         goBackAction.action.started += GoBackAction;
-        currentScreen = initialScreen;
+        CurrentScreen = initialScreen;
         Navigating = false;
     }
 
@@ -78,7 +78,7 @@ public class NavigationController : MonoBehaviour
 
     public void OverrideInitialScreen(Screens screen)
     {
-        currentScreen = initialScreen;
+        CurrentScreen = initialScreen;
         initialScreen = screen;
     }
 
@@ -97,7 +97,7 @@ public class NavigationController : MonoBehaviour
             GoBack();
             return;
         }
-        screenStack.Push(currentScreen);
+        screenStack.Push(CurrentScreen);
         NavigateToScreen(screen, false, sender);
     }
 
@@ -113,8 +113,8 @@ public class NavigationController : MonoBehaviour
 
     private void NavigateToScreen(Screens screen, bool isGoingBack, GameObject sender = null)
     {
-        if (screen == currentScreen) return;
-        Canvas originCanvas = screenDictionary[currentScreen].canvas;
+        if (screen == CurrentScreen) return;
+        Canvas originCanvas = screenDictionary[CurrentScreen].canvas;
         INavigationLeaveReceiver[] leaveReceivers =
             originCanvas.GetComponentsInChildren<INavigationLeaveReceiver>(true);
         foreach (var receiver in leaveReceivers)
@@ -124,8 +124,8 @@ public class NavigationController : MonoBehaviour
         INavigationCtxReceiver[] receivers =
             destinationCanvas.GetComponentsInChildren<INavigationCtxReceiver>(true);
         foreach (var receiver in receivers)
-            receiver.ReceiveContext(currentScreen, isGoingBack, sender);
-        currentScreen = screen;
+            receiver.ReceiveContext(CurrentScreen, isGoingBack, sender);
+        CurrentScreen = screen;
         Navigating = true;
         transitionManager.PerformTransition(originCanvas, destinationCanvas, this, true);
         Transform destination = screenDictionary[screen].cameraDestination;
