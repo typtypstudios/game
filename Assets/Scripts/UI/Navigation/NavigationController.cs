@@ -101,7 +101,11 @@ public class NavigationController : MonoBehaviour
         NavigateToScreen(screen, false, sender);
     }
 
-    private void GoBackAction(InputAction.CallbackContext _) => GoBack();
+    private void GoBackAction(InputAction.CallbackContext _)
+    {
+        if (CurrentScreen == Screens.DeckBuilder) SaveManager.Instance.Save();
+        GoBack();
+    }
 
     public void GoBack()
     {
